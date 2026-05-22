@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.sp.main.Entities.*;
 import in.sp.main.Repository.*;
@@ -96,14 +97,27 @@ public class EnrollmentController {
     }
 
     @RequestMapping(value = "/enrollForm/{centreId}", method = GET)
-    public String showEnrollmentForm(@PathVariable Long centreId, Model model, HttpSession session) {
-        MartialArtsCenter center = centreService.getCenterById(centreId);
-        List<MartialArtsBatch> batches = batchRepository.findByCenterId(centreId);
-        
-        model.addAttribute("center", center);
-        model.addAttribute("batches", batches);
-        model.addAttribute("user", session.getAttribute("user"));
-        return "enrollmentForm"; // We will rewrite this JSP
+    public String showEnrollmentForm(@PathVariable Long centreId,
+                                     @RequestParam(value = "batchId", required = false) Long batchId,
+                                     Model model, HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("message", "Please login to enroll in a training centre.");
+            return "redirect:/login?redirect=/enrollment/enrollForm/" + centreId
+                    + (batchId != null ? "?batchId=" + batchId : "");
+        }
+        try {
+            MartialArtsCenter center = centreService.getApprovedCenterById(centreId);
+            model.addAttribute("center", center);
+            model.addAttribute("batches", center.getBatches());
+            model.addAttribute("user", user);
+            model.addAttribute("preselectedBatchId", batchId);
+            return "enrollmentForm";
+        } catch (IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("message", ex.getMessage());
+            return "redirect:/centres/allacceptedcentres";
+        }
     }
 
     @PostMapping("/api/enrollments")
@@ -113,14 +127,33 @@ public class EnrollmentController {
         if (user == null) return ResponseEntity.status(401).body("Please login first");
 
         try {
-            MartialArtsCenter center = centreService.getCenterById(request.getCenterId());
+            MartialArtsCenter center = centreService.getApprovedCenterById(request.getCenterId());
             MartialArtsBatch batch = batchRepository.findById(request.getBatchId()).orElse(null);
+            boolean batchBelongsToCentre = batchRepository.findByCenterId(center.getId()).stream()
+                    .anyMatch(b -> b.getId().equals(request.getBatchId()));
+            if (batch == null || !batchBelongsToCentre) {
+                return ResponseEntity.badRequest().body("Invalid batch for this centre.");
+            }
+
+            boolean alreadyEnrolled = enrollmentRepository.findByUser(user).stream()
+                    .anyMatch(e -> e.getBatch() != null && e.getBatch().getId().equals(batch.getId()));
+            if (alreadyEnrolled) {
+                return ResponseEntity.badRequest().body("You are already enrolled in this batch.");
+            }
 
             Enrollment enrollment = new Enrollment();
             enrollment.setUser(user);
             enrollment.setCenter(center);
             enrollment.setBatch(batch);
             enrollment.setStatus(TrainingStatus.PENDING);
+            enrollment.setPaymentStatus("PENDING");
+
+            if (batch.getStyle() != null && center.getMartialArtsTypes() != null) {
+                center.getMartialArtsTypes().stream()
+                        .filter(t -> batch.getStyle().equalsIgnoreCase(t.getName()))
+                        .findFirst()
+                        .ifPresent(enrollment::setMartialArtsType);
+            }
             
             // Personal Details
             enrollment.setFullName(request.getFullName());

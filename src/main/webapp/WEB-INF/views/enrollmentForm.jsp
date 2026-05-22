@@ -663,6 +663,16 @@
             }
         };
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const preId = '${preselectedBatchId}';
+            if (preId && preId !== '') {
+                const sel = document.getElementById('batchId');
+                sel.value = preId;
+                updateBatchInfo();
+                updateSummary();
+            }
+        });
+
         async function initiateRazorpay(enrollmentId, amount) {
             try {
                 const response = await fetch('${pageContext.request.contextPath}/payment/create-order', {

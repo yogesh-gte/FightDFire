@@ -529,8 +529,13 @@
         <div class="dashboard-card h-100 d-flex flex-column">
           <img src="${pageContext.request.contextPath}/beauty/images/centres.jpg" alt="Centres">
           <h4>Martial Arts Centres</h4>
-          <p>Find and explore verified training centres near you.</p>
-          <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2y">Explore</a>
+          <p>
+            <c:choose>
+              <c:when test="${approvedCentreCount > 0}">${approvedCentreCount} admin-verified centre(s) ready to book.</c:when>
+              <c:otherwise>Find verified training centres after admin approval.</c:otherwise>
+            </c:choose>
+          </p>
+          <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Explore &amp; Book</a>
         </div>
       </div>
 
@@ -711,9 +716,39 @@
         </div>
       </div>
 
-
-
-
+      <c:if test="${not empty approvedCentres}">
+      <div class="col-12 mt-2">
+        <div class="dashboard-card p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h4 class="mb-1">Verified Martial Arts Centres</h4>
+              <p class="text-muted small mb-0">Admin-approved centres you can book right now</p>
+            </div>
+            <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn btn-watch-video btn-sm">View all</a>
+          </div>
+          <div class="row g-3">
+            <c:forEach var="c" items="${approvedCentres}" begin="0" end="5">
+              <div class="col-md-4">
+                <div class="border rounded-4 p-3 h-100 bg-light">
+                  <h6 class="fw-bold mb-1">${c.name}</h6>
+                  <p class="text-muted small mb-2"><i class="bi bi-geo-alt me-1"></i>${c.location}</p>
+                  <p class="small mb-3">
+                    <c:choose>
+                      <c:when test="${not empty c.batches}">${c.batches.size()} batch(es) open</c:when>
+                      <c:otherwise>Contact for schedule</c:otherwise>
+                    </c:choose>
+                  </p>
+                  <a href="${pageContext.request.contextPath}/centres/details/${c.id}" class="btn btn-sm btn-outline-danger rounded-pill me-1">Details</a>
+                  <c:if test="${not empty c.batches}">
+                    <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${c.id}?batchId=${c.batches[0].id}" class="btn btn-sm btn-danger rounded-pill">Book</a>
+                  </c:if>
+                </div>
+              </div>
+            </c:forEach>
+          </div>
+        </div>
+      </div>
+      </c:if>
 
     </div>
   </div>

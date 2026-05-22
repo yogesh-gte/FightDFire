@@ -356,54 +356,97 @@
                     </div>
                 </div>
 
+                <c:if test="${not empty message}">
+                    <div class="alert alert-warning rounded-4 border-0 shadow-sm mb-4">${message}</div>
+                </c:if>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="text-muted mb-0">
+                        <strong>${approvedCentreCount}</strong> verified centres
+                        <c:if test="${totalBatchCount > 0}"> · <strong>${totalBatchCount}</strong> open batches</c:if>
+                    </p>
+                    <c:if test="${empty user}">
+                        <a href="${pageContext.request.contextPath}/login?redirect=/centres/allacceptedcentres" class="btn btn-sm btn-outline-primary rounded-pill">Login to book</a>
+                    </c:if>
+                </div>
                 <div class="row g-4" id="dojoGrid">
                     <c:forEach var="center" items="${centers}">
-                        <c:forEach var="batch" items="${center.batches}">
-                            <div class="col-md-4 center-card-item" data-name="${center.name} ${batch.style} ${batch.name}" data-location="${center.location}">
-                                <div class="center-card">
-                                    <div class="position-relative">
-                                        <img src="${pageContext.request.contextPath}${center.profilePhoto}" class="center-img" alt="${center.name}" onerror="this.src='${pageContext.request.contextPath}/beauty/images/centres.jpg'">
-                                        <div class="position-absolute top-0 end-0 p-3">
-                                            <span class="badge bg-primary rounded-pill shadow-sm">${batch.batchType}</span>
+                        <c:choose>
+                            <c:when test="${not empty center.batches}">
+                                <c:forEach var="batch" items="${center.batches}">
+                                    <div class="col-md-4 center-card-item" data-name="${center.name} ${batch.style} ${batch.name}" data-location="${center.location}">
+                                        <div class="center-card">
+                                            <div class="position-relative">
+                                                <img src="${pageContext.request.contextPath}${center.profilePhoto}" class="center-img" alt="${center.name}" onerror="this.src='${pageContext.request.contextPath}/beauty/images/centres.jpg'">
+                                                <div class="position-absolute top-0 end-0 p-3">
+                                                    <span class="badge bg-primary rounded-pill shadow-sm">${batch.batchType}</span>
+                                                </div>
+                                            </div>
+                                            <div class="p-4 flex-grow-1 d-flex flex-column">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <h5 class="fw-bold text-dark mb-0">${batch.style}</h5>
+                                                    <span class="text-primary fw-bold">₹${batch.fee}</span>
+                                                </div>
+                                                <p class="text-muted small mb-2"><i class="fas fa-university text-primary-subtle me-2"></i>${center.name}</p>
+                                                <p class="text-muted small mb-3"><i class="fas fa-map-marker-alt text-primary-subtle me-2"></i>${center.location}</p>
+                                                <div class="mb-3">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                        <i class="fas fa-user-tie text-muted me-2 small"></i>
+                                                        <span class="small text-muted">Instructor: ${batch.instructor}</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="fas fa-clock text-muted me-2 small"></i>
+                                                        <span class="small text-muted">${batch.timeSlot}</span>
+                                                    </div>
+                                                </div>
+                                                <c:choose>
+                                                    <c:when test="${not empty enrolledBatchIds and enrolledBatchIds.contains(batch.id)}">
+                                                        <button type="button" class="btn btn-success py-2 px-3 rounded-pill w-100 mt-auto border-0" onclick="document.getElementById('overview-tab').click(); window.scrollTo({top: 0, behavior: 'smooth'});">
+                                                            <i class="fas fa-check-circle me-2"></i>Already Enrolled
+                                                        </button>
+                                                    </c:when>
+                                                    <c:when test="${not empty user}">
+                                                        <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${center.id}?batchId=${batch.id}" class="center-btn text-center text-decoration-none mt-auto">Book Now</a>
+                                                        <a href="${pageContext.request.contextPath}/centres/details/${center.id}" class="btn btn-link btn-sm text-muted text-center mt-2">View details</a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="${pageContext.request.contextPath}/login?redirect=/enrollment/enrollForm/${center.id}%3FbatchId%3D${batch.id}" class="center-btn text-center text-decoration-none mt-auto">Login to Book</a>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="p-4 flex-grow-1 d-flex flex-column">
-                                        <div class="d-flex justify-content-between align-items-start mb-2">
-                                            <h5 class="fw-bold text-dark mb-0">${batch.style}</h5>
-                                            <span class="text-primary fw-bold">₹${batch.fee}</span>
-                                        </div>
-                                        <p class="text-muted small mb-2"><i class="fas fa-university text-primary-subtle me-2"></i>${center.name}</p>
-                                        <p class="text-muted small mb-3"><i class="fas fa-map-marker-alt text-primary-subtle me-2"></i>${center.location}</p>
-                                        
-                                        <div class="mb-3">
-                                            <div class="d-flex align-items-center mb-1">
-                                                <i class="fas fa-user-tie text-muted me-2 small"></i>
-                                                <span class="small text-muted">Instructor: ${batch.instructor}</span>
-                                            </div>
-                                            <div class="d-flex align-items-center">
-                                                <i class="fas fa-clock text-muted me-2 small"></i>
-                                                <span class="small text-muted">${batch.timeSlot}</span>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col-md-4 center-card-item" data-name="${center.name}" data-location="${center.location}">
+                                    <div class="center-card">
+                                        <div class="position-relative">
+                                            <img src="${pageContext.request.contextPath}${center.profilePhoto}" class="center-img" alt="${center.name}" onerror="this.src='${pageContext.request.contextPath}/beauty/images/centres.jpg'">
+                                            <div class="position-absolute top-0 end-0 p-3">
+                                                <span class="badge bg-success rounded-pill shadow-sm">Verified</span>
                                             </div>
                                         </div>
-
-                                        <c:choose>
-                                            <c:when test="${not empty enrolledBatchIds and enrolledBatchIds.contains(batch.id)}">
-                                                <button class="btn btn-success py-2 px-3 rounded-pill w-100 text-center mb-0 small border-0 shadow-sm mt-auto" onclick="document.getElementById('overview-tab').click(); window.scrollTo({top: 0, behavior: 'smooth'});">
-                                                    <i class="fas fa-check-circle me-2"></i>Already Enrolled
-                                                </button>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <a href="${pageContext.request.contextPath}/centres/details/${center.id}" class="center-btn text-center text-decoration-none mt-auto">View Academy</a>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <div class="p-4 flex-grow-1 d-flex flex-column">
+                                            <h5 class="fw-bold text-dark mb-2">${center.name}</h5>
+                                            <p class="text-muted small mb-3"><i class="fas fa-map-marker-alt me-2"></i>${center.location}</p>
+                                            <c:if test="${not empty center.martialArtsTypes}">
+                                                <p class="small text-muted mb-3">Programs:
+                                                    <c:forEach var="t" items="${center.martialArtsTypes}" varStatus="st">
+                                                        ${t.name}<c:if test="${!st.last}">, </c:if>
+                                                    </c:forEach>
+                                                </p>
+                                            </c:if>
+                                            <a href="${pageContext.request.contextPath}/centres/details/${center.id}" class="center-btn text-center text-decoration-none mt-auto">View &amp; Enquire</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
                     </c:forEach>
                     <c:if test="${empty centers}">
                         <div class="col-12 text-center py-5">
-                            <p class="text-muted">No centers currently listed.</p>
+                            <p class="text-muted mb-2">No admin-approved centres are listed yet.</p>
+                            <p class="small text-muted">Centres appear here after admin approval in Martial Arts Management.</p>
                         </div>
                     </c:if>
                 </div>

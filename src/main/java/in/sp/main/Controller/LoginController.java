@@ -100,7 +100,14 @@ public class LoginController {
             }
 
             session.setAttribute("user", user);
-            // ✅ Redirect to a GET method (prevents form resubmission)
+            String redirect = (String) session.getAttribute("redirectAfterLogin");
+            if (redirect != null && !redirect.isBlank()) {
+                session.removeAttribute("redirectAfterLogin");
+                if (redirect.startsWith("/")) {
+                    return "redirect:" + redirect;
+                }
+                return "redirect:/" + redirect;
+            }
             return "redirect:/users/dashboard";
         } else {
             // Helpful diagnostics for dev; doesn't leak password.

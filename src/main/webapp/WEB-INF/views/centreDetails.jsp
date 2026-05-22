@@ -54,7 +54,9 @@
 	        <li><a href="${pageContext.request.contextPath}/video/reels">Reels</a></li>
 	        <li><a href="${pageContext.request.contextPath}/index/templates">Beauty</a></li>
 	        <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
+	        <c:if test="${not empty user}">
 	        <li><a href="${pageContext.request.contextPath}/users/profile/${user.id}">Profile</a></li>
+	        </c:if>
 	      </ul>
 	      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
 	    </nav>
@@ -81,8 +83,15 @@
 			  	  	  			            </div>
 			  	  	  			          </div>
 			  	  	  			          <p>
-			  	  	  			          	<a href="${pageContext.request.contextPath}/enrollment/enrollForm/${center.id}" class="btn btn-watch-video btn-lg"> Enroll</a> | 
-			  	  	  			          	<a href="${pageContext.request.contextPath}/centres/allcentres" class="btn btn-watch-video btn-lg">Back to Centres</a>
+			  	  	  			          	<c:choose>
+			  	  	  			          	  <c:when test="${not empty user}">
+			  	  	  			          	    <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${center.id}" class="btn btn-watch-video btn-lg">Enroll Now</a>
+			  	  	  			          	  </c:when>
+			  	  	  			          	  <c:otherwise>
+			  	  	  			          	    <a href="${pageContext.request.contextPath}/login?redirect=/enrollment/enrollForm/${center.id}" class="btn btn-watch-video btn-lg">Login to Enroll</a>
+			  	  	  			          	  </c:otherwise>
+			  	  	  			          	</c:choose>
+			  	  	  			          	<a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn btn-watch-video btn-lg">All Centres</a>
 			  	  	  			          </p>
 			  	  	  			        </div>
 			  	  	  			      </div>
@@ -181,9 +190,18 @@
 									                        </div>
 									                    </div>
 									                    <div class="card-footer bg-light border-0 p-3 text-center">
-									                        <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${center.id}" class="btn btn-sm btn-primary rounded-pill px-4">
-									                            Select Batch
-									                        </a>
+									                        <c:choose>
+									                          <c:when test="${not empty user}">
+									                            <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${center.id}?batchId=${batch.id}" class="btn btn-sm btn-primary rounded-pill px-4">
+									                              Book This Batch
+									                            </a>
+									                          </c:when>
+									                          <c:otherwise>
+									                            <a href="${pageContext.request.contextPath}/login?redirect=/enrollment/enrollForm/${center.id}%3FbatchId%3D${batch.id}" class="btn btn-sm btn-primary rounded-pill px-4">
+									                              Login to Book
+									                            </a>
+									                          </c:otherwise>
+									                        </c:choose>
 									                    </div>
 									                  </div>
 									                </div>

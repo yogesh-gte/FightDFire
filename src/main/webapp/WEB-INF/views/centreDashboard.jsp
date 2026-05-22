@@ -281,25 +281,9 @@
                     <div id="notif-panel" class="notif-dropdown">
                         <div class="notif-header">
                             <h5 class="fw-bold mb-0">Notifications</h5>
-                            <span class="badge bg-danger">3 New</span>
+                            <span id="notif-badge" class="badge bg-danger">0 New</span>
                         </div>
-                        <div class="notif-list">
-                            <div class="notif-item unread">
-                                <div class="fw-bold small">New Enrollment</div>
-                                <div class="text-muted small">Syed Mohammad joined MMA Advanced</div>
-                                <div class="text-primary smaller mt-1" style="font-size:0.7rem;">2 mins ago</div>
-                            </div>
-                            <div class="notif-item unread">
-                                <div class="fw-bold small">Payment Received</div>
-                                <div class="text-muted small">₹ 5,000 received from Sarah K.</div>
-                                <div class="text-primary smaller mt-1" style="font-size:0.7rem;">15 mins ago</div>
-                            </div>
-                            <div class="notif-item">
-                                <div class="fw-bold small">Batch Reminder</div>
-                                <div class="text-muted small">Kickboxing Morning batch starts in 1 hr</div>
-                                <div class="text-primary smaller mt-1" style="font-size:0.7rem;">1 hour ago</div>
-                            </div>
-                        </div>
+                        <div id="notif-list" class="notif-list"></div>
                         <div class="p-2 text-center border-top">
                             <button class="btn btn-sm btn-link text-danger text-decoration-none fw-bold" onclick="App.navigate('notifications')">View All Notifications</button>
                         </div>
@@ -326,16 +310,27 @@
          * DYNAMIC DASHBOARD ENGINE (SPA)
          */
         const App = {
+            ctx: '${pageContext.request.contextPath}',
             state: {
                 activeTab: '${currentTab}' || 'dashboard',
                 batches: ${not empty batchesJson ? batchesJson : '[]'},
                 enrollments: ${not empty enrollmentsJson ? enrollmentsJson : '[]'},
+                center: ${not empty centerJson ? centerJson : '{}'},
+                meta: ${not empty dashboardMetaJson ? dashboardMetaJson : '{}'},
                 user: { name: '<c:out value="${center.name}" />' },
                 userLogo: null,
                 loading: false
             },
 
             init() {
+                if (App.state.center && App.state.center.profilePhoto) {
+                    App.state.userLogo = App.ctx + App.state.center.profilePhoto;
+                    const avatar = document.getElementById('topbar-avatar');
+                    if (avatar) {
+                        avatar.innerHTML = '<img src="' + App.state.userLogo + '" style="width:100%;height:100%;object-fit:cover;">';
+                    }
+                }
+                App.renderNotifications();
                 console.log('App Initializing...');
                 // Intercept Navigation
                 document.querySelectorAll('.sidebar-link').forEach(link => {
@@ -410,15 +405,67 @@
                     reader.onload = (e) => {
                         const preview = document.getElementById('logo-preview');
                         const topbarAvatar = document.getElementById('topbar-avatar');
-                        this.state.userLogo = e.target.result; // Save to state
-                        
+                        this.state.userLogo = e.target.result;
                         const imgHtml = '<img src="' + e.target.result + '" style="width:100%; height:100%; object-fit:cover;">';
-                        
                         if (preview) preview.innerHTML = imgHtml;
                         if (topbarAvatar) topbarAvatar.innerHTML = imgHtml;
                     };
                     reader.readAsDataURL(input.files[0]);
                 }
+            },
+
+            async saveSettings() {
+                const formData = new FormData();
+                formData.append('name', document.getElementById('settingsName').value);
+                formData.append('email', document.getElementById('settingsEmail').value);
+                formData.append('phoneNumber', document.getElementById('settingsPhone').value);
+                formData.append('location', document.getElementById('settingsLocation').value);
+                const logoInput = document.getElementById('logoInput');
+                if (logoInput && logoInput.files && logoInput.files[0]) {
+                    formData.append('profileImage', logoInput.files[0]);
+                }
+                try {
+                    const res = await fetch(App.ctx + '/centres/settings', { method: 'POST', body: formData });
+                    const result = await res.json();
+                    if (result.status === 'success') {
+                        App.state.center = result.center;
+                        App.state.user.name = result.center.name;
+                        if (result.center.profilePhoto) {
+                            App.state.userLogo = App.ctx + result.center.profilePhoto;
+                        }
+                        document.querySelector('.topbar-title p').innerHTML = 'Welcome back, ' + App.escapeHtml(result.center.name) + '!';
+                        alert(result.message);
+                    } else {
+                        alert(result.message || 'Could not save profile');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Failed to save settings');
+                }
+            },
+
+            renderNotifications() {
+                const list = document.getElementById('notif-list');
+                const badge = document.getElementById('notif-badge');
+                const items = (App.state.meta && App.state.meta.notifications) ? App.state.meta.notifications : [];
+                const unread = App.state.meta && App.state.meta.unreadCount != null ? App.state.meta.unreadCount : 0;
+                if (badge) badge.innerText = unread + ' New';
+                if (!list) return;
+                if (items.length === 0) {
+                    list.innerHTML = '<div class="p-4 text-center text-muted small">No notifications yet</div>';
+                    return;
+                }
+                list.innerHTML = items.slice(0, 5).map(function(n) {
+                    return '<div class="notif-item ' + (n.unread ? 'unread' : '') + '">' +
+                        '<div class="fw-bold small">' + App.escapeHtml(n.title) + '</div>' +
+                        '<div class="text-muted small">' + App.escapeHtml(n.detail) + '</div>' +
+                        '<div class="text-primary smaller mt-1" style="font-size:0.7rem;">' + App.escapeHtml(n.timeLabel || '') + '</div></div>';
+                }).join('');
+            },
+
+            escapeHtml(text) {
+                if (text == null) return '';
+                return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
             },
 
             toggleNotifications(e) {
@@ -454,7 +501,7 @@
                     status: document.getElementById('batchStatus').value,
                     capacity: document.getElementById('batchCapacity').value,
                     description: document.getElementById('batchDescription').value,
-                    timeSlot: 'Morning (6-8 AM)', // Placeholder for now
+                    timeSlot: document.getElementById('batchTimeSlot') ? document.getElementById('batchTimeSlot').value : '',
                     availableDays: Array.from(document.querySelectorAll('.day-check:checked'))
                                        .map(cb => cb.value)
                                        .sort((a, b) => {
@@ -535,13 +582,23 @@
             views: {
                 Dashboard: function() {
                     var enrolls = App.state.enrollments || [];
-                    var batches = App.state.batches || [];
+                    var batches = (App.state.batches || []).filter(function(b){ return b.isBatch !== false; });
+                    var meta = App.state.meta || {};
                     var totalEarnings = enrolls.reduce(function(s,e){return s+(parseFloat(e.amount)||0);},0);
+                    var activities = meta.activities || [];
+                    var online = meta.onlineBatchCount || 0;
+                    var offline = meta.offlineBatchCount || 0;
+                    var activityRows = activities.length ? activities.map(function(a) {
+                        return '<tr><td class="fw-bold text-primary">'+App.escapeHtml(a.type)+'</td>'+
+                            '<td>'+App.escapeHtml(a.detail)+'</td>'+
+                            '<td><span class="badge bg-'+(a.statusClass||'info')+'">'+App.escapeHtml(a.status)+'</span></td></tr>';
+                    }).join('') : '<tr><td colspan="3" class="text-center py-4 text-muted">No activity for today yet</td></tr>';
+                    var onlineDeg = batches.length ? Math.round((online / batches.length) * 360) : 0;
                     return '<div class="stats-grid">'+
                         App.ui.StatCard('Total Trainees',enrolls.length,'red','fa-user-graduate')+
                         App.ui.StatCard('Active Batches',batches.length,'green','fa-calendar-check')+
                         App.ui.StatCard('Total Bookings',enrolls.length,'blue','fa-bookmark')+
-                        App.ui.StatCard('Earnings','₹ '+totalEarnings.toLocaleString(),'purple','fa-wallet')+
+                        App.ui.StatCard('Earnings','₹ '+totalEarnings.toLocaleString('en-IN'),'purple','fa-wallet')+
                     '</div>'+
                     '<div class="row">'+
                       '<div class="col-lg-8">'+
@@ -552,22 +609,19 @@
                           '</div>'+
                           '<div class="table-container"><table class="custom-table">'+
                             '<thead><tr><th>Type</th><th>Details</th><th>Status</th></tr></thead>'+
-                            '<tbody>'+
-                              '<tr><td class="fw-bold text-primary">New Enrollment</td><td>Recent student joined Advanced MMA</td><td><span class="badge bg-success">Just Now</span></td></tr>'+
-                              '<tr><td class="fw-bold text-warning">Batch Reminder</td><td>Morning Kickboxing starts in 2 hours</td><td><span class="badge bg-info">Upcoming</span></td></tr>'+
-                            '</tbody></table></div>'+
+                            '<tbody>'+activityRows+'</tbody></table></div>'+
                         '</div>'+
                       '</div>'+
                       '<div class="col-lg-4">'+
                         '<div class="panel h-100">'+
                           '<div class="panel-header"><div class="panel-title">Batch Distribution</div></div>'+
                           '<div class="text-center py-4">'+
-                            '<div style="width:140px;height:140px;border-radius:50%;border:15px solid var(--primary);border-left-color:#eee;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;transform:rotate(45deg);">'+
-                              '<div style="transform:rotate(-45deg);"><span class="h2 fw-bold mb-0">'+batches.length+'</span><p class="small text-muted mb-0">Total</p></div>'+
+                            '<div style="width:140px;height:140px;border-radius:50%;border:15px solid var(--primary);border-left-color:#eee;border-top-color:#10B981;border-right-color:#10B981;border-bottom-color:#eee;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">'+
+                              '<div><span class="h2 fw-bold mb-0">'+batches.length+'</span><p class="small text-muted mb-0">Total</p></div>'+
                             '</div>'+
                             '<div class="d-flex justify-content-center gap-3 small text-muted">'+
-                              '<span><i class="fas fa-circle text-success"></i> Online</span>'+
-                              '<span><i class="fas fa-circle text-danger"></i> Offline</span>'+
+                              '<span><i class="fas fa-circle text-success"></i> Online ('+online+')</span>'+
+                              '<span><i class="fas fa-circle text-danger"></i> Offline ('+offline+')</span>'+
                             '</div>'+
                           '</div>'+
                         '</div>'+
@@ -575,7 +629,7 @@
                     '</div>';
                 },
                 Batches: function() {
-                    var batches = App.state.batches || [];
+                    var batches = (App.state.batches || []).filter(function(b){ return b.isBatch !== false; });
                     return '<div class="panel">'+
                       '<div class="panel-header">'+
                         '<div class="panel-title"><i class="fas fa-layer-group text-danger"></i> Manage Batches ('+batches.length+')</div>'+
@@ -597,20 +651,31 @@
                         '</tbody></table></div></div>';
                 },
                 Classes: function() {
-                    var styles = ['Karate','Kickboxing','MMA','BJJ','Muay Thai','Kung Fu'];
-                    return '<div class="d-flex justify-content-between align-items-center mb-5"><h2 class="fw-bold m-0 h1">Choose a Class Type</h2></div>'+
+                    var types = (App.state.meta && App.state.meta.classTypes) ? App.state.meta.classTypes : [];
+                    var img = App.state.userLogo || (App.ctx + '/assets/img/hero-bg.jpg');
+                    if (types.length === 0) {
+                        return '<div class="panel text-center py-5"><h4 class="fw-bold">No programs registered</h4>'+
+                            '<p class="text-muted">Add martial arts programs during centre registration or create a batch with a custom style.</p>'+
+                            '<button class="btn btn-premium" onclick="App.navigate(\'create-batch\')">Create Batch</button></div>';
+                    }
+                    return '<div class="d-flex justify-content-between align-items-center mb-5"><h2 class="fw-bold m-0 h1">Your Class Types</h2></div>'+
                     '<div class="class-grid">'+
-                      styles.map(function(sn){return '<div class="class-card" onclick="App.navigate(\'create-batch\')">'+
-                        '<div class="class-img"><img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=600&q=80" alt="'+sn+'">'+
-                          '<div style="position:absolute;top:20px;right:20px;background:white;padding:8px 15px;border-radius:12px;font-weight:700;font-size:0.75rem;">POPULAR</div>'+
+                      types.map(function(t, i){return '<div class="class-card" onclick="App.navigate(\'create-batch\')">'+
+                        '<div class="class-img"><img src="'+img+'" alt="'+App.escapeHtml(t.name)+'">'+
+                          (i===0?'<div style="position:absolute;top:20px;right:20px;background:white;padding:8px 15px;border-radius:12px;font-weight:700;font-size:0.75rem;">REGISTERED</div>':'')+
                         '</div>'+
-                        '<div class="class-body"><div class="class-name">'+sn+'</div>'+
-                          '<p class="text-muted small">Professional '+sn+' training with certified masters.</p>'+
-                          '<button class="btn btn-premium w-100 mt-2">Select Style</button>'+
+                        '<div class="class-body"><div class="class-name">'+App.escapeHtml(t.name)+'</div>'+
+                          '<p class="text-muted small">'+(t.slotCount||0)+' time slots · ₹ '+(t.cost||0)+' base fee</p>'+
+                          '<button class="btn btn-premium w-100 mt-2">Create Batch</button>'+
                         '</div></div>';}).join('')+
                     '</div>';
                 },
                 CreateBatch: function() {
+                    var instructors = (App.state.meta && App.state.meta.instructors) ? App.state.meta.instructors : [App.state.user.name];
+                    var types = (App.state.meta && App.state.meta.classTypes) ? App.state.meta.classTypes : [];
+                    var styleOptions = types.length ? types.map(function(t){return '<option value="'+App.escapeHtml(t.name)+'">'+App.escapeHtml(t.name)+'</option>';}).join('')
+                        : '<option>Karate</option><option>MMA</option><option>Kickboxing</option><option>BJJ</option>';
+                    var instructorOptions = instructors.map(function(i){return '<option value="'+App.escapeHtml(i)+'">'+App.escapeHtml(i)+'</option>';}).join('');
                     return '<div class="panel p-5">'+
                     '<div class="d-flex align-items-center gap-4 mb-5">'+
                       '<button class="btn btn-light rounded-circle" style="width:50px;height:50px;" onclick="App.navigate(\'class-types\')"><i class="fas fa-arrow-left"></i></button>'+
@@ -620,11 +685,12 @@
                       '<div class="col-md-4"><label class="form-label fw-bold">Batch Name *</label><input type="text" id="batchName" class="form-control form-control-lg" placeholder="Enter batch name" required></div>'+
                       '<div class="col-md-4"><label class="form-label fw-bold">Start Date *</label><input type="date" id="batchStartDate" class="form-control form-control-lg" required></div>'+
                       '<div class="col-md-4"><label class="form-label fw-bold">End Date</label><input type="date" id="batchEndDate" class="form-control form-control-lg"></div>'+
-                      '<div class="col-md-4"><label class="form-label fw-bold">Trainer *</label><select id="batchInstructor" class="form-select form-select-lg"><option selected disabled>Select</option><option>Sensei John Doe</option><option>Master Lee</option></select></div>'+
+                      '<div class="col-md-4"><label class="form-label fw-bold">Trainer *</label><select id="batchInstructor" class="form-select form-select-lg"><option selected disabled>Select</option>'+instructorOptions+'</select></div>'+
                       '<div class="col-md-4"><label class="form-label fw-bold">Age Group *</label><select id="batchAgeGroup" class="form-select form-select-lg"><option selected disabled>Select</option><option value="Kids (5-12)">Kids (5-12)</option><option value="Teens (13-17)">Teens (13-17)</option><option value="Adults (18+)">Adults (18+)</option></select></div>'+
                       '<div class="col-md-4"><label class="form-label fw-bold">Skill Level *</label><select id="batchSkillLevel" class="form-select form-select-lg"><option selected disabled>Select</option><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></div>'+
-                      '<div class="col-md-4"><label class="form-label fw-bold">Style *</label><select id="batchStyle" class="form-select form-select-lg"><option>Karate</option><option>MMA</option><option>Kickboxing</option><option>BJJ</option><option>Muay Thai</option></select></div>'+
-                      '<div class="col-md-4"><label class="form-label fw-bold">Location *</label><input type="text" id="batchLocation" class="form-control form-control-lg" placeholder="Hall or Room #"></div>'+
+                      '<div class="col-md-4"><label class="form-label fw-bold">Style *</label><select id="batchStyle" class="form-select form-select-lg">'+styleOptions+'</select></div>'+
+                      '<div class="col-md-4"><label class="form-label fw-bold">Time Slot *</label><input type="text" id="batchTimeSlot" class="form-control form-control-lg" placeholder="e.g. 6:00 AM - 8:00 AM" required></div>'+
+                      '<div class="col-md-4"><label class="form-label fw-bold">Location *</label><input type="text" id="batchLocation" class="form-control form-control-lg" placeholder="Hall or Room #" value="'+App.escapeHtml((App.state.center&&App.state.center.location)||'')+'"></div>'+
                       '<div class="col-md-4"><label class="form-label fw-bold">Mode *</label><select id="batchType" class="form-select form-select-lg" onchange="document.getElementById(\'batchMeetingLink\').disabled=(this.value===\'Offline\')"><option value="Offline" selected>Offline</option><option value="Online">Online</option></select></div>'+
                       '<div class="col-12"><label class="form-label fw-bold">Available Days *</label><div class="d-flex flex-wrap gap-3 p-3 bg-light rounded-4">'+['MON','TUE','WED','THU','FRI','SAT','SUN'].map(function(d){return '<div class="form-check"><input class="form-check-input day-check" type="checkbox" value="'+d+'" id="day-'+d+'"><label class="form-check-label fw-bold" for="day-'+d+'">'+d+'</label></div>';}).join('')+'</div></div>'+
                       '<div class="col-md-4"><label class="form-label fw-bold">Meeting Link</label><input type="url" id="batchMeetingLink" class="form-control form-control-lg" placeholder="https://meet.google.com/..." disabled></div>'+
@@ -688,40 +754,56 @@
                     return '<div class="panel text-center py-5"><div class="mb-4"><i class="fas fa-check-double text-danger" style="font-size:4rem;"></i></div><h2 class="fw-bold">Trainee Attendance</h2><p class="text-muted mx-auto" style="max-width:500px;">Track and manage daily attendance for all your martial arts sessions.</p><div class="mt-4"><a href="${pageContext.request.contextPath}/centres/attendance" class="btn btn-premium px-5 py-3"><i class="fas fa-external-link-alt me-2"></i>Open Attendance Module</a></div></div>';
                 },
                 Reports: function() {
-                    var totalRevenue = (App.state.enrollments||[]).reduce(function(s,e){return s+(e.amount||0);},0);
-                    var avg = (App.state.enrollments||[]).length>0?(totalRevenue/(App.state.enrollments||[]).length).toFixed(2):0;
+                    var enrolls = App.state.enrollments || [];
+                    var meta = App.state.meta || {};
+                    var totalRevenue = enrolls.reduce(function(s,e){return s+(e.amount||0);},0);
+                    var avg = enrolls.length>0?(totalRevenue/enrolls.length).toFixed(0):0;
+                    var attAvg = meta.avgAttendance != null ? meta.avgAttendance : 0;
+                    var completion = meta.completionRate != null ? meta.completionRate : 0;
+                    var paidCount = enrolls.filter(function(e){return e.paymentStatus==='PAID';}).length;
                     return '<div class="row g-4 mb-4">'+
-                      '<div class="col-md-3">'+App.ui.StatCard('Total Revenue','₹ '+totalRevenue.toLocaleString(),'green','fa-wallet')+'</div>'+
+                      '<div class="col-md-3">'+App.ui.StatCard('Total Revenue','₹ '+totalRevenue.toLocaleString('en-IN'),'green','fa-wallet')+'</div>'+
                       '<div class="col-md-3">'+App.ui.StatCard('Avg / Student','₹ '+avg,'blue','fa-chart-pie')+'</div>'+
-                      '<div class="col-md-3">'+App.ui.StatCard('Attendance Avg','78%','red','fa-check-circle')+'</div>'+
-                      '<div class="col-md-3">'+App.ui.StatCard('Completion Rate','92%','purple','fa-graduation-cap')+'</div>'+
+                      '<div class="col-md-3">'+App.ui.StatCard('Attendance Avg',attAvg+'%','red','fa-check-circle')+'</div>'+
+                      '<div class="col-md-3">'+App.ui.StatCard('Completion Rate',completion+'%','purple','fa-graduation-cap')+'</div>'+
                     '</div>'+
-                    '<div class="panel"><div class="panel-header"><div class="panel-title"><i class="fas fa-chart-line text-danger"></i> Analytics</div></div><div class="p-4 text-center text-muted">Charts coming soon.</div></div>';
+                    '<div class="panel"><div class="panel-header"><div class="panel-title"><i class="fas fa-chart-line text-danger"></i> Enrollment Summary</div></div>'+
+                    '<div class="p-4"><div class="row text-center g-3">'+
+                      '<div class="col-md-4"><div class="fw-bold h4 text-danger">'+enrolls.length+'</div><div class="text-muted small">Total Enrollments</div></div>'+
+                      '<div class="col-md-4"><div class="fw-bold h4 text-success">'+paidCount+'</div><div class="text-muted small">Paid</div></div>'+
+                      '<div class="col-md-4"><div class="fw-bold h4 text-primary">'+(App.state.batches||[]).filter(function(b){return b.isBatch!==false;}).length+'</div><div class="text-muted small">Batches</div></div>'+
+                    '</div></div></div>';
                 },
                 Settings: function() {
-                    var logoHtml = App.state.userLogo ? '<img src="'+App.state.userLogo+'" style="width:100%;height:100%;object-fit:cover;">' : App.state.user.name.charAt(0);
+                    var c = App.state.center || {};
+                    var logoHtml = App.state.userLogo ? '<img src="'+App.state.userLogo+'" style="width:100%;height:100%;object-fit:cover;">' : (c.name||App.state.user.name||'C').charAt(0);
                     return '<div class="row g-4">'+
                       '<div class="col-lg-4"><div class="panel text-center p-5">'+
                         '<div id="logo-preview" class="trainee-avatar mx-auto mb-4" style="width:120px;height:120px;background:#F1F5F9;border-radius:30px;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary);font-size:3rem;overflow:hidden;">'+logoHtml+'</div>'+
-                        '<h3 class="fw-bold mb-1">'+App.state.user.name+'</h3><p class="text-muted small">Martial Arts Center Owner</p>'+
+                        '<h3 class="fw-bold mb-1">'+App.escapeHtml(c.name||App.state.user.name)+'</h3><p class="text-muted small">Martial Arts Center</p>'+
                         '<input type="file" id="logoInput" style="display:none;" accept="image/*" onchange="App.handleLogoUpload(this)">'+
                         '<button class="btn btn-sm btn-outline-danger rounded-pill px-4 mt-3" onclick="document.getElementById(\'logoInput\').click()">Upload Logo</button>'+
                       '</div></div>'+
                       '<div class="col-lg-8"><div class="panel p-5"><h4 class="fw-bold mb-4">Center Profile</h4>'+
-                        '<form class="row g-4">'+
-                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Center Name</label><input type="text" class="form-control form-control-lg border-0 bg-light" value="'+App.state.user.name+'"></div>'+
-                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Contact Email</label><input type="email" class="form-control form-control-lg border-0 bg-light" value="admin@center.com"></div>'+
-                          '<div class="col-12 d-flex justify-content-end gap-3 mt-4"><button type="button" class="btn btn-lg btn-light px-5">Reset</button><button type="button" class="btn btn-lg btn-premium px-5">Save Changes</button></div>'+
+                        '<form id="settingsForm" class="row g-4" onsubmit="event.preventDefault();App.saveSettings();">'+
+                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Center Name</label><input type="text" id="settingsName" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.name||'')+'" required></div>'+
+                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Contact Email</label><input type="email" id="settingsEmail" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.email||'')+'" required></div>'+
+                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Phone</label><input type="text" id="settingsPhone" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.phone||'')+'"></div>'+
+                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Location</label><input type="text" id="settingsLocation" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.location||'')+'"></div>'+
+                          '<div class="col-12 d-flex justify-content-end gap-3 mt-4"><button type="button" class="btn btn-lg btn-light px-5" onclick="location.reload()">Reset</button><button type="submit" class="btn btn-lg btn-premium px-5">Save Changes</button></div>'+
                         '</form></div></div>'+
                     '</div>';
                 },
                 Notifications: function() {
-                    return '<div class="panel"><div class="panel-header"><div class="panel-title"><i class="fas fa-bell text-danger"></i> Notification History</div><button class="btn btn-sm btn-light border"><i class="fas fa-check-double me-2"></i>Mark all read</button></div>'+
-                    '<div class="table-container"><table class="custom-table"><thead><tr><th>Date</th><th>Activity</th><th>Details</th><th>Status</th></tr></thead><tbody>'+
-                      '<tr class="unread"><td class="small fw-bold text-muted">Today, 02:45 PM</td><td class="fw-bold text-danger">New Enrollment</td><td>Syed Mohammad joined MMA Advanced</td><td><span class="badge bg-danger">New</span></td></tr>'+
-                      '<tr class="unread"><td class="small fw-bold text-muted">Today, 02:15 PM</td><td class="fw-bold text-success">Payment Received</td><td>₹ 5,000 from Sarah K.</td><td><span class="badge bg-danger">New</span></td></tr>'+
-                      '<tr><td class="small fw-bold text-muted">Yesterday</td><td class="fw-bold text-primary">Batch Reminder</td><td>Kickboxing Morning starts in 1 hr</td><td><span class="badge bg-light text-dark">Read</span></td></tr>'+
-                    '</tbody></table></div></div>';
+                    var items = (App.state.meta && App.state.meta.notifications) ? App.state.meta.notifications : [];
+                    var rows = items.length ? items.map(function(n) {
+                        return '<tr class="'+(n.unread?'unread':'')+'"><td class="small fw-bold text-muted">'+App.escapeHtml(n.timeLabel||'')+'</td>'+
+                            '<td class="fw-bold text-danger">'+App.escapeHtml(n.title)+'</td>'+
+                            '<td>'+App.escapeHtml(n.detail)+'</td>'+
+                            '<td><span class="badge '+(n.unread?'bg-danger':'bg-light text-dark')+'">'+(n.unread?'New':'Read')+'</span></td></tr>';
+                    }).join('') : '<tr><td colspan="4" class="text-center py-4 text-muted">No notifications yet</td></tr>';
+                    return '<div class="panel"><div class="panel-header"><div class="panel-title"><i class="fas fa-bell text-danger"></i> Notification History</div></div>'+
+                    '<div class="table-container"><table class="custom-table"><thead><tr><th>Date</th><th>Activity</th><th>Details</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table></div></div>';
                 },
                 Placeholder: function() { return '<div class="panel text-center py-5"><h3 class="text-muted">Module coming soon.</h3></div>'; }
             },

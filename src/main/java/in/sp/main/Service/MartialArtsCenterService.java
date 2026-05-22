@@ -14,7 +14,9 @@ import in.sp.main.Entities.Enrollment;
 import in.sp.main.Entities.MartialArtsCenter;
 import in.sp.main.Entities.MartialArtsType;
 import in.sp.main.Entities.Slot;
+import in.sp.main.Entities.MartialArtsBatch;
 import in.sp.main.Repository.EnrollmentRepository;
+import in.sp.main.Repository.MartialArtsBatchRepository;
 import in.sp.main.Repository.MartialArtsCenterRepository;
 import in.sp.main.Repository.MartialArtsTypeRepository;
 import in.sp.main.Repository.SlotRepository;
@@ -34,6 +36,9 @@ public class MartialArtsCenterService {
 
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private MartialArtsBatchRepository batchRepository;
 
     @Autowired
     private ServletContext servletContext;
@@ -118,9 +123,37 @@ public class MartialArtsCenterService {
 
     @Transactional(readOnly = true)
     public List<MartialArtsCenter> getApprovedCenters() {
+        return getApprovedCentersForDiscovery();
+    }
+
+    /** Approved centres with programs and batches loaded for user browse/enroll UI. */
+    @Transactional(readOnly = true)
+    public List<MartialArtsCenter> getApprovedCentersForDiscovery() {
         List<MartialArtsCenter> centers = centerRepository.findByApproved(true);
-        initializeLazyCollections(centers);
+        for (MartialArtsCenter center : centers) {
+            initializeLazyCollections(center);
+            List<MartialArtsBatch> batches = batchRepository.findByCenterId(center.getId());
+            batches = batches.stream()
+                    .filter(b -> b.getStatus() == null
+                            || !"Closed".equalsIgnoreCase(b.getStatus()))
+                    .toList();
+            center.setBatches(batches);
+        }
         return centers;
+    }
+
+    @Transactional(readOnly = true)
+    public MartialArtsCenter getApprovedCenterById(Long id) {
+        MartialArtsCenter center = centerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Center not found"));
+        if (!center.isApproved()) {
+            throw new IllegalStateException("This training centre is not available for booking yet.");
+        }
+        initializeLazyCollections(center);
+        center.setBatches(batchRepository.findByCenterId(id).stream()
+                .filter(b -> b.getStatus() == null || !"Closed".equalsIgnoreCase(b.getStatus()))
+                .toList());
+        return center;
     }
 
     @Transactional(readOnly = true)
@@ -211,8 +244,11 @@ public class MartialArtsCenterService {
     }
 
     private void initializeLazyCollections(MartialArtsCenter center) {
-        center.getMartialArtsTypes().size();   // force init
-        center.getAvailableDays().size();      // force init
+        center.getMartialArtsTypes().size();
+        center.getAvailableDays().size();
+        if (center.getBatches() != null) {
+            center.getBatches().size();
+        }
     }
     @Transactional
     public void updateCenterDetails(Long centerId, MartialArtsCenter updatedCenter, MultipartFile file,

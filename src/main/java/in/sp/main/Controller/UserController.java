@@ -25,6 +25,7 @@ import in.sp.main.Entities.AttendanceStatus;
 import in.sp.main.Entities.OnlineClass;
 import in.sp.main.Entities.TrainingSession;
 import in.sp.main.Entities.MartialArtsBatch;
+import in.sp.main.Entities.MartialArtsCenter;
 import in.sp.main.Repository.AttendanceRepository;
 import in.sp.main.Repository.OnlineClassRepository;
 import in.sp.main.Repository.TrainingSessionRepository;
@@ -39,6 +40,7 @@ import in.sp.main.Repository.VideoUploadRepository;
 import in.sp.main.Repository.BroadcastMessageRepository;
 import in.sp.main.Entities.BroadcastMessage;
 import in.sp.main.Service.FileUploadService;
+import in.sp.main.Service.MartialArtsCenterService;
 import in.sp.main.Service.ServiceService;
 import in.sp.main.Service.UserFollowService;
 import in.sp.main.Service.UserService;
@@ -93,6 +95,9 @@ public class UserController {
 
     @Autowired
     private TrainingSessionRepository trainingSessionRepository;
+
+    @Autowired
+    private MartialArtsCenterService martialArtsCenterService;
 
     @GetMapping("/training-journey")
     public String showTrainingJourney(HttpSession session, Model model) {
@@ -485,6 +490,10 @@ public class UserController {
         
         // Purpose: let userDashboard.jsp load Google Maps JS API (heatmap + directions).
         model.addAttribute("googleMapsApiKey", googleMapsApiKey);
+
+        List<MartialArtsCenter> approvedCentres = martialArtsCenterService.getApprovedCentersForDiscovery();
+        model.addAttribute("approvedCentres", approvedCentres);
+        model.addAttribute("approvedCentreCount", approvedCentres.size());
 
         return "userDashboard";
     }
