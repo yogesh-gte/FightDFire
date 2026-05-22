@@ -117,12 +117,12 @@ public class VideoUploadController {
             videoViewRepository.deleteByVideo(video);
             videocommentRepository.deleteByVideoId(videoId);
             videoRepository.delete(video);
-            redirectAttributes.addFlashAttribute("message", "Video deleted successfully.");
+            redirectAttributes.addFlashAttribute("message", "Upload deleted successfully.");
         } catch (Exception e) {
             e.printStackTrace(); // Log the error
-            redirectAttributes.addFlashAttribute("error", "Failed to delete video: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Failed to delete: " + e.getMessage());
         }
-        return "redirect:/users/profile1/" + user.getId();
+        return "redirect:/video/myVideos";
 
     }
 
@@ -254,27 +254,22 @@ public class VideoUploadController {
     public String viewMyVideos(HttpSession session, Model model) {
         User sessionUser = (User) session.getAttribute("user");
         if (sessionUser == null) return "redirect:/login";
-        
+
         User currentUser = userRepository.findById(sessionUser.getId()).orElse(null);
         if (currentUser == null) return "redirect:/login";
 
-        // Fetch all standard videos (not reels)
-        List<Videoupload> allStandardVideos = videoRepository.findByIsReel(false);
-        
-        // Filter based on privacy and blocking
-        List<Videoupload> visibleVideos = allStandardVideos.stream()
+        List<Videoupload> myUploads = videoRepository.findByUser_Id(currentUser.getId()).stream()
             .filter(v -> !v.isBlocked())
-            .filter(v -> {
-                User uploader = v.getUser();
-                if (uploader == null) return false;
-                if (!uploader.isPrivate()) return true; // Public account
-                if (uploader.getId().equals(currentUser.getId())) return true; // Own videos
-
-                return userService.isAcceptedFollower(currentUser.getId(), uploader.getId());
+            .sorted((a, b) -> {
+                if (a.getUploadTime() == null && b.getUploadTime() == null) return 0;
+                if (a.getUploadTime() == null) return 1;
+                if (b.getUploadTime() == null) return -1;
+                return b.getUploadTime().compareTo(a.getUploadTime());
             })
             .collect(java.util.stream.Collectors.toList());
 
-        model.addAttribute("videos", visibleVideos);
+        model.addAttribute("videos", myUploads);
+        model.addAttribute("user", currentUser);
         return "myVideos";
     }
  
@@ -328,6 +323,7 @@ public class VideoUploadController {
 
         model.addAttribute("videos", videos);
         model.addAttribute("currentUser", currentUser);
+        model.addAttribute("user", currentUser);
         model.addAttribute("likedMap", likedMap);
         model.addAttribute("followStatusMap", followStatusMap);
         

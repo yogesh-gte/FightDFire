@@ -1,263 +1,212 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>🎞 My Uploaded Videos</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Videos & Reels</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-    /* ============================================
-       ORIGINAL STYLES (kept exactly as is)
-       ============================================ */
-    :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
-        --primary-teal: #20c997;
-        --primary-gold: #ffd700;
-        --dark-bg: #0f0f1a;
-        --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
-        --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
-        --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
-    }
-
-    body { 
-        background: var(--light-bg); 
-        margin: 0;
-        font-family: 'Segoe UI', system-ui, sans-serif;
-    }
-
-    .pageShell { 
-        max-width: 1100px; 
-        margin: 0 auto; 
-        padding: 32px 16px 40px; 
-    }
-
-    .videoCard { 
-        border-radius: 16px; 
-        overflow: hidden; 
-        border: 1px solid var(--primary-purple-light); 
-        box-shadow: var(--shadow-sm);
-        transition: transform 0.2s, box-shadow 0.2s;
-        background: white;
-    }
-    .videoCard:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--shadow-md);
-    }
-    .videoCard video { 
-        border-radius: 0; 
-        width: 100%;
-        display: block;
-    }
-
-    /* ============================================
-       🚀 ADDITIONAL ENHANCEMENTS (no existing rules changed)
-       ============================================ */
-
-    /* 1. Smooth fade-in animation for the page shell */
-    .pageShell {
-        animation: fadeSlideUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
-    }
-    @keyframes fadeSlideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+        :root {
+            --primary-purple: #7C2D5E;
+            --primary-purple-light: #a64281;
+            --primary-coral: #DB2777;
+            --light-bg: #fffcfd;
+            --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+            --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(180deg, var(--light-bg) 0%, #f5f5f5 100%);
+            margin: 0;
         }
-    }
-
-    /* 2. Staggered animation for video cards (optional – adds polish) */
-    .videoCard {
-        opacity: 0;
-        animation: cardFadeIn 0.4s forwards;
-    }
-    @keyframes cardFadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(15px);
+        .my-videos-shell {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        .my-videos-main {
+            flex: 1;
         }
-    }
-    .videoCard:nth-child(1) { animation-delay: 0.05s; }
-    .videoCard:nth-child(2) { animation-delay: 0.1s; }
-    .videoCard:nth-child(3) { animation-delay: 0.15s; }
-    .videoCard:nth-child(4) { animation-delay: 0.2s; }
-    .videoCard:nth-child(5) { animation-delay: 0.25s; }
-    .videoCard:nth-child(6) { animation-delay: 0.3s; }
-
-    /* 3. Video thumbnail hover effect – subtle scale and glow */
-    .videoCard video {
-        transition: transform 0.3s ease, box-shadow 0.3s;
-    }
-    .videoCard:hover video {
-        transform: scale(1.02);
-        box-shadow: inset 0 0 0 2px var(--primary-gold);
-    }
-
-    /* 4. Overlay play icon simulation (optional – purely visual) */
-    .videoCard {
-        position: relative;
-    }
-    .videoCard::after {
-        content: '▶';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0.8);
-        font-size: 48px;
-        color: white;
-        background: rgba(0,0,0,0.6);
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.2s, transform 0.2s;
-        pointer-events: none;
-        z-index: 2;
-        font-family: Arial;
-        backdrop-filter: blur(4px);
-    }
-    .videoCard:hover::after {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    /* 5. Focus outline for accessibility (keyboard navigation) */
-    .videoCard:focus-visible {
-        outline: 3px solid var(--primary-gold);
-        outline-offset: 3px;
-        border-radius: 16px;
-    }
-
-    /* 6. Custom scrollbar (matches brand purple) */
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        background: var(--light-bg);
-        border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: var(--primary-purple-light);
-        border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--primary-purple);
-    }
-
-    /* 7. Responsive improvements for mobile */
-    @media (max-width: 768px) {
         .pageShell {
-            padding: 20px 12px 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 28px 16px 40px;
         }
-        .videoCard::after {
-            width: 50px;
-            height: 50px;
-            font-size: 32px;
+        .page-header-box {
+            background: var(--gradient-primary);
+            color: #fff;
+            border-radius: 16px;
+            padding: 22px 26px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
         }
-    }
-
-    /* 8. Loading skeleton ready (optional – does nothing by default) */
-    @keyframes shimmer {
-        0% { background-position: -200% 0; }
-        100% { background-position: 200% 0; }
-    }
-    .videoCard.skeleton {
-        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-        background-size: 200% 100%;
-        animation: shimmer 1.5s infinite;
-        pointer-events: none;
-    }
-</style>
+        .videoCard {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(124, 45, 94, 0.15);
+            box-shadow: var(--shadow-sm);
+            background: #fff;
+            height: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .videoCard:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(124, 45, 94, 0.12);
+        }
+        .media-wrap {
+            background: #1a1a2e;
+            aspect-ratio: 9 / 16;
+            max-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .media-wrap video,
+        .media-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .btn-fdf {
+            background: var(--gradient-primary);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            font-weight: 600;
+            padding: 10px 20px;
+        }
+        .btn-fdf:hover { color: #fff; opacity: 0.95; }
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            background: #fff;
+            border-radius: 16px;
+            border: 1px dashed rgba(124, 45, 94, 0.3);
+        }
+    </style>
 </head>
-<body class="fdf-page">
+<body class="my-videos-shell">
+
+<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+
+<main class="my-videos-main">
 <div class="pageShell">
-<h2 class="mb-3">All Uploaded Videos</h2>
- 
-<a href="${pageContext.request.contextPath}/video/upload?isReel=false" class="btn btn-fdf mb-3">Upload New Video</a>
- 
-<div class="row">
-    <c:forEach var="video" items="${videos}">
-        <div class="col-md-4 mb-3">
-            <div class="card videoCard">
-                <c:choose>
-                    <c:when test="${not empty video.thumbnailPath}">
-                        <div class="position-relative">
-                            <img src="${pageContext.request.contextPath}${video.thumbnailPath}" class="w-100" style="aspect-ratio: 16/9; object-fit: cover;">
-                            <div class="position-absolute top-0 end-0 p-2">
-                                <c:if test="${video.isPrivate()}">
-                                    <span class="badge bg-dark opacity-75"><i class="bi bi-lock-fill"></i> Private</span>
-                                </c:if>
+
+    <div class="page-header-box">
+        <h2 class="mb-1 h4 fw-bold"><i class="bi bi-collection-play me-2"></i>My Videos & Reels</h2>
+        <p class="mb-0 small opacity-75">All uploads you have posted — standard videos and reels.</p>
+    </div>
+
+    <c:if test="${not empty message}">
+        <div class="alert alert-success">${message}</div>
+    </c:if>
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger">${error}</div>
+    </c:if>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a href="${pageContext.request.contextPath}/video/upload?isReel=false" class="btn btn-fdf">
+            <i class="bi bi-cloud-upload"></i> Upload Video
+        </a>
+        <a href="${pageContext.request.contextPath}/video/reels" class="btn btn-outline-danger">
+            <i class="bi bi-camera-video"></i> Shoot Reel
+        </a>
+        <a href="${pageContext.request.contextPath}/video/reels" class="btn btn-outline-secondary">
+            <i class="bi bi-play-btn"></i> Watch Reels Feed
+        </a>
+    </div>
+
+    <c:choose>
+        <c:when test="${empty videos}">
+            <div class="empty-state">
+                <i class="bi bi-camera-reels" style="font-size:3rem; color:var(--primary-purple-light);"></i>
+                <h4 class="mt-3" style="color:var(--primary-purple);">No uploads yet</h4>
+                <p class="text-muted">Upload a video or shoot a reel to see it here.</p>
+                <a href="${pageContext.request.contextPath}/video/reels" class="btn btn-fdf mt-2">Go to Reels & Create</a>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="row g-3">
+                <c:forEach var="video" items="${videos}">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card videoCard h-100">
+                            <div class="media-wrap">
+                                <c:choose>
+                                    <c:when test="${not empty video.thumbnailPath}">
+                                        <img src="${pageContext.request.contextPath}${video.thumbnailPath}" alt="${video.title}">
+                                    </c:when>
+                                    <c:when test="${not empty video.videoPath and (video.videoPath.endsWith('.jpg') or video.videoPath.endsWith('.jpeg') or video.videoPath.endsWith('.png') or video.videoPath.endsWith('.webp'))}">
+                                        <img src="${pageContext.request.contextPath}${video.videoPath}" alt="${video.title}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <video controls playsinline preload="metadata" style="max-height:280px;">
+                                            <source src="${pageContext.request.contextPath}${video.videoPath}" type="video/webm">
+                                            <source src="${pageContext.request.contextPath}${video.videoPath}" type="video/mp4">
+                                        </video>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap gap-1 mb-2">
+                                    <c:if test="${video.isReel()}">
+                                        <span class="badge text-bg-primary"><i class="bi bi-camera-reels"></i> Reel</span>
+                                    </c:if>
+                                    <c:if test="${not video.isReel()}">
+                                        <span class="badge text-bg-secondary">Video</span>
+                                    </c:if>
+                                    <span class="badge text-bg-light text-dark border">${video.category}</span>
+                                    <c:if test="${video.isPrivate()}">
+                                        <span class="badge text-bg-dark"><i class="bi bi-lock-fill"></i> Private</span>
+                                    </c:if>
+                                    <c:if test="${not video.isPrivate()}">
+                                        <span class="badge text-bg-success">Public</span>
+                                    </c:if>
+                                </div>
+                                <h5 class="card-title fs-6 fw-bold">${video.title}</h5>
+                                <p class="card-text small text-muted text-truncate">${video.description}</p>
+                                <p class="small text-muted mb-2">
+                                    <i class="bi bi-clock"></i> ${video.uploadTime}<br>
+                                    <i class="bi bi-heart-fill text-danger"></i> <span id="like-${video.id}">${video.likeCount}</span>
+                                    &nbsp;
+                                    <i class="bi bi-eye"></i> <span id="view-${video.id}">${video.viewCount}</span>
+                                </p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <c:if test="${video.isReel()}">
+                                        <a href="${pageContext.request.contextPath}/video/reels" class="btn btn-outline-primary btn-sm">View in feed</a>
+                                    </c:if>
+                                    <a href="${pageContext.request.contextPath}/video/comments/${video.id}" class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-chat"></i> Comments
+                                    </a>
+                                    <form action="${pageContext.request.contextPath}/video/deleteUpload" method="post" class="d-inline"
+                                          onsubmit="return confirm('Delete this upload permanently?');">
+                                        <input type="hidden" name="videoId" value="${video.id}">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </c:when>
-                    <c:otherwise>
-                        <video controls width="100%" poster="${pageContext.request.contextPath}${video.thumbnailPath}">
-                            <source src="${pageContext.request.contextPath}${video.videoPath}" type="video/mp4">
-                        </video>
-                    </c:otherwise>
-                </c:choose>
-                <div class="card-body text-center">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge bg-secondary">${video.category}</span>
-                        <c:if test="${not video.isPrivate()}">
-                            <span class="badge bg-success">Public</span>
-                        </c:if>
-                        <c:choose>
-                            <c:when test="${video.isReel()}">
-                                <span class="badge bg-primary">🎬 Reel</span>
-                            </c:when>
-                            <c:otherwise>
-                                <c:if test="${not video.isPrivate()}">
-                                    <span class="badge bg-success">Public</span>
-                                </c:if>
-                            </c:otherwise>
-                        </c:choose>
                     </div>
-                    <h5>${video.title}</h5>
-                    <p class="text-truncate">${video.description}</p>
-                    <small class="text-muted">Uploaded on: ${video.uploadTime}</small><br>
-                    ❤️ <span id="like-${video.id}">${video.likeCount}</span> &nbsp;&nbsp; 
-                    👁️ <span id="view-${video.id}">${video.viewCount}</span> views <br><br><a href="${pageContext.request.contextPath}/video/comments/${video.id}">
-    💬 Comments (${video.comments.size()})
-</a>
-                    👁️ <span id="view-${video.id}">${video.viewCount}</span> views <br><br>
-                    
-                    <div class="d-flex justify-content-center gap-2">
-                        <a href="${pageContext.request.contextPath}/video/comments/${video.id}" class="btn btn-outline-primary btn-sm">
-                            💬 Comments (${video.comments.size()})
-                        </a>
-                        <c:if test="${video.user.id == sessionScope.user.id}">
-                            <form action="${pageContext.request.contextPath}/video/deleteUpload" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this video? This action cannot be undone.');">
-                                <input type="hidden" name="videoId" value="${video.id}">
-                                <button type="submit" class="btn btn-outline-danger btn-sm">
-                                    🗑️ Delete
-                                </button>
-                            </form>
-                        </c:if>
-                    </div>
- 
-                  
-                </div>
+                </c:forEach>
             </div>
-        </div>
-    </c:forEach>
+        </c:otherwise>
+    </c:choose>
 </div>
+</main>
 
-<!-- 🔴 Real-time myVideos updates (likes/views/comments) -->
+<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+
+<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script>
@@ -266,22 +215,15 @@
     const socket = new SockJS('${pageContext.request.contextPath}/ws-chat');
     const client = Stomp.over(socket);
     client.debug = null;
-
     client.connect({}, function () {
       client.subscribe("/topic/userVideos/" + userId, function (frame) {
         try {
           const evt = JSON.parse(frame.body || "{}");
-          if (!evt || !evt.type || !evt.videoId) return;
-
+          if (!evt || !evt.videoId) return;
           if (evt.type === "LIKE_UPDATED") {
             const el = document.getElementById("like-" + evt.videoId);
             if (el) el.textContent = String(evt.likeCount);
           }
-          if (evt.type === "VIEW_UPDATED") {
-            const el = document.getElementById("view-" + evt.videoId);
-            if (el) el.textContent = String(evt.viewCount);
-          }
-          // For new uploads by same user, simplest is reload
           if (evt.type === "NEW_UPLOAD") {
             window.location.reload();
           }
@@ -290,6 +232,5 @@
     });
   })();
 </script>
-</div>
 </body>
 </html>

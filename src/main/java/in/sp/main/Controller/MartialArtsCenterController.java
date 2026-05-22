@@ -86,15 +86,22 @@ public class MartialArtsCenterController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerCentre(
             @ModelAttribute MartialArtsCenter center,
-            @RequestPart("certificate") MultipartFile certificate,
-            @RequestParam("profileimage") MultipartFile profilePhoto,
+            @RequestPart(value = "certificate", required = false) MultipartFile certificate,
+            @RequestParam(value = "profileimage", required = false) MultipartFile profilePhoto,
             @RequestParam(value = "galleryPhotos", required = false) MultipartFile[] galleryPhotos,
-            @RequestParam("availableDays") List<DayAvailable> availableDays,
+            @RequestParam(value = "availableDays", required = false) List<DayAvailable> availableDays,
             @RequestParam("martialArtsJson") String martialArtsJson,
             RedirectAttributes redirectAttributes) {
 
         try {
-            if (centreRepository.findByEmail(center.getEmail()).isPresent()) {
+            if (center.getEmail() == null || center.getEmail().isBlank()) {
+                redirectAttributes.addFlashAttribute("error", "Email is required.");
+                return "redirect:/centres/registerCentre";
+            }
+            String email = center.getEmail().trim().toLowerCase();
+            center.setEmail(email);
+
+            if (centreRepository.findByEmail(email).isPresent()) {
                 redirectAttributes.addFlashAttribute("error", "Email already exists. Please login.");
                 return "redirect:/centres/login";
             }
@@ -110,10 +117,21 @@ public class MartialArtsCenterController {
 
             ObjectMapper mapper = new ObjectMapper();
             List<MartialArtsType> types = mapper.readValue(
-                    martialArtsJson, new TypeReference<List<MartialArtsType>>() {}
+                    martialArtsJson != null && !martialArtsJson.isBlank() ? martialArtsJson : "[]",
+                    new TypeReference<List<MartialArtsType>>() {}
             );
 
+            if (types == null || types.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error",
+                        "Please add at least one martial arts program with time slots.");
+                return "redirect:/centres/registerCentre";
+            }
+
             for (MartialArtsType type : types) {
+                if (type.getName() == null || type.getName().isBlank()) {
+                    redirectAttributes.addFlashAttribute("error", "Each program must have a name.");
+                    return "redirect:/centres/registerCentre";
+                }
                 type.setCentre(center);
                 if (type.getSlots() != null) {
                     for (Slot slot : type.getSlots()) {
@@ -131,7 +149,7 @@ public class MartialArtsCenterController {
             centreService.register(center, certificate, types, profilePhoto);
 
             redirectAttributes.addFlashAttribute("message",
-                    "Center Registered Successfully! Waiting for Admin Approval.");
+                    "Centre registered successfully! Wait for admin approval, then sign in with your email and password.");
             return "redirect:/centres/success";
 
         } catch (IOException e) {
@@ -258,13 +276,25 @@ public class MartialArtsCenterController {
                               @RequestParam String password,
                               Model model, HttpSession session,
                               RedirectAttributes redirectAttributes) {
-        MartialArtsCenter center = centreService.getCenterByEmail(email);
-        if (center == null || !center.getPassword().equals(password)) {
-            redirectAttributes.addFlashAttribute("error", "Invalid credentials!");
+        if (email == null || email.isBlank()) {
+            redirectAttributes.addFlashAttribute("error", "Please enter your email.");
+            return "redirect:/centres/login";
+        }
+        String normalizedEmail = email.trim().toLowerCase();
+        java.util.Optional<MartialArtsCenter> centerOpt = centreRepository.findByEmail(normalizedEmail);
+        if (centerOpt.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error",
+                    "No centre found for this email. Please complete registration first.");
+            return "redirect:/centres/registerCentre";
+        }
+        MartialArtsCenter center = centerOpt.get();
+        if (center.getPassword() == null || !center.getPassword().equals(password)) {
+            redirectAttributes.addFlashAttribute("error", "Invalid email or password.");
             return "redirect:/centres/login";
         }
         if (!center.isApproved()) {
-            redirectAttributes.addFlashAttribute("error", "Your center is not yet approved by admin!");
+            redirectAttributes.addFlashAttribute("error",
+                    "Your centre is registered but not yet approved by admin. You will be able to sign in after approval.");
             return "redirect:/centres/login";
         }
 

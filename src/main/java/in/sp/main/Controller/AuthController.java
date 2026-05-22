@@ -39,6 +39,6 @@ public class AuthController {
     public String resetPassword(@RequestParam String token, @RequestParam String newPassword, Model model) {
         String response = passwordResetService.resetPassword(token, newPassword);
         model.addAttribute("message", response);
-        return "resetPassword";
+        return "login";
     }
 }

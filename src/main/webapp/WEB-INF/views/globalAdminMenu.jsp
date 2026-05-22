@@ -21,6 +21,12 @@
     </a>
 
     <div class="sectionTitle">Communication</div>
+    <a class="navlink ${pageContext.request.requestURI.contains('contact-messages') ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/contact-messages">
+        <i class="fas fa-envelope"></i> Contact Messages
+        <c:if test="${side_unreadContactMessages > 0}">
+            <span class="badge rounded-pill bg-danger ms-auto">${side_unreadContactMessages}</span>
+        </c:if>
+    </a>
     <a class="navlink" href="${pageContext.request.contextPath}/admin/broadcast">
         <i class="fas fa-bullhorn"></i> Broadcast Center
     </a>

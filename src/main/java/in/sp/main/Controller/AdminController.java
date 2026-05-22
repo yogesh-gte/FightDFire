@@ -85,6 +85,9 @@ public class AdminController {
     @Autowired
     private FileUploadService fileService;
 
+    @Autowired
+    private ContactMessageService contactMessageService;
+
     // Sidebar counts are now handled globally via GlobalSidebarAdvice.java
 
     @RequestMapping(value = "/approve/{id}", method = POST)
@@ -207,6 +210,8 @@ public class AdminController {
         }
         // Ensure admin is available to JSP (it currently uses ${admin.id})
         model.addAttribute("admin", session.getAttribute("admin"));
+        model.addAttribute("recentContactMessages", contactMessageService.findRecent(5));
+        model.addAttribute("unreadContactMessages", contactMessageService.countUnread());
         return "adminDashboard";
     }
 
@@ -1030,6 +1035,42 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", "Error deleting reel: " + e.getMessage());
         }
         return "redirect:/admin/user-reels";
+    }
+
+    // ==========================================
+    // CONTACT MESSAGES (from public contact form)
+    // ==========================================
+    @GetMapping("/contact-messages")
+    public String viewContactMessages(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/admin/loginAdmin";
+        }
+        model.addAttribute("contactMessages", contactMessageService.findAll());
+        model.addAttribute("unreadContactMessages", contactMessageService.countUnread());
+        return "adminContactMessages";
+    }
+
+    @PostMapping("/contact-messages/{id}/read")
+    public String markContactMessageRead(@PathVariable Long id, HttpSession session) {
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/admin/loginAdmin";
+        }
+        contactMessageService.markAsRead(id);
+        return "redirect:/admin/contact-messages";
+    }
+
+    @PostMapping("/contact-messages/delete/{id}")
+    public String deleteContactMessage(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/admin/loginAdmin";
+        }
+        try {
+            contactMessageService.delete(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Contact message deleted.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error deleting contact message.");
+        }
+        return "redirect:/admin/contact-messages";
     }
 
     // ==========================================

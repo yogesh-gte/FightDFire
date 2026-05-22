@@ -30,6 +30,9 @@ public class GlobalSidebarAdvice {
     @Autowired
     private StylistRepository stylistRepository;
 
+    @Autowired
+    private ContactMessageRepository contactMessageRepository;
+
     @ModelAttribute
     public void addSidebarCounts(Model model, HttpSession session) {
         if (session.getAttribute("admin") != null) {
@@ -40,6 +43,7 @@ public class GlobalSidebarAdvice {
                 long pendingSellers = serviceProviderRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
                 long pendingSalons = salonRepository.findByApproved(false).size();
                 long pendingStylists = stylistRepository.findByApproved(false).size();
+                long unreadContactMessages = contactMessageRepository.countByReadByAdminFalse();
                 
                 model.addAttribute("side_pendingUsers", pendingUsers);
                 model.addAttribute("side_pendingCentres", pendingCentres);
@@ -47,6 +51,7 @@ public class GlobalSidebarAdvice {
                 model.addAttribute("side_pendingSellers", pendingSellers);
                 model.addAttribute("side_pendingSalons", pendingSalons);
                 model.addAttribute("side_pendingStylists", pendingStylists);
+                model.addAttribute("side_unreadContactMessages", unreadContactMessages);
             } catch (Exception e) {
                 // Fail gracefully
             }

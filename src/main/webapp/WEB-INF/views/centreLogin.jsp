@@ -92,6 +92,11 @@
             <c:if test="${not empty error}">
                 <div class="error-alert"><i class="bi bi-exclamation-circle"></i> ${error}</div>
             </c:if>
+            <c:if test="${not empty message}">
+                <div class="error-alert" style="background:#ecfdf5;border-color:#a7f3d0;color:#065f46;">
+                    <i class="bi bi-check-circle"></i> ${message}
+                </div>
+            </c:if>
             <form action="${pageContext.request.contextPath}/centres/loginCentre" method="post">
                 <div class="form-group">
                     <label>Email Address</label>

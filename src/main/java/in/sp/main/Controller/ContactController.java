@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import in.sp.main.Entities.*;
 import in.sp.main.Repository.UserRepository;
 import in.sp.main.Service.ChatService;
+import in.sp.main.Service.ContactMessageService;
 import jakarta.servlet.http.HttpSession;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -36,6 +37,9 @@ public class ContactController {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private ContactMessageService contactMessageService;
+
     @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
     private String adminEmail;
 
@@ -51,18 +55,22 @@ public class ContactController {
                               @RequestParam String subject,
                               @RequestParam String message,
                               Model model) {
-        try {
-            // Server-side email validation
-            if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                model.addAttribute("error", "Invalid email format.");
-                return "index/contact";
-            }
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            model.addAttribute("error", "Invalid email format.");
+            return "index/contact";
+        }
 
-            SimpleMailMessage mail = new SimpleMailMessage();
-            mail.setTo(adminEmail);
-            mail.setSubject(subject);
-            mail.setText("From: " + name + "\nEmail: " + email + "\n\nMessage:\n" + message);
-            mailSender.send(mail);
+        try {
+            contactMessageService.save(name, email, subject, message);
+            try {
+                SimpleMailMessage mail = new SimpleMailMessage();
+                mail.setTo(adminEmail);
+                mail.setSubject(subject);
+                mail.setText("From: " + name + "\nEmail: " + email + "\n\nMessage:\n" + message);
+                mailSender.send(mail);
+            } catch (Exception mailEx) {
+                // Message is stored for admin; email is best-effort
+            }
             model.addAttribute("success", "Your message has been sent!");
         } catch (Exception e) {
             model.addAttribute("error", "Failed to send message. Try again later.");

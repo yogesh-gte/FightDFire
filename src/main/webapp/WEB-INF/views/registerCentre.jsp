@@ -181,6 +181,12 @@
                 </div>
 
                 <h2>Martial Arts Center</h2>
+                <c:if test="${not empty error}">
+                    <div class="alert alert-danger" style="border-radius:12px; margin-bottom:16px;">${error}</div>
+                </c:if>
+                <c:if test="${not empty message}">
+                    <div class="alert alert-success" style="border-radius:12px; margin-bottom:16px;">${message}</div>
+                </c:if>
                 <form:form action="${pageContext.request.contextPath}/centres/register" method="post" modelAttribute="martialArtsCenter" enctype="multipart/form-data" id="registerForm">
                     
                     <!-- Step 1: Identity & Contact -->
@@ -298,12 +304,30 @@
         $("#registerForm").submit(function(e) {
             let martialArts = [];
             $("#martialArtsTypesContainer .martial-art-type").each(function() {
-                let typeName = $(this).find(".martial-art-name").val(), cost = parseFloat($(this).find(".martial-art-cost").val()), slots = [];
-                $(this).find(".slot").each(function() { slots.push({ timeRange: $(this).find(".slot-time").val() }); });
-                martialArts.push({ name: typeName, cost: cost, slots: slots });
+                let typeName = ($(this).find(".martial-art-name").val() || "").trim();
+                let costVal = $(this).find(".martial-art-cost").val();
+                let cost = costVal === "" ? 0 : parseFloat(costVal);
+                let slots = [];
+                $(this).find(".slot").each(function() {
+                    let tr = ($(this).find(".slot-time").val() || "").trim();
+                    if (tr) slots.push({ timeRange: tr });
+                });
+                if (typeName) martialArts.push({ name: typeName, cost: cost, slots: slots });
             });
+            if (martialArts.length === 0) {
+                e.preventDefault();
+                alert("Please add at least one martial arts program with at least one time slot.");
+                showStep(3);
+                return false;
+            }
             $("#martialArtsJson").val(JSON.stringify(martialArts));
         });
+
+        // Default first program row so registration is not submitted empty
+        if ($("#martialArtsTypesContainer .martial-art-type").length === 0) {
+            $("#addMartialArtType").click();
+            $("#martialArtsTypesContainer .martial-art-type").last().find(".add-slot").click();
+        }
     });
     </script>
 </body>

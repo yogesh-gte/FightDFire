@@ -185,9 +185,11 @@
 </head>
 <body>
     <div class="container">
-        <h2>Martial Arts Center Registration Successful </h2>
-        <p class="success-message">${message}</p>  <%-- Display dynamic message --%>
-  <!--       <a href="/" class="home-link">Go to Home</a> -->
+        <h2>Martial Arts Center Registration Successful</h2>
+        <p class="success-message">${message}</p>
+        <p style="color:#5E1F47; margin-top:20px;">You cannot sign in until an admin approves your centre.</p>
+        <a href="${pageContext.request.contextPath}/centres/login" class="home-link" style="margin-top:16px; display:inline-block;">Go to Centre Login</a>
+        <a href="${pageContext.request.contextPath}/" class="home-link" style="margin-top:10px; display:inline-block; background:#6b7280;">Back to Home</a>
     </div>
 </body>
 </html>

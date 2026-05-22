@@ -1,238 +1,253 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Reset Password</title>
-    <style>
-    /* ============================================
-       ORIGINAL STYLES (kept exactly as is)
-       ============================================ */
-    :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
-        --primary-teal: #20c997;
-        --primary-gold: #ffd700;
-        --dark-bg: #0f0f1a;
-        --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
-        --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
-        --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
-    }
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Reset Password - Fight The Fire</title>
 
-    /* 🌙 Dark Theme using brand purples */
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, var(--primary-purple), var(--primary-purple-light));
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        color: white;
-    }
+  <link href="${pageContext.request.contextPath}/assets/img/favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 
-    .container {
-        background: rgba(42, 14, 70, 0.95); /* deep purple fallback */
-        background: var(--dark-bg);
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: var(--shadow-md);
-        width: 350px;
-        text-align: center;
-    }
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
 
-    h2 {
-        color: var(--light-bg);
-        font-weight: 600;
+  <style>
+    html, body { overflow-x: hidden; width: 100%; }
+    .navmenu a, .navmenu a:focus { color: #3F1430 !important; font-weight: 600; }
+    .reset-section {
+      padding: 80px 0 100px;
+      background: linear-gradient(180deg, #fffcfd 0%, #ffffff 100%);
+      min-height: calc(100vh - 200px);
     }
-
-    input {
-        width: 90%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid var(--primary-purple-light);
-        border-radius: 6px;
-        outline: none;
-        background: rgba(15, 15, 26, 0.8);
-        color: white;
-        transition: 0.3s;
+    .reset-card {
+      max-width: 440px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 18px;
+      padding: 2rem;
+      box-shadow: 0 18px 40px rgba(124, 45, 94, 0.12);
+      border: 1px solid rgba(124, 45, 94, 0.1);
     }
-
-    input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
+    .reset-card h2 {
+      font-weight: 800;
+      color: #3F1430;
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
     }
-
-    input:focus {
-        border-color: var(--primary-gold);
-        box-shadow: 0px 0px 8px rgba(255, 215, 0, 0.4);
+    .reset-card .subtitle { color: #5E1F47; margin-bottom: 1.5rem; }
+    .reset-card .form-control {
+      border-radius: 10px;
+      border: 1px solid rgba(124, 45, 94, 0.25);
+      padding: 12px 14px;
     }
-
-    button {
-        background: var(--primary-purple-light);
-        color: white;
-        border: none;
-        padding: 12px;
-        width: 100%;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s;
+    .reset-card .form-control:focus {
+      border-color: #DB2777;
+      box-shadow: 0 0 0 0.2rem rgba(219, 39, 119, 0.15);
     }
-
-    button:hover {
-        background: var(--primary-purple);
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-sm);
+    .btn-reset {
+      background: linear-gradient(45deg, #7C2D5E, #DB2777);
+      color: #fff !important;
+      border: 0;
+      border-radius: 999px;
+      font-weight: 700;
+      padding: 12px 24px;
+      width: 100%;
+      box-shadow: 0 10px 20px rgba(124, 45, 94, 0.2);
     }
-
-    .message {
-        margin-top: 10px;
-        color: var(--primary-gold);
-        font-weight: bold;
+    .btn-reset:hover { opacity: 0.95; color: #fff; }
+    .reset-message { margin-top: 1rem; font-weight: 600; }
+    .reset-message.success { color: #198754; }
+    .reset-message.error { color: #dc3545; }
+    @media (min-width: 992px) {
+      #header .container-xl { display: flex !important; align-items: center !important; }
+      .navmenu { display: flex !important; align-items: center !important; margin-right: 15px; }
+      .navmenu ul { display: flex !important; align-items: center !important; margin: 0 !important; padding: 0 !important; }
     }
-
-    /* ============================================
-       🚀 ADDITIONAL ENHANCEMENTS (no existing rules changed)
-       ============================================ */
-
-    /* 1. Smooth fade-in animation for the container */
-    .container {
-        animation: fadeSlideUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    .btn-qna {
+      height: 44px;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      margin: 0 12px 0 0 !important;
+      padding: 0 25px !important;
+      font-size: 15px !important;
+      color: white;
+      background-color: var(--primary-coral, #DB2777);
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
     }
-    @keyframes fadeSlideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .role-dropdown { display: flex !important; align-items: center !important; position: relative; }
+    .role-dropdown-btn {
+      background: linear-gradient(135deg, #5E1F47, #7C2D5E);
+      color: #fff;
+      border: none;
+      padding: 0 25px;
+      height: 44px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-
-    /* 2. Button ripple effect on click (micro-interaction) */
-    button {
-        position: relative;
-        overflow: hidden;
+    .role-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      min-width: 280px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      padding: 10px 0;
+      border: 1px solid rgba(142, 68, 173, 0.1);
     }
-    button::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.4);
-        transform: translate(-50%, -50%);
-        transition: width 0.4s ease, height 0.4s ease;
-        pointer-events: none;
+    .role-dropdown:hover .role-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
     }
-    button:active::after {
-        width: 200px;
-        height: 200px;
+    .role-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #333;
     }
-
-    /* 3. Focus outlines for accessibility (keyboard navigation) */
-    button:focus-visible,
-    input:focus-visible {
-        outline: 3px solid var(--primary-gold);
-        outline-offset: 2px;
-        border-radius: 6px;
+    .role-item:hover { background: #f9f0ff; color: #6a0572; }
+    .role-divider { height: 1px; background: rgba(142,68,173,0.15); margin: 4px 16px; }
+    @media (max-width: 992px) {
+      .header .btn-qna, .header .role-dropdown { display: none !important; }
     }
-
-    /* 4. Custom scrollbar (matches dark theme) */
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        background: var(--dark-bg);
-        border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: var(--primary-purple-light);
-        border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--primary-gold);
-    }
-
-    /* 5. Label hover effect (if labels exist; adds polish) */
-    label {
-        transition: color 0.2s, transform 0.2s;
-        display: inline-block;
-    }
-    label:hover {
-        color: var(--primary-gold);
-        transform: translateX(2px);
-    }
-
-    /* 6. Input placeholder styling enhancement (already there, just add transition) */
-    input::placeholder {
-        transition: opacity 0.2s;
-    }
-    input:focus::placeholder {
-        opacity: 0.5;
-    }
-
-    /* 7. Heading hover effect – subtle text shadow */
-    h2 {
-        transition: text-shadow 0.2s;
-    }
-    h2:hover {
-        text-shadow: 0 0 6px rgba(255,215,0,0.5);
-    }
-
-    /* 8. Responsive improvements for mobile */
-    @media (max-width: 480px) {
-        .container {
-            width: 85%;
-            padding: 20px;
-            margin: 0 15px;
-        }
-        button {
-            padding: 14px;
-            font-size: 1rem;
-        }
-        input {
-            padding: 12px;
-            font-size: 16px; /* prevents zoom on iOS */
-        }
-        h2 {
-            font-size: 1.5rem;
-        }
-    }
-
-    /* 9. Loading skeleton ready (optional – does nothing by default) */
-    @keyframes shimmer {
-        0% { background-position: -200% 0; }
-        100% { background-position: 200% 0; }
-    }
-    .container.skeleton {
-        background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
-        background-size: 200% 100%;
-        animation: shimmer 1.5s infinite;
-        pointer-events: none;
-    }
-</style>
-        
+  </style>
 </head>
-<body>
+<body class="index-page">
 
-    <div class="container">
-        <h2>Reset Password for <%= request.getParameter("userType") %></h2>
-        <form action="${pageContext.request.contextPath}/auth/reset-password" method="POST">
-            <input type="hidden" name="token" value="${param.token}">
-            <input type="password" name="newPassword" placeholder="Enter new password" required>
-            <button type="submit">Update Password</button>
-        </form>
-        <p class="message">${message}</p>
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="${pageContext.request.contextPath}/" class="logo d-flex align-items-center me-auto">
+        <h1 class="sitename">FightDFire</h1>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="${pageContext.request.contextPath}/#hero">Home</a></li>
+          <li><a href="${pageContext.request.contextPath}/#about">About</a></li>
+          <li><a href="${pageContext.request.contextPath}/#services">Services</a></li>
+          <li><a href="${pageContext.request.contextPath}/#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&amp;A</a>
+      <div class="role-dropdown">
+        <button class="role-dropdown-btn" type="button">Get Started <i class="bi bi-chevron-down"></i></button>
+        <div class="role-dropdown-menu">
+          <a href="${pageContext.request.contextPath}/login" class="role-item"><i class="bi bi-person-fill"></i> User</a>
+          <div class="role-divider"></div>
+          <a href="${pageContext.request.contextPath}/marketplace/provider/login" class="role-item"><i class="bi bi-shop"></i> Vendor</a>
+          <div class="role-divider"></div>
+          <a href="${pageContext.request.contextPath}/centres/login" class="role-item"><i class="fa-solid fa-dumbbell"></i> Centre</a>
+        </div>
+      </div>
     </div>
+  </header>
 
+  <main class="main">
+    <section class="reset-section">
+      <div class="container">
+        <div class="reset-card" data-aos="fade-up">
+          <h2>Reset Password</h2>
+          <p class="subtitle">Account type: <strong>${userType}</strong></p>
+
+          <c:if test="${not empty message}">
+            <div class="alert alert-info reset-message" role="alert">${message}</div>
+          </c:if>
+
+          <form action="${pageContext.request.contextPath}/auth/reset-password" method="POST">
+            <input type="hidden" name="token" value="${token}">
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">New password</label>
+              <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter new password" required>
+            </div>
+            <button type="submit" class="btn btn-reset">Update Password</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="${pageContext.request.contextPath}/" class="d-flex align-items-center">
+            <span class="sitename">FightTheFire</span>
+          </a>
+          <div class="pt-3">
+            <p class="fw-semibold">Our Values</p>
+            <p>Awareness • Safety • Equality • Empowerment</p>
+            <p class="mt-2">Building a Safer Tomorrow, Together.</p>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/#hero">Home</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/#about">About us</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/terms">Terms</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/sos/dashboard">Emergency Assistance</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/video/allVideos">Safety Education</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/centres/allacceptedcentres">Self-defense Training</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/stories">Community Support</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-12">
+          <h4>Follow Us</h4>
+          <p>Stay connected with us for safety updates, resources, and tips. Empower yourself and others!</p>
+          <div class="social-links d-flex">
+            <a href=""><i class="bi bi-twitter"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">FightDFire</strong> <span>All Rights Reserved</span></p>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+  <script>
+    if (typeof AOS !== 'undefined') { AOS.init(); }
+  </script>
 </body>
 </html>
-

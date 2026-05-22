@@ -4,7 +4,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class PasswordResetService {
     @Autowired private JavaMailSender mailSender;
     @Autowired private PasswordEncoder passwordEncoder;
 
+    @Value("${app.base-url}")
+    private String baseUrl;
+
     private static final int EXPIRATION_TIME = 15;
 
     public String createPasswordResetToken(String email) {
@@ -51,7 +56,12 @@ public class PasswordResetService {
     }
 
     private void sendResetEmail(String email, String token, UserType userType) {
-        String resetUrl = "http://localhost:8081/auth/reset-password?token=" + token + "&type=" + userType;
+        String resetUrl = UriComponentsBuilder.fromHttpUrl(trimTrailingSlash(baseUrl))
+                .path("/auth/reset-password")
+                .queryParam("token", token)
+                .queryParam("type", userType.name())
+                .build()
+                .toUriString();
         String messageBody = "Click to reset your password: " + resetUrl;
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -59,6 +69,13 @@ public class PasswordResetService {
         message.setSubject("Password Reset Request");
         message.setText(messageBody);
         mailSender.send(message);
+    }
+
+    private static String trimTrailingSlash(String url) {
+        if (url == null || url.isEmpty()) {
+            return url;
+        }
+        return url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
     }
 
     public String resetPassword(String token, String newPassword) {

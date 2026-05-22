@@ -590,7 +590,72 @@
                     </div>
                 </div>
                 <!-- ── End Categorized Analytics ── -->
-                <!-- ── End Analytics Strip ── -->
+
+                <!-- Recent contact form messages -->
+                <div class="col-12 mb-4">
+                    <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
+                                <i class="fas fa-envelope"></i> Recent Contact Messages
+                            </h6>
+                            <a href="${pageContext.request.contextPath}/admin/contact-messages" class="btn btn-sm" style="background: #7C2D5E; color: #fff; border-radius: 20px; font-weight: 600;">
+                                View all
+                                <c:if test="${unreadContactMessages > 0}">
+                                    <span class="badge bg-danger ms-1">${unreadContactMessages} new</span>
+                                </c:if>
+                            </a>
+                        </div>
+                        <c:choose>
+                            <c:when test="${not empty recentContactMessages}">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0" style="font-size: 0.9rem;">
+                                        <thead>
+                                            <tr style="color: #7C2D5E;">
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Subject</th>
+                                                <th>Sent</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="cm" items="${recentContactMessages}">
+                                                <tr style="${cm.readByAdmin ? '' : 'background:#fff5f8;'}">
+                                                    <td><strong>${cm.name}</strong></td>
+                                                    <td>${cm.email}</td>
+                                                    <td>${cm.subject}</td>
+                                                    <td style="white-space:nowrap;">${cm.submittedAt}</td>
+                                                    <td>
+                                                        <c:if test="${!cm.readByAdmin}"><span class="badge bg-danger">New</span></c:if>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <p class="text-muted mb-0 small">No contact form submissions yet.</p>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="admin-card">
+                        <div class="rowTop">
+                            <div>
+                                <i class="fas fa-envelope" style="color: #7C2D5E;"></i>
+                                <h5 class="mb-1">Contact Messages</h5>
+                                <p class="muted">Form submissions from site</p>
+                            </div>
+                            <c:if test="${unreadContactMessages > 0}">
+                                <span class="badge bg-danger badge-pill">${unreadContactMessages}</span>
+                            </c:if>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/admin/contact-messages" class="btn btn-purple w-100 mt-auto">Open Inbox</a>
+                    </div>
+                </div>
 
                 <div class="col-md-3 col-sm-6">
                     <div class="admin-card">

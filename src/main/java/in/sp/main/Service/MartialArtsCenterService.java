@@ -47,9 +47,15 @@ public class MartialArtsCenterService {
                          List<MartialArtsType> types,
                          MultipartFile profile) throws IOException {
 
-        // Duplicate email check
-        if (centerRepository.findByEmail(center.getEmail()).isPresent()) {
+        // Duplicate email check (controller also checks; keep as safety net)
+        String email = center.getEmail() != null ? center.getEmail().trim().toLowerCase() : "";
+        center.setEmail(email);
+        if (centerRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email already exists");
+        }
+
+        if (types == null || types.isEmpty()) {
+            throw new IllegalArgumentException("At least one martial arts program is required");
         }
 
         // Save certificate

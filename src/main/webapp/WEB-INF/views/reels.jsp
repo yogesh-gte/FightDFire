@@ -6,8 +6,12 @@
 <title>🔥 Reels</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     /* ============================================
@@ -33,8 +37,24 @@
         color: #222;
         margin: 0;
         padding: 0;
-        overflow-y: auto;
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        overflow-x: hidden;
+        font-family: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    .reels-page-shell {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .reels-page-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        position: relative;
+    }
+    #footer.footer {
+        margin-top: auto;
+        flex-shrink: 0;
     }
     h3, .reels-wrapper p { color: #222 !important; }
 
@@ -62,9 +82,11 @@
         flex-direction: column;
         align-items: center;
         overflow-y: scroll;
-        height: 100vh;
+        height: calc(100vh - 200px);
+        min-height: 420px;
         scroll-snap-type: y mandatory;
         scroll-behavior: smooth;
+        flex: 1;
     }
     .reel-container {
         display: flex;
@@ -231,7 +253,7 @@
 
     .coin-wallet-link {
         position: fixed;
-        top: 20px;
+        top: 88px;
         right: 20px;
         background: var(--gradient-primary);
         color: white;
@@ -260,7 +282,7 @@
 
     .create-reel-link {
         position: fixed;
-        top: 85px;
+        top: 148px;
         right: 20px;
         background: var(--primary-coral);
         color: white;
@@ -274,12 +296,79 @@
         gap: 10px;
         box-shadow: var(--shadow-md);
         transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
     }
     .create-reel-link:hover {
         transform: translateY(-3px);
         box-shadow: var(--shadow-lg);
         background: var(--primary-coral-dark);
         color: white;
+    }
+    /* Reel studio modal */
+    #reelStudioModal .modal-content {
+        border-radius: 20px;
+        overflow: hidden;
+        border: none;
+    }
+    #reelStudioModal .modal-header {
+        background: var(--gradient-primary);
+        color: #fff;
+    }
+    .reel-camera-wrap {
+        position: relative;
+        background: #000;
+        border-radius: 16px;
+        overflow: hidden;
+        aspect-ratio: 9 / 16;
+        max-height: 55vh;
+        margin: 0 auto;
+    }
+    .reel-camera-wrap video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .reel-rec-indicator {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: rgba(220, 38, 38, 0.9);
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: none;
+        align-items: center;
+        gap: 6px;
+    }
+    .reel-rec-indicator.active { display: flex; }
+    .reel-rec-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #fff;
+        animation: reelPulse 1s infinite;
+    }
+    @keyframes reelPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+    .reel-camera-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 14px;
+    }
+    .reel-edit-preview {
+        filter: var(--reel-filter, none);
+    }
+    .reel-trim-hint {
+        font-size: 0.8rem;
+        color: #6b7280;
     }
 
     @keyframes fadeIn {
@@ -288,18 +377,22 @@
     }
 
     @media (max-width: 768px) {
-        body { overflow: hidden; }
-        .reels-wrapper { padding: 0; }
+        body { overflow-x: hidden; }
+        .reels-wrapper {
+            padding: 0;
+            height: calc(100dvh - 180px);
+        }
         .reel-container { 
             margin: 0; 
             position: relative; 
-            width: 100vw; 
-            height: 100dvh; 
+            width: 100%; 
+            height: calc(100dvh - 180px);
+            min-height: 480px;
             overflow: hidden; 
         }
         .reel {
-            width: 100vw;
-            height: 100dvh;
+            width: 100%;
+            height: calc(100dvh - 180px);
             border-radius: 0;
             box-shadow: none;
             position: absolute;
@@ -518,10 +611,14 @@
     }
 </style>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </head>
 
-<body>
+<body class="reels-page-shell">
+
+<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+
+<main class="reels-page-main">
 
 <a href="${pageContext.request.contextPath}/users/wallet" class="coin-wallet-link">
     <i class="bi bi-coin coin-icon-gold"></i>
@@ -529,9 +626,9 @@
     <span class="d-inline d-md-none ms-1 fw-bold">${user.rewardPoints != null ? user.rewardPoints : 0}</span>
 </a>
 
-<a href="${pageContext.request.contextPath}/video/upload?isReel=true" class="create-reel-link">
-    <i class="bi bi-plus-circle-fill"></i> <span class="d-none d-md-inline">Create Reel 🎬</span>
-</a>
+<button type="button" class="create-reel-link" id="openReelStudioBtn" data-bs-toggle="modal" data-bs-target="#reelStudioModal">
+    <i class="bi bi-camera-video-fill"></i> <span class="d-none d-md-inline">Create Reel</span>
+</button>
 
 <div class="reels-wrapper">
 
@@ -553,10 +650,10 @@
         Upload a reel first, then come back to Reels.
       </p>
       <div style="display:flex; gap:12px; justify-content:center;">
-        <a href="${pageContext.request.contextPath}/video/upload?isReel=true"
-           style="background:linear-gradient(135deg,#7C2D5E,#DB2777); color:white; border:none; padding:10px 28px; border-radius:30px; font-weight:700; text-decoration:none; font-size:0.95rem;">
-          Upload Reel
-        </a>
+        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#reelStudioModal"
+           style="background:linear-gradient(135deg,#7C2D5E,#DB2777); color:white; border:none; padding:10px 28px; border-radius:30px; font-weight:700; font-size:0.95rem;">
+          Shoot Reel
+        </button>
         <a href="${pageContext.request.contextPath}/users/dashboard"
            style="border:2px solid #c2185b; color:#c2185b; padding:10px 28px; border-radius:30px; font-weight:700; text-decoration:none; font-size:0.95rem;">
           Back
@@ -1396,6 +1493,112 @@ function openReportModal(videoId) {
     </div>
   </div>
 </div>
+
+</main>
+
+<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+
+<!-- Reel Studio: camera + edit + upload -->
+<div class="modal fade" id="reelStudioModal" tabindex="-1" aria-labelledby="reelStudioModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reelStudioModalLabel"><i class="bi bi-camera-reels me-2"></i>Create Reel</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-pills nav-fill mb-3" id="reelStudioTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab-record" data-bs-toggle="pill" data-bs-target="#pane-record" type="button">Record</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab-upload" data-bs-toggle="pill" data-bs-target="#pane-upload" type="button">Upload file</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link disabled" id="tab-edit" data-bs-toggle="pill" data-bs-target="#pane-edit" type="button" disabled>Edit</button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="pane-record" role="tabpanel">
+            <div class="reel-camera-wrap">
+              <video id="reelLiveVideo" autoplay playsinline muted></video>
+              <div class="reel-rec-indicator" id="reelRecIndicator"><span class="reel-rec-dot"></span> REC <span id="reelRecTimer">0:00</span></div>
+            </div>
+            <div class="reel-camera-actions">
+              <button type="button" class="btn btn-outline-secondary btn-sm" id="reelFlipCameraBtn"><i class="bi bi-arrow-repeat"></i> Flip</button>
+              <button type="button" class="btn btn-danger" id="reelRecordBtn"><i class="bi bi-record-circle"></i> Start recording</button>
+              <button type="button" class="btn btn-secondary d-none" id="reelStopBtn"><i class="bi bi-stop-fill"></i> Stop</button>
+            </div>
+            <p class="text-muted small text-center mt-2 mb-0">Max 60 seconds. Allow camera access when prompted.</p>
+          </div>
+
+          <div class="tab-pane fade" id="pane-upload" role="tabpanel">
+            <label class="form-label fw-semibold">Choose a video from your device</label>
+            <input type="file" class="form-control" id="reelFileInput" accept="video/*,image/*">
+            <p class="text-muted small mt-2 mb-0">MP4, WEBM, or image for a photo reel.</p>
+          </div>
+
+          <div class="tab-pane fade" id="pane-edit" role="tabpanel">
+            <div class="reel-camera-wrap">
+              <video id="reelEditVideo" class="reel-edit-preview" playsinline controls></video>
+            </div>
+            <div class="row g-2 mt-2">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Title</label>
+                <input type="text" class="form-control" id="reelTitle" maxlength="80" placeholder="Reel title" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Category</label>
+                <select class="form-select" id="reelCategory">
+                  <option value="WOMEN_SAFETY">Women Safety</option>
+                  <option value="SELF_DEFENSE">Self Defense</option>
+                  <option value="AWARENESS">Awareness</option>
+                  <option value="COMMUNITY_STORIES">Community Stories</option>
+                  <option value="FITNESS">Fitness & Health</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">Caption</label>
+                <textarea class="form-control" id="reelDescription" rows="2" maxlength="500" placeholder="Optional caption"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Filter</label>
+                <select class="form-select" id="reelFilter">
+                  <option value="none">Original</option>
+                  <option value="brightness(1.08) contrast(1.1) saturate(1.2)">Vivid</option>
+                  <option value="sepia(0.35) saturate(1.3)">Warm</option>
+                  <option value="hue-rotate(180deg) saturate(0.9)">Cool</option>
+                  <option value="grayscale(1) contrast(1.05)">Black & White</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Trim clip</label>
+                <div class="d-flex gap-2 align-items-center">
+                  <input type="range" class="form-range flex-grow-1" id="reelTrimStart" min="0" max="60" value="0" step="0.1">
+                  <input type="range" class="form-range flex-grow-1" id="reelTrimEnd" min="0" max="60" value="60" step="0.1">
+                </div>
+                <p class="reel-trim-hint mb-0">Start: <span id="reelTrimStartLbl">0s</span> — End: <span id="reelTrimEndLbl">60s</span></p>
+              </div>
+            </div>
+            <div class="reel-camera-actions mt-3">
+              <button type="button" class="btn btn-outline-secondary" id="reelRetakeBtn"><i class="bi bi-arrow-counterclockwise"></i> Retake</button>
+              <button type="button" class="btn btn-primary" id="reelPublishBtn"><i class="bi bi-cloud-upload"></i> Post reel</button>
+            </div>
+            <div class="progress mt-2 d-none" id="reelUploadProgressWrap" style="height:8px;">
+              <div class="progress-bar" id="reelUploadProgressBar" style="width:0%"></div>
+            </div>
+            <div id="reelStudioAlert" class="mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>window.REEL_STUDIO_CTX = "${pageContext.request.contextPath}";</script>
+<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/reel-studio.js"></script>
 </body>
 </html>
 
