@@ -87,9 +87,19 @@ public class MartialArtsCenter {
    
     public List<MartialArtsType> getMartialArtsTypes() { return martialArtsTypes; }
     public void setMartialArtsTypes(List<MartialArtsType> martialArtsTypes) { this.martialArtsTypes = martialArtsTypes; }
-    
-    public List<MartialArtsBatch> getBatches() { return batches; }
-    public void setBatches(List<MartialArtsBatch> batches) { this.batches = batches; }
+    public List<MartialArtsBatch> getBatches() {
+        if (batches == null) return new ArrayList<>();
+        List<MartialArtsBatch> activeBatches = new ArrayList<>();
+        for (MartialArtsBatch b : batches) {
+            if (b.getStatus() == null || !"Closed".equalsIgnoreCase(b.getStatus())) {
+                activeBatches.add(b);
+            }
+        }
+        return activeBatches;
+    }
+    public void setBatches(List<MartialArtsBatch> batches) {
+        // Do not re-assign or modify the collection directly to prevent Hibernate orphan-removal errors
+    }
     public boolean isApproved() {
         return approved;
     }

@@ -244,6 +244,17 @@ public class DoctorController {
         model.addAttribute("totalEarnings", totalEarnings);
         model.addAttribute("paidCount", paidCount);
 
+        if ("chats".equals(section)) {
+            List<in.sp.main.Entities.DoctorChatMessage> chats = doctorChatRepo.findByDoctorOrderByTimestampDesc(d);
+            java.util.Set<User> chatUsers = new java.util.LinkedHashSet<>();
+            for (in.sp.main.Entities.DoctorChatMessage msg : chats) {
+                if (msg.getUser() != null) {
+                    chatUsers.add(msg.getUser());
+                }
+            }
+            model.addAttribute("chatUsers", chatUsers);
+        }
+
         return "doctor/doctor-dashboard";
     }
 
@@ -483,8 +494,10 @@ public class DoctorController {
                 User chatUser = userRepo.findById(userId).orElse(null);
                 model.addAttribute("targetUserId", userId);
                 if (chatUser != null) {
+                    model.addAttribute("targetUserName", chatUser.getFullName());
                     model.addAttribute("chatHistory", doctorChatRepo.findByUserAndDoctorOrderByTimestampAsc(chatUser, target));
                 } else {
+                    model.addAttribute("targetUserName", "Unknown Patient");
                     model.addAttribute("chatHistory", java.util.Collections.emptyList());
                 }
             } else {
@@ -526,8 +539,15 @@ public class DoctorController {
         }
 
         doctorChatRepo.save(msg);
-        // Broadcast via WebSocket
-        messagingTemplate.convertAndSend("/topic/doctor-chat/" + doctorId, msg);
+        // Broadcast via WebSocket using Map to avoid serialization recursion
+        java.util.Map<String, Object> payload = new java.util.HashMap<>();
+        payload.put("id", msg.getId());
+        payload.put("message", msg.getMessage());
+        payload.put("senderType", msg.getSenderType());
+        if (msg.getUser() != null) {
+            payload.put("userId", msg.getUser().getId());
+        }
+        messagingTemplate.convertAndSend("/topic/doctor-chat/" + doctorId, payload);
         return "OK";
     }
 

@@ -921,6 +921,16 @@
         `;
         document.head.appendChild(style);
 
+        // Auto-activate a specific tab if requested by server
+        const activeTab = '${activeTab}';
+        if (activeTab && activeTab !== '') {
+            const tabEl = document.getElementById(activeTab + '-tab');
+            if (tabEl) {
+                const tab = new bootstrap.Tab(tabEl);
+                tab.show();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
 
     </script>
 </body>

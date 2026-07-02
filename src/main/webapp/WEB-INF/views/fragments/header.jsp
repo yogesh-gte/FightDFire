@@ -66,7 +66,7 @@
             position: relative;
         }
         .navmenu a, .navmenu a:focus {
-            color: var(--uh-purple-light) !important;
+            color: rgba(255, 255, 255, 0.92) !important;
             font-weight: 600 !important;
             padding: 18px 15px !important;
             font-size: 16px !important;
@@ -93,8 +93,8 @@
             width: calc(100% - 30px);
         }
         .navmenu a:hover, .navmenu .active {
-            color: var(--uh-purple) !important;
-            text-shadow: 0 0 4px rgba(74,14,120,0.2);
+            color: var(--uh-coral) !important;
+            text-shadow: none;
         }
     }
 

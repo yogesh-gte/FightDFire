@@ -515,8 +515,37 @@
             <a href="${dashboardUrl}" class="btn-outline-custom d-none d-md-inline-block">My Dashboard</a>
           </c:when>
           <c:otherwise>
-            <a href="${pageContext.request.contextPath}/login" class="btn-outline-custom d-none d-md-inline-block">Login</a>
-            <a href="${pageContext.request.contextPath}/register" class="btn-primary-custom d-none d-md-inline-block">Register</a>
+            <div class="dropdown d-none d-md-inline-block">
+              <button class="btn btn-outline-custom dropdown-toggle" type="button" id="loginDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                Login
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/login">User</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/login">Doctor</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/login">Martial Arts Centre</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/login">Salon</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/login">Stylist</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/login">Marketplace Provider</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/login">Product Seller</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/loginAdmin">Admin</a></li>
+              </ul>
+            </div>
+            
+            <div class="dropdown d-none d-md-inline-block ms-2">
+              <button class="btn btn-primary-custom dropdown-toggle" type="button" id="registerDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="color: white; font-weight: 500;">
+                Register
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="registerDropdown">
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register">User</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register">Doctor</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre">Martial Arts Centre</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register">Salon</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register">Stylist</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register">Marketplace Provider</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register">Product Seller</a></li>
+              </ul>
+            </div>
           </c:otherwise>
         </c:choose>
         <a href="${pageContext.request.contextPath}/sos/dashboard" class="btn-sos"><i class="fa-solid fa-phone"></i> SOS</a>

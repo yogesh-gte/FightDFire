@@ -317,21 +317,33 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Preferred Batch *</label>
-                                <select id="batchId" class="form-select" required onchange="updateBatchInfo(); updateSummary()">
-                                    <option value="">Select a batch</option>
-                                    <c:forEach var="batch" items="${batches}">
-                                        <option value="${batch.id}" 
-                                                data-style="${batch.style}"
-                                                data-level="${batch.skillLevel}"
-                                                data-days="${batch.availableDays}"
-                                                data-slot="${batch.timeSlot}"
-                                                data-fee="${batch.fee}"
-                                                data-instructor="${batch.instructor}"
-                                                data-agegroup="${batch.ageGroup}">
-                                            ${batch.name} (${batch.style})
-                                        </option>
-                                    </c:forEach>
-                                </select>
+                                <c:choose>
+                                    <c:when test="${empty batches}">
+                                        <div class="alert alert-warning py-2 px-3 rounded-3 small">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            No batches have been added for this centre yet. Please check back later or contact the centre.
+                                        </div>
+                                        <input type="hidden" id="batchId" value="">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <select id="batchId" name="batchId" class="form-select" required onchange="updateBatchInfo(); updateSummary()">
+                                            <option value="">Select a batch</option>
+                                            <c:forEach var="batch" items="${batches}">
+                                                <option value="${batch.id}"
+                                                        data-style="${batch.style}"
+                                                        data-level="${batch.skillLevel}"
+                                                        data-days="${batch.availableDays}"
+                                                        data-slot="${batch.timeSlot}"
+                                                        data-fee="${batch.fee}"
+                                                        data-instructor="${batch.instructor}"
+                                                        data-agegroup="${batch.ageGroup}"
+                                                        ${batch.id == preselectedBatchId ? 'selected' : ''}>
+                                                    ${batch.name} (${batch.style})
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Skill Level</label>
@@ -568,6 +580,15 @@
 
     <script>
         AOS.init({ duration: 800, once: true });
+
+        // Auto-trigger batch info if a batch was preselected from URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const batchSelect = document.getElementById('batchId');
+            if (batchSelect && batchSelect.value) {
+                updateBatchInfo();
+                updateSummary();
+            }
+        });
 
         function calculateAge() {
             const dobInput = document.getElementById('dob');

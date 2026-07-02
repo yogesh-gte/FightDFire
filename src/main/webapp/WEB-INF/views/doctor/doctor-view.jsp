@@ -411,7 +411,7 @@
             </div>
 
             <button type="submit" id="payBtn" class="btn-book-primary" disabled style="opacity: 0.6">
-              Confirm & Pay ₹${doctor.consultationFee != null ? doctor.consultationFee : 500}
+              Book Appointment & Pay ₹${doctor.consultationFee != null ? doctor.consultationFee : 500}
             </button>
             <p class="text-center mt-3 small text-muted"><i class="bi bi-shield-lock-fill text-success me-1"></i> Secure Payment by Razorpay</p>
           </form>
@@ -463,7 +463,11 @@
 
     function renderDates() {
       var dateScroll = document.getElementById('dateScroll');
-      if(!availableDays.length) return;
+      if(!availableDays.length) {
+        dateScroll.innerHTML = '<p class="text-danger small fw-700 p-2">This doctor has not set their schedule yet.</p>';
+        document.getElementById('payBtn').innerText = 'Schedule Unavailable';
+        return;
+      }
       
       var html = '';
       var d = new Date();
@@ -480,7 +484,11 @@
         }
         d.setDate(d.getDate() + 1);
       }
-      dateScroll.innerHTML = html;
+      if(html === '') {
+         dateScroll.innerHTML = '<p class="text-danger small fw-700 p-2">No available dates found.</p>';
+      } else {
+         dateScroll.innerHTML = html;
+      }
     }
 
     var selectedDateObj = null;

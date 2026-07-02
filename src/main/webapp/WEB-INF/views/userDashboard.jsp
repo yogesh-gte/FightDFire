@@ -19,7 +19,7 @@
 <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
@@ -43,34 +43,6 @@
         --shadow-xl: 0 40px 80px rgba(0, 0, 0, 0.2);
         --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         --transition-bounce: all 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
-    }
-
-    /* Floating Blobs for Premium Feel */
-    .hero-section::before,
-    .hero-section::after {
-        content: "";
-        position: absolute;
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        filter: blur(60px);
-        opacity: 0.2;
-        z-index: 0;
-        pointer-events: none;
-        animation: floatDashboard 12s ease-in-out infinite;
-    }
-    .hero-section::before {
-        top: -100px; left: -100px;
-        background: radial-gradient(circle, var(--primary-purple), transparent);
-    }
-    .hero-section::after {
-        bottom: -100px; right: -100px;
-        background: radial-gradient(circle, var(--primary-coral), transparent);
-        animation-delay: -6s;
-    }
-    @keyframes floatDashboard {
-        0%, 100% { transform: translate(0,0) scale(1); }
-        50% { transform: translate(20px, -20px) scale(1.1); }
     }
 
     .text-gradient {
@@ -106,83 +78,6 @@
         0% { transform: scale(1) translate(0,0); }
         50% { transform: scale(1.05) translate(2%, 1%); }
         100% { transform: scale(1) translate(0,0); }
-    }
-
-    /* ============================================
-       HERO SECTION (enhanced)
-       ============================================ */
-    .hero-section {
-        position: relative;
-        overflow: hidden;
-    }
-    .hero-section::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(123, 44, 191, 0.3);
-        z-index: 1;
-        backdrop-filter: blur(3px);
-        transition: backdrop-filter 0.5s ease;
-    }
-    .hero-section:hover::before {
-        backdrop-filter: blur(2px);
-    }
-    /* Animated floating shapes behind hero */
-    .hero-section::after {
-        content: '';
-        position: absolute;
-        top: 10%;
-        right: 5%;
-        width: 200px;
-        height: 200px;
-        background: radial-gradient(circle, rgba(255,215,0,0.15), transparent);
-        border-radius: 50%;
-        z-index: 0;
-        animation: floatShape 12s infinite ease-in-out;
-        pointer-events: none;
-    }
-    @keyframes floatShape {
-        0%, 100% { transform: translate(0,0) scale(1); }
-        50% { transform: translate(-20px, -30px) scale(1.1); }
-    }
-
-    .hero-section .container {
-        position: relative;
-        z-index: 2;
-        padding-top: 100px;
-    }
-
-    .hero-section h1 {
-        font-size: clamp(2rem, 8vw, 3.5rem);
-        font-weight: 800;
-        margin-bottom: 20px;
-        margin-top: clamp(40px, 10vh, 80px);
-        font-family: 'Playfair Display', serif;
-        background: linear-gradient(135deg, #fff, var(--primary-gold));
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        text-shadow: none;
-        animation: fadeInUp 0.8s ease-out forwards;
-        letter-spacing: -0.02em;
-    }
-
-    .hero-section p {
-        font-size: 1.2rem;
-        color: rgba(255,255,255,0.95);
-        margin-bottom: 35px;
-        max-width: 650px;
-        margin-left: auto;
-        margin-right: auto;
-        text-shadow: 0 2px 12px rgba(0,0,0,0.4);
-        animation: fadeInUp 0.8s ease-out 0.15s forwards;
-        opacity: 0;
-        animation-fill-mode: forwards;
-        backdrop-filter: blur(2px);
-        padding: 0 10px;
     }
 
     /* Gold buttons with shine effect */
@@ -336,7 +231,7 @@
        NAVBAR MENU (glow effect)
        ============================================ */
     #navmenu ul li a, .navmenu ul li a {
-        color: var(--primary-purple-light) !important;
+        color: rgba(255, 255, 255, 0.92) !important;
         font-weight: 600;
         transition: var(--transition-smooth);
         position: relative;
@@ -356,8 +251,8 @@
         width: calc(100% - 30px);
     }
     #navmenu ul li a:hover, .navmenu ul li a:hover {
-        color: var(--primary-purple) !important;
-        text-shadow: 0 0 4px rgba(74,14,120,0.2);
+        color: var(--primary-coral) !important;
+        text-shadow: none;
     }
 
     /* ============================================
@@ -378,58 +273,17 @@
        RESPONSIVE & PERFORMANCE
        ============================================ */
     @media (max-width: 768px) {
-        .hero-section {
-            min-height: 80vh !important;
-            height: auto !important;
-            padding: 100px 0 60px;
-        }
         .hero-section h1 {
             font-size: 1.75rem;
-            margin-top: 10px;
             line-height: 1.2;
-        }
-        .hero-section p {
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-            padding: 0 15px;
-        }
-        .dashboard-card img {
-            height: 220px;
-        }
-        .dashboard-card {
-            padding: 15px;
-            margin-bottom: 5px;
-        }
-        .hero-section a.btn-primary,
-        .hero-section a.btn-outline-light {
-            padding: 12px 24px;
-            font-size: 1rem;
-            width: 100%;
-            margin-bottom: 15px;
-            display: block;
-        }
-        .dashboard-card h4 {
-            font-size: 1.25rem;
         }
         #dangerMap {
             height: 380px !important;
-        }
-        .hero-section .container {
-            padding-top: 40px;
-        }
-        .section-title h2 {
-            font-size: 1.75rem;
         }
     }
 
     @media (max-width: 576px) {
         .hero-section h1 {
-            font-size: 1.5rem;
-        }
-        .dashboard-card img {
-            height: 200px;
-        }
-        .section-title h2 {
             font-size: 1.5rem;
         }
         .header .logo h1 {
@@ -582,6 +436,259 @@
         padding: 40px 20px;
         text-align: center;
     }
+
+    /* Dashboard layout */
+    .dashboard-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+    }
+    .sidebar-toggle-btn {
+        display: none;
+        border: none;
+        background: var(--primary-purple);
+        color: #fff;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 1.1rem;
+        box-shadow: var(--shadow-sm);
+    }
+    .dashboard-main {
+        padding: 1.75rem 1.5rem 2.5rem;
+        background: var(--light-bg);
+    }
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.75rem;
+    }
+    .stat-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.25rem 1.35rem;
+        border: 1px solid rgba(30, 27, 75, 0.08);
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: var(--transition-smooth);
+    }
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-md);
+    }
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+    }
+    .stat-icon.incidents { background: #fee2e2; color: #dc2626; }
+    .stat-icon.centres { background: #dbeafe; color: #2563eb; }
+    .stat-icon.connect { background: #fef3c7; color: #d97706; }
+    .stat-icon.broadcast { background: #ede9fe; color: #7c3aed; }
+    .stat-value { font-size: 1.75rem; font-weight: 800; line-height: 1.1; color: var(--primary-purple); }
+    .stat-label { font-size: 0.85rem; color: #64748b; font-weight: 600; margin: 0; }
+
+    .section-heading {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--primary-purple);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .dash-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .dash-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.25rem;
+        border: 1px solid rgba(30, 27, 75, 0.08);
+        box-shadow: var(--shadow-sm);
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        transition: var(--transition-smooth);
+        position: relative;
+        overflow: hidden;
+        min-height: 140px;
+    }
+    .dash-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+        color: inherit;
+    }
+    .dash-card-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+    .dash-card h5 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0;
+        color: var(--primary-purple);
+    }
+    .dash-card p {
+        font-size: 0.82rem;
+        color: #64748b;
+        margin: 0;
+        line-height: 1.45;
+    }
+    .dash-card .card-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 0.7rem;
+    }
+    .dash-card.sos { border-color: rgba(244, 63, 94, 0.35); background: linear-gradient(135deg, #fff 0%, #fff1f2 100%); }
+    .dash-card.sos .dash-card-icon { background: #ffe4e6; color: #e11d48; }
+    .dash-card.buddy .dash-card-icon { background: #dcfce7; color: #16a34a; }
+    .dash-card.journey .dash-card-icon { background: #e0e7ff; color: #4338ca; }
+    .dash-card.incident .dash-card-icon { background: #ffedd5; color: #ea580c; }
+    .dash-card.martial .dash-card-icon { background: #dbeafe; color: #2563eb; }
+    .dash-card.doctors .dash-card-icon { background: #fce7f3; color: #db2777; }
+    .dash-card.market .dash-card-icon { background: #f3e8ff; color: #9333ea; }
+    .dash-card.glow .dash-card-icon { background: #fef9c3; color: #ca8a04; }
+    .dash-card.connect .dash-card-icon { background: #cffafe; color: #0891b2; }
+    .dash-card.chat .dash-card-icon { background: #e0f2fe; color: #0284c7; }
+    .dash-card.wallet .dash-card-icon { background: #d1fae5; color: #059669; }
+    .dash-card.products .dash-card-icon { background: #fce7f3; color: #be185d; }
+    .dash-card.videos .dash-card-icon { background: #ede9fe; color: #6d28d9; }
+    .dash-card.reminders .dash-card-icon { background: #fef3c7; color: #b45309; }
+
+    .centres-strip {
+        display: flex;
+        gap: 1rem;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+        scroll-snap-type: x mandatory;
+    }
+    .centre-chip {
+        flex: 0 0 auto;
+        min-width: 220px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 1rem 1.15rem;
+        border: 1px solid rgba(30, 27, 75, 0.08);
+        box-shadow: var(--shadow-sm);
+        scroll-snap-align: start;
+        text-decoration: none;
+        color: inherit;
+        transition: var(--transition-smooth);
+    }
+    .centre-chip:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+        color: inherit;
+    }
+    .centre-chip h6 { font-weight: 700; margin: 0 0 0.35rem; color: var(--primary-purple); font-size: 0.95rem; }
+    .centre-chip p { margin: 0; font-size: 0.8rem; color: #64748b; }
+
+    .panel-card {
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid rgba(30, 27, 75, 0.08);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+        margin-bottom: 1.75rem;
+    }
+    .panel-card-header {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+    .panel-card-body { padding: 1.25rem; }
+    .verification-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    .verification-pill.verified { background: #dcfce7; color: #15803d; }
+    .verification-pill.pending { background: #fef3c7; color: #b45309; }
+    .verification-pill.rejected { background: #fee2e2; color: #b91c1c; }
+
+    .hero-section h1 {
+        font-size: clamp(1.6rem, 4vw, 2.4rem);
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: #fff;
+    }
+    .hero-section .hero-sub {
+        font-size: 1rem;
+        color: rgba(255,255,255,0.9);
+        max-width: 560px;
+        margin: 0 auto 1.25rem;
+    }
+    .hero-quick-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        justify-content: center;
+    }
+    .hero-quick-actions .btn {
+        border-radius: 999px;
+        font-weight: 600;
+        padding: 0.55rem 1.15rem;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 991px) {
+        #sidebar-wrapper {
+            position: fixed;
+            left: -300px;
+            top: 80px;
+            height: calc(100vh - 80px);
+            transition: left 0.3s ease;
+        }
+        #sidebar-wrapper.open { left: 0; }
+        .sidebar-toggle-btn { display: inline-flex; align-items: center; gap: 0.5rem; }
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 80px 0 0 0;
+            background: rgba(15, 15, 26, 0.45);
+            z-index: 999;
+        }
+        .sidebar-backdrop.show { display: block; }
+    }
+    @media (max-width: 768px) {
+        .hero-section { min-height: auto !important; }
+        .dashboard-main { padding: 1.25rem 1rem 2rem; }
+        .dash-grid { grid-template-columns: 1fr; }
+        #dangerMap { height: 380px !important; }
+    }
 </style>
 </head>
 
@@ -675,207 +782,367 @@
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
-        
-        <!-- Animated Hero Section -->
+
+        <!-- Compact Hero -->
         <section class="hero-section">
             <div class="hero-overlay"></div>
-            
             <div class="container hero-content text-center text-white">
-                <div class="icon mb-3">
-                    <span class="flaticon-lotus" style="font-size: 3rem; color: #fff;"></span>
+                <c:choose>
+                    <c:when test="${user.verificationStatus.name() == 'VERIFIED'}">
+                        <span class="verification-pill verified mb-2"><i class="bi bi-patch-check-fill"></i> Verified account</span>
+                    </c:when>
+                    <c:when test="${user.verificationStatus.name() == 'REJECTED'}">
+                        <span class="verification-pill rejected mb-2"><i class="bi bi-x-circle-fill"></i> Verification rejected</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="verification-pill pending mb-2"><i class="bi bi-hourglass-split"></i> Verification pending</span>
+                    </c:otherwise>
+                </c:choose>
+                <h1>Welcome back, <span style="color: var(--primary-coral);">${user.fullName}</span></h1>
+                <p class="hero-sub">Your safety hub — quick access to SOS, buddy mode, services, and community tools.</p>
+                <div class="hero-quick-actions">
+                    <a href="${pageContext.request.contextPath}/sos/dashboard" class="btn btn-danger"><i class="fas fa-exclamation-triangle me-1"></i> SOS</a>
+                    <a href="${pageContext.request.contextPath}/buddy" class="btn btn-light text-dark"><i class="bi bi-person-walking me-1"></i> Buddy Mode</a>
+                    <a href="${pageContext.request.contextPath}/incidents/report" class="btn btn-outline-light"><i class="bi bi-file-earmark-medical me-1"></i> Report</a>
+                    <c:if test="${unreadBroadcastCount > 0}">
+                        <button type="button" class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#broadcastModal" onclick="markBroadcastsAsRead()">
+                            <i class="fas fa-bullhorn me-1"></i> ${unreadBroadcastCount} new alert<c:if test="${unreadBroadcastCount > 1}">s</c:if>
+                        </button>
+                    </c:if>
                 </div>
-                <h1 class="display-4 fw-bold mb-3" style="font-family: 'Playfair Display', serif;">
-                    Welcome, <span style="color: var(--primary-coral);">${user.fullName}</span>!
-                </h1>
-                <h2 class="h3 mb-3">Empowering Women's Safety Through Technology</h2>
-                <p class="lead">Your safety is our mission. Discover features that protect, inform, and connect you in times of need.</p>
             </div>
         </section>
 
-        <!-- Main Dashboard Content Area -->
-        <div class="container-fluid py-4 px-4" style="background: var(--light-bg); min-height: 50vh;">
+        <div class="dashboard-main">
+            <div class="dashboard-toolbar">
+                <button type="button" class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle menu">
+                    <i class="bi bi-list"></i> Menu
+                </button>
+                <div class="text-muted small fw-semibold">
+                    <i class="bi bi-shield-check me-1"></i> FightDFire User Dashboard
+                </div>
+            </div>
 
-    <!-- My Incident Reports Section -->
-    <div class="row mt-5">
-      <div class="col-12">
-        <div class="p-4 rounded-4 bg-white shadow-sm border">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-800 m-0"><i class="fas fa-file-shield text-danger me-2"></i>My Reported Incidents</h4>
-            <span class="badge bg-soft-pink text-pink rounded-pill px-3">${myIncidents.size()} Reports</span>
-          </div>
-          
-          <c:choose>
-            <c:when test="${not empty myIncidents}">
-              <div class="table-responsive">
-                <table class="table table-hover align-middle">
-                  <thead class="table-light">
-                    <tr>
-                      <th>Date</th>
-                      <th>Type</th>
-                      <th>Location</th>
-                      <th>Description</th>
-                      <th>Evidence</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <c:forEach var="inc" items="${myIncidents}">
-                      <tr>
-                        <td class="small fw-600">${inc.reportedAt}</td>
-                        <td><span class="badge bg-light text-dark border">${inc.type}</span></td>
-                        <td class="small">${inc.location}</td>
-                        <td class="small text-muted">${inc.description}</td>
-                        <td>
-                          <c:choose>
-                            <c:when test="${not empty inc.mediaPath}">
-                              <a href="${pageContext.request.contextPath}${inc.mediaPath}" target="_blank">
-                                <img src="${pageContext.request.contextPath}${inc.mediaPath}" class="rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='${pageContext.request.contextPath}/assets/img/no-image.png'">
-                              </a>
-                            </c:when>
-                            <c:otherwise><span class="text-muted smaller italic">No media</span></c:otherwise>
-                          </c:choose>
-                        </td>
-                        <td>
-                          <span class="badge ${inc.status == 'RESOLVED' ? 'bg-success' : (inc.status == 'PENDING' ? 'bg-warning' : 'bg-info')}">
-                            ${inc.status}
-                          </span>
-                        </td>
-                      </tr>
+            <!-- Stats overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon incidents"><i class="fas fa-file-shield"></i></div>
+                    <div>
+                        <div class="stat-value">${myIncidents.size()}</div>
+                        <p class="stat-label">My incidents</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon centres"><i class="bi bi-shield-check"></i></div>
+                    <div>
+                        <div class="stat-value">${approvedCentreCount}</div>
+                        <p class="stat-label">Martial arts centres</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon connect"><i class="bi bi-people"></i></div>
+                    <div>
+                        <div class="stat-value" id="statPendingRequests">${requestCount == null ? 0 : requestCount}</div>
+                        <p class="stat-label">Connect requests</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon broadcast"><i class="fas fa-bullhorn"></i></div>
+                    <div>
+                        <div class="stat-value">${unreadBroadcastCount}</div>
+                        <p class="stat-label">Unread alerts</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Priority quick actions -->
+            <h3 class="section-heading"><i class="bi bi-lightning-charge-fill text-warning"></i> Quick actions</h3>
+            <div class="dash-grid">
+                <a href="${pageContext.request.contextPath}/sos/dashboard" class="dash-card sos">
+                    <span class="card-badge badge bg-danger">Emergency</span>
+                    <div class="dash-card-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <h5>SOS Emergency</h5>
+                    <p>Instant help when you need it most.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/buddy" class="dash-card buddy">
+                    <div class="dash-card-icon"><i class="bi bi-person-walking"></i></div>
+                    <h5>Buddy Mode</h5>
+                    <p>Share your live location with trusted contacts.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/journey" class="dash-card journey">
+                    <div class="dash-card-icon"><i class="bi bi-pin-map"></i></div>
+                    <h5>Journey Tracker</h5>
+                    <p>Track trips and get safety check-ins.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/incidents/report" class="dash-card incident">
+                    <div class="dash-card-icon"><i class="bi bi-file-earmark-medical"></i></div>
+                    <h5>Report Incident</h5>
+                    <p>Log an incident with evidence and location.</p>
+                </a>
+            </div>
+
+            <!-- Services -->
+            <h3 class="section-heading"><i class="bi bi-grid-3x3-gap-fill"></i> Explore services</h3>
+            <div class="dash-grid">
+                <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="dash-card martial">
+                    <c:if test="${approvedCentreCount > 0}">
+                        <span class="card-badge badge bg-primary">${approvedCentreCount}</span>
+                    </c:if>
+                    <div class="dash-card-icon"><i class="bi bi-shield-check"></i></div>
+                    <h5>Martial Arts Centres</h5>
+                    <p>Find verified self-defence training near you.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/doctors/list" class="dash-card doctors">
+                    <div class="dash-card-icon"><i class="bi bi-heart-pulse"></i></div>
+                    <h5>Women Doctors</h5>
+                    <p>Book consultations with verified doctors.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/marketplace" class="dash-card market">
+                    <div class="dash-card-icon"><i class="bi bi-shop"></i></div>
+                    <h5>Women Marketplace</h5>
+                    <p>Lawyers, fitness, and professional services.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/women-products" class="dash-card products">
+                    <div class="dash-card-icon"><i class="bi bi-bag-heart"></i></div>
+                    <h5>Women Products</h5>
+                    <p>Shop from verified women-led sellers.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/index/templates" class="dash-card glow">
+                    <div class="dash-card-icon"><i class="bi bi-stars"></i></div>
+                    <h5>Glow Space</h5>
+                    <p>Community posts, reviews, and inspiration.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/users/search?tab=requests" class="dash-card connect">
+                    <c:if test="${requestCount != null && requestCount > 0}">
+                        <span class="card-badge badge bg-danger">${requestCount}</span>
+                    </c:if>
+                    <div class="dash-card-icon"><i class="bi bi-people"></i></div>
+                    <h5>Let's Connect</h5>
+                    <p>Find friends and manage follow requests.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/chat/users" class="dash-card chat">
+                    <div class="dash-card-icon"><i class="bi bi-chat-dots"></i></div>
+                    <h5>Chat</h5>
+                    <p>Message your connections securely.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/users/wallet" class="dash-card wallet">
+                    <div class="dash-card-icon"><i class="bi bi-wallet2"></i></div>
+                    <h5>My Wallet</h5>
+                    <p>Manage payments and transactions.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/video/reels" class="dash-card videos">
+                    <div class="dash-card-icon"><i class="bi bi-camera-video"></i></div>
+                    <h5>Reels &amp; Videos</h5>
+                    <p>Watch safety tips and community content.</p>
+                </a>
+                <a href="${pageContext.request.contextPath}/reminders" class="dash-card reminders">
+                    <div class="dash-card-icon"><i class="bi bi-alarm"></i></div>
+                    <h5>Routine Reminders</h5>
+                    <p>Set daily safety and wellness reminders.</p>
+                </a>
+            </div>
+
+            <!-- Featured centres -->
+            <c:if test="${not empty approvedCentres}">
+                <h3 class="section-heading"><i class="bi bi-geo-alt-fill"></i> Nearby martial arts centres</h3>
+                <div class="centres-strip">
+                    <c:forEach var="centre" items="${approvedCentres}" end="7">
+                        <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="centre-chip">
+                            <h6><i class="bi bi-shield-fill-check me-1 text-primary"></i>${centre.name}</h6>
+                            <p><c:out value="${centre.location}" default="View details"/> · Verified centre</p>
+                        </a>
                     </c:forEach>
-                  </tbody>
-                </table>
-              </div>
-            </c:when>
-            <c:otherwise>
-              <div class="text-center py-5">
-                <i class="fas fa-clipboard-check text-muted display-4 mb-3"></i>
-                <p class="text-muted">You haven't reported any incidents yet.</p>
-              </div>
-            </c:otherwise>
-          </c:choose>
-        </div>
-      </div>
-    </div>
+                </div>
+            </c:if>
 
-  </div>
-</section>
+            <!-- My incidents -->
+            <div class="panel-card">
+                <div class="panel-card-header">
+                    <h4 class="fw-bold m-0"><i class="fas fa-file-shield text-danger me-2"></i>My reported incidents</h4>
+                    <span class="badge rounded-pill bg-light text-dark border">${myIncidents.size()} total</span>
+                </div>
+                <div class="panel-card-body">
+                    <c:choose>
+                        <c:when test="${not empty myIncidents}">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Type</th>
+                                            <th>Location</th>
+                                            <th>Description</th>
+                                            <th>Evidence</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="inc" items="${myIncidents}">
+                                            <tr>
+                                                <td class="small fw-semibold">${inc.reportedAt}</td>
+                                                <td><span class="badge bg-light text-dark border">${inc.type}</span></td>
+                                                <td class="small">${inc.location}</td>
+                                                <td class="small text-muted">${inc.description}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${not empty inc.mediaPath}">
+                                                            <a href="${pageContext.request.contextPath}${inc.mediaPath}" target="_blank">
+                                                                <img src="${pageContext.request.contextPath}${inc.mediaPath}" class="rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='${pageContext.request.contextPath}/assets/img/no-image.png'">
+                                                            </a>
+                                                        </c:when>
+                                                        <c:otherwise><span class="text-muted small">No media</span></c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <span class="badge ${inc.status == 'RESOLVED' ? 'bg-success' : (inc.status == 'PENDING' ? 'bg-warning text-dark' : 'bg-info text-dark')}">
+                                                        ${inc.status}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="text-center py-4">
+                                <i class="fas fa-clipboard-check text-muted display-6 mb-2 d-block"></i>
+                                <p class="text-muted mb-2">You haven't reported any incidents yet.</p>
+                                <a href="${pageContext.request.contextPath}/incidents/report" class="btn btn-sm btn-outline-danger rounded-pill">Report an incident</a>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
 
-<!-- Community Safety Map (Heatmap + Safest Route) -->
-<section class="section py-5" style="background:#fff6f8;">
-  <div class="container">
-    <div class="text-center mb-4">
-      <h2>Community Safety Map</h2>
-      <p class="mb-0">Mark danger locations and find a safer route.</p>
-    </div>
+            <!-- Community Safety Map -->
+            <div class="panel-card">
+                <div class="panel-card-header">
+                    <div>
+                        <h4 class="fw-bold m-0"><i class="fas fa-map-marked-alt text-primary me-2"></i>Community safety map</h4>
+                        <p class="small text-muted mb-0 mt-1">Mark danger spots and find safer routes.</p>
+                    </div>
+                </div>
+                <div class="panel-card-body">
+                    <div class="row g-4">
+                        <div class="col-lg-4">
+                            <div class="p-3 rounded-3 bg-light border">
+                                <h5 class="mb-3">Mark a danger location</h5>
+                                <p class="small text-muted mb-3">Click on the map to pick a location, then submit details.</p>
 
-    <div class="row g-4">
-      <div class="col-lg-4">
-        <div class="p-4 rounded bg-white shadow-sm">
-          <h5 class="mb-3">Mark a danger location</h5>
-          <p class="small text-muted mb-3">Click on the map to pick a location, then submit details.</p>
+                                <div class="mb-3">
+                                    <label class="form-label">Severity</label>
+                                    <select id="dpSeverity" class="form-select">
+                                        <option value="1">1 (Low)</option>
+                                        <option value="2">2</option>
+                                        <option value="3" selected>3 (Medium)</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5 (High)</option>
+                                    </select>
+                                </div>
 
-          <div class="mb-3">
-            <label class="form-label">Severity</label>
-            <select id="dpSeverity" class="form-select">
-              <option value="1">1 (Low)</option>
-              <option value="2">2</option>
-              <option value="3" selected>3 (Medium)</option>
-              <option value="4">4</option>
-              <option value="5">5 (High)</option>
-            </select>
-          </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select id="dpCategory" class="form-select">
+                                        <option value="general" selected>General</option>
+                                        <option value="harassment">Harassment</option>
+                                        <option value="theft">Theft</option>
+                                        <option value="poorLighting">Poor lighting</option>
+                                        <option value="stalking">Stalking</option>
+                                        <option value="unsafeTransport">Unsafe transport</option>
+                                    </select>
+                                </div>
 
-          <div class="mb-3">
-            <label class="form-label">Category</label>
-            <select id="dpCategory" class="form-select">
-              <option value="general" selected>General</option>
-              <option value="harassment">Harassment</option>
-              <option value="theft">Theft</option>
-              <option value="poorLighting">Poor lighting</option>
-              <option value="stalking">Stalking</option>
-              <option value="unsafeTransport">Unsafe transport</option>
-            </select>
-          </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Note (optional)</label>
+                                    <input id="dpNote" type="text" class="form-control" maxlength="200" placeholder="Short note (avoid personal info)">
+                                </div>
 
-          <div class="mb-3">
-            <label class="form-label">Note (optional)</label>
-            <input id="dpNote" type="text" class="form-control" maxlength="200" placeholder="Short note (avoid personal info)">
-          </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Attach photo (optional)</label>
+                                    <input id="dpImage" type="file" class="form-control" accept="image/*">
+                                </div>
 
-          <div class="mb-3">
-            <label class="form-label">Attach Photo (optional)</label>
-            <input id="dpImage" type="file" class="form-control" accept="image/*">
-            <div class="small text-muted mt-1">Upload a photo for evidence.</div>
-          </div>
+                                <button id="dpSubmit" class="btn btn-danger w-100" type="button" disabled>
+                                    Submit selected point
+                                </button>
+                                <div id="dpStatus" class="small mt-3 text-muted"></div>
 
-          <!-- Purpose: enabled only after user clicks on map and selects a point. -->
-          <button id="dpSubmit" class="btn btn-danger w-100" type="button" disabled>
-            Submit selected point
-          </button>
-          <div id="dpStatus" class="small mt-3 text-muted"></div>
+                                <hr class="my-4">
 
-          <hr class="my-4">
+                                <h5 class="mb-3">Find a safer route</h5>
+                                <div class="mb-3">
+                                    <label class="form-label">From</label>
+                                    <input id="routeFrom" type="text" class="form-control" placeholder="Start location">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">To</label>
+                                    <input id="routeTo" type="text" class="form-control" placeholder="Destination">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Travel mode</label>
+                                    <select id="routeMode" class="form-select">
+                                        <option value="DRIVING" selected>Driving</option>
+                                        <option value="WALKING">Walking</option>
+                                        <option value="TRANSIT">Transit</option>
+                                    </select>
+                                </div>
+                                <button id="routeGo" class="btn btn-primary w-100" type="button">Find safest route</button>
+                                <div class="d-flex gap-2 mt-3 flex-wrap">
+                                    <button id="toggleHeatmap" class="btn btn-outline-secondary btn-sm" type="button">Toggle heatmap</button>
+                                    <button id="clearRoute" class="btn btn-outline-secondary btn-sm" type="button">Clear route</button>
+                                </div>
+                                <div id="routeStatus" class="small mt-3 text-muted"></div>
+                            </div>
+                        </div>
 
-          <h5 class="mb-3">Find a safer route</h5>
-          <div class="mb-3">
-            <label class="form-label">From</label>
-            <input id="routeFrom" type="text" class="form-control" placeholder="Start location">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">To</label>
-            <input id="routeTo" type="text" class="form-control" placeholder="Destination">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Travel mode</label>
-            <!-- Purpose: allow safer route selection for walking vs driving. -->
-            <select id="routeMode" class="form-select">
-              <option value="DRIVING" selected>Driving</option>
-              <option value="WALKING">Walking</option>
-              <option value="TRANSIT">Transit</option>
-            </select>
-          </div>
-          <button id="routeGo" class="btn btn-primary w-100" type="button">Find safest route</button>
-          <div class="d-flex gap-2 mt-3">
-            <button id="toggleHeatmap" class="btn btn-outline-secondary btn-sm" type="button">Toggle heatmap</button>
-            <button id="clearRoute" class="btn btn-outline-secondary btn-sm" type="button">Clear route</button>
-          </div>
-          <div id="routeStatus" class="small mt-3 text-muted"></div>
-        </div>
-      </div>
+                        <div class="col-lg-8">
+                            <div id="dangerMap" class="rounded shadow-sm" style="height:520px; width:100%; background:#eee;"></div>
+                            <div class="mt-3 p-3 bg-light rounded border" style="font-size: 0.85rem;">
+                                <h6 class="mb-2"><i class="fas fa-info-circle me-2"></i>Map legend</h6>
+                                <div class="d-flex flex-wrap gap-3">
+                                    <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#e63946; display:inline-block; margin-right:6px;"></span> User danger point</div>
+                                    <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#ef4444; display:inline-block; margin-right:6px;"></span> Harassment</div>
+                                    <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#f97316; display:inline-block; margin-right:6px;"></span> Assault</div>
+                                    <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#3b82f6; display:inline-block; margin-right:6px;"></span> Theft</div>
+                                    <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#6b7280; display:inline-block; margin-right:6px;"></span> Other incidents</div>
+                                    <div class="ms-auto text-muted"><i class="fas fa-fire me-1" style="color:#ef4444;"></i> Heatmap: red = high risk</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.dashboard-main -->
+    </div><!-- /#page-content-wrapper -->
+</div><!-- /#wrapper -->
 
-      <div class="col-lg-8">
-        <!-- Purpose: map container; JS initializes Google Map + heatmap layer. -->
-        <div id="dangerMap" class="rounded shadow-sm" style="height:520px; width:100%; background:#eee;"></div>
-        
-        <!-- Map Legend -->
-        <div class="mt-3 p-3 bg-white rounded shadow-sm" style="font-size: 0.85rem;">
-          <h6 class="mb-2"><i class="fas fa-info-circle me-2"></i>Map Legend</h6>
-          <div class="d-flex flex-wrap gap-3">
-            <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#e63946; display:inline-block; margin-right:6px;"></span> User Danger Point</div>
-            <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#ef4444; display:inline-block; margin-right:6px;"></span> Harassment</div>
-            <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#f97316; display:inline-block; margin-right:6px;"></span> Assault</div>
-            <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#3b82f6; display:inline-block; margin-right:6px;"></span> Theft</div>
-            <div class="d-flex align-items-center"><span style="width:12px; height:12px; border-radius:50%; background:#6b7280; display:inline-block; margin-right:6px;"></span> Other Incidents</div>
-            <div class="ms-auto text-muted"><i class="fas fa-fire me-1" style="color:#ef4444;"></i> Heatmap: Red = High Risk Area</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div id="sidebarBackdrop" class="sidebar-backdrop" aria-hidden="true"></div>
 
-</div>
-</div>
-
-  <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
 <script>
-window.onload = function () {
-  const params = new URLSearchParams(window.location.search);
-  const tab = params.get("tab");
-  if (tab) {
-    switchTab(tab);
+(function () {
+  const sidebar = document.getElementById("sidebar-wrapper");
+  const toggle = document.getElementById("sidebarToggle");
+  const backdrop = document.getElementById("sidebarBackdrop");
+  if (!sidebar || !toggle) return;
+
+  function closeSidebar() {
+    sidebar.classList.remove("open");
+    if (backdrop) backdrop.classList.remove("show");
   }
-};
+  function openSidebar() {
+    sidebar.classList.add("open");
+    if (backdrop) backdrop.classList.add("show");
+  }
+
+  toggle.addEventListener("click", function () {
+    if (sidebar.classList.contains("open")) closeSidebar();
+    else openSidebar();
+  });
+  if (backdrop) backdrop.addEventListener("click", closeSidebar);
+})();
 </script>
 
 <!-- Routine reminder popup (web-only) -->
@@ -899,6 +1166,8 @@ window.onload = function () {
         badge.textContent = "0";
         badge.style.display = "none";
       }
+      const statEl = document.getElementById("statPendingRequests");
+      if (statEl) statEl.textContent = String(n);
     }
 
     // initial render from server (if available)
@@ -944,6 +1213,8 @@ window.onload = function () {
         badge.textContent = "0";
         badge.style.display = "none";
       }
+      const statEl = document.getElementById("statPendingRequests");
+      if (statEl) statEl.textContent = String(n);
     }
 
     client.connect({}, function () {

@@ -35,6 +35,9 @@
       <i class="bi bi-calendar-check"></i> Appointments
       <c:if test="${appointmentCount > 0}"><span class="badge-count">${appointmentCount}</span></c:if>
     </a>
+    <a href="${pageContext.request.contextPath}/doctors/dashboard?section=chats" class="dd-nav-item ${section == 'chats' ? 'active' : ''}">
+      <i class="bi bi-chat-dots"></i> Chats
+    </a>
     <div class="dd-nav-label">Management</div>
     <a href="${pageContext.request.contextPath}/doctors/dashboard?section=profile" class="dd-nav-item ${section == 'profile' ? 'active' : ''}">
       <i class="bi bi-person"></i> My Profile
@@ -72,6 +75,7 @@
           <c:when test="${section == 'earnings'}">Earnings & Fees</c:when>
           <c:when test="${section == 'schedule'}">Schedule</c:when>
           <c:when test="${section == 'prescriptions'}">Prescriptions</c:when>
+          <c:when test="${section == 'chats'}">Chats</c:when>
           <c:otherwise>Dashboard</c:otherwise>
         </c:choose></h1>
         <div class="breadcrumb-text">Welcome back, Dr. ${doctor.fullName}!</div>
@@ -143,6 +147,35 @@
                     <c:if test="${a.consultationType=='VIDEO' && a.status=='CONFIRMED'}"><a href="${pageContext.request.contextPath}/consultation/video/${a.id}" target="_blank" class="dd-video-btn"><i class="bi bi-camera-video-fill"></i> Join</a></c:if>
                   </div>
                 </td></tr>
+              </c:forEach>
+            </tbody></table></div>
+          </c:if>
+        </div>
+      </div>
+    </c:if>
+
+    <%-- ══════ CHATS SECTION ══════ --%>
+    <c:if test="${section == 'chats'}">
+      <div class="dd-section">
+        <div class="dd-section-header"><h2><i class="bi bi-chat-dots"></i> My Chats</h2></div>
+        <div class="dd-section-body">
+          <c:if test="${empty chatUsers}"><div class="dd-empty"><i class="bi bi-chat-left-dots"></i><p>No chats available yet.</p></div></c:if>
+          <c:if test="${not empty chatUsers}">
+            <div style="overflow-x:auto"><table class="dd-table"><thead><tr><th>User</th><th>Actions</th></tr></thead><tbody>
+              <c:forEach var="u" items="${chatUsers}">
+                <tr>
+                  <td>
+                    <div class="dd-user-cell">
+                      <div class="user-avatar">${u.fullName.charAt(0)}</div>
+                      <span>${u.fullName}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <a href="${pageContext.request.contextPath}/doctors/chat/${doctor.id}?userId=${u.id}" target="_blank" class="dd-video-btn" style="background:#20c997; display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; text-decoration: none; border-radius: 6px;">
+                      <i class="bi bi-chat-dots-fill"></i> Open Chat
+                    </a>
+                  </td>
+                </tr>
               </c:forEach>
             </tbody></table></div>
           </c:if>

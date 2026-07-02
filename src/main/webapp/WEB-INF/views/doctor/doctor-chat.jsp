@@ -39,12 +39,24 @@
 </head>
 <body>
   <div class="ch-header">
-    <a href="${pageContext.request.contextPath}/doctors/view/${doctor.id}" class="ch-back"><i class="bi bi-arrow-left"></i></a>
-    <div class="ch-avatar">${doctor.fullName.charAt(0)}</div>
-    <div class="ch-doc-info">
-      <h3>Dr. ${doctor.fullName}</h3>
-      <p>${doctor.specialization} • <span style="color:#20c997">● Online</span></p>
-    </div>
+    <c:choose>
+      <c:when test="${senderType == 'USER'}">
+        <a href="${pageContext.request.contextPath}/doctors/view/${doctor.id}" class="ch-back"><i class="bi bi-arrow-left"></i></a>
+        <div class="ch-avatar">${doctor.fullName.charAt(0)}</div>
+        <div class="ch-doc-info">
+          <h3>Dr. ${doctor.fullName}</h3>
+          <p>${doctor.specialization} • <span style="color:#20c997">● Online</span></p>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <a href="${pageContext.request.contextPath}/doctors/dashboard?section=chats" class="ch-back"><i class="bi bi-arrow-left"></i></a>
+        <div class="ch-avatar">${targetUserName != null ? targetUserName.charAt(0) : 'U'}</div>
+        <div class="ch-doc-info">
+          <h3>${targetUserName}</h3>
+          <p>Patient • <span style="color:#20c997">● Online</span></p>
+        </div>
+      </c:otherwise>
+    </c:choose>
     <div class="ch-actions">
       <c:set var="callUrl" value="${pageContext.request.contextPath}/doctors/voice-call/${doctor.id}" />
       <c:set var="videoUrl" value="${pageContext.request.contextPath}/doctors/video-call/${doctor.id}" />
@@ -91,6 +103,10 @@
     stompClient.connect({}, function() {
       stompClient.subscribe('/topic/doctor-chat/' + doctorId, function(payload) {
         const msg = JSON.parse(payload.body);
+        
+        // Ensure the message is for the current conversation
+        if (targetUserId && msg.userId && msg.userId != targetUserId) return;
+        
         appendMsg(msg.message, msg.senderType === senderType ? 'sent' : 'received');
       });
     });

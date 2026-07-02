@@ -222,6 +222,7 @@ public class MartialArtsCenterController {
         model.addAttribute("totalBatchCount", totalBatches);
         model.addAttribute("videos", videos);
         model.addAttribute("user", user);
+        model.addAttribute("activeTab", "explore");
 
         // Sorting days for all centers chronologically
         for (MartialArtsCenter c : centers) {
