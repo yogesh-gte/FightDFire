@@ -50,7 +50,7 @@
     <a href="${pageContext.request.contextPath}/admin/adminDashboard" class="text-white d-lg-none me-2" title="Back to Dashboard">
         <i class="fas fa-arrow-left"></i>
     </a>
-    <span class="fw-bold">FightDFire Admin</span>
+    <span class="fw-bold">Fight D Fear Admin</span>
   </div>
   <a href="${pageContext.request.contextPath}/admin/logout" class="text-white text-decoration-none small">Logout</a>
 </div>
@@ -166,3 +166,4 @@
 
 </body>
 </html>
+

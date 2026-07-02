@@ -15,7 +15,7 @@
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 
     <style>
     /* ============================================
@@ -249,7 +249,7 @@
 
     <header id="header" class="header d-flex align-items-center sticky-top">
       <div class="container-fluid container-xl d-flex align-items-center">
-        <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
+        <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
         <nav id="navmenu" class="navmenu">
           <ul>
             <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
@@ -326,4 +326,5 @@
 
 </body>
 </html>
+
 

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Video — FightDFire Admin</title>
+    <title>Upload Video — Fight D Fear Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -148,6 +148,28 @@
         background: var(--maroon-light);
     }
 
+    .radio-group {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+    }
+
+    .radio-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        color: #4b5563;
+    }
+
+    .radio-option input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--maroon);
+        cursor: pointer;
+    }
+
     .btn-submit:active {
         transform: translateY(0);
     }
@@ -208,6 +230,20 @@
         </div>
 
         <div class="form-group">
+            <label>Upload Type</label>
+            <div class="radio-group">
+                <label class="radio-option">
+                    <input type="radio" name="isReel" value="false" checked>
+                    <span>Video</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="isReel" value="true">
+                    <span>Reel</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="category">Category</label>
             <select name="category" id="category">
                 <c:forEach var="category" items="${categories}">
@@ -226,11 +262,21 @@
         </button>
     </form>
 
-    <a href="${pageContext.request.contextPath}/video/videoManagement" class="back-btn">
-        <i class="fas fa-arrow-left"></i> Back to Video Library
-    </a>
+    <c:choose>
+        <c:when test="${not empty sessionScope.admin}">
+            <a href="${pageContext.request.contextPath}/video/videoManagement" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Video Library
+            </a>
+        </c:when>
+        <c:otherwise>
+            <a href="${pageContext.request.contextPath}/video/allVideos" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Video Gallery
+            </a>
+        </c:otherwise>
+    </c:choose>
 </div>
 
 </body>
 </html>
+
 

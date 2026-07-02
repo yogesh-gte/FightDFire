@@ -170,7 +170,7 @@
 <body>
 
 <div class="topbar">
-  <span class="brand">&#x1F6E1;&#xFE0F; FightDFire Admin</span>
+  <span class="brand">&#x1F6E1;&#xFE0F; Fight D Fear Admin</span>
   <a href="${pageContext.request.contextPath}/admin/logout" class="btn-logout">
     <i class="fas fa-sign-out-alt"></i> Logout
   </a>
@@ -211,6 +211,8 @@
             <i class="fas fa-store me-2"></i>
             <c:choose>
                 <c:when test="${selectedCategory == 'WOMEN_PRODUCTS'}">Women Products Verification</c:when>
+                <c:when test="${selectedCategory == 'WOMEN_LAWYER'}">Women Lawyer Verification</c:when>
+                <c:when test="${selectedCategory == 'FITNESS_ZUMBA'}">Fitness & Zumba Verification</c:when>
                 <c:otherwise>Marketplace Provider Verification</c:otherwise>
             </c:choose>
           </h4>
@@ -368,3 +370,4 @@
 
 </body>
 </html>
+

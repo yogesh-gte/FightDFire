@@ -3,6 +3,7 @@ package in.sp.main.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class BuddyService {
         a.setStartLngRounded(round3(lng));
         a.setDestinationText(normalizeDestination(destinationText));
         a.setCreatedAt(new Date());
-        a.setExpiresAt(new Date(System.currentTimeMillis() + Math.max(10, Math.min(180, windowMinutes)) * 60_000L));
+        a.setExpiresAt(new Date(System.currentTimeMillis() + Math.max(10, Math.min(120, windowMinutes)) * 60_000L));
         a.setActive(true);
         return availabilityRepo.save(a);
     }
@@ -138,6 +139,12 @@ public class BuddyService {
             throw new IllegalStateException("TARGET_NOT_VERIFIED");
         }
 
+        BuddyRequest existing = requestRepo.findTop1ByFromUserAndToUserAndStatusOrderByCreatedAtDesc(
+                fromUser, a.getUser(), BuddyRequestStatus.PENDING);
+        if (existing != null) {
+            return existing;
+        }
+
         BuddyRequest r = new BuddyRequest();
         r.setFromUser(fromUser);
         r.setToUser(a.getUser());
@@ -148,11 +155,64 @@ public class BuddyService {
     }
 
     public List<BuddyRequest> incomingPending(User toUser) {
-        return requestRepo.findByToUserAndStatusOrderByCreatedAtDesc(toUser, BuddyRequestStatus.PENDING);
+        return dedupeIncoming(requestRepo.findByToUserAndStatusOrderByCreatedAtDesc(toUser, BuddyRequestStatus.PENDING));
     }
 
     public List<BuddyRequest> outgoingPending(User fromUser) {
-        return requestRepo.findByFromUserAndStatusOrderByCreatedAtDesc(fromUser, BuddyRequestStatus.PENDING);
+        return dedupeOutgoing(requestRepo.findByFromUserAndStatusOrderByCreatedAtDesc(fromUser, BuddyRequestStatus.PENDING));
+    }
+
+    public Map<String, Object> pendingRequestsPayload(User user) {
+        Map<String, Object> out = new HashMap<>();
+        out.put("incoming", toIncomingMaps(incomingPending(user)));
+        out.put("outgoing", toOutgoingMaps(outgoingPending(user)));
+        return out;
+    }
+
+    private List<Map<String, Object>> toIncomingMaps(List<BuddyRequest> list) {
+        List<Map<String, Object>> rows = new ArrayList<>();
+        for (BuddyRequest r : list) {
+            if (r.getFromUser() == null) continue;
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", r.getId());
+            m.put("fromUserId", r.getFromUser().getId());
+            m.put("fromName", r.getFromUser().getFullName());
+            m.put("fromAge", r.getFromUser().getAge());
+            rows.add(m);
+        }
+        return rows;
+    }
+
+    private List<Map<String, Object>> toOutgoingMaps(List<BuddyRequest> list) {
+        List<Map<String, Object>> rows = new ArrayList<>();
+        for (BuddyRequest r : list) {
+            if (r.getToUser() == null) continue;
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", r.getId());
+            m.put("toUserId", r.getToUser().getId());
+            m.put("toName", r.getToUser().getFullName());
+            m.put("toAge", r.getToUser().getAge());
+            rows.add(m);
+        }
+        return rows;
+    }
+
+    private static List<BuddyRequest> dedupeIncoming(List<BuddyRequest> list) {
+        Map<Long, BuddyRequest> bySender = new LinkedHashMap<>();
+        for (BuddyRequest r : list) {
+            if (r.getFromUser() == null || r.getFromUser().getId() == null) continue;
+            bySender.putIfAbsent(r.getFromUser().getId(), r);
+        }
+        return new ArrayList<>(bySender.values());
+    }
+
+    private static List<BuddyRequest> dedupeOutgoing(List<BuddyRequest> list) {
+        Map<Long, BuddyRequest> byTarget = new LinkedHashMap<>();
+        for (BuddyRequest r : list) {
+            if (r.getToUser() == null || r.getToUser().getId() == null) continue;
+            byTarget.putIfAbsent(r.getToUser().getId(), r);
+        }
+        return new ArrayList<>(byTarget.values());
     }
 
     public BuddyRequest accept(User toUser, Long requestId) {

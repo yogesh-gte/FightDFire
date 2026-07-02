@@ -99,6 +99,9 @@ public class UserController {
     @Autowired
     private MartialArtsCenterService martialArtsCenterService;
 
+    @Autowired
+    private in.sp.main.Repository.IncidentRepository incidentRepository;
+
     @GetMapping("/training-journey")
     public String showTrainingJourney(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -286,7 +289,18 @@ public class UserController {
                 if (user.getDob() == null || user.getDob().trim().isEmpty()) {
                     user.setDob(request.getParameter("dob"));
                 }
-                if (user.getAge() == null) {
+                if (user.getDob() != null && !user.getDob().trim().isEmpty()) {
+                    try {
+                        java.time.LocalDate birthDate = java.time.LocalDate.parse(user.getDob());
+                        int calculatedAge = java.time.Period.between(birthDate, java.time.LocalDate.now()).getYears();
+                        user.setAge(calculatedAge);
+                    } catch (Exception e) {
+                        String ageParam = request.getParameter("age");
+                        if (ageParam != null && !ageParam.isEmpty()) {
+                            try { user.setAge(Integer.parseInt(ageParam)); } catch (NumberFormatException ex) {}
+                        }
+                    }
+                } else if (user.getAge() == null) {
                     String ageParam = request.getParameter("age");
                     if (ageParam != null && !ageParam.isEmpty()) {
                         try { user.setAge(Integer.parseInt(ageParam)); } catch (NumberFormatException e) {}
@@ -317,6 +331,12 @@ public class UserController {
                     model.addAttribute("error", "Date of Birth cannot be in the future.");
                     return "user";
                 }
+            }
+
+            // Phone validation
+            if (user.getPhoneNumber() == null || !user.getPhoneNumber().trim().matches("^\\d{10}$")) {
+                model.addAttribute("error", "Phone number must be exactly 10 digits.");
+                return "user";
             }
 
             String rawPassword = user.getPassword().trim();
@@ -432,9 +452,13 @@ public class UserController {
         
         boolean isFollowing = false;
         boolean isPending = false;
+        boolean isFriend = false;
+        boolean hasIncomingRequest = false;
         if (currentUser != null) {
             isFollowing = followService.isAcceptedFollower(currentUser.getId(), profileUser.getId());
             isPending = followService.isPendingRequest(currentUser.getId(), profileUser.getId());
+            isFriend = followService.getFriends(currentUser.getId()).contains(profileUser);
+            hasIncomingRequest = followService.isPendingRequest(profileUser.getId(), currentUser.getId());
         }
 
         int completionPercentage = calculateCompletionPercentage(profileUser);
@@ -449,9 +473,12 @@ public class UserController {
         model.addAttribute("postsCount", profileUserVideos.size());
         model.addAttribute("followersCount", followService.getFollowers(userId).size());
         model.addAttribute("followingCount", followService.getFollowing(userId).size());
+        model.addAttribute("friendsCount", followService.getFriends(userId).size());
 
         model.addAttribute("isFollowing", isFollowing);
         model.addAttribute("isPending", isPending);
+        model.addAttribute("isFriend", isFriend);
+        model.addAttribute("hasIncomingRequest", hasIncomingRequest);
 
         return "user-profile1";
     }
@@ -495,6 +522,9 @@ public class UserController {
         model.addAttribute("approvedCentres", approvedCentres);
         model.addAttribute("approvedCentreCount", approvedCentres.size());
 
+        List<in.sp.main.Entities.Incident> myIncidents = incidentRepository.findByUser(loggedInUser);
+        model.addAttribute("myIncidents", myIncidents);
+
         return "userDashboard";
     }
 
@@ -533,6 +563,10 @@ public class UserController {
         User existingUser = userService.getUserById(id);
         if (existingUser == null) {
             return "error";
+        }
+
+        if (phone == null || !phone.trim().matches("^\\d{10}$")) {
+            return "redirect:/users/update/" + id;
         }
 
         existingUser.setFullName(name);

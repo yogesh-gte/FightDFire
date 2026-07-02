@@ -7,7 +7,7 @@
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+          href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <style>
     /* ============================================
        ORIGINAL STYLES (kept exactly as is)
@@ -505,6 +505,9 @@
   });
 </script>
 
+<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+
 </body>
 </html>
+
 

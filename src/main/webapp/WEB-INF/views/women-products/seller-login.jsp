@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Login — FightDFire</title>
+    <title>Seller Login — Fight D Fear</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <style>
         :root {
             --brand-purple: #7C2D5E;
@@ -169,7 +169,7 @@
     <div class="auth-container">
         <div class="visual-panel">
             <div class="content">
-                <div class="brand-logo"><i class="bi bi-shield-check"></i> FightDFire</div>
+                <div class="brand-logo"><i class="bi bi-shield-check"></i> Fight D Fear</div>
                 <p class="brand-tagline">Empowering Women's Safety Through Technology. Your safety is our mission — anytime, anywhere.</p>
                 
                 <ul class="feature-list">
@@ -219,7 +219,7 @@
                             <input type="checkbox" name="remember" style="width:18px; height:18px; accent-color:var(--brand-pink);">
                             Remember me
                         </label>
-                        <a href="#" class="forgot-pass">Forgot Password?</a>
+                        <a href="${pageContext.request.contextPath}/auth/forgot-password" class="forgot-pass">Forgot Password?</a>
                     </div>
 
                     <button type="submit" class="btn-fdf-login">
@@ -237,3 +237,4 @@
     </div>
 </body>
 </html>
+

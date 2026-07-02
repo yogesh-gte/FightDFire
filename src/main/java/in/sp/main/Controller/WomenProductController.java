@@ -53,6 +53,11 @@ public class WomenProductController {
             model.addAttribute("error", "Email already registered.");
             return "women-products/seller-register";
         }
+
+        if (phone == null || !phone.trim().matches("^\\d{10}$")) {
+            model.addAttribute("error", "Phone number must be exactly 10 digits.");
+            return "women-products/seller-register";
+        }
         try {
             WomenProductSeller s = new WomenProductSeller();
             s.setFullName(fullName);
@@ -86,7 +91,14 @@ public class WomenProductController {
         if (opt.isEmpty()) { model.addAttribute("error", "Seller not found."); return "women-products/seller-login"; }
         WomenProductSeller s = opt.get();
         if (!s.getPassword().equals(password)) { model.addAttribute("error", "Invalid password."); return "women-products/seller-login"; }
-        if (s.getVerificationStatus() != VerificationStatus.VERIFIED) { model.addAttribute("error", "Your account is pending admin verification."); return "women-products/seller-login"; }
+        if (s.getVerificationStatus() == VerificationStatus.PENDING) {
+            model.addAttribute("error", "Your account is pending verification by Admin. Please check back later.");
+            return "women-products/seller-login";
+        }
+        if (s.getVerificationStatus() == VerificationStatus.REJECTED) {
+            model.addAttribute("error", "Your account has been rejected by admin.");
+            return "women-products/seller-login";
+        }
         session.setAttribute("loggedSeller", s);
         return "redirect:/women-products/seller/dashboard";
     }

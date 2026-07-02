@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Video Gallery | FightDFire</title>
+    <title>Video Gallery | Fight D Fear</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 
     <style>
         :root {
@@ -239,7 +239,13 @@
 
     <!-- Header -->
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
-    <div class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
+    <div class="dashboard-bar container-fluid container-xl d-flex justify-content-end gap-3">
+        <a href="${pageContext.request.contextPath}/video/allReels" class="dashboard-btn">
+            Reels Gallery <i class="bi bi-camera-reels"></i>
+        </a>
+        <a href="${pageContext.request.contextPath}/video/uploadVideo" class="dashboard-btn">
+            Upload Video <i class="bi bi-cloud-arrow-up"></i>
+        </a>
         <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
             Dashboard <i class="bi bi-arrow-right"></i>
         </a>
@@ -265,7 +271,7 @@
                     <a href="${pageContext.request.contextPath}/video/allVideos" class="category-tag ${empty param.category ? 'active' : ''}">All</a>
                     <c:forEach var="cat" items="${categories}">
                         <a href="${pageContext.request.contextPath}/video/allVideos?category=${cat}" 
-                           class="category-tag ${param.category == cat ? 'active' : ''}">${cat}</a>
+                           class="category-tag ${param.category == cat ? 'active' : ''}"><c:out value="${cat}"/></a>
                     </c:forEach>
                 </div>
             </div>
@@ -375,3 +381,4 @@
     </script>
 </body>
 </html>
+

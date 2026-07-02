@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Progress | FightDFire</title>
+    <title>My Progress | Fight D Fear</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -101,7 +101,7 @@
     <aside class="sidebar">
         <div class="sidebar-logo">
             <i class="fas fa-hand-fist fa-2x text-danger"></i>
-            <span>FightDFire</span>
+            <span>Fight D Fear</span>
         </div>
         <ul class="nav-menu">
             <li class="nav-item">
@@ -334,3 +334,4 @@
     </script>
 </body>
 </html>
+

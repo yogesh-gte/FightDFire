@@ -49,7 +49,8 @@
     .ma-sidebar-btn.active{background:linear-gradient(135deg,rgba(123,44,191,0.1),rgba(74,14,120,0.06));color:var(--ma-purple-l);box-shadow:inset 3px 0 0 var(--ma-purple-l)}
     .ma-sidebar-btn.active i{color:var(--ma-purple-l)}
     .ma-sidebar-footer{padding:16px 18px;border-top:1px solid var(--ma-border);font-size:11px;color:var(--ma-muted)}
-    .ma-sidebar-footer a{color:var(--ma-purple-l);text-decoration:none;font-weight:600}
+    .ma-sidebar-footer a{color:var(--ma-purple-l);text-decoration:none;font-weight:600;transition:all 0.25s ease;display:inline-block}
+    .ma-sidebar-footer a:hover{color:var(--ma-purple);text-shadow:0 0 2px rgba(124,45,94,0.15);transform:translateX(3px)}
 
     /* Content */
     .ma-content{min-width:0;display:flex;flex-direction:column}

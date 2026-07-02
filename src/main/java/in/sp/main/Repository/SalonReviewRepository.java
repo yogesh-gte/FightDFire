@@ -17,6 +17,8 @@ public interface SalonReviewRepository extends JpaRepository<SalonReview, Long> 
     List<SalonReview> findBySalonId(int salonId);
     
     List<SalonReview> findBySalon(Salon salon);
+
+    List<SalonReview> findTop20ByOrderByCreatedAtDesc();
 }
  
  

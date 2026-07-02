@@ -19,7 +19,7 @@
 <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 <!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 <style>
@@ -27,15 +27,15 @@
        ROOT VARIABLES (your brand colors)
        ============================================ */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b; /* Deep Navy */
+        --primary-purple-light: #312e81; /* Light Navy */
+        --primary-coral: #f43f5e; /* Rose Pink */
+        --primary-coral-dark: #e11d48;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
-        --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --light-bg: #f8fafc;
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --gradient-gold: linear-gradient(135deg, #ffd700, #ffb347);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
@@ -344,15 +344,16 @@
     #navmenu ul li a::after, .navmenu ul li a::after {
         content: '';
         position: absolute;
-        bottom: -4px;
-        left: 0;
+        bottom: 12px;
+        left: 15px;
         width: 0%;
         height: 2px;
         background: var(--gradient-primary);
         transition: width 0.3s ease;
     }
-    #navmenu ul li a:hover::after, .navmenu ul li a:hover::after {
-        width: 100%;
+    #navmenu ul li a:hover::after, .navmenu ul li a:hover::after,
+    #navmenu ul li a.active::after, .navmenu ul li a.active::after {
+        width: calc(100% - 30px);
     }
     #navmenu ul li a:hover, .navmenu ul li a:hover {
         color: var(--primary-purple) !important;
@@ -457,8 +458,129 @@
     }
     .header-profile-img:hover {
         transform: scale(1.15) rotate(5deg);
+    }
+    .header-profile-img:hover {
+        transform: scale(1.15) rotate(5deg);
         border-color: var(--primary-coral);
         box-shadow: var(--shadow-md);
+    }
+
+
+
+    /* === Sidebar Layout CSS === */
+    #wrapper {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+    }
+    #sidebar-wrapper {
+        min-width: 280px;
+        max-width: 280px;
+        background: var(--primary-purple);
+        color: white;
+        transition: all 0.3s ease-in-out;
+        min-height: calc(100vh - 80px); /* Adjust for header */
+        z-index: 1000;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 80px; /* Adjust based on header height */
+        height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+    #sidebar-wrapper::-webkit-scrollbar {
+        width: 6px;
+    }
+    #sidebar-wrapper::-webkit-scrollbar-thumb {
+        background-color: var(--primary-purple-light);
+        border-radius: 10px;
+    }
+    .sidebar-heading {
+        padding: 20px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.1);
+    }
+    .list-group-item {
+        background: transparent;
+        color: rgba(255,255,255,0.8);
+        border: none;
+        padding: 15px 20px;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-left: 4px solid transparent;
+        text-decoration: none;
+    }
+    .list-group-item i {
+        font-size: 1.2rem;
+        width: 24px;
+        text-align: center;
+        transition: all 0.3s;
+    }
+    .list-group-item:hover, .list-group-item.active {
+        background: rgba(244, 63, 94, 0.1);
+        color: white;
+        border-left-color: var(--primary-coral);
+    }
+    .list-group-item:hover i {
+        color: var(--primary-coral);
+        transform: scale(1.1);
+    }
+    .list-group-item.sos-link {
+        background: rgba(244, 63, 94, 0.15);
+        color: var(--primary-coral);
+        font-weight: 700;
+        border-left-color: var(--primary-coral);
+    }
+    .list-group-item.sos-link:hover {
+        background: var(--primary-coral);
+        color: white;
+    }
+    .list-group-item.sos-link:hover i {
+        color: white;
+    }
+    
+    #page-content-wrapper {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Animated Hero Updates */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(-45deg, #1e1b4b, #312e81, #7c2d5e, #f43f5e);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .hero-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at center, transparent 0%, rgba(30, 27, 75, 0.6) 100%);
+        z-index: 1;
+    }
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 40px 20px;
+        text-align: center;
     }
 </style>
 </head>
@@ -467,290 +589,174 @@
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
-		<section class="hero-section" style="background-image:  url('${pageContext.request.contextPath}/assets/img/2000.jpg'); background-size: cover; background-position: center top; position: relative; width: 100%; min-height: 100vh;">
-		    <div class="container text-center text-white d-flex flex-column justify-content-center align-items-center h-100" style="text-shadow: 0 2px 12px rgba(0,0,0,0.7);">
-		        <div class="icon mb-3">
-		            <span class="flaticon-lotus" style="font-size: 3rem; color: #fff;"></span>
-		        </div>
-                <h1 class="display-4 fw-bold mb-3">
-                    Welcome, <span class="text-gradient">${user.fullName}</span>!
-                </h1>
-		        <h2 class="h1 mb-3">Empowering Women's Safety Through Technology</h2>
-		        <p>Your safety is our mission. Discover features that protect, inform, and connect you in times of need.</p>
-		       
-		    </div>
-		</section>
-
-<!-- ======= User Dashboard Section ======= -->
-<section class="services section light-background py-5">
-  <div class="container">
-    <div class="text-center mb-5">
-      <h2>Your Dashboard</h2>
-      <p>Quick Access to all features</p>
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <div class="sidebar-heading">
+            <i class="bi bi-grid-1x2-fill me-2"></i> Menu
+        </div>
+        <div class="list-group list-group-flush">
+            <!-- 🚨 SOS Emergency -->
+            <a href="${pageContext.request.contextPath}/sos/dashboard" class="list-group-item list-group-item-action sos-link">
+                <i class="fas fa-exclamation-triangle"></i> SOS Emergency
+            </a>
+            <!-- Profile -->
+            <a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="list-group-item list-group-item-action">
+                <i class="bi bi-person-badge"></i> Your Profile
+            </a>
+            <!-- Martial Arts Centres -->
+            <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="list-group-item list-group-item-action">
+                <i class="bi bi-shield-check"></i> Martial Arts Centres
+            </a>
+            <!-- View Videos -->
+            <a href="${pageContext.request.contextPath}/video/allVideos" class="list-group-item list-group-item-action">
+                <i class="bi bi-play-circle"></i> View Videos
+            </a>
+            <!-- Report Incident -->
+            <a href="${pageContext.request.contextPath}/incidents/report" class="list-group-item list-group-item-action">
+                <i class="bi bi-file-earmark-medical"></i> Report Incident
+            </a>
+            <!-- Glow Space -->
+            <a href="${pageContext.request.contextPath}/index/templates" class="list-group-item list-group-item-action">
+                <i class="bi bi-stars"></i> Glow Space
+            </a>
+            <!-- Let's Connect -->
+            <a href="${pageContext.request.contextPath}/users/search?tab=requests" class="list-group-item list-group-item-action">
+                <i class="bi bi-people"></i> Let's Connect
+                <span id="pendingRequestsBadge" class="badge bg-danger ms-auto" style="display:none;">0</span>
+            </a>
+            <!-- Chat -->
+            <a href="${pageContext.request.contextPath}/chat/users" class="list-group-item list-group-item-action">
+                <i class="bi bi-chat-dots"></i> Chat
+            </a>
+            <!-- Reels -->
+            <a href="${pageContext.request.contextPath}/video/reels" class="list-group-item list-group-item-action">
+                <i class="bi bi-camera-video"></i> Reels
+            </a>
+            <!-- My Wallet -->
+            <a href="${pageContext.request.contextPath}/users/wallet" class="list-group-item list-group-item-action">
+                <i class="bi bi-wallet2"></i> My Wallet
+            </a>
+            <!-- Buddy Mode -->
+            <a href="${pageContext.request.contextPath}/buddy" class="list-group-item list-group-item-action">
+                <i class="bi bi-person-walking"></i> Buddy Mode
+            </a>
+            <!-- Women Doctors -->
+            <a href="${pageContext.request.contextPath}/doctors/list" class="list-group-item list-group-item-action">
+                <i class="bi bi-heart-pulse"></i> Women Doctors
+            </a>
+            <!-- Women Marketplace -->
+            <a href="${pageContext.request.contextPath}/marketplace" class="list-group-item list-group-item-action">
+                <i class="bi bi-shop"></i> Women Marketplace
+            </a>
+            <!-- Women Lawyers -->
+            <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="list-group-item list-group-item-action">
+                <i class="bi bi-briefcase"></i> Women Lawyers
+            </a>
+            <!-- Fitness & Zumba -->
+            <a href="${pageContext.request.contextPath}/marketplace/list?category=FITNESS_ZUMBA" class="list-group-item list-group-item-action">
+                <i class="bi bi-activity"></i> Fitness & Zumba
+            </a>
+            <!-- Women Products -->
+            <a href="${pageContext.request.contextPath}/women-products" class="list-group-item list-group-item-action">
+                <i class="bi bi-bag-heart"></i> Women Products
+            </a>
+            <!-- Journey Safety Tracker -->
+            <a href="${pageContext.request.contextPath}/journey" class="list-group-item list-group-item-action">
+                <i class="bi bi-pin-map"></i> Journey Safety Tracker
+            </a>
+            <!-- Routine Reminders -->
+            <a href="${pageContext.request.contextPath}/reminders" class="list-group-item list-group-item-action">
+                <i class="bi bi-alarm"></i> Routine Reminders
+            </a>
+        </div>
     </div>
-    <div class="row g-4">
+    <!-- /#sidebar-wrapper -->
 
-      <!-- 🚨 SOS Emergency Card — FIRST and MOST PROMINENT -->
-      <div class="col-md-4">
-        <a href="${pageContext.request.contextPath}/sos/dashboard" class="text-decoration-none">
-          <div class="dashboard-card h-100 d-flex flex-column" style="
-              background: linear-gradient(135deg, #ff2d55 0%, #cc0033 100%);
-              border: 2px solid rgba(255,45,85,0.5);
-              color: white; position: relative; overflow: hidden;">
-            <div style="position: absolute; top: -20px; right: -20px; width: 100px; height: 100px;
-                border-radius: 50%; background: rgba(255,255,255,0.1);"></div>
-            <div style="position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px;
-                border-radius: 50%; background: rgba(255,255,255,0.05);"></div>
-            <div style="font-size: 48px; margin-bottom: 10px;">🚨</div>
-            <h4 style="color: white; font-weight: 800;">SOS Emergency</h4>
-            <p style="color: rgba(255,255,255,0.85);">One tap to alert contacts, volunteers & auto-call for help.</p>
-            <span class="btn btn-light btn-lg d-flex justify-content-center align-items-center gap-2 mt-auto"
-                  style="font-weight: 700; color: #cc0033;">
-                <i class="fas fa-exclamation-triangle"></i> Open SOS
-            </span>
-          </div>
-        </a>
-      </div>
-
-      <!-- Profile Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/img/1111111.jpg" alt="Profile">
-          <h4>Your Profile</h4>
-          <p>Manage and update your personal details easily.</p>
-          <a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Go to Profile</a>
-        </div>
-      </div>
-
-
-
-      <!-- Centres Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/beauty/images/centres.jpg" alt="Centres">
-          <h4>Martial Arts Centres</h4>
-          <p>
-            <c:choose>
-              <c:when test="${approvedCentreCount > 0}">${approvedCentreCount} admin-verified centre(s) ready to book.</c:when>
-              <c:otherwise>Find verified training centres after admin approval.</c:otherwise>
-            </c:choose>
-          </p>
-          <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Explore &amp; Book</a>
-        </div>
-      </div>
-
-      <!-- Videos Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/beauty/images/1010.png" alt="Videos">
-          <h4>View Videos</h4>
-          <p>Watch lessons and motivational clips anytime.</p>
-          <a href="${pageContext.request.contextPath}/video/allVideos" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Watch Now</a>
-        </div>
-      </div>
-
-      <!-- Report Incident Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/images/1666.jpg" alt="Report">
-          <h4>Report Incident</h4>
-          <p>Quickly report Safety issues or concerns.</p>
-          <a href="${pageContext.request.contextPath}/incidents/report" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Report Now</a>
-        </div>
-      </div>
-
-
- <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/images/Glow Space.jpg" alt="Upload">
-          <h4>Glow Space</h4>
-          <p>Explore wellness and salon offers available.</p>
-          <a href="${pageContext.request.contextPath}/index/templates" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Check Now</a>
-        </div>
-      </div>
-
- <div class="col-md-4">
-  <div class="dashboard-card h-100 d-flex flex-column position-relative">
-
-    <!-- 🔔 Notification Badge -->
-    <span id="pendingRequestsBadge"
-          class="badge bg-danger position-absolute top-0 end-0 m-3"
-          style="display:none;">
-      0
-    </span>
-
-    <img src="${pageContext.request.contextPath}/assets/images/44444.jpg" alt="Users">
-
-    <h4>Let’s Connect</h4>
-    <p>Connect with friends. Build Community.</p>
-
-    <!-- 👇 Opens Requests Tab directly -->
-    <a href="${pageContext.request.contextPath}/users/search?tab=requests"
-       class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-       Find Now
-    </a>
-
-  </div>
-</div>
-
-
-<!-- Chat With Users Card -->
-<div class="col-md-4">
-  <div class="dashboard-card h-100 d-flex flex-column">
-    <img src="${pageContext.request.contextPath}/assets/img/55555.jpg" alt="Chat">
-    <h4>Chat</h4>
-    <p>Send messages and stay connected with the community.</p>
-    <a href="${pageContext.request.contextPath}/chat/users"
-       class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-       Open Chat
-    </a>
-  </div>
-</div>
-
-
-
-
-
-
-
-      <!-- Reels Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/images/1333.jpg" alt="Reels">
-          <h4>Reels</h4>
-          <p>Share your content, inspire others and EARN coins by creating short clips.</p>
-          <div class="d-grid gap-2">
-            <a href="${pageContext.request.contextPath}/video/reels" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Watch Now</a>
-            <a href="${pageContext.request.contextPath}/video/upload?isReel=true" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">Create Reel 🎬</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Wallet Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-		<img src="${pageContext.request.contextPath}/assets/img/8888.jpg" alt="My wallet">
-          <div style="font-size: 80px; text-align: center; padding: 20px;"></div>
-          <h4>My Wallet</h4>
-          <p>View your earned coins and redeem exciting rewards.</p>
-          <a href="${pageContext.request.contextPath}/users/wallet" class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">View Wallet</a>
-        </div>
-      </div>
-
-      <!-- Buddy Mode Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/img/9999.jpg" alt="Buddy Mode">
-          <h4>Buddy Mode</h4>
-          <p>Find a nearby verified buddy going to a similar destination.</p>
-          <a href="${pageContext.request.contextPath}/buddy"
-             class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-            Open Buddy Mode
-          </a>
-        </div>
-      </div>
-
-      <!-- Women Doctors Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/images/1000.jpg" alt="Women Doctors">
-          <h4>Women Doctors</h4>
-          <p>Find verified female doctors and book appointments.</p>
-          <a href="${pageContext.request.contextPath}/doctors/list"
-             class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-            Browse Doctors
-          </a>
-        </div>
-      </div>
-
-      <!-- Women Marketplace Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/images/111.jpg" alt="Marketplace">
-          <h4>Women Marketplace</h4>
-          <p>Tutors, home bakers, language trainers (verified).</p>
-          <a href="${pageContext.request.contextPath}/marketplace"
-             class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-            Open Marketplace
-          </a>
-        </div>
-      </div>
-
-      <!-- Women Products Shop Card -->
-      <div class="col-md-4">
-		<div class="dashboard-card h-100 d-flex flex-column">
-		<img src="${pageContext.request.contextPath}/assets/images/1222.jpg" alt="Womenproducts">
-			<h4 style="background: linear-gradient(135deg, #ff6b9d, #c44569); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Women Products</h4>
-			     <p>Shop curated products by women — skincare, wellness, clothing & more.</p>
-				 <a href="${pageContext.request.contextPath}/women-products" 
-				 	class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-				 	            Shop now	 
-				 </a> 
-          </div>
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
         
-      </div>
-
-      <!-- Journey Safety Tracker Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/images/1444.jpg" alt="Journey Safety Tracker">
-          <h4>Journey Safety Tracker</h4>
-          <p>Set an arrival time. If you don’t check-in, contacts can be alerted.</p>
-          <a href="${pageContext.request.contextPath}/journey"
-             class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-            Start Timer
-          </a>
-        </div>
-      </div>
-
-      <!-- Routine Reminders Card -->
-      <div class="col-md-4">
-        <div class="dashboard-card h-100 d-flex flex-column">
-          <img src="${pageContext.request.contextPath}/assets/images/1555.jpg" alt="Routine Reminders">
-          <h4>Routine Reminders</h4>
-          <p>Get safety reminders based on your routine (web-only).</p>
-          <a href="${pageContext.request.contextPath}/reminders"
-             class="btn btn-watch-video btn-lg d-flex justify-content-center align-items-center gap-2">
-            Manage Reminders
-          </a>
-        </div>
-      </div>
-
-      <c:if test="${not empty approvedCentres}">
-      <div class="col-12 mt-2">
-        <div class="dashboard-card p-4">
-          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-            <div>
-              <h4 class="mb-1">Verified Martial Arts Centres</h4>
-              <p class="text-muted small mb-0">Admin-approved centres you can book right now</p>
-            </div>
-            <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn btn-watch-video btn-sm">View all</a>
-          </div>
-          <div class="row g-3">
-            <c:forEach var="c" items="${approvedCentres}" begin="0" end="5">
-              <div class="col-md-4">
-                <div class="border rounded-4 p-3 h-100 bg-light">
-                  <h6 class="fw-bold mb-1">${c.name}</h6>
-                  <p class="text-muted small mb-2"><i class="bi bi-geo-alt me-1"></i>${c.location}</p>
-                  <p class="small mb-3">
-                    <c:choose>
-                      <c:when test="${not empty c.batches}">${c.batches.size()} batch(es) open</c:when>
-                      <c:otherwise>Contact for schedule</c:otherwise>
-                    </c:choose>
-                  </p>
-                  <a href="${pageContext.request.contextPath}/centres/details/${c.id}" class="btn btn-sm btn-outline-danger rounded-pill me-1">Details</a>
-                  <c:if test="${not empty c.batches}">
-                    <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${c.id}?batchId=${c.batches[0].id}" class="btn btn-sm btn-danger rounded-pill">Book</a>
-                  </c:if>
+        <!-- Animated Hero Section -->
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            
+            <div class="container hero-content text-center text-white">
+                <div class="icon mb-3">
+                    <span class="flaticon-lotus" style="font-size: 3rem; color: #fff;"></span>
                 </div>
-              </div>
-            </c:forEach>
+                <h1 class="display-4 fw-bold mb-3" style="font-family: 'Playfair Display', serif;">
+                    Welcome, <span style="color: var(--primary-coral);">${user.fullName}</span>!
+                </h1>
+                <h2 class="h3 mb-3">Empowering Women's Safety Through Technology</h2>
+                <p class="lead">Your safety is our mission. Discover features that protect, inform, and connect you in times of need.</p>
+            </div>
+        </section>
+
+        <!-- Main Dashboard Content Area -->
+        <div class="container-fluid py-4 px-4" style="background: var(--light-bg); min-height: 50vh;">
+
+    <!-- My Incident Reports Section -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="p-4 rounded-4 bg-white shadow-sm border">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-800 m-0"><i class="fas fa-file-shield text-danger me-2"></i>My Reported Incidents</h4>
+            <span class="badge bg-soft-pink text-pink rounded-pill px-3">${myIncidents.size()} Reports</span>
           </div>
+          
+          <c:choose>
+            <c:when test="${not empty myIncidents}">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Date</th>
+                      <th>Type</th>
+                      <th>Location</th>
+                      <th>Description</th>
+                      <th>Evidence</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <c:forEach var="inc" items="${myIncidents}">
+                      <tr>
+                        <td class="small fw-600">${inc.reportedAt}</td>
+                        <td><span class="badge bg-light text-dark border">${inc.type}</span></td>
+                        <td class="small">${inc.location}</td>
+                        <td class="small text-muted">${inc.description}</td>
+                        <td>
+                          <c:choose>
+                            <c:when test="${not empty inc.mediaPath}">
+                              <a href="${pageContext.request.contextPath}${inc.mediaPath}" target="_blank">
+                                <img src="${pageContext.request.contextPath}${inc.mediaPath}" class="rounded shadow-sm" style="width: 50px; height: 50px; object-fit: cover;" onerror="this.src='${pageContext.request.contextPath}/assets/img/no-image.png'">
+                              </a>
+                            </c:when>
+                            <c:otherwise><span class="text-muted smaller italic">No media</span></c:otherwise>
+                          </c:choose>
+                        </td>
+                        <td>
+                          <span class="badge ${inc.status == 'RESOLVED' ? 'bg-success' : (inc.status == 'PENDING' ? 'bg-warning' : 'bg-info')}">
+                            ${inc.status}
+                          </span>
+                        </td>
+                      </tr>
+                    </c:forEach>
+                  </tbody>
+                </table>
+              </div>
+            </c:when>
+            <c:otherwise>
+              <div class="text-center py-5">
+                <i class="fas fa-clipboard-check text-muted display-4 mb-3"></i>
+                <p class="text-muted">You haven't reported any incidents yet.</p>
+              </div>
+            </c:otherwise>
+          </c:choose>
         </div>
       </div>
-      </c:if>
-
     </div>
+
   </div>
 </section>
 
@@ -856,7 +862,9 @@
       </div>
     </div>
   </div>
-</section>
+
+</div>
+</div>
 
   <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
@@ -1020,4 +1028,5 @@ function markBroadcastsAsRead() {
 
 </body>
 </html>
+
 

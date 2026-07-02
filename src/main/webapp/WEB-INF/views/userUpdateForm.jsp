@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Profile | FightDFire</title>
+    <title>Update Profile | Fight D Fear</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
@@ -294,7 +295,7 @@
 
 <div class="page-wrapper">
     <div class="brand-header mb-4">
-        <div class="brand-logo">FightDFire</div>
+        <div class="brand-logo">Fight D Fear</div>
         <div class="brand-sub">Women Safety &amp; Empowerment Platform</div>
     </div>
 
@@ -320,8 +321,8 @@
             <!-- Phone -->
             <div class="field-group">
                 <label class="form-label">Phone Number</label>
-                <input type="text" name="phone" id="phone" class="form-control"
-                       value="${user.phoneNumber}" placeholder="Enter phone number" required>
+                <input type="tel" name="phone" id="phone" class="form-control"
+                       value="${user.phoneNumber}" placeholder="10-digit phone number" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
             </div>
 
             <!-- Age & Gender row -->
@@ -373,7 +374,7 @@
                 <input type="checkbox" name="isPrivate" class="form-check-input" id="isPrivate"
                        ${user['private'] ? 'checked' : ''}>
                 <label class="form-check-label" for="isPrivate">
-                    Private Account — only followers can see my reels
+                    Private Account &mdash; only followers can see my reels
                 </label>
             </div>
 
@@ -387,3 +388,4 @@
 
 </body>
 </html>
+

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Our Specialists | FightDFire</title>
+    <title>Our Specialists | Fight D Fear</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
@@ -92,23 +92,7 @@
 </head>
 <body>
 
-    <!-- Header -->
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container-fluid container-xl d-flex align-items-center">
-            <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/index/templates">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/salons">Salons</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/stylists">Stylists</a></li>
-                    <li><a href="${pageContext.request.contextPath}/index/about">About</a></li>
-                    <li><a href="${pageContext.request.contextPath}/index/contact">Contact</a></li>
-                </ul>
-            </nav>
-            <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&A</a>
-            <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-        </div>
-    </header>
+    <jsp:include page="/WEB-INF/views/fragments/index-beauty-header.jsp" />
 
     <!-- Hero -->
     <div class="specialist-hero">
@@ -171,7 +155,7 @@
         <div class="container footer-top">
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
-                    <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">FightDFire</a>
+                    <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">Fight D Fear</a>
                     <div class="pt-3">
                         <p class="fw-semibold">Our Values</p>
                         <p>Awareness • Safety • Equality • Empowerment</p>
@@ -203,3 +187,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

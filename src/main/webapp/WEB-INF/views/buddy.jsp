@@ -9,8 +9,9 @@
 
   <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <!-- Purpose: global typography used by assets/css/main.css -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 
@@ -238,8 +239,10 @@
           <div class="col-md-6">
             <label class="form-label">Time window</label>
             <select id="buddyWindow" class="form-select" style="border: 2px solid var(--primary-purple); box-shadow: 0 2px 8px rgba(124, 45, 94, 0.1);">
-              <option value="30">30 min</option>
-              <option value="60" selected>60 min</option>
+              <option value="10">10 min</option>
+              <option value="20">20 min</option>
+              <option value="30" selected>30 min</option>
+              <option value="60">60 min</option>
               <option value="120">120 min</option>
             </select>
           </div>
@@ -308,23 +311,13 @@
   // Purpose: JS needs contextPath for API calls in any deployment.
   window.__APP_CTX__ = "${pageContext.request.contextPath}";
 
-  // Purpose: initial server-rendered requests (so page is useful even before JS refresh).
-  window.__BUDDY_BOOT__ = {
-    incoming: [
-      <c:forEach var="r" items="${incoming}" varStatus="s">
-        { id: ${r.id}, fromUserId: ${r.fromUser.id}, fromName: "${r.fromUser.fullName}", fromAge: ${r.fromUser.age != null ? r.fromUser.age : 'null'} }<c:if test="${!s.last}">,</c:if>
-      </c:forEach>
-    ],
-    outgoing: [
-      <c:forEach var="r" items="${outgoing}" varStatus="s">
-        { id: ${r.id}, toUserId: ${r.toUser.id}, toName: "${r.toUser.fullName}", toAge: ${r.toUser.age != null ? r.toUser.age : 'null'} }<c:if test="${!s.last}">,</c:if>
-      </c:forEach>
-    ]
-  };
+  // Purpose: requests loaded via /buddy/requests (single source, no duplicate render).
+  window.__BUDDY_BOOT__ = { incoming: [], outgoing: [] };
 </script>
 <script src="${pageContext.request.contextPath}/assets/js/buddy.js"></script>
 
 </body>
 </html>
+
 
 

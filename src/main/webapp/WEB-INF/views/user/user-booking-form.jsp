@@ -152,7 +152,7 @@
 	
 	<header id="header" class="header d-flex align-items-center sticky-top">
 	  <div class="container-fluid container-xl d-flex align-items-center">
-	    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
+	    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
 	    <nav id="navmenu" class="navmenu">
 	      <ul>
 	        <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
@@ -232,6 +232,16 @@
                                  <div class="h4 text-primary fw-bold">Amount: ₹${service.price}</div>
                              </div>
 
+                             <div class="form-group mb-4">
+                               <label for="userName" class="form-label fw-semibold">Your Name *</label>
+                               <input type="text" id="userName" class="form-control" value="${user.fullName}" required>
+                             </div>
+
+                             <div class="form-group mb-4">
+                               <label for="userPhone" class="form-label fw-semibold">Mobile Number *</label>
+                               <input type="tel" id="userPhone" class="form-control" value="${user.phoneNumber}" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
+                             </div>
+
 				             <div class="form-group mb-4">
 				               <label for="bookingTime" class="form-label fw-semibold">Select Date & Time</label>
 				               <input type="datetime-local" id="bookingTime" class="form-control" required>
@@ -282,7 +292,7 @@
                                          key: order.key,
                                          amount: order.amount,
                                          currency: 'INR',
-                                         name: 'FightDFire Beauty',
+                                         name: 'Fight D Fear Beauty',
                                          description: 'Stylist Service Payment',
                                          order_id: order.orderId,
                                          handler: async function (response) {
@@ -349,7 +359,7 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">
-            <span class="sitename">FightDFire</span>
+            <span class="sitename">Fight D Fear</span>
           </a>
              
   <div class="pt-3">
@@ -396,7 +406,7 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">FightDFire</strong> <span>All Rights Reserved</span></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Fight D Fear</strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
@@ -431,3 +441,4 @@
 
 					  </body>
 					  </html>
+

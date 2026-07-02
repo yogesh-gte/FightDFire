@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — FightDFire</title>
+    <title>Login — Fight D Fear</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -178,6 +178,26 @@
             color: #9ca3af;
         }
 
+        .password-toggle-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        .password-toggle-btn:hover { color: #7C2D5E; }
+
+        .input-wrapper.password-field .form-input {
+            padding-right: 46px;
+        }
+
         .form-options {
             display: flex;
             justify-content: space-between;
@@ -339,7 +359,7 @@
     <div class="left-panel">
         <div class="brand">
             <div class="brand-logo">
-                <i class="bi bi-shield-check"></i> FightDFire
+                <i class="bi bi-shield-check"></i> Fight D Fear
             </div>
             <p class="brand-tagline">
                 Empowering Women's Safety Through Technology. Your safety is our mission — anytime, anywhere.
@@ -400,10 +420,13 @@
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <div class="input-wrapper">
+                    <div class="input-wrapper password-field">
                         <i class="bi bi-lock"></i>
                         <input type="password" id="password" name="password" class="form-input"
-                               placeholder="Enter your password" required>
+                               placeholder="Enter your password" required autocomplete="current-password">
+                        <button type="button" class="password-toggle-btn" data-toggle-password="password" aria-label="Show password">
+                            <i class="bi bi-eye"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -427,6 +450,8 @@
         </div>
     </div>
 
+<script src="${pageContext.request.contextPath}/assets/js/password-toggle.js"></script>
 </body>
 </html>
+
 

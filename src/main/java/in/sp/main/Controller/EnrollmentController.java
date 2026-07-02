@@ -331,6 +331,15 @@ public class EnrollmentController {
         java.time.LocalDateTime now = java.time.LocalDateTime.now();
         
         for (Enrollment e : list) {
+            // Paid-only enrollment validation
+            String pStatus = e.getPaymentStatus();
+            if ((pStatus == null || "PENDING".equalsIgnoreCase(pStatus)) && e.getAmountPaid() != null && e.getAmountPaid() > 0) {
+                pStatus = "PAID";
+            }
+            if (!"PAID".equalsIgnoreCase(pStatus)) {
+                continue;
+            }
+
             java.util.Map<String, Object> map = new java.util.HashMap<>();
             map.put("id", e.getId());
             map.put("centerName", e.getCenter() != null ? e.getCenter().getName() : "N/A");
@@ -405,6 +414,15 @@ public class EnrollmentController {
         java.util.List<java.util.Map<String, Object>> result = new ArrayList<>();
         
         for (Enrollment e : list) {
+            // Paid-only enrollment validation
+            String pStatus = e.getPaymentStatus();
+            if ((pStatus == null || "PENDING".equalsIgnoreCase(pStatus)) && e.getAmountPaid() != null && e.getAmountPaid() > 0) {
+                pStatus = "PAID";
+            }
+            if (!"PAID".equalsIgnoreCase(pStatus)) {
+                continue;
+            }
+
             java.util.Map<String, Object> map = new java.util.HashMap<>();
             map.put("enrollmentId", e.getId());
             map.put("centreId", e.getCenter() != null ? e.getCenter().getId() : "N/A");
@@ -432,60 +450,43 @@ public class EnrollmentController {
             map.put("slot", e.getBatch() != null ? e.getBatch().getTimeSlot() : "N/A");
             map.put("enrollmentDate", e.getProposedStartDate() != null ? e.getProposedStartDate().toString() : "TBD");
             map.put("status", e.getStatus() != null ? e.getStatus().name() : "PENDING");
+            map.put("paymentStatus", pStatus);
             
-            // Real-time payment tracking fallback
-            String pStatus = e.getPaymentStatus();
-            if ((pStatus == null || "PENDING".equalsIgnoreCase(pStatus)) && e.getAmountPaid() != null && e.getAmountPaid() > 0) {
-                pStatus = "PAID";
-            }
-            map.put("paymentStatus", pStatus != null ? pStatus : "PENDING");
-            
-            map.put("progress", e.getProgressPercentage() != null ? e.getProgressPercentage() : 0);
-
-            // Attendance and Progress Percentage
+            // Attendance and Progress Percentage (Dynamic calculations)
             List<Attendance> userAttendances = attendanceRepository.findByUser(user);
             
             long attendedCount = 0;
             long totalSessionsHeld = 0;
-            int courseProgress = 0;
 
             if (e.getBatch() != null) {
                 Long batchId = e.getBatch().getId();
                 
-                // Count attended sessions for this specific batch
+                // Count attended sessions for this specific batch/class
                 attendedCount = userAttendances.stream()
                     .filter(a -> a.getStatus() == AttendanceStatus.PRESENT || a.getStatus() == AttendanceStatus.LATE)
                     .filter(a -> (a.getSession() != null && a.getSession().getBatch() != null && a.getSession().getBatch().getId().equals(batchId)) ||
-                                 (a.getOnlineClass() != null && a.getOnlineClass().getTitle().equals(e.getBatch().getName())))
+                                 (a.getOnlineClass() != null && a.getOnlineClass().getTitle().equalsIgnoreCase(e.getBatch().getName())) ||
+                                 (a.getBatch() != null && a.getBatch().getId().equals(batchId)))
                     .count();
                 
                 // For attendance rate, we compare with total sessions held for this batch
-                totalSessionsHeld = sessionRepository.findByBatch(e.getBatch()).size();
-                // Add online classes created for this center/batch title
-                totalSessionsHeld += onlineClassRepository.findByCenter_Id(e.getCenter().getId()).stream()
-                    .filter(oc -> oc.getTitle().equals(e.getBatch().getName()))
+                totalSessionsHeld = userAttendances.stream()
+                    .filter(a -> (a.getSession() != null && a.getSession().getBatch() != null && a.getSession().getBatch().getId().equals(batchId)) ||
+                                 (a.getOnlineClass() != null && a.getOnlineClass().getTitle().equalsIgnoreCase(e.getBatch().getName())) ||
+                                 (a.getBatch() != null && a.getBatch().getId().equals(batchId)))
                     .count();
 
                 if (totalSessionsHeld > 0) {
-                    map.put("attendancePercentage", (attendedCount * 100) / totalSessionsHeld);
+                    map.put("attendancePercentage", (int) ((attendedCount * 100) / totalSessionsHeld));
                 } else {
                     map.put("attendancePercentage", 0);
                 }
 
-                // Simulation for User Feedback: Assign varying progress levels (30%, 45%, 90%)
-                // instead of strictly counting attendance for demonstration
-                int simulatedProgress = 0;
-                if (result.size() == 0) simulatedProgress = 30;
-                else if (result.size() == 1) simulatedProgress = 45;
-                else if (result.size() == 2) simulatedProgress = 90;
-                else simulatedProgress = 100;
-                
-                map.put("progress", simulatedProgress);
-                map.put("attendancePercentage", Math.max(0, simulatedProgress - 5));
+                map.put("progress", e.getProgressPercentage() != null ? e.getProgressPercentage() : 0);
                 map.put("nextClassDate", java.time.LocalDate.now().plusDays(1).toString());
             } else {
                 map.put("attendancePercentage", 0);
-                map.put("progress", 0);
+                map.put("progress", e.getProgressPercentage() != null ? e.getProgressPercentage() : 0);
                 map.put("nextClassDate", "TBD");
             }
 

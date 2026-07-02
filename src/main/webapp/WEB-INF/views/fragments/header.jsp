@@ -1,21 +1,21 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <style>
     /* ============================================
        UNIVERSAL HEADER CSS
-       Guarantees identical appearance across all pages
        ============================================ */
     :root {
-        --uh-purple: #7C2D5E;
-        --uh-purple-light: #a64281;
-        --uh-coral: #DB2777;
-        --uh-gradient: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --uh-purple: #1e1b4b; /* Deep Navy */
+        --uh-purple-light: #312e81; /* Light Navy */
+        --uh-coral: #f43f5e; /* Rose Pink */
+        --uh-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
+        --primary-coral: #f43f5e;
     }
 
     .header {
-        background: rgba(255,255,255,0.97) !important;
-        border-bottom: 2px solid rgba(74, 14, 120, 0.08);
+        background: var(--uh-purple) !important;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(8px);
         padding: 15px 0;
         transition: all 0.5s;
@@ -114,8 +114,10 @@
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
     }
 
+
+
     .mobile-nav-toggle {
-        color: var(--uh-purple) !important;
+        color: white !important;
         font-size: 28px;
         cursor: pointer;
         line-height: 0;
@@ -123,20 +125,23 @@
         margin-left: 10px;
     }
 </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
 <!-- ======= Header ======= -->
 <header id="header" class="header d-flex align-items-center sticky-top">
   <div class="container-fluid container-xl d-flex align-items-center">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto" style="text-decoration: none;"><h1>FightDFire</h1></a>
+    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto" style="text-decoration: none;"><h1>Fight D Fear</h1></a>
     <nav id="navmenu" class="navmenu">
       <ul>
+        <li><a href="${pageContext.request.contextPath}/index.html">Home</a></li>
         <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
         <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
         <li><a href="${pageContext.request.contextPath}/users/wallet">Wallet 💰</a></li>
         
         <!-- Notification Bell for Broadcasts -->
         <li>
-            <a href="#" data-bs-toggle="modal" data-bs-target="#broadcastModal" onclick="markBroadcastsAsRead()" style="display: flex; align-items: center;">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#broadcastModal" onclick="markBroadcastsAsRead()" style="display: flex; align-items: center; color: white !important;">
                 <div style="position: relative; display: inline-block;">
                     <i class="fas fa-bell fs-5"></i>
                     <c:if test="${unreadBroadcastCount > 0}">
@@ -166,3 +171,175 @@
     <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
   </div>
 </header>
+
+<!-- Global Incoming Call Modal -->
+<div class="modal fade" id="globalIncomingCallModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" style="z-index: 2000;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center p-4 border-0 shadow-lg" style="border-radius: 20px;">
+            <div class="modal-body">
+                <div class="mb-3">
+                    <i id="globalCallIcon" class="bi bi-shield-check text-primary" style="font-size: 3.5rem; animation: call-bounce 1s infinite;"></i>
+                </div>
+                <h4 id="globalCallerName" class="fw-bold mb-2">Fight D Fear Incoming Call...</h4>
+                <p id="globalCallTypeLabel" class="text-muted">Voice Call</p>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <button type="button" class="btn btn-success btn-lg rounded-pill px-4 py-2" id="globalAcceptCallBtn">
+                        <i class="bi bi-telephone-fill me-2"></i> Accept
+                    </button>
+                    <button type="button" class="btn btn-danger btn-lg rounded-pill px-4 py-2" id="globalDeclineCallBtn">
+                        <i class="bi bi-telephone-x-fill me-2"></i> Decline
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Global Ringtone Audio -->
+<audio id="globalRingtoneAudio" loop preload="auto">
+    <source src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" type="audio/mpeg">
+</audio>
+
+<style>
+    @keyframes call-bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>
+
+<c:if test="${not empty sessionScope.user}">
+    <!-- Global WebSocket Signaling Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    
+    <script>
+        (function() {
+            window.__APP_CTX__ = "${pageContext.request.contextPath}";
+            const ctx = window.__APP_CTX__;
+            const userId = "${sessionScope.user.id}";
+            
+            let globalStompClient = null;
+            let currentGlobalCallInfo = null;
+            const globalRingtone = document.getElementById('globalRingtoneAudio');
+
+            function connectGlobalWS() {
+                const socket = new SockJS(ctx + '/ws-chat');
+                globalStompClient = Stomp.over(socket);
+                globalStompClient.debug = null;
+
+                globalStompClient.connect({}, function () {
+                    // Subscribe to global call notifications
+                    globalStompClient.subscribe("/topic/calls/" + userId, function (response) {
+                        const callInfo = JSON.parse(response.body);
+                        if (callInfo.type === 'INCOMING_CALL') {
+                            handleGlobalIncomingCall(callInfo);
+                        } else if (callInfo.type === 'HANGUP' || callInfo.type === 'DECLINED') {
+                            stopGlobalRingtone();
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('globalIncomingCallModal'));
+                            if (modal) modal.hide();
+                        }
+                    });
+                }, function() {
+                    // Auto-reconnect
+                    setTimeout(connectGlobalWS, 5000);
+                });
+            }
+
+            function handleGlobalIncomingCall(callInfo) {
+                // Don't show modal if we're already on a call page (optional, but good for UX)
+                if (window.location.pathname.includes('/chat/call/') || window.location.pathname.includes('/chat/video-call/')) {
+                    return;
+                }
+
+                currentGlobalCallInfo = callInfo;
+                document.getElementById('globalCallerName').innerText = callInfo.fromName + " is calling...";
+                document.getElementById('globalCallTypeLabel').innerText = callInfo.audioOnly ? "Voice Call" : "Video Call";
+                
+                const icon = document.getElementById('globalCallIcon');
+                icon.className = callInfo.audioOnly ? "bi bi-telephone-inbound-fill text-success" : "bi bi-camera-video-fill text-primary";
+                
+                playGlobalRingtone();
+                
+                const modal = new bootstrap.Modal(document.getElementById('globalIncomingCallModal'));
+                modal.show();
+            }
+
+            function playGlobalRingtone() {
+                if (globalRingtone) {
+                    globalRingtone.currentTime = 0;
+                    globalRingtone.play().catch(e => console.log("Global audio play blocked, waiting for interaction."));
+                }
+            }
+
+            function stopGlobalRingtone() {
+                if (globalRingtone) {
+                    globalRingtone.pause();
+                    globalRingtone.currentTime = 0;
+                }
+            }
+
+            document.getElementById('globalAcceptCallBtn').addEventListener('click', function() {
+                if (currentGlobalCallInfo) {
+                    stopGlobalRingtone();
+                    const callUrl = currentGlobalCallInfo.audioOnly ? 
+                        ctx + '/chat/call/' + currentGlobalCallInfo.fromId :
+                        ctx + '/chat/video-call/' + currentGlobalCallInfo.fromId;
+                    
+                    window.open(callUrl, '_blank', 'width=1200,height=800');
+                    
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('globalIncomingCallModal'));
+                    if (modal) modal.hide();
+                }
+            });
+
+            document.getElementById('globalDeclineCallBtn').addEventListener('click', function() {
+                if (currentGlobalCallInfo && globalStompClient) {
+                    stopGlobalRingtone();
+                    globalStompClient.send("/app/webrtc.signal", {}, JSON.stringify({
+                        type: 'DECLINED',
+                        senderId: userId,
+                        receiverId: currentGlobalCallInfo.fromId
+                    }));
+                    
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('globalIncomingCallModal'));
+                    if (modal) modal.hide();
+                }
+            });
+
+            // Start global listener
+            if (userId) {
+                connectGlobalWS();
+            }
+
+            // 1. Background Location Update (every 2 minutes)
+            function updateLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(pos => {
+                        fetch(ctx + '/livelocation/save', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                latitude: pos.coords.latitude,
+                                longitude: pos.coords.longitude,
+                                userId: userId
+                            })
+                        }).catch(e => console.warn('Bg location update failed'));
+                    }, null, { enableHighAccuracy: false, timeout: 5000 });
+                }
+            }
+            
+            // Only update location if logged in
+            if (userId) {
+                setInterval(updateLocation, 120000); 
+                updateLocation(); 
+            }
+
+            // 2. SOS Alert Polling for Volunteers
+            if (isVerified === "true") {
+                const script = document.createElement('script');
+                script.src = ctx + "/resources/js/volunteerNotification.js";
+                document.head.appendChild(script);
+            }
+        })();
+    </script>
+</c:if>

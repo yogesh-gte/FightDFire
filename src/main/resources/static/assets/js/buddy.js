@@ -25,7 +25,6 @@
   }
 
   function escapeHtml(s) {
-    // Purpose: protect against HTML injection when rendering server data.
     return String(s)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -34,8 +33,27 @@
       .replace(/'/g, "&#039;");
   }
 
+  function dedupeIncoming(list) {
+    const seen = new Set();
+    return (list || []).filter((r) => {
+      const key = r.fromUserId != null ? "u-" + r.fromUserId : "r-" + r.id;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function dedupeOutgoing(list) {
+    const seen = new Set();
+    return (list || []).filter((r) => {
+      const key = r.toUserId != null ? "u-" + r.toUserId : "r-" + r.id;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
   function getLocation() {
-    // Purpose: use current location for nearby matching.
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) return reject(new Error("Geolocation not supported."));
       navigator.geolocation.getCurrentPosition(
@@ -89,16 +107,18 @@
     if (!incomingList) return;
     incomingList.innerHTML = "";
 
-    if (!list || !list.length) {
+    const unique = dedupeIncoming(list);
+    if (!unique.length) {
       incomingList.innerHTML = `<div class="text-muted small">No incoming requests.</div>`;
       return;
     }
 
-    for (const r of list) {
+    for (const r of unique) {
       const name = escapeHtml(r.fromName || "User");
       const ageStr = r.fromAge ? ` (Age: ${r.fromAge})` : "";
       const el = document.createElement("div");
       el.className = "matchItem";
+      el.dataset.requestId = String(r.id);
       el.innerHTML = `
         <div style="font-weight:700">${name}${ageStr}</div>
         <div class="d-flex gap-2 mt-2">
@@ -117,12 +137,13 @@
     if (!outgoingList) return;
     outgoingList.innerHTML = "";
 
-    if (!list || !list.length) {
+    const unique = dedupeOutgoing(list);
+    if (!unique.length) {
       outgoingList.innerHTML = `<div class="text-muted small">No outgoing requests.</div>`;
       return;
     }
 
-    for (const r of list) {
+    for (const r of unique) {
       const name = escapeHtml(r.toName || "User");
       const ageStr = r.toAge ? ` (Age: ${r.toAge})` : "";
       const el = document.createElement("div");
@@ -132,6 +153,18 @@
         <div class="text-muted small">Pending…</div>
       `;
       outgoingList.appendChild(el);
+    }
+  }
+
+  async function refreshRequests() {
+    try {
+      const res = await fetch(`${ctx}/buddy/requests`, { headers: { Accept: "application/json" } });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) return;
+      renderIncoming(data.incoming || []);
+      renderOutgoing(data.outgoing || []);
+    } catch (e) {
+      console.warn("Buddy requests refresh failed", e);
     }
   }
 
@@ -147,7 +180,7 @@
       body.set("latitude", String(loc.lat));
       body.set("longitude", String(loc.lng));
       body.set("destination", dest);
-      body.set("windowMinutes", String(windowEl?.value || "60"));
+      body.set("windowMinutes", String(windowEl?.value || "30"));
 
       const res = await fetch(`${ctx}/buddy/availability/start`, {
         method: "POST",
@@ -214,6 +247,7 @@
       const data = await res.json().catch(() => ({}));
       if (!res.ok) return setStatus((data && data.message) || `Failed (${res.status})`);
       setStatus((data && data.message) || "Request sent.");
+      await refreshRequests();
     } catch (e) {
       setStatus(e.message || "Failed to send request.");
     }
@@ -226,8 +260,8 @@
       const data = await res.json().catch(() => ({}));
       if (!res.ok) return setStatus((data && data.message) || `Failed (${res.status})`);
       setStatus((data && data.message) || "Accepted.");
+      await refreshRequests();
 
-      // Purpose: open in-app chat window after accept.
       if (data && data.chatUrl) {
         window.location.href = ctx + data.chatUrl;
       }
@@ -243,18 +277,16 @@
       const data = await res.json().catch(() => ({}));
       if (!res.ok) return setStatus((data && data.message) || `Failed (${res.status})`);
       setStatus((data && data.message) || "Rejected.");
+      await refreshRequests();
     } catch (e) {
       setStatus(e.message || "Failed to reject.");
     }
   }
 
-  // Purpose: initial render from server-rendered boot data.
-  const boot = window.__BUDDY_BOOT__ || {};
-  renderIncoming(boot.incoming || []);
-  renderOutgoing(boot.outgoing || []);
-
   startBtn?.addEventListener("click", startBuddy);
   stopBtn?.addEventListener("click", stopBuddy);
   findBtn?.addEventListener("click", findMatches);
-})();
 
+  refreshRequests();
+  setInterval(refreshRequests, 15000);
+})();

@@ -22,23 +22,23 @@
        ORIGINAL STYLES (kept exactly as is)
        ============================================ */
     :root {
-        --pp: #7C2D5E;
-        --pp-light: #a64281;
-        --coral: #DB2777;
+        --pp: #1e1b4b;
+        --pp-light: #312e81;
+        --coral: #f43f5e;
         --gold: #ffd700;
-        --bg-primary: #150510;
-        --bg-secondary: #210a1b;
-        --bg-card: rgba(255, 255, 255, 0.05);
-        --bg-glass: rgba(124, 45, 94, 0.12);
+        --bg-primary: #1e1b4b;
+        --bg-secondary: #0f0d26;
+        --bg-card: rgba(255, 255, 255, 0.03);
+        --bg-glass: rgba(255, 255, 255, 0.05);
         --text-primary: #ffffff;
         --text-secondary: rgba(255, 255, 255, 0.7);
-        --accent-red: #DB2777;
-        --accent-red-glow: rgba(219, 39, 119, 0.4);
+        --accent-red: #f43f5e;
+        --accent-red-glow: rgba(244, 63, 94, 0.4);
         --accent-green: #30d158;
         --accent-orange: #f1c232;
         --accent-blue: #00bcd4;
-        --accent-purple: #7C2D5E;
-        --border-subtle: rgba(255, 255, 255, 0.15);
+        --accent-purple: #312e81;
+        --border-subtle: rgba(255, 255, 255, 0.1);
         --shadow-heavy: 0 25px 50px rgba(0, 0, 0, 0.4);
     }
 
@@ -55,12 +55,23 @@
     /* === Animated Background === */
     .bg-grid {
         position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-        background-image:
-            radial-gradient(circle at 20% 50%, rgba(124, 45, 94, 0.25) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 50% 80%, rgba(124, 45, 94, 0.1) 0%, transparent 50%);
-        background-size: cover;
+        background-color: var(--bg-primary);
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            radial-gradient(circle at 20% 50%, rgba(49, 46, 129, 0.6) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.2) 0%, transparent 50%),
+            radial-gradient(circle at 50% 80%, rgba(49, 46, 129, 0.4) 0%, transparent 50%);
+        background-size: 30px 30px, 30px 30px, cover, cover, cover;
         z-index: 0;
+    }
+
+    .bg-grid::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at center, transparent 30%, var(--bg-primary) 100%);
+        pointer-events: none;
     }
 
     .bg-grid.sos-active {
@@ -69,13 +80,13 @@
 
     @keyframes emergencyPulse {
         0%, 100% { background-image:
-            radial-gradient(circle at 20% 50%, rgba(219, 39, 119, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 50% 80%, rgba(219, 39, 119, 0.08) 0%, transparent 50%); }
+            radial-gradient(circle at 20% 50%, rgba(244, 63, 94, 0.15) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 50% 80%, rgba(244, 63, 94, 0.08) 0%, transparent 50%); }
         50% { background-image:
-            radial-gradient(circle at 20% 50%, rgba(219, 39, 119, 0.35) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.25) 0%, transparent 50%),
-            radial-gradient(circle at 50% 80%, rgba(219, 39, 119, 0.2) 0%, transparent 50%); }
+            radial-gradient(circle at 20% 50%, rgba(244, 63, 94, 0.35) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(244, 63, 94, 0.25) 0%, transparent 50%),
+            radial-gradient(circle at 50% 80%, rgba(244, 63, 94, 0.2) 0%, transparent 50%); }
     }
 
     /* === Top Navigation === */
@@ -83,7 +94,7 @@
         position: fixed; top: 0; left: 0; right: 0;
         padding: 16px 24px;
         display: flex; justify-content: space-between; align-items: center;
-        background: linear-gradient(to right, var(--pp), #4a0e2a);
+        background: rgba(30, 27, 75, 0.8);
         backdrop-filter: blur(20px);
         border-bottom: 2px solid var(--coral);
         z-index: 100;
@@ -113,16 +124,29 @@
         display: flex; flex-direction: column; align-items: center;
     }
 
-    /* === Status Bar === */
+    /* === Status Bar HUD === */
     .status-bar {
-        width: 100%; padding: 12px 16px;
-        background: var(--bg-glass);
-        border: 1px solid var(--border-subtle);
-        border-radius: 12px;
-        display: flex; align-items: center; gap: 10px;
+        width: 100%; padding: 14px 20px;
+        background: rgba(15, 13, 38, 0.7);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(244, 63, 94, 0.4);
+        border-radius: 8px;
+        display: flex; align-items: center; gap: 12px;
         margin-bottom: 30px;
-        font-size: 13px; color: var(--text-secondary);
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 13px; color: #a5b4fc;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: inset 0 0 15px rgba(244, 63, 94, 0.15), 0 5px 15px rgba(0,0,0,0.4);
+        position: relative;
+        overflow: hidden;
     }
+    .status-bar::before {
+        content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--accent-red));
+        animation: scanline 3s linear infinite;
+    }
+    @keyframes scanline { 100% { left: 200%; } }
     .status-bar .dot {
         width: 8px; height: 8px; border-radius: 50%;
         background: var(--accent-green);
@@ -131,69 +155,84 @@
     .status-bar.danger .dot { background: var(--accent-red); }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    /* Premium Box for SOS */
+    /* Premium Tactical Box for SOS */
     .sos-outer-box {
-        background: rgba(124, 45, 94, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(15px);
+        background: rgba(15, 13, 38, 0.4);
+        border: 1px solid rgba(244, 63, 94, 0.2);
+        backdrop-filter: blur(20px);
         border-radius: 30px;
         padding: 50px 40px;
         margin: 20px 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        box-shadow: 0 0 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(244, 63, 94, 0.05);
+        position: relative;
     }
 
     .sos-btn-wrapper {
         position: relative;
-        width: 220px; height: 220px;
-        background: rgba(219, 39, 119, 0.05);
-        border: 2px solid rgba(219, 39, 119, 0.2);
-        padding: 10px;
-        border-radius: 50%;
+        width: 280px; height: 280px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
     .sos-btn-ring {
-        position: absolute; inset: -10px;
+        position: absolute;
         border-radius: 50%;
-        border: 2px solid rgba(219, 39, 119, 0.3);
-        animation: ringPulse 2s ease-in-out infinite;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+    }
+    
+    .ring-1 {
+        width: 220px; height: 220px;
+        border: 2px dashed rgba(244, 63, 94, 0.5);
+        animation: spinRight 10s linear infinite;
+    }
+    .ring-2 {
+        width: 260px; height: 260px;
+        border: 1px solid rgba(244, 63, 94, 0.2);
+        animation: pulseRing 2s ease-out infinite;
+    }
+    .ring-3 {
+        width: 300px; height: 300px;
+        border: 2px dotted rgba(244, 63, 94, 0.3);
+        animation: spinLeft 15s linear infinite;
     }
 
-    @keyframes ringPulse {
-        0%, 100% { transform: scale(1); opacity: 0.8; }
-        50% { transform: scale(1.1); opacity: 0.2; }
+    @keyframes spinRight { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+    @keyframes spinLeft { 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
+    @keyframes pulseRing {
+        0% { width: 180px; height: 180px; opacity: 1; }
+        100% { width: 350px; height: 350px; opacity: 0; }
     }
 
     .sos-btn {
-        width: 180px; height: 180px;
+        width: 170px; height: 170px;
         border-radius: 50%;
-        border: 6px solid rgba(255, 255, 255, 0.2);
-        background: linear-gradient(135deg, var(--coral), #9b1b54);
+        border: 4px solid #fff;
+        background: radial-gradient(circle at center, #fb7185, #be123c);
         color: white;
         font-family: 'Inter', sans-serif;
         font-size: 48px;
         font-weight: 900;
         letter-spacing: 2px;
         cursor: pointer;
-        box-shadow:
-            0 0 30px var(--accent-red-glow),
-            inset 0 4px 10px rgba(255,255,255,0.3),
-            inset 0 -4px 10px rgba(0,0,0,0.3);
+        box-shadow: 0 0 30px rgba(244, 63, 94, 0.6), inset 0 0 20px rgba(0,0,0,0.3);
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+        z-index: 10;
     }
 
     .sos-btn:hover {
-        transform: scale(1.08);
-        background: linear-gradient(135deg, #ff4c8a, var(--coral));
-        box-shadow: 0 0 50px var(--accent-red-glow);
+        transform: scale(1.05);
+        background: radial-gradient(circle at center, #f43f5e, #9f1239);
+        box-shadow: 0 0 60px rgba(244, 63, 94, 0.8);
     }
 
     .sos-btn-label {
@@ -272,12 +311,14 @@
     .progress-step {
         display: flex; align-items: center; gap: 14px;
         padding: 14px 16px;
-        background: var(--bg-glass);
-        border: 1px solid var(--border-subtle);
-        border-radius: 12px;
-        margin-bottom: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        margin-bottom: 12px;
         font-size: 14px;
-        transition: all 0.4s ease;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     .progress-step.active {
@@ -326,28 +367,30 @@
 
     .quick-action-btn {
         padding: 18px 14px;
-        border-radius: 16px;
+        border-radius: 20px;
         border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(124, 45, 94, 0.2);
-        backdrop-filter: blur(5px);
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
         color: var(--text-primary);
         font-family: 'Inter', sans-serif;
         font-size: 13px;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 6px;
         text-decoration: none;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     }
 
     .quick-action-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.15);
-        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(244, 63, 94, 0.4);
+        transform: translateY(-5px);
         color: var(--text-primary);
+        box-shadow: 0 12px 25px rgba(244, 63, 94, 0.2);
     }
 
     .quick-action-btn i {
@@ -362,11 +405,14 @@
     /* === Info Section === */
     .info-card {
         width: 100%;
-        padding: 16px;
-        background: var(--bg-glass);
-        border: 1px solid var(--border-subtle);
-        border-radius: 12px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
         margin-top: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .info-card h4 {
@@ -429,12 +475,13 @@
 
     /* === Contact Response Panel === */
     .contact-response-panel {
-        background: var(--bg-card);
-        border: 1px solid var(--border-subtle);
-        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
         padding: 20px;
         margin-top: 20px;
         backdrop-filter: blur(20px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
     .response-summary {
@@ -446,9 +493,13 @@
 
     .summary-card {
         padding: 15px;
-        border-radius: 12px;
+        border-radius: 16px;
         text-align: center;
-        border: 1px solid var(--border-subtle);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .summary-card.accepted {
@@ -709,7 +760,7 @@
         padding-right: 15px;
     }
     .dashboard-btn {
-        background: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        background: linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #f43f5e 100%);
         color: #fff !important;
         padding: 10px 24px;
         border-radius: 50px;
@@ -718,7 +769,7 @@
         display: inline-flex;
         align-items: center;
         gap: 10px;
-        box-shadow: 0 4px 15px rgba(124, 45, 94, 0.3);
+        box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         font-family: 'Inter', sans-serif;
         font-size: 0.95rem;
@@ -726,7 +777,7 @@
     }
     .dashboard-btn:hover {
         transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 8px 25px rgba(124, 45, 94, 0.45);
+        box-shadow: 0 8px 25px rgba(244, 63, 94, 0.45);
         color: #fff !important;
     }
     .dashboard-btn i {
@@ -735,6 +786,34 @@
     }
     .dashboard-btn:hover i {
         transform: translateX(5px);
+    }
+    /* === Recording Indicator === */
+    .recording-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .recording-dot {
+        width: 8px;
+        height: 8px;
+        background: #ef4444;
+        border-radius: 50%;
+        display: inline-block;
+        animation: blink 1s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
     }
 </style>
 </head>
@@ -767,10 +846,20 @@
         <!-- SOS Button Card -->
         <div class="sos-outer-box">
             <div class="sos-btn-wrapper">
-                <div class="sos-btn-ring"></div>
+                <div class="sos-btn-ring ring-1"></div>
+                <div class="sos-btn-ring ring-2"></div>
+                <div class="sos-btn-ring ring-3"></div>
                 <button class="sos-btn" id="sosBtn" onclick="initiateSOS()">SOS</button>
             </div>
             <div class="sos-btn-label">Tap to send emergency alert</div>
+        </div>
+
+        <!-- Stop SOS Button (hidden until triggered) -->
+        <div id="stopSosContainer" style="display: none; text-align: center; margin-top: 20px;">
+            <button class="btn btn-danger btn-lg px-5 py-3 fw-bold shadow" onclick="cancelCountdown()" style="border-radius: 50px; background: #dc3545; border: none; color: white;">
+                <i class="bi bi-stop-circle"></i> STOP SOS
+            </button>
+            <p class="text-muted mt-2" style="font-size: 0.85rem; color: rgba(255,255,255,0.6) !important;">Only stop if you are safe</p>
         </div>
 
         <!-- Alert Progress (hidden until triggered) -->
@@ -838,9 +927,57 @@
         <div class="responded-banner" id="respondedBanner">
             <h4><i class="bi bi-check-circle"></i> Volunteer Responding!</h4>
             <p id="respondedText">A verified volunteer is on their way to help you.</p>
+            <div id="bannerRecordingStatus" style="margin-top: 10px; font-size: 0.9rem; color: #ef4444; font-weight: bold; display: none;">
+                <span class="recording-dot"></span> Audio Evidence being recorded...
+            </div>
         </div>
 
-        <!-- Quick Actions -->
+        <!-- Real-Time Volunteer Response Panel -->
+        <div class="contact-response-panel" id="volunteerResponsePanel" style="display: none; margin-top: 20px; border-top: 2px solid #e9ecef; padding-top: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h4 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="bi bi-shield-check" style="color: #10B981;"></i>
+                    Nearby Volunteer Status (5km Radius)
+                </h4>
+                <div id="liveRecordingBadge" class="recording-badge" style="display: none;">
+                    <span class="recording-dot"></span> LIVE RECORDING
+                </div>
+            </div>
+
+            <!-- Volunteer Summary Cards -->
+            <div class="response-summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px;">
+                <div class="summary-card accepted" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2);">
+                    <div class="summary-number" id="volAcceptedCount" style="color: #10B981;">0</div>
+                    <div class="summary-label" style="color: #10B981;"><i class="bi bi-check-circle"></i> Accepted</div>
+                </div>
+                <div class="summary-card pending" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.2);">
+                    <div class="summary-number" id="volPendingCount" style="color: #f59e0b;">0</div>
+                    <div class="summary-label" style="color: #f59e0b;"><i class="bi bi-hourglass-split"></i> Pending</div>
+                </div>
+                <div class="summary-card rejected" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2);">
+                    <div class="summary-number" id="volRejectedCount" style="color: #ef4444;">0</div>
+                    <div class="summary-label" style="color: #ef4444;"><i class="bi bi-x-circle"></i> Declined</div>
+                </div>
+            </div>
+            
+            <div id="volunteerList">
+                <!-- Volunteers will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Audio Evidence Panel -->
+        <div class="contact-response-panel" id="audioEvidenceContainer" style="display: none; margin-top: 20px; border-top: 2px solid #e9ecef; padding-top: 20px;">
+            <h4 style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                <i class="bi bi-mic-fill" style="color: #ef4444;"></i>
+                Emergency Audio Evidence
+            </h4>
+            <div class="alert alert-info" style="font-size: 0.9rem;">
+                <i class="bi bi-info-circle"></i> This audio was automatically recorded during the SOS activation as evidence.
+            </div>
+            <audio id="sosAudioPlayer" controls style="width: 100%; margin-top: 10px;"></audio>
+        </div>
+
+        <!-- Help Instructions -->
         <div class="quick-actions">
             <a href="tel:100" class="quick-action-btn police">
                 <i class="bi bi-shield-fill"></i>
@@ -887,24 +1024,142 @@
 
     <!-- Alarm Sound -->
     <audio id="alarmSound" loop>
-        <source src="${pageContext.request.contextPath}/resources/sounds/alarm.mp3" type="audio/mpeg">
+        <source src="${pageContext.request.contextPath}/siren.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         const contextPath = '${pageContext.request.contextPath}';
+        const userId = '${userId}';
         let countdownTimer = null;
         let countdownValue = 15;
-        let currentSosId = null;
+        let currentSosId = ${activeSosId != null ? activeSosId : 'null'};
+        let isInitiallyActive = ${isSosActive};
         let userLatitude = null;
         let userLongitude = null;
         let autoCallPhone = null;
         let stompClient = null;
+        let mediaRecorder = null;
+        let audioChunks = [];
 
         // === Initialize: Get location on page load ===
         window.addEventListener('load', () => {
             initLocation();
             connectWebSocket();
+            requestAudioPermission();
+            
+            // Restore state if SOS was active before refresh
+            if (isInitiallyActive && currentSosId) {
+                restoreActiveSOSState();
+            }
         });
+
+        async function requestAudioPermission() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                // We just want to check permission here, so we stop the tracks immediately
+                stream.getTracks().forEach(track => track.stop());
+                console.log('Microphone permission granted');
+            } catch (err) {
+                console.error('Microphone permission denied:', err);
+                showToast('Warning: Microphone access is required for emergency audio evidence.');
+            }
+        }
+
+        async function startAudioRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = async () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    uploadAudioRecording(audioBlob);
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                mediaRecorder.start();
+                console.log('Audio recording started');
+                
+                // Show recording status indicators
+                document.getElementById('liveRecordingBadge').style.display = 'flex';
+                document.getElementById('bannerRecordingStatus').style.display = 'block';
+            } catch (err) {
+                console.error('Error starting audio recording:', err);
+            }
+        }
+
+        function stopAudioRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                console.log('Audio recording stopped');
+                
+                // Hide recording status indicators
+                document.getElementById('liveRecordingBadge').style.display = 'none';
+                document.getElementById('bannerRecordingStatus').style.display = 'none';
+            }
+        }
+
+        async function uploadAudioRecording(blob) {
+            if (!currentSosId) return;
+
+            const formData = new FormData();
+            formData.append('sosId', currentSosId);
+            formData.append('audio', blob, 'sos_recording.webm');
+
+            try {
+                const response = await fetch(contextPath + '/api/sos/audio/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (data.success) {
+                    console.log('Audio recording uploaded successfully:', data.audioPath);
+                    // Update the UI with audio player if needed
+                    updateAudioPlayer(data.audioPath);
+                }
+            } catch (err) {
+                console.error('Error uploading audio recording:', err);
+            }
+        }
+
+        function updateAudioPlayer(audioPath) {
+            const playerContainer = document.getElementById('audioEvidenceContainer');
+            if (playerContainer && audioPath) {
+                playerContainer.style.display = 'block';
+                const player = document.getElementById('sosAudioPlayer');
+                player.src = contextPath + audioPath;
+            }
+        }
+
+        function restoreActiveSOSState() {
+             console.log('Restoring active SOS state for ID:', currentSosId);
+             
+             // Update UI
+             updateStatusBar('🚨 SOS Active — Help is on the way', true);
+             document.getElementById('sosBtn').classList.add('pressed');
+             document.getElementById('bgGrid').classList.add('sos-active');
+             document.getElementById('stopSosContainer').style.display = 'block';
+             
+             // Show progress steps (all done since it's already triggered)
+             const progress = document.getElementById('alertProgress');
+             progress.classList.add('active');
+             setStepDone('step1');
+             setStepDone('step2');
+             setStepDone('step3');
+             setStepDone('step4');
+             
+             // Start recording if not already started
+             if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+                 startAudioRecording();
+             }
+             
+             // Start polling for responses
+             startContactResponsePolling();
+         }
 
         function initLocation() {
             if (navigator.geolocation) {
@@ -931,14 +1186,16 @@
         // === WebSocket Connection ===
         function connectWebSocket() {
             try {
-                const socket = new SockJS(contextPath + '/ws-sos');
+                // Use the same WebSocket endpoint as the chat or SOS updates
+                const socket = new SockJS(contextPath + '/ws-chat');
                 stompClient = Stomp.over(socket);
-                stompClient.debug = null; // Suppress debug logs
+                stompClient.debug = null; 
 
                 stompClient.connect({}, (frame) => {
-                    console.log('WebSocket connected for SOS');
+                    console.log('WebSocket connected');
 
-                    stompClient.subscribe('/topic/sos-alerts', (message) => {
+                    // Subscribe to personal SOS updates
+                    stompClient.subscribe('/topic/sos-updates/user-' + userId, (message) => {
                         const data = JSON.parse(message.body);
                         handleWebSocketMessage(data);
                     });
@@ -949,15 +1206,29 @@
         }
 
         function handleWebSocketMessage(data) {
-            if (data.type === 'SOS_RESPONDED' && data.sosId === currentSosId) {
+            if (data.type === 'SOS_ACTIVATED') {
+                currentSosId = data.sosId;
+                updateStatusBar('🚨 SOS Active — Help is on the way', true);
+                startContactResponsePolling();
+            } else if (data.type === 'CONTACT_ACCEPTED') {
+                fetchContactResponses(); // Refresh list
+                showToast(data.contactName + ' has accepted your SOS!');
+            } else if (data.type === 'VOLUNTEER_ACCEPTED') {
                 const banner = document.getElementById('respondedBanner');
                 document.getElementById('respondedText').textContent =
-                    (data.volunteerName || 'A volunteer') + ' is on their way to help you!';
+                    data.volunteerName + ' is on their way to help you!';
                 banner.classList.add('active');
-                showToast('A volunteer is responding to your SOS!');
-            }
-            if (data.type === 'SOS_CANCELLED' && data.sosId === currentSosId) {
+                
+                // Show recording status in banner to reassure user
+                document.getElementById('bannerRecordingStatus').style.display = 'block';
+                
+                fetchContactResponses(); // Refresh list to show volunteers
+                showToast('Volunteer ' + data.volunteerName + ' is responding!');
+            } else if (data.type === 'VOLUNTEER_DECLINED') {
+                fetchContactResponses(); // Refresh counts
+            } else if (data.type === 'SOS_CANCELLED') {
                 showToast('SOS has been cancelled');
+                setTimeout(() => window.location.reload(), 2000);
             }
         }
 
@@ -988,17 +1259,30 @@
                 clearInterval(countdownTimer);
                 countdownTimer = null;
             }
+            
+            // Stop Audio Recording
+            stopAudioRecording();
+            
+            // Stop Siren
+            try {
+                const alarm = document.getElementById('alarmSound');
+                alarm.pause();
+                alarm.currentTime = 0;
+            } catch(e) {}
+
             document.getElementById('countdownOverlay').classList.remove('active');
             document.getElementById('sosBtn').classList.remove('pressed');
             document.getElementById('bgGrid').classList.remove('sos-active');
+            document.getElementById('stopSosContainer').style.display = 'none';
 
             // If SOS was already triggered, cancel it on server
             if (currentSosId) {
-                fetch(contextPath + '/sos/cancel/' + currentSosId, { method: 'POST' })
+                fetch(contextPath + '/sos/cancel/' + currentSosId + '?userId=' + userId, { method: 'POST' })
                     .then(r => r.json())
                     .then(data => {
                         showToast(data.message || 'SOS cancelled');
                         currentSosId = null;
+                        setTimeout(() => window.location.reload(), 1500);
                     });
             } else {
                 showToast('SOS cancelled — false alarm');
@@ -1065,6 +1349,17 @@
 
                 currentSosId = data.sosId;
                 autoCallPhone = data.autoCallPhone;
+                document.getElementById('stopSosContainer').style.display = 'block';
+
+                // Start Audio Recording for Evidence
+                startAudioRecording();
+
+                // Play Siren
+                try {
+                    document.getElementById('alarmSound').play();
+                } catch(e) {
+                    console.warn("Audio play blocked");
+                }
 
                 // Step 2: Done - contacts notified
                 const contactCount = data.contactsNotified || 0;
@@ -1166,8 +1461,9 @@
         let responsePollingInterval = null;
 
         function startContactResponsePolling() {
-            // Show the contact response panel
+            // Show the response panels
             document.getElementById('contactResponsePanel').style.display = 'block';
+            document.getElementById('volunteerResponsePanel').style.display = 'block';
             
             // Initial fetch
             fetchContactResponses();
@@ -1202,17 +1498,82 @@
             document.getElementById('pendingCount').textContent = data.contactsPending || 0;
             document.getElementById('rejectedCount').textContent = data.contactsRejected || 0;
 
+            // Update Volunteer summary counts
+            if (document.getElementById('volAcceptedCount')) {
+                document.getElementById('volAcceptedCount').textContent = data.volunteersAccepted || 0;
+                document.getElementById('volPendingCount').textContent = data.volunteersPending || 0;
+                document.getElementById('volRejectedCount').textContent = data.volunteersDeclined || 0;
+                
+                // Show recording status if help is coming
+                if (data.volunteersAccepted > 0 && mediaRecorder && mediaRecorder.state === 'recording') {
+                    document.getElementById('liveRecordingBadge').style.display = 'flex';
+                    document.getElementById('bannerRecordingStatus').style.display = 'block';
+                }
+            }
+
+            // Update Audio Evidence
+            if (data.audioPath) {
+                updateAudioPlayer(data.audioPath);
+            }
+
             // Update contact list
             const contactList = document.getElementById('contactList');
             contactList.innerHTML = ''; // Clear existing
 
-            if (data.contactResponses && data.contactResponses.length > 0) {
-                data.contactResponses.forEach(contact => {
-                    const contactItem = createContactItem(contact);
-                    contactList.appendChild(contactItem);
+            if (data.contacts && data.contacts.length > 0) {
+                data.contacts.forEach(c => {
+                    const statusClass = (c.status || 'pending').toLowerCase();
+                    const item = document.createElement('div');
+                    item.className = 'contact-item ' + statusClass;
+                    item.innerHTML = `
+                        <div class="contact-info">
+                            <div class="contact-details">
+                                <h5>${c.name || 'Unknown'} (${c.relation || 'Contact'})</h5>
+                                <p><i class="bi bi-telephone"></i> ${c.phone || 'No phone'}</p>
+                            </div>
+                        </div>
+                        <div class="contact-status ${statusClass}">
+                            ${c.status || 'Pending'}
+                        </div>
+                    `;
+                    contactList.appendChild(item);
                 });
             } else {
                 contactList.innerHTML = '<p style="text-align: center; color: var(--text-secondary); padding: 20px;">No contacts added yet</p>';
+            }
+
+            // Update Volunteer List
+            const vList = document.getElementById('volunteerList');
+            const vPanel = document.getElementById('volunteerResponsePanel');
+            
+            // Show panel if we have alerted anyone or have any responses
+            if ((data.volunteersAlerted && data.volunteersAlerted > 0) || (data.volunteers && data.volunteers.length > 0)) {
+                vPanel.style.display = 'block';
+                vList.innerHTML = '';
+                
+                if (data.volunteers && data.volunteers.length > 0) {
+                    data.volunteers.forEach(v => {
+                        if (v.status === 'ACCEPTED') {
+                            const item = document.createElement('div');
+                            item.className = 'contact-item accepted';
+                            item.style.borderLeft = '4px solid #10B981';
+                            item.innerHTML = `
+                                <div class="contact-info">
+                                    <div class="contact-details">
+                                        <h5><i class="bi bi-shield-fill-check text-success"></i> ${v.name}</h5>
+                                        <p><i class="bi bi-telephone"></i> ${v.phone || 'Phone hidden'}</p>
+                                    </div>
+                                </div>
+                                <div class="contact-status accepted">
+                                    HELPING
+                                </div>
+                            `;
+                            vList.appendChild(item);
+                        }
+                    });
+                }
+            } else {
+                vPanel.style.display = 'none';
             }
         }
 

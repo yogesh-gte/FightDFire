@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enrollment Form | FightDFire</title>
+    <title>Enrollment Form | Fight D Fear</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
 
     <style>
         :root {
-            --primary-red: #DB2777; /* Matching FightDFire vibrant theme */
+            --primary-red: #DB2777; /* Matching Fight D Fear vibrant theme */
             --primary-dark: #0f172a;
             --accent-purple: #7C2D5E;
             --soft-bg: #f8fafc;
@@ -44,6 +44,10 @@
             color: white;
             border-radius: 0 0 40px 40px;
             margin-bottom: -40px;
+        }
+        /* Issue 135: Enforce white text on the enrollment header */
+        .enrollment-header h1, .enrollment-header p {
+            color: #ffffff !important;
         }
 
         .form-section-card {
@@ -217,7 +221,7 @@
     <header id="header" class="header d-flex align-items-center sticky-top shadow-sm" style="background: white;">
         <div class="container-fluid container-xl d-flex align-items-center">
             <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto">
-                <h1 style="color: var(--primary-red); font-weight: 800; margin: 0;">FightDFire</h1>
+                <h1 style="color: var(--primary-red); font-weight: 800; margin: 0;">Fight D Fear</h1>
             </a>
             <nav id="navmenu" class="navmenu">
                 <ul>
@@ -260,7 +264,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Date of Birth *</label>
-                                <input type="date" id="dob" class="form-control" required onchange="calculateAge(); updateSummary()">
+                                <input type="date" id="dob" class="form-control" required onchange="calculateAge(); updateSummary()" max="<%= java.time.LocalDate.now() %>">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Age</label>
@@ -277,7 +281,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Phone Number *</label>
-                                <input type="tel" id="phone" class="form-control" value="${user.phoneNumber}" required>
+                                <input type="tel" id="phone" class="form-control" value="${user.phoneNumber}" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Email Address *</label>
@@ -321,7 +325,9 @@
                                                 data-level="${batch.skillLevel}"
                                                 data-days="${batch.availableDays}"
                                                 data-slot="${batch.timeSlot}"
-                                                data-fee="${batch.fee}">
+                                                data-fee="${batch.fee}"
+                                                data-instructor="${batch.instructor}"
+                                                data-agegroup="${batch.ageGroup}">
                                             ${batch.name} (${batch.style})
                                         </option>
                                     </c:forEach>
@@ -376,7 +382,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Trainer Preference (Optional)</label>
-                                <input type="text" id="trainerPref" class="form-control" placeholder="Specific instructor name">
+                                <!-- Issue 136: Dropdown to select trainer from available batch instructors -->
+                                <select id="trainerPref" class="form-select">
+                                    <option value="">Any available trainer</option>
+                                    <%-- Options populated dynamically by JS after batch selection --%>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -424,6 +434,7 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Proposed Start Date *</label>
+                                <!-- Issue 137: Only allow future dates for proposed start date -->
                                 <input type="date" id="startDate" class="form-control" required onchange="updateSummary()">
                             </div>
                         </div>
@@ -559,10 +570,20 @@
         AOS.init({ duration: 800, once: true });
 
         function calculateAge() {
-            const dob = document.getElementById('dob').value;
+            const dobInput = document.getElementById('dob');
+            const dob = dobInput.value;
             if (!dob) return;
             const birthDate = new Date(dob);
             const today = new Date();
+            today.setHours(0,0,0,0);
+            
+            if (birthDate > today) {
+                alert("Date of Birth cannot be in the future!");
+                dobInput.value = "";
+                document.getElementById('age').value = "";
+                return;
+            }
+
             let age = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
@@ -576,10 +597,38 @@
             const option = select.options[select.selectedIndex];
             if (select.value) {
                 document.getElementById('skillLevel').value = option.dataset.level;
-                // Auto-check days from batch string
-                const days = option.dataset.days.toUpperCase();
+
+                // Issue 139: Lock schedule days to match selected batch, not user-overridable
+                const days = option.dataset.days ? option.dataset.days.toUpperCase() : '';
                 document.querySelectorAll('.day-check').forEach(chk => {
-                    chk.checked = days.includes(chk.value);
+                    const dayMatch = days.split(',').some(d => days.includes(chk.value.substring(0,3)));
+                    // Match MON -> MONDAY, TUE -> TUESDAY, etc.
+                    const abbr = {
+                        'MONDAY': 'MON', 'TUESDAY': 'TUE', 'WEDNESDAY': 'WED',
+                        'THURSDAY': 'THU', 'FRIDAY': 'FRI', 'SATURDAY': 'SAT', 'SUNDAY': 'SUN'
+                    };
+                    const abbrVal = abbr[chk.value] || chk.value.substring(0,3);
+                    const isInBatch = days.includes(abbrVal);
+                    chk.checked = isInBatch;
+                    chk.disabled = true; // Issue 139: Disable to prevent override
+                });
+
+                // Issue 136: Populate trainer dropdown with the batch instructor
+                const trainerSelect = document.getElementById('trainerPref');
+                trainerSelect.innerHTML = '<option value="">Any available trainer</option>';
+                const instructor = option.dataset.instructor || '';
+                if (instructor) {
+                    const opt = document.createElement('option');
+                    opt.value = instructor;
+                    opt.text = instructor;
+                    opt.selected = true;
+                    trainerSelect.appendChild(opt);
+                }
+            } else {
+                // Re-enable if no batch selected
+                document.querySelectorAll('.day-check').forEach(chk => {
+                    chk.disabled = false;
+                    chk.checked = false;
                 });
             }
         }
@@ -608,6 +657,23 @@
         document.getElementById('complexEnrollmentForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
+
+            // Issue 138: Validate age group against selected batch
+            const batchSel = document.getElementById('batchId');
+            const batchOpt = batchSel.options[batchSel.selectedIndex];
+            const ageGroup = batchOpt ? (batchOpt.dataset.agegroup || '') : '';
+            const userAge = parseInt(document.getElementById('age').value) || 0;
+            if (ageGroup && userAge > 0) {
+                let ageOk = true;
+                if (ageGroup.toLowerCase().includes('kids') && (userAge < 5 || userAge > 12)) ageOk = false;
+                else if (ageGroup.toLowerCase().includes('teens') && (userAge < 13 || userAge > 17)) ageOk = false;
+                else if (ageGroup.toLowerCase().includes('adults') && userAge < 18) ageOk = false;
+                if (!ageOk) {
+                    alert('Your age (' + userAge + ') does not match the required age group for this batch: ' + ageGroup);
+                    return;
+                }
+            }
+
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Submitting...';
 
@@ -664,8 +730,14 @@
         };
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Issue 137: Set min date to tomorrow for proposed start date
+            const startDateInput = document.getElementById('startDate');
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            startDateInput.min = tomorrow.toISOString().split('T')[0];
+
             const preId = '${preselectedBatchId}';
-            if (preId && preId !== '') {
+            if (preId && preId !== '' && preId !== 'null') {
                 const sel = document.getElementById('batchId');
                 sel.value = preId;
                 updateBatchInfo();
@@ -688,7 +760,7 @@
                     key: order.key,
                     amount: order.amount,
                     currency: 'INR',
-                    name: 'FightDFire Martial Arts',
+                    name: 'Fight D Fear Martial Arts',
                     description: 'Batch Enrollment Fee',
                     order_id: order.orderId,
                     handler: async function (response) {
@@ -732,3 +804,4 @@
     </script>
 </body>
 </html>
+

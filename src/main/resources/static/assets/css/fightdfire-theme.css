@@ -1,5 +1,5 @@
 /**
- * FightDFire theme layer
+ * Fight D Fear theme layer
  * Keeps app UI consistent across JSP pages.
  * Color palette from user dashboard: purple → coral → gold
  */
@@ -489,4 +489,11 @@ a.text-primary:hover {
   margin-right: 6px;
   font-size: 12px;
 }
+
+/* Explicit typography mapping for Our Values in footer */
+.footer-about .pt-3, 
+.footer-about .pt-3 p {
+  font-family: 'Raleway', 'Poppins', sans-serif !important;
+}
+
 

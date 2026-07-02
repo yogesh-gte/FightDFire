@@ -64,6 +64,37 @@ public class PaymentController {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Autowired
+    private MarketplaceEnrollmentRepository marketplaceEnrollmentRepo;
+
+    @GetMapping("")
+    public String showPaymentPage(HttpSession session) {
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        return "payment";
+    }
+
+    @PostMapping("/pay")
+    @ResponseBody
+    public String processDirectPayment(@RequestBody Map<String, Object> payload, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "Please login to make a payment.";
+        }
+        try {
+            double amount = Double.parseDouble(payload.get("amount").toString());
+            Payment payment = new Payment();
+            payment.setUserId(user.getId());
+            payment.setAmount(amount);
+            payment.setStatus("Success");
+            paymentRepository.save(payment);
+            return "Payment of $" + amount + " successful!";
+        } catch (Exception e) {
+            return "Payment failed: " + e.getMessage();
+        }
+    }
+
     @GetMapping("/users/my-payments")
     public String showMyPayments(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -227,7 +258,7 @@ public class PaymentController {
                     appt.setStatus(DoctorAppointmentStatus.PENDING);
                     appt.setConsultationType(cType);
                     if (cType == ConsultationType.VIDEO) {
-                        appt.setMeetingRoomId("FightDFire-" + java.util.UUID.randomUUID().toString().substring(0, 8));
+                        appt.setMeetingRoomId("Fight D Fear-" + java.util.UUID.randomUUID().toString().substring(0, 8));
                     }
                     appt.setRazorpayOrderId(orderId);
                     appt.setRazorpayPaymentId(paymentId);
@@ -311,6 +342,31 @@ public class PaymentController {
                         user.setMartialArtsCenter(enrollment.getCenter());
                         userRepo.save(user);
                     }
+                } else if ("MARKETPLACE".equals(type)) {
+                    Object enrollmentIdObj = data.get("enrollmentId");
+                    Long enrollmentId = Long.parseLong(enrollmentIdObj.toString());
+                    MarketplaceEnrollment enrollment = marketplaceEnrollmentRepo.findById(enrollmentId).orElse(null);
+                    if (enrollment != null) {
+                        enrollment.setPaymentStatus("PAID");
+                        enrollment.setRazorpayOrderId(orderId);
+                        enrollment.setRazorpayPaymentId(paymentId);
+                        enrollment.setRazorpaySignature(signature);
+                        
+                        double parsedAmount = 0.0;
+                        try {
+                            Object amtObj = data.get("amount");
+                            if (amtObj != null) {
+                                String amtStr = amtObj.toString().replaceAll("[^0-9.]", "");
+                                if (!amtStr.isEmpty()) {
+                                    parsedAmount = Double.parseDouble(amtStr);
+                                }
+                            }
+                        } catch (Exception amtEx) {
+                            System.out.println("Amount parse warning: " + amtEx.getMessage());
+                        }
+                        enrollment.setAmountPaid(parsedAmount);
+                        marketplaceEnrollmentRepo.save(enrollment);
+                    }
                 }
 
                 responseMap.put("status", "success");
@@ -326,3 +382,4 @@ public class PaymentController {
         }
     }
 }
+

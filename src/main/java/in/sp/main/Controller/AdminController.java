@@ -101,7 +101,7 @@ public class AdminController {
                 + "We are excited to inform you that your registration as a Martial Arts Training Center has been successfully approved.\n\n"
                 + "Your center is now visible to users, and they can start enrolling in your training sessions.\n\n"
                 + "Please log in to your profile to manage enrollments and update training details as needed.\n\n"
-                + "Best Regards,\nFightTheFire\n";
+                + "Best Regards,\nFight D Fear\n";
 
         emailService.sendEmail(centre.getEmail(), subject, text);
         redirectAttributes.addFlashAttribute("message", "Centre approved successfully!");
@@ -1236,9 +1236,33 @@ public class AdminController {
     @GetMapping("/pending-sellers")
     public String viewPendingSellers(Model model, HttpSession session) {
         if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+
+        // Purpose: fix legacy rows with null status so they appear in Pending.
+        for (WomenProductSeller s : womenSellerRepo.findAllByOrderByCreatedAtDesc()) {
+            if (s.getVerificationStatus() == null) {
+                s.setVerificationStatus(VerificationStatus.PENDING);
+                womenSellerRepo.save(s);
+            }
+        }
+        for (ServiceProvider p : serviceProviderRepository.findAll()) {
+            if (p.getVerificationStatus() == null) {
+                p.setVerificationStatus(VerificationStatus.PENDING);
+                serviceProviderRepository.save(p);
+            }
+        }
+
         model.addAttribute("pending", womenSellerRepo.findByVerificationStatus(VerificationStatus.PENDING));
         model.addAttribute("verified", womenSellerRepo.findByVerificationStatus(VerificationStatus.VERIFIED));
         model.addAttribute("rejected", womenSellerRepo.findByVerificationStatus(VerificationStatus.REJECTED));
+
+        // Purpose: sellers who registered via marketplace with WOMEN_PRODUCTS category.
+        model.addAttribute("pendingMarketplace", serviceProviderRepository
+                .findByCategoryAndVerificationStatus(ProviderCategory.WOMEN_PRODUCTS, VerificationStatus.PENDING));
+        model.addAttribute("verifiedMarketplace", serviceProviderRepository
+                .findByCategoryAndVerificationStatus(ProviderCategory.WOMEN_PRODUCTS, VerificationStatus.VERIFIED));
+        model.addAttribute("rejectedMarketplace", serviceProviderRepository
+                .findByCategoryAndVerificationStatus(ProviderCategory.WOMEN_PRODUCTS, VerificationStatus.REJECTED));
+
         return "adminPendingSellers";
     }
 
@@ -1422,3 +1446,4 @@ public class AdminController {
         return "adminViewStylistProfile";
     }
 }
+

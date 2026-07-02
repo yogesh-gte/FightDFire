@@ -264,7 +264,7 @@
 <body>
 
 <div class="topbar">
-  <span class="brand">&#x1F6E1;&#xFE0F; FightDFire Admin</span>
+  <span class="brand">&#x1F6E1;&#xFE0F; Fight D Fear Admin</span>
   <a href="${pageContext.request.contextPath}/admin/logout" class="btn-logout">
     <i class="fas fa-sign-out-alt"></i> Logout
   </a>
@@ -388,3 +388,4 @@
 
 </body>
 </html>
+

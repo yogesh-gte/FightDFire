@@ -35,7 +35,10 @@ public class VideoController {
 
     // Show Upload Video Page
     @RequestMapping(value = "/uploadVideo", method = RequestMethod.GET)
-    public String showUploadVideoPage(Model model) {
+    public String showUploadVideoPage(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null && session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("categories", Category.values());
         return "uploadVideo";
     }
@@ -44,6 +47,7 @@ public class VideoController {
     @RequestMapping(value = "/uploadingVideo", method = RequestMethod.POST)
     public String uploadVideo(@RequestParam String title,
                               @RequestParam Category category,
+                              @RequestParam(value = "isReel", defaultValue = "false") boolean isReel,
                               @RequestParam("videoFile") MultipartFile file,
                               HttpSession session,
                               RedirectAttributes redirectAttributes) {
@@ -64,21 +68,32 @@ public class VideoController {
             file.transferTo(new File(filePath));
 
             Admin admin = (Admin) session.getAttribute("admin");
-            if (admin == null) {
-                redirectAttributes.addFlashAttribute("message", "Admin not logged in!");
+            User user = (User) session.getAttribute("user");
+
+            if (admin == null && user == null) {
+                redirectAttributes.addFlashAttribute("message", "Please log in to upload a video!");
                 return "redirect:/video/uploadVideo";
             }
 
             Video video = new Video(title, category, "/uploads/" + fileName, admin);
+            video.setReel(isReel);
+            if (user != null) {
+                video.setUserUploader(user);
+            }
             videoService.uploadVideo(video);
 
-            redirectAttributes.addFlashAttribute("message", "Video uploaded successfully!");
+            redirectAttributes.addFlashAttribute("message", (isReel ? "Reel" : "Video") + " uploaded successfully!");
+
+            if (admin != null) {
+                return "redirect:/video/videoManagement";
+            } else {
+                return "redirect:" + (isReel ? "/video/allReels" : "/video/allVideos");
+            }
 
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("message", "Video upload failed: " + e.getMessage());
+            return "redirect:/video/uploadVideo";
         }
-
-        return "redirect:/video/videoManagement";
     }
 
     // Show video edit form
@@ -137,18 +152,35 @@ public class VideoController {
     public String showVideos(@RequestParam(value = "category", required = false) Category category,
                              Model model,
                              HttpSession session) {
-        List<Video> videos = (category != null) ? videoService.getVideosByCategory(category) : videoService.getAllVideos();
+        List<Video> videos = (category != null) ? 
+            videoService.getVideosByCategoryAndType(category, false) : 
+            videoService.getVideosByType(false);
         model.addAttribute("videos", videos);
         model.addAttribute("categories", Category.values());
-        // Some JSP headers expect ${user} for profile/dashboard links
         model.addAttribute("user", session.getAttribute("user"));
         return "videosPage";
+    }
+
+    // Show All Reels for users and volunteers
+    @RequestMapping(value = "/allReels", method = RequestMethod.GET)
+    public String showReels(@RequestParam(value = "category", required = false) Category category,
+                            Model model,
+                            HttpSession session) {
+        List<Video> reels = (category != null) ? 
+            videoService.getVideosByCategoryAndType(category, true) : 
+            videoService.getVideosByType(true);
+        model.addAttribute("videos", reels);
+        model.addAttribute("categories", Category.values());
+        model.addAttribute("user", session.getAttribute("user"));
+        return "reelsPage";
     }
     @RequestMapping(value = "/allVideos1", method = RequestMethod.GET)
     public String showVideos1(@RequestParam(value = "category", required = false) Category category,
                               Model model,
                               HttpSession session) {
-        List<Video> videos = (category != null) ? videoService.getVideosByCategory(category) : videoService.getAllVideos();
+        List<Video> videos = (category != null) ? 
+            videoService.getVideosByCategoryAndType(category, false) : 
+            videoService.getVideosByType(false);
         model.addAttribute("videos", videos);
         model.addAttribute("categories", Category.values());
         model.addAttribute("user", session.getAttribute("user"));

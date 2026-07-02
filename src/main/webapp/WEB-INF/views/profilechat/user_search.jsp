@@ -34,7 +34,7 @@
 						<link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 						<link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 						<link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 			
 					<!-- 🎨 Custom CSS -->
 					<style>
@@ -329,31 +329,31 @@ html, body {
   <button id="btn-followers" class="btn btn-primary px-4 py-3"
           style="background-color: var(--brand-purple) !important; border-radius: 8px; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;"
           onclick="switchTab('followers')">
-    Followers
+    Followers (${followers != null ? followers.size() : 0})
   </button>
 
   <button id="btn-following" class="btn btn-primary px-4 py-3"
           style="background-color: var(--brand-purple) !important; border-radius: 8px; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;"
           onclick="switchTab('following')">
-    Following
+    Following (${following != null ? following.size() : 0})
   </button>
 
   <button id="btn-friends" class="btn btn-primary px-4 py-3"
           style="background-color: var(--brand-purple) !important; border-radius: 8px; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;"
           onclick="switchTab('friends')">
-    Friends
+    Friends (${friends != null ? friends.size() : 0})
   </button>
 
   <button id="btn-groups" class="btn btn-primary px-4 py-3"
           style="background-color: var(--brand-purple) !important; border-radius: 8px; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;"
           onclick="switchTab('groups')">
-    Groups
+    Groups (${groups != null ? groups.size() : 0})
   </button>
 
   <button id="btn-requests" class="btn btn-primary px-4 py-3"
           style="background-color: var(--brand-purple) !important; border-radius: 8px; border: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;"
           onclick="switchTab('requests')">
-    Requests
+    Requests (${followRequests != null ? followRequests.size() : 0})
   </button>
 
   <button id="btn-search" class="btn btn-primary px-4 py-3"
@@ -397,23 +397,24 @@ html, body {
 			          <div class="user-card text-center shadow-sm p-3 bg-white rounded">
 			            <img src="${pageContext.request.contextPath}${f.profilePhoto}" alt="${f.fullName}" class="rounded-circle mb-3" width="90" height="90">
 			            <h5>${f.fullName}</h5>
-			            <c:choose>
-  
-  <c:when test="${followingStatus[f.id]}">
-    <span class="badge bg-success mt-2">Friend</span>
-  </c:when>
-
-  
-  <c:otherwise>
-    <form action="${pageContext.request.contextPath}/users/follow/${f.id}"
-          method="post" class="mt-2">
-      <button class="btn btn-primary btn-sm">
-        ➕ Follow
-      </button>
-    </form>
-  </c:otherwise>
-</c:choose>
-			              </div>
+			            <div class="mt-2">
+			              <c:choose>
+			                <c:when test="${followingStatus[f.id]}">
+			                  <span class="badge bg-success mb-2">Mutual Friend</span>
+			                  <a href="${pageContext.request.contextPath}/chat/window/${f.id}" class="btn btn-outline-primary btn-sm w-100">💬 Chat</a>
+			                </c:when>
+			                <c:when test="${pendingStatus[f.id]}">
+			                  <button type="button" class="btn btn-warning btn-sm w-100" disabled>⏳ Requested</button>
+			                </c:when>
+			                <c:otherwise>
+			                  <form action="${pageContext.request.contextPath}/users/follow/${f.id}" method="post">
+			                    <input type="hidden" name="tab" value="followers">
+			                    <button class="btn btn-primary btn-sm w-100">➕ Follow Back</button>
+			                  </form>
+			                </c:otherwise>
+			              </c:choose>
+			            </div>
+			          </div>
 			        </div>
 			      </c:forEach>
 			    </div>
@@ -428,13 +429,15 @@ html, body {
 			          <div class="user-card text-center shadow-sm p-3 bg-white rounded">
 			            <img src="${pageContext.request.contextPath}${f.profilePhoto}" alt="${f.fullName}" class="rounded-circle mb-3" width="90" height="90">
 			            <h5>${f.fullName}</h5>
-			           <form action="${pageContext.request.contextPath}/users/unfollow/${f.id}"
-      method="post" class="mt-2">
-  <button class="btn btn-outline-danger btn-sm">
-    ❌ Unfollow
-  </button>
-</form>
-			                </div>
+			            <div class="mt-2">
+			              <c:if test="${friends.contains(f)}">
+			                <a href="${pageContext.request.contextPath}/chat/window/${f.id}" class="btn btn-outline-primary btn-sm w-100 mb-2">💬 Chat</a>
+			              </c:if>
+			              <form action="${pageContext.request.contextPath}/users/unfollow/${f.id}" method="post">
+			                <button class="btn btn-outline-danger btn-sm w-100">❌ Unfollow</button>
+			              </form>
+			            </div>
+			          </div>
 			        </div>
 			      </c:forEach>
 			    </div>
@@ -569,6 +572,7 @@ html, body {
 			              </c:when>
 			              <c:otherwise>
 			                <form action="${pageContext.request.contextPath}/users/follow/${u.id}" method="post">
+			                  <input type="hidden" name="tab" value="search">
 			                  <button type="submit" class="btn btn-primary btn-sm">Follow</button>
 			                </form>
 			              </c:otherwise>
@@ -767,3 +771,4 @@ html, body {
 
 		</body>
 		</html>
+

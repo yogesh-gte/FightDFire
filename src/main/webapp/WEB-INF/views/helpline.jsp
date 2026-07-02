@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>24/7 Emergency Helplines - FightDFire</title>
+    <title>24/7 Emergency Helplines - Fight D Fear</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -473,7 +473,7 @@
             <div class="tip-card">
                 <div class="tip-num">Step 3</div>
                 <h5>Share Location</h5>
-                <p>Use FightDFire's SOS or Panic Button to automatically share your GPS location.</p>
+                <p>Use Fight D Fear's SOS or Panic Button to automatically share your GPS location.</p>
             </div>
         </div>
 
@@ -501,3 +501,4 @@
     </div>
 </body>
 </html>
+

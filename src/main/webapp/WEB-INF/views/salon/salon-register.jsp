@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salon Partner Registration — FightDFire</title>
+    <title>Salon Partner Registration — Fight D Fear</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <style>
         :root {
             --brand-purple: #7C2D5E;
@@ -129,7 +129,7 @@
     <div class="auth-container">
         <div class="left-panel">
             <div class="brand">
-                <div class="brand-logo"><i class="bi bi-shield-check"></i> FightDFire</div>
+                <div class="brand-logo"><i class="bi bi-shield-check"></i> Fight D Fear</div>
                 <p class="brand-tagline">Empowering Women's Safety Through Technology. Your safety is our mission — anytime, anywhere.</p>
                 <ul class="feature-list">
                     <li><span class="feat-icon"><i class="bi bi-star-fill"></i></span> Premium Beauty Safety Standards</li>
@@ -170,7 +170,7 @@
                         <div class="fdf-group">
                             <label>Username</label>
                             <input type="text" name="username" id="username" class="fdf-input" placeholder="e.g. radiance_hub" required>
-                            <div class="error-msg" id="err-username">4-6 chars (lowercase, numbers, underscore only, no spaces).</div>
+                            <div class="error-msg" id="err-username">3-20 characters (alphanumeric and underscores).</div>
                         </div>
 
                         <div class="fdf-row">
@@ -251,7 +251,7 @@
             
             if (isValid) {
                 if (fieldId === 'salonName') isValid = val.length >= 3;
-                if (fieldId === 'username') isValid = /^[a-z0-9_]{4,6}$/.test(val);
+                if (fieldId === 'username') isValid = /^[a-zA-Z0-9_]{3,20}$/.test(val);
                 if (fieldId === 'password') isValid = val.length >= 6 && val.length <= 8 && /[A-Z]/.test(val) && /\d/.test(val);
                 if (fieldId === 'confirmPassword') isValid = val === document.getElementById('password').value;
                 if (fieldId === 'bio') isValid = val.length >= 15;
@@ -340,3 +340,4 @@
     </script>
 </body>
 </html>
+

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Training Journey | FightDFire</title>
+    <title>My Training Journey | Fight D Fear</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -217,7 +217,7 @@
     <aside class="sidebar">
         <div class="sidebar-logo">
             <i class="fas fa-hand-fist fa-2x text-danger"></i>
-            <span>FightDFire</span>
+            <span>Fight D Fear</span>
         </div>
         
         <ul class="nav-menu">
@@ -289,7 +289,8 @@
             <div class="stat-card">
                 <span class="stat-label">Trainer</span>
                 <span class="stat-value">${not empty activeEnrollment ? activeEnrollment.batch.instructor : 'Not Assigned'}</span>
-                <a href="#" class="stat-link">View Profile <i class="bi bi-arrow-right"></i></a>
+                <!-- Issue 140: Link trainer card to the centre details page which shows trainer info -->
+                <a href="${not empty activeEnrollment ? pageContext.request.contextPath.concat('/centres/details/').concat(activeEnrollment.batch.center.id) : '#'}" class="stat-link">View Profile <i class="bi bi-arrow-right"></i></a>
             </div>
             <div class="stat-card">
                 <div class="d-flex align-items-center gap-3">
@@ -577,3 +578,4 @@
     </script>
 </body>
 </html>
+

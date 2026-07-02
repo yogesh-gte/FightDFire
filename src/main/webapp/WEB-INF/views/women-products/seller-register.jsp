@@ -5,12 +5,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Partner Registration — FightDFire</title>
+  <title>Partner Registration — Fight D Fear</title>
   
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
 
   <style>
     :root {
@@ -126,7 +126,7 @@
     <div class="auth-container">
         <div class="left-panel">
             <div class="brand">
-                <div class="brand-logo"><i class="bi bi-shield-check"></i> FightDFire</div>
+                <div class="brand-logo"><i class="bi bi-shield-check"></i> Fight D Fear</div>
                 <p class="brand-tagline">Empowering Women's Safety Through Technology. Your safety is our mission — anytime, anywhere.</p>
                 <ul class="feature-list">
                     <li><span class="feat-icon"><i class="bi bi-smartwatch"></i></span> Safety Gadgets & Essentials</li>
@@ -173,7 +173,7 @@
                             </div>
                             <div class="fdf-group">
                                 <label>Phone Number</label>
-                                <input type="tel" name="phone" id="phone" class="fdf-input" placeholder="+91..." required>
+                                <input type="tel" name="phone" id="phone" class="fdf-input" placeholder="10-digit number" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
                                 <div class="error-msg">Valid 10-digit number required.</div>
                             </div>
                         </div>
@@ -296,3 +296,4 @@
     </script>
 </body>
 </html>
+

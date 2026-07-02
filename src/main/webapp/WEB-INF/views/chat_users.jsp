@@ -13,7 +13,7 @@
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 </head>
 <body>
 
@@ -191,15 +191,15 @@
 <section class="services section light-background py-5">
   <div class="container">
     <div class="row g-4">
-      <c:forEach var="user" items="${users}">
+      <c:forEach var="chatUser" items="${users}">
         <div class="col-md-4 col-sm-6">
-          <a href="${pageContext.request.contextPath}/chat/window/${user.id}" class="text-decoration-none">
+          <a href="${pageContext.request.contextPath}/chat/window/${chatUser.id}" class="text-decoration-none">
             <div class="dashboard-card h-100 d-flex flex-column align-items-center p-4">
-              <img src="${pageContext.request.contextPath}${user.profilePhoto}"
+              <img src="${pageContext.request.contextPath}${chatUser.profilePhoto}"
                    onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
-                   alt="${user.fullName}"
+                   alt="${chatUser.fullName}"
                    style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--primary-purple-light);">
-              <h4 class="mt-3 mb-1">${not empty user.fullName ? user.fullName : user.email}</h4>
+              <h4 class="mt-3 mb-1">${not empty chatUser.fullName ? chatUser.fullName : chatUser.email}</h4>
               <span class="btn btn-watch-video btn-sm mt-2">
                 <i class="bi bi-chat-fill me-1"></i> Open Chat
               </span>
@@ -219,4 +219,5 @@
 
 </body>
 </html>
+
 

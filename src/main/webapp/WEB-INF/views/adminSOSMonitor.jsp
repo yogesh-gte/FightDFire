@@ -262,7 +262,7 @@
 <div class="topbar">
   <div style="display:flex;align-items:center;">
     <button class="mobile-toggle" id="sidebarToggle" style="background:none;border:none;color:#fff;font-size:1.2rem;margin-right:15px;display:none;"><i class="fas fa-bars"></i></button>
-    <span class="brand" style="font-weight:700;font-size:1.1rem;">&#x1F6E1;&#xFE0F; FightDFire Admin</span>
+    <span class="brand" style="font-weight:700;font-size:1.1rem;">&#x1F6E1;&#xFE0F; Fight D Fear Admin</span>
   </div>
   <a href="${pageContext.request.contextPath}/admin/logout" style="background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.3); border-radius:7px; padding:5px 16px; font-size:0.85rem; font-weight:600; text-decoration:none;">
     <i class="fas fa-sign-out-alt"></i> Logout
@@ -307,8 +307,8 @@
 </div>
 
 <!-- Audio alert for new SOS -->
-<audio id="sosAudio" preload="auto">
-    <source src="${pageContext.request.contextPath}/resources/sounds/alarm.mp3" type="audio/mpeg">
+<audio id="sosAudio" preload="auto" loop>
+    <source src="${pageContext.request.contextPath}/siren.mp3" type="audio/mpeg">
 </audio>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -395,6 +395,15 @@
         }
         document.getElementById('activeCount').textContent = activeCount;
         document.getElementById('totalCount').textContent = data.length;
+
+        // If no active alerts, stop the siren
+        if (activeCount === 0) {
+            try {
+                var audio = document.getElementById('sosAudio');
+                audio.pause();
+                audio.currentTime = 0;
+            } catch(e) {}
+        }
     }
 
     // === Render Alert List ===
@@ -524,4 +533,5 @@
 
 </body>
 </html>
+
 

@@ -150,7 +150,7 @@
 <body>
 
 <div class="topbar">
-  <span class="brand">&#x1F6E1;&#xFE0F; FightDFire Admin</span>
+  <span class="brand">&#x1F6E1;&#xFE0F; Fight D Fear Admin</span>
   <a href="${pageContext.request.contextPath}/admin/logout" class="btn-logout">
     <i class="fas fa-sign-out-alt"></i> Logout
   </a>
@@ -243,3 +243,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

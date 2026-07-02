@@ -60,6 +60,7 @@
 		  	  			          </div>
 		  	  			          <p>
 		  	  			          	<a href="#" class="btn btn-watch-video btn-lg"> Watch Videos</a>  |
+		  	  			          	<a href="${pageContext.request.contextPath}/video/uploadVideo" class="btn btn-watch-video btn-lg">Upload Video</a> |
 		  	  			          	<a href="${pageContext.request.contextPath}/volunteers/dashboard" class="btn btn-watch-video btn-lg">Back to Dashboard</a>
 		  	  			          </p>
 		  	  			        </div>
@@ -472,7 +473,7 @@
 						        <div class="row gy-4">
 						          <div class="col-lg-4 col-md-6 footer-about">
 						            <a href="index.html" class="d-flex align-items-center">
-						              <span class="sitename">FightDFire</span>
+						              <span class="sitename">Fight D Fear</span>
 						            </a>
 						               
 						    <div class="pt-3">
@@ -520,7 +521,7 @@
 						      </div>
 
 						      <div class="container copyright text-center mt-4">
-						        <p>© Copyright</span> <strong class="px-1 sitename">FightDFire</strong> All Rights Reserved</p>
+						        <p>© Copyright</span> <strong class="px-1 sitename">Fight D Fear</strong> All Rights Reserved</p>
 						        <div class="credits">
 						           </div>
 						      </div>
@@ -551,3 +552,4 @@
 
 						  </body>
 						  </html>
+

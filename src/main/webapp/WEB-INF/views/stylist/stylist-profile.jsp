@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stylist Profile | FightDFire</title>
+    <title>Stylist Profile | Fight D Fear</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
 
     <style>
         :root {
@@ -234,7 +234,7 @@
 
     <!-- Mobile Header -->
     <div class="mobile-header d-lg-none shadow-sm">
-        <h4 class="m-0 fw-bold d-flex align-items-center gap-2"><i class="bi bi-stars"></i> FightDFire</h4>
+        <h4 class="m-0 fw-bold d-flex align-items-center gap-2"><i class="bi bi-stars"></i> Fight D Fear</h4>
         <button class="btn btn-link text-white p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
             <i class="bi bi-list" style="font-size: 2rem;"></i>
         </button>
@@ -243,13 +243,13 @@
     <!-- Sidebar -->
     <div class="sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="sidebarMenu">
         <div class="offcanvas-header d-lg-none border-bottom border-secondary mb-3 pb-3">
-            <h5 class="offcanvas-title text-white fw-bold"><i class="bi bi-stars"></i> FightDFire</h5>
+            <h5 class="offcanvas-title text-white fw-bold"><i class="bi bi-stars"></i> Fight D Fear</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu"></button>
         </div>
 
         <a href="${pageContext.request.contextPath}/stylists/dashboard" class="sidebar-brand sidebar-brand-desktop">
             <i class="bi bi-stars"></i>
-            <span>FightDFire</span>
+            <span>Fight D Fear</span>
         </a>
 
         <nav class="nav flex-column">
@@ -424,3 +424,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

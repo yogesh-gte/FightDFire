@@ -28,8 +28,16 @@ public class VideoService {
         return videoRepository.findByCategory(category);
     }
 
+    public List<Video> getVideosByCategoryAndType(Category category, boolean isReel) {
+        return videoRepository.findByCategoryAndIsReel(category, isReel);
+    }
+
     public List<Video> getAllVideos() {
         return videoRepository.findAll();
+    }
+
+    public List<Video> getVideosByType(boolean isReel) {
+        return videoRepository.findByIsReel(isReel);
     }
     
     @Transactional

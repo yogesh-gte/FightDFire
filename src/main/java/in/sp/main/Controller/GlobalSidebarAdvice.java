@@ -31,6 +31,9 @@ public class GlobalSidebarAdvice {
     private StylistRepository stylistRepository;
 
     @Autowired
+    private WomenProductSellerRepository womenProductSellerRepository;
+
+    @Autowired
     private ContactMessageRepository contactMessageRepository;
 
     @ModelAttribute
@@ -40,9 +43,15 @@ public class GlobalSidebarAdvice {
                 long pendingUsers = userRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
                 long pendingCentres = centreService.getCentresByApprovalStatus(false).size();
                 long pendingDoctors = doctorRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
-                long pendingSellers = serviceProviderRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
+                long pendingSellers = womenProductSellerRepository.findByVerificationStatus(VerificationStatus.PENDING).size()
+                        + serviceProviderRepository.findByCategoryAndVerificationStatus(
+                                in.sp.main.Entities.ProviderCategory.WOMEN_PRODUCTS, VerificationStatus.PENDING).size();
                 long pendingSalons = salonRepository.findByApproved(false).size();
                 long pendingStylists = stylistRepository.findByApproved(false).size();
+                long pendingLawyers = serviceProviderRepository.findByCategoryAndVerificationStatus(
+                        in.sp.main.Entities.ProviderCategory.WOMEN_LAWYER, VerificationStatus.PENDING).size();
+                long pendingFitness = serviceProviderRepository.findByCategoryAndVerificationStatus(
+                        in.sp.main.Entities.ProviderCategory.FITNESS_ZUMBA, VerificationStatus.PENDING).size();
                 long unreadContactMessages = contactMessageRepository.countByReadByAdminFalse();
                 
                 model.addAttribute("side_pendingUsers", pendingUsers);
@@ -51,6 +60,8 @@ public class GlobalSidebarAdvice {
                 model.addAttribute("side_pendingSellers", pendingSellers);
                 model.addAttribute("side_pendingSalons", pendingSalons);
                 model.addAttribute("side_pendingStylists", pendingStylists);
+                model.addAttribute("side_pendingLawyers", pendingLawyers);
+                model.addAttribute("side_pendingFitness", pendingFitness);
                 model.addAttribute("side_unreadContactMessages", unreadContactMessages);
             } catch (Exception e) {
                 // Fail gracefully

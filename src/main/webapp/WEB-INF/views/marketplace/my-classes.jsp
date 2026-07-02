@@ -14,7 +14,7 @@
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
 
     <style>
         :root {
@@ -103,23 +103,7 @@
 </head>
 <body>
 
-    <!-- Header -->
-    <header id="header" class="header d-flex align-items-center sticky-top">
-      <div class="container-fluid container-xl d-flex align-items-center">
-        <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
-        <nav id="navmenu" class="navmenu">
-          <ul>
-            <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
-            <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
-            <li><a href="${pageContext.request.contextPath}/users/wallet">Wallet 💰</a></li>
-            <li><a href="${pageContext.request.contextPath}/users/dashboard" class="btn-dashboard"><i class="fas fa-th-large"></i> Back to Dashboard</a></li>
-            <li><a href="${pageContext.request.contextPath}/users/profile/${user.id}">${user.fullName}</a></li>
-          </ul>
-          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-        </nav>
-        <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-      </div>
-    </header>
+    <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
     <div class="header-bg">
         <div class="container d-flex justify-content-between align-items-center">
@@ -206,3 +190,4 @@
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

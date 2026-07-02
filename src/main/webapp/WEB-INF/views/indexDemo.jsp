@@ -185,6 +185,28 @@
   </div>
 </div>
 
+    <!-- Women Lawyer Card -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100">
+        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=2070" alt="Women Lawyer">
+        <h4 class="card-title">Women Lawyer</h4>
+        <p>Register to provide legal assistance and advocacy for women.</p>
+        <a href="${pageContext.request.contextPath}/marketplace/provider/register?category=WOMEN_LAWYER" class="btn btn-primary w-100 mb-2">Register</a>
+        <a href="${pageContext.request.contextPath}/marketplace/provider/login" class="btn btn-outline-primary w-100">Login</a>
+      </div>
+    </div>
+
+    <!-- Fitness Zumba Card -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card h-100">
+        <img src="https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?auto=format&fit=crop&q=80&w=2070" alt="Fitness Zumba">
+        <h4 class="card-title">Fitness Zumba</h4>
+        <p>Register as a Zumba instructor to lead empowering fitness sessions.</p>
+        <a href="${pageContext.request.contextPath}/marketplace/provider/register?category=FITNESS_ZUMBA" class="btn btn-primary w-100 mb-2">Register</a>
+        <a href="${pageContext.request.contextPath}/marketplace/provider/login" class="btn btn-outline-primary w-100">Login</a>
+      </div>
+    </div>
+
   </div>
 </div>
 

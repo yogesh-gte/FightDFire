@@ -138,7 +138,7 @@ public class PanicController {
                         + "📞 Contact: " + (user != null && user.getPhoneNumber() != null ? user.getPhoneNumber() : "N/A") + "\n\n"
                         + "⏰ Time: " + LocalDateTime.now() + "\n\n"
                         + "Please respond immediately and check on their safety.\n\n"
-                        + "This is an automated emergency alert from FightDFire Women Safety App.";
+                        + "This is an automated emergency alert from Fight D Fear Women Safety App.";
 
                     emailService.sendEmail(
                         contact.getEmail(),
@@ -161,3 +161,4 @@ public class PanicController {
         return ResponseEntity.ok(response);
     }
 }
+

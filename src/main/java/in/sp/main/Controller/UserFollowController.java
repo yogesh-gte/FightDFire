@@ -110,7 +110,19 @@ public class UserFollowController {
         Map<Long, Boolean> followingStatus = new HashMap<>();
         Map<Long, Boolean> pendingStatus = new HashMap<>();
 
-        for (User u : filteredUsers) {
+        List<User> followers = followService.getFollowers(currentUserId);
+        List<User> following = followService.getFollowing(currentUserId);
+        List<User> followRequests = followService.getPendingRequests(currentUserId);
+        List<User> friends = followService.getFriends(currentUserId);
+
+        // Collect all users to check status for
+        Set<User> allRelevantUsers = new HashSet<>(filteredUsers);
+        allRelevantUsers.addAll(followers);
+        allRelevantUsers.addAll(following);
+        allRelevantUsers.addAll(followRequests);
+        allRelevantUsers.addAll(friends);
+
+        for (User u : allRelevantUsers) {
             followingStatus.put(
                     u.getId(),
                     followService.isAcceptedFollower(currentUserId, u.getId())
@@ -132,10 +144,10 @@ public class UserFollowController {
         model.addAttribute("followingStatus", followingStatus);
         model.addAttribute("pendingStatus", pendingStatus);
 
-        model.addAttribute("followers", followService.getFollowers(currentUserId));
-        model.addAttribute("following", followService.getFollowing(currentUserId));
-        model.addAttribute("followRequests", followService.getPendingRequests(currentUserId));
-        model.addAttribute("friends", followService.getFriends(currentUserId));
+        model.addAttribute("followers", followers);
+        model.addAttribute("following", following);
+        model.addAttribute("followRequests", followRequests);
+        model.addAttribute("friends", friends);
 
         model.addAttribute("requestCount", requestCount);
         String normalizedKeyword = (keyword == null) ? "" : keyword.trim();
@@ -170,14 +182,21 @@ public class UserFollowController {
 
     // ➕ FOLLOW USER (creates PENDING request)
     @PostMapping("/follow/{id}")
-    public String followUser(@PathVariable("id") Long followedId, HttpSession session) {
+    public String followUser(@PathVariable("id") Long followedId, 
+                             @RequestParam(required = false) String tab,
+                             HttpSession session) {
         User currentUser = (User) session.getAttribute("user");
         if (currentUser == null) return "redirect:/login";
 
         followService.followUser(currentUser.getId(), followedId);
         // 🔴 Real-time: notify receiver that a request arrived
         notifyFollowStateChanged(followedId);
-        return "redirect:/users/search";
+        
+        String redirectUrl = "/users/search";
+        if (tab != null && !tab.isEmpty()) {
+            redirectUrl += "?tab=" + tab;
+        }
+        return "redirect:" + redirectUrl;
     }
 
     // ➕ AJAX FOLLOW USER
@@ -199,6 +218,12 @@ public class UserFollowController {
             res.put("status", "FOLLOWING");
         } else if (followService.isPendingRequest(currentUser.getId(), followedId)) {
             res.put("status", "REQUESTED");
+        }
+        
+        // Check if friends
+        User followedUser = userRepo.findById(followedId).orElse(null);
+        if (followedUser != null) {
+            res.put("isFriend", followService.getFriends(currentUser.getId()).contains(followedUser));
         }
 
         return res;

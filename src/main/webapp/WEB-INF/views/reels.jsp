@@ -8,7 +8,7 @@
 
 <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -941,59 +941,6 @@ function likeVideo(videoId, btn) {
 	  .catch(err => console.error(err));
 	}
 
-/* function postComment(e, videoId) {
-	  e.preventDefault();
-
-	  const input = document.getElementById("comment-input-" + videoId);
-	  const text = input.value.trim();
-	  if (!text) return;
-
-	  fetch("${pageContext.request.contextPath}/video/comment", {
-	    method: "POST",
-	    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-	    body: "videoId=" + videoId + "&commentText=" + encodeURIComponent(text)
-	  })
-	  .then(res => res.json())
-	  .then(data => {
-	    const commentContainer = document.getElementById("comments-" + videoId);
-
-	    // Use current logged-in user name
-	    const userName = "${currentUser.fullName}";
-
-	    // Build new comment element (with reply box and reply button)
-	    const commentDiv = document.createElement("div");
-	    commentDiv.className = "comment";
-	    commentDiv.id = "comment-" + (data.commentId || new Date().getTime()); // fallback id
-
-	    commentDiv.innerHTML = `
-	      <strong>${userName}:</strong> ${text}
-	      <div id="replies-${data.commentId || ''}" style="margin-left:20px; margin-top:5px;"></div>
-	      <div style="margin-top:5px;">
-	        <button type="button" class="btn btn-sm btn-outline-light"
-	                onclick="showReplyBox(${videoId}, ${data.commentId || ''}, '${userName}')">
-	            Reply
-	        </button>
-	      </div>
-	      <div id="reply-box-${data.commentId || ''}" style="display:none; margin-top:5px;">
-	        <form onsubmit="postReply(event, ${videoId}, ${data.commentId || ''})" class="d-flex">
-	          <input type="text"
-	                 id="reply-input-${data.commentId || ''}"
-	                 class="form-control me-2"
-	                 placeholder="Reply..."
-	                 required>
-	          <button type="submit" class="btn btn-danger btn-sm">Send</button>
-	        </form>
-	      </div>
-	    `;
-
-	    commentContainer.appendChild(commentDiv);
-
-	    input.value = ""; // clear input
-	  })
-	  .catch(err => console.error(err));
-	}
- */
-
 /* Double tap like */
 document.querySelectorAll("video").forEach(v => {
   let last = 0;
@@ -1037,19 +984,20 @@ function showReplyBox(videoId, commentId, userName) {
 	  .then(res => res.json())
 	  .then(data => {
 		    // Determine user name correctly
-		    const userName = data.user?.fullName || "${currentUser.fullName}" || "Unknown";
+		    const userName = data.user || "${currentUser.fullName}" || "Unknown";
 
-		    // Append comment
-		    const commentContainer = document.getElementById("comments-" + videoId);
-		    const commentDiv = document.createElement("div");
-		    commentDiv.className = "comment";
-		    commentDiv.innerHTML = `<strong>${userName}:</strong> ${data.text}`;
+		    // Append reply to the correct replies container
+		    const repliesContainer = document.getElementById("replies-" + parentId);
+		    const replyDiv = document.createElement("div");
+		    replyDiv.className = "comment";
+            replyDiv.style.background = "#333";
+            replyDiv.style.marginTop = "3px";
+		    replyDiv.innerHTML = `<strong>${userName}:</strong> ${data.text}`;
 
-		    commentContainer.appendChild(commentDiv);
+		    repliesContainer.appendChild(replyDiv);
 		    input.value = "";
+            document.getElementById("reply-box-" + parentId).style.display = "none";
 		});
-
-
 	}
 
 </script>
@@ -1384,7 +1332,19 @@ function postComment(e, videoId) {
     .then(res => res.json())
     .then(data => {
         // Optionally update the temporary comment ID with the real backend ID
-        // commentDiv.id = "comment-" + data.commentId;
+        if (data.id) {
+            commentDiv.id = "comment-" + data.id;
+            const repliesDiv = commentDiv.querySelector('[id^="replies-"]');
+            if (repliesDiv) repliesDiv.id = "replies-" + data.id;
+            const replyBox = commentDiv.querySelector('[id^="reply-box-"]');
+            if (replyBox) replyBox.id = "reply-box-" + data.id;
+            const replyInput = commentDiv.querySelector('[id^="reply-input-"]');
+            if (replyInput) replyInput.id = "reply-input-" + data.id;
+            const replyBtn = commentDiv.querySelector('button[onclick^="showReplyBox"]');
+            if (replyBtn) replyBtn.setAttribute('onclick', `showReplyBox(${videoId}, '${data.id}', '${userName}')`);
+            const replyForm = commentDiv.querySelector('form[onsubmit^="postReply"]');
+            if (replyForm) replyForm.setAttribute('onsubmit', `postReply(event, ${videoId}, '${data.id}')`);
+        }
     })
     .catch(err => console.error(err));
 }
@@ -1601,4 +1561,5 @@ function openReportModal(videoId) {
 <script src="${pageContext.request.contextPath}/assets/js/reel-studio.js"></script>
 </body>
 </html>
+
 

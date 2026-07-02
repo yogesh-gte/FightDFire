@@ -8,6 +8,7 @@ import in.sp.main.Entities.LiveLocation;
 
 public interface LiveLocationRepository extends JpaRepository<LiveLocation, Long> {
 	    List<LiveLocation> findByUserIdAndIsActiveTrue(Long userId);
-	}
+    List<LiveLocation> findByIsActiveTrue();
+}
 
 

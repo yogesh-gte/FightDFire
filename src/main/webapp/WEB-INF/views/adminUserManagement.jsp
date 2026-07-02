@@ -296,7 +296,7 @@
     <a href="${pageContext.request.contextPath}/admin/adminDashboard" class="text-white d-lg-none me-2" title="Back to Dashboard">
         <i class="fas fa-arrow-left"></i>
     </a>
-    <span class="brand">&#x1F6E1;&#xFE0F; FightDFire Admin</span>
+    <span class="brand">&#x1F6E1;&#xFE0F; Fight D Fear Admin</span>
   </div>
   <a href="${pageContext.request.contextPath}/admin/logout" class="btn-logout">
     <i class="fas fa-sign-out-alt"></i> Logout
@@ -608,3 +608,4 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 
 </body>
 </html>
+

@@ -138,8 +138,8 @@ public class AttendanceController {
         String dayOfWeek = date.getDayOfWeek().name().toUpperCase();
 
         // 1. Get Batches active on selected day
-        List<MartialArtsBatch> batches = batchRepository.findByCenterId(center.getId());
-        List<Map<String, Object>> todayBatches = batches.stream()
+        List<MartialArtsBatch> allBatches = batchRepository.findByCenterId(center.getId());
+        List<Map<String, Object>> todayBatches = allBatches.stream()
             .filter(b -> b.getAvailableDays() != null && b.getAvailableDays().toUpperCase().contains(dayOfWeek))
             .map(b -> {
                 Map<String, Object> m = new HashMap<>();
@@ -150,6 +150,21 @@ public class AttendanceController {
                 m.put("mode", "OFFLINE");
                 return m;
             }).collect(Collectors.toList());
+
+        // If no batches match the day filter, include all active batches as fallback
+        if (todayBatches.isEmpty()) {
+            todayBatches = allBatches.stream()
+                .filter(b -> "Active".equalsIgnoreCase(b.getStatus()))
+                .map(b -> {
+                    Map<String, Object> m = new HashMap<>();
+                    m.put("id", b.getId());
+                    m.put("name", b.getName() + " (All Days)");
+                    m.put("time", b.getTimeSlot());
+                    m.put("type", "BATCH");
+                    m.put("mode", "OFFLINE");
+                    return m;
+                }).collect(Collectors.toList());
+        }
 
         // 2. Get Online Classes today
         List<OnlineClass> classes = onlineClassRepository.findByCenterId(center.getId());

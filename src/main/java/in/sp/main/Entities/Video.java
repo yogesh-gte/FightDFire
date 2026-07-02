@@ -31,8 +31,13 @@ public class Video {
     @JoinColumn(name = "admin_id")
     private Admin uploadedBy; 
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User userUploader; 
+
     private Long views = 0L;
     private Date uploadDate = new Date();
+    private boolean isReel = false;
 
     public Video() {}
 
@@ -55,8 +60,12 @@ public class Video {
     public void setFilePath(String filePath) { this.filePath = filePath; }
     public Admin getUploadedBy() { return uploadedBy; }
     public void setUploadedBy(Admin uploadedBy) { this.uploadedBy = uploadedBy; }
+    public User getUserUploader() { return userUploader; }
+    public void setUserUploader(User userUploader) { this.userUploader = userUploader; }
     public Long getViews() { return views; }
     public void setViews(Long views) { this.views = views; }
     public Date getUploadDate() { return uploadDate; }
     public void setUploadDate(Date uploadDate) { this.uploadDate = uploadDate; }
+    public boolean isReel() { return isReel; }
+    public void setReel(boolean reel) { isReel = reel; }
 }

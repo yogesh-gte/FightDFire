@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendor Login — FightDFire</title>
+    <title>Vendor Login — Fight D Fear</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -68,12 +68,23 @@
             .login-card h2 { font-size: 1.5rem; }
             .form-input { padding: 12px 16px 12px 42px; }
         }
+        .forgot-pass-link {
+            color: #7C2D5E;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .forgot-pass-link:hover {
+            color: #DB2777;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
     <div class="left-panel">
         <div class="brand">
-            <div class="brand-logo"><i class="bi bi-shop"></i> FightDFire</div>
+            <div class="brand-logo"><i class="bi bi-shop"></i> Fight D Fear</div>
             <p class="brand-tagline">Join our marketplace of trusted safety services and products. Expand your reach today.</p>
             <ul class="feature-list">
                 <li><span class="feat-icon"><i class="bi bi-patch-check-fill"></i></span> Verified Local Vendors for Quick Assistance</li>
@@ -97,7 +108,10 @@
                     <div class="input-wrapper"><i class="bi bi-envelope"></i><input type="email" name="email" class="form-input" placeholder="vendor@example.com" required></div>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <label class="m-0">Password</label>
+                        <a href="${pageContext.request.contextPath}/auth/forgot-password" class="forgot-pass-link">Forgot Password?</a>
+                    </div>
                     <div class="input-wrapper"><i class="bi bi-lock"></i><input type="password" name="password" class="form-input" placeholder="••••••••" required></div>
                 </div>
                 <button type="submit" class="btn-login">Sign In <i class="bi bi-arrow-right"></i></button>
@@ -107,3 +121,4 @@
     </div>
 </body>
 </html>
+

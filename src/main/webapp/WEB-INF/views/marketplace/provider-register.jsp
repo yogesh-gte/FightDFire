@@ -8,7 +8,7 @@
   <title>Provider Registration</title>
   <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
@@ -161,7 +161,7 @@
     <div class="auth-container">
         <div class="left-panel">
             <div class="brand">
-                <div class="brand-logo"><i class="bi bi-shop"></i> FightDFire</div>
+                <div class="brand-logo"><i class="bi bi-shop"></i> Fight D Fear</div>
                 <p class="brand-tagline">Join our marketplace of trusted safety services and products. Expand your reach today.</p>
                 <ul class="feature-list">
                     <li><span class="feat-icon"><i class="bi bi-patch-check-fill"></i></span> Verified Local Vendors for Quick Assistance</li>
@@ -191,7 +191,7 @@
                             <div class="fdf-group"><label>Email</label><input class="fdf-input" type="email" name="email" placeholder="priya@example.com" required></div>
                         </div>
                         <div class="fdf-row">
-                            <div class="fdf-group"><label>Phone</label><input class="fdf-input" name="phone" placeholder="+91..." required></div>
+                            <div class="fdf-group"><label>Phone</label><input class="fdf-input" type="tel" name="phone" placeholder="10-digit number" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required></div>
                             <div class="fdf-group"><label>Password</label><input class="fdf-input" type="password" name="password" placeholder="••••••••" required></div>
                         </div>
                         <button type="button" class="btn-dr btn-dr-next" onclick="nextStep(1)">Continue to Professional Details</button>
@@ -203,10 +203,14 @@
                         <div class="fdf-row">
                             <div class="fdf-group">
                                 <label>Category</label>
-                                <select class="fdf-input" name="category" required>
-                                    <option value="TUTOR">Tutor</option>
-                                    <option value="HOME_BAKER">Home Baker</option>
-                                    <option value="LANGUAGE_TRAINER">Language Trainer</option>
+                                <select class="fdf-input" name="category" id="categorySelect" required>
+                                    <option value="" disabled ${empty param.category ? 'selected' : ''}>Choose a category</option>
+                                    <option value="TUTOR" ${param.category == 'TUTOR' ? 'selected' : ''}>Tutor</option>
+                                    <option value="HOME_BAKER" ${param.category == 'HOME_BAKER' ? 'selected' : ''}>Home Baker</option>
+                                    <option value="LANGUAGE_TRAINER" ${param.category == 'LANGUAGE_TRAINER' ? 'selected' : ''}>Language Trainer</option>
+                                    <option value="WOMEN_PRODUCTS" ${param.category == 'WOMEN_PRODUCTS' ? 'selected' : ''}>Women Products</option>
+                                    <option value="WOMEN_LAWYER" ${param.category == 'WOMEN_LAWYER' ? 'selected' : ''}>Women Lawyer</option>
+                                    <option value="FITNESS_ZUMBA" ${param.category == 'FITNESS_ZUMBA' ? 'selected' : ''}>Fitness Zumba</option>
                                 </select>
                             </div>
                             <div class="fdf-group"><label>Location</label><input class="fdf-input" name="locationText" placeholder="City / Area" required></div>
@@ -246,3 +250,4 @@
     </script>
 </body>
 </html>
+

@@ -12,14 +12,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import in.sp.main.Entities.Admin;
+import in.sp.main.Entities.Doctor;
 import in.sp.main.Entities.MartialArtsCenter;
 import in.sp.main.Entities.PasswordResetToken;
+import in.sp.main.Entities.Salon;
+import in.sp.main.Entities.ServiceProvider;
+import in.sp.main.Entities.Stylist;
 import in.sp.main.Entities.User;
 import in.sp.main.Entities.UserType;
+import in.sp.main.Entities.WomenProductSeller;
 import in.sp.main.Repository.AdminRepository;
+import in.sp.main.Repository.DoctorRepository;
 import in.sp.main.Repository.MartialArtsCenterRepository;
 import in.sp.main.Repository.PasswordResetTokenRepository;
+import in.sp.main.Repository.SalonRepository;
+import in.sp.main.Repository.ServiceProviderRepository;
+import in.sp.main.Repository.StylistRepository;
 import in.sp.main.Repository.UserRepository;
+import in.sp.main.Repository.WomenProductSellerRepository;
 
 @Service
 public class PasswordResetService {
@@ -27,6 +37,11 @@ public class PasswordResetService {
     @Autowired private UserRepository userRepository;
     @Autowired private AdminRepository adminRepository;
     @Autowired private MartialArtsCenterRepository centreRepository;
+    @Autowired private DoctorRepository doctorRepository;
+    @Autowired private StylistRepository stylistRepository;
+    @Autowired private SalonRepository salonRepository;
+    @Autowired private ServiceProviderRepository providerRepository;
+    @Autowired private WomenProductSellerRepository sellerRepository;
     @Autowired private PasswordResetTokenRepository tokenRepository;
     @Autowired private JavaMailSender mailSender;
     @Autowired private PasswordEncoder passwordEncoder;
@@ -37,21 +52,32 @@ public class PasswordResetService {
     private static final int EXPIRATION_TIME = 15;
 
     public String createPasswordResetToken(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        Optional<Admin> admin = adminRepository.findByEmail(email);
-        Optional<MartialArtsCenter> centre = centreRepository.findByEmail(email);
+        String normEmail = email.trim().toLowerCase();
+        Optional<User> user = userRepository.findByEmail(normEmail);
+        Optional<Admin> admin = adminRepository.findByEmail(normEmail);
+        Optional<MartialArtsCenter> centre = centreRepository.findByEmail(normEmail);
+        Optional<Doctor> doctor = doctorRepository.findByEmail(normEmail);
+        Optional<Stylist> stylist = stylistRepository.findByEmail(normEmail);
+        Optional<Salon> salon = salonRepository.findByUsername(normEmail); // Salon uses username
+        Optional<ServiceProvider> provider = providerRepository.findByEmail(normEmail);
+        Optional<WomenProductSeller> seller = sellerRepository.findByEmail(normEmail);
 
         UserType userType = null;
         if (user.isPresent()) userType = UserType.USER;
         else if (admin.isPresent()) userType = UserType.ADMIN;
         else if (centre.isPresent()) userType = UserType.CENTRE;
+        else if (doctor.isPresent()) userType = UserType.DOCTOR;
+        else if (stylist.isPresent()) userType = UserType.STYLIST;
+        else if (salon.isPresent()) userType = UserType.SALON;
+        else if (provider.isPresent()) userType = UserType.PROVIDER;
+        else if (seller.isPresent()) userType = UserType.SELLER;
         else return "Email not found";
 
         String token = UUID.randomUUID().toString();
-        PasswordResetToken resetToken = new PasswordResetToken(email, token, userType, EXPIRATION_TIME);
+        PasswordResetToken resetToken = new PasswordResetToken(normEmail, token, userType, EXPIRATION_TIME);
         tokenRepository.save(resetToken);
 
-        sendResetEmail(email, token, userType);
+        sendResetEmail(normEmail, token, userType);
         return "Reset email sent successfully";
     }
 
@@ -87,7 +113,7 @@ public class PasswordResetService {
         PasswordResetToken resetToken = tokenOpt.get();
         String email = resetToken.getEmail();
         UserType userType = resetToken.getUserType();
-        String encodedPassword = newPassword;
+        String encodedPassword = passwordEncoder.encode(newPassword);
 
         switch (userType) {
             case USER:
@@ -106,6 +132,41 @@ public class PasswordResetService {
                 centreRepository.findByEmail(email).ifPresent(centre -> {
                     centre.setPassword(encodedPassword);
                     centreRepository.save(centre);
+                });
+                break;
+            case DOCTOR:
+                doctorRepository.findByEmail(email).ifPresent(doctor -> {
+                    doctor.setPassword(encodedPassword);
+                    doctorRepository.save(doctor);
+                });
+                break;
+            case STYLIST:
+                stylistRepository.findByEmail(email).ifPresent(stylist -> {
+                    stylist.setPassword(encodedPassword);
+                    stylistRepository.save(stylist);
+                });
+                break;
+            case SALON:
+
+                salonRepository.findByUsername(email).ifPresent(salon -> {
+
+                    salon.setPassword(encodedPassword);
+
+                    salonRepository.save(salon);
+
+                });
+
+                break;
+            case PROVIDER:
+                providerRepository.findByEmail(email).ifPresent(provider -> {
+                    provider.setPassword(encodedPassword);
+                    providerRepository.save(provider);
+                });
+                break;
+            case SELLER:
+                sellerRepository.findByEmail(email).ifPresent(seller -> {
+                    seller.setPassword(encodedPassword);
+                    sellerRepository.save(seller);
                 });
                 break;
         }

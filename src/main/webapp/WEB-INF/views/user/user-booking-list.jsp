@@ -44,7 +44,7 @@
 	<!-- ======= Header ======= -->
 	<header id="header" class="header d-flex align-items-center sticky-top">
 	  <div class="container-fluid container-xl d-flex align-items-center">
-	    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
+	    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
 	    <nav id="navmenu" class="navmenu">
 	      <ul>
 	        <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
@@ -263,7 +263,7 @@
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">
-            FightDFire
+            Fight D Fear
           </a>
              
   <div class="pt-3">
@@ -311,7 +311,7 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© Copyright <strong class="px-1 sitename">FightDFire</strong> All Rights Reserved</p>
+      <p>© Copyright <strong class="px-1 sitename">Fight D Fear</strong> All Rights Reserved</p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->
@@ -385,3 +385,4 @@
 
 </body>
 </html>
+

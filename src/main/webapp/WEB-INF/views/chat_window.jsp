@@ -20,7 +20,7 @@
                 rel="stylesheet">
             <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
             <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-            <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+            <link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 
             <style>
                 /* ============================================
@@ -298,7 +298,7 @@
             <header id="header" class="header d-flex align-items-center sticky-top">
                 <div class="container-fluid container-xl d-flex align-items-center">
                     <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto">
-                        <h1>FightDFire</h1>
+                        <h1>Fight D Fear</h1>
                     </a>
                     <nav id="navmenu" class="navmenu">
                         <ul>
@@ -324,10 +324,20 @@
             </header>
             <div class="chat-container fdf-card-soft">
 
-                <h4 class="chat-header">
-                    <i class="bi bi-chat-dots"></i>
-                    Chat with ${not empty receiver.fullName ? receiver.fullName : receiver.email}
-                </h4>
+                <div class="chat-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        <i class="bi bi-shield-check"></i>
+                        Chat with ${not empty receiver.fullName ? receiver.fullName : receiver.email}
+                    </h4>
+                    <div class="call-actions d-flex gap-2">
+                        <a href="${pageContext.request.contextPath}/chat/call/${receiver.id}?notify=true" class="btn btn-outline-success btn-sm rounded-circle" title="Voice Call" target="_blank">
+                            <i class="bi bi-telephone-fill"></i>
+                        </a>
+                        <a href="${pageContext.request.contextPath}/chat/video-call/${receiver.id}?notify=true" class="btn btn-outline-primary btn-sm rounded-circle" title="Video Call" target="_blank">
+                            <i class="bi bi-camera-video-fill"></i>
+                        </a>
+                    </div>
+                </div>
 
                 <!-- CHAT HISTORY -->
                 <div id="chatBox" class="chat-box">
@@ -394,6 +404,34 @@
 
             </div>
 
+            <!-- Incoming Call Modal -->
+            <div class="modal fade" id="incomingCallModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content text-center p-4">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <i id="callIcon" class="bi bi-telephone-inbound-fill text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h4 id="callerName">Incoming Call...</h4>
+                            <p id="callTypeLabel">Voice Call</p>
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="button" class="btn btn-success btn-lg rounded-pill px-4" id="acceptCallBtn">
+                                    <i class="bi bi-telephone-fill me-2"></i> Accept
+                                </button>
+                                <button type="button" class="btn btn-danger btn-lg rounded-pill px-4" id="declineCallBtn">
+                                    <i class="bi bi-telephone-x-fill me-2"></i> Decline
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ringtone Audio -->
+            <audio id="ringtoneAudio" loop>
+                <source src="https://assets.mixkit.co/active_storage/sfx/2358/2358-preview.mp3" type="audio/mpeg">
+            </audio>
+
             <!-- SOCKET LIBRARIES -->
             <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
@@ -401,18 +439,89 @@
             <script>
                 let stompClient = null;
                 const userId = ${ sessionScope.user.id };
+                let currentCallInfo = null;
+                const ringtone = document.getElementById('ringtoneAudio');
 
                 function connect() {
                     const socket = new SockJS('${pageContext.request.contextPath}/ws-chat');
                     stompClient = Stomp.over(socket);
 
                     stompClient.connect({}, function () {
+                        // Subscribe to messages
                         stompClient.subscribe("/topic/messages/" + userId, function (response) {
                             const msg = JSON.parse(response.body);
                             displayMessage(msg);
                         });
+
+                        // 🔴 Subscribe to calls
+                        stompClient.subscribe("/topic/calls/" + userId, function (response) {
+                            const callInfo = JSON.parse(response.body);
+                            if (callInfo.type === 'INCOMING_CALL') {
+                                handleIncomingCall(callInfo);
+                            } else if (callInfo.type === 'HANGUP' || callInfo.type === 'DECLINED') {
+                                stopRingtone();
+                                const modalElement = document.getElementById('incomingCallModal');
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) modal.hide();
+                            }
+                        });
                     });
                 }
+
+                function handleIncomingCall(callInfo) {
+                    currentCallInfo = callInfo;
+                    document.getElementById('callerName').innerText = callInfo.fromName + " is calling...";
+                    document.getElementById('callTypeLabel').innerText = callInfo.audioOnly ? "Voice Call" : "Video Call";
+                    
+                    const icon = document.getElementById('callIcon');
+                    icon.className = callInfo.audioOnly ? "bi bi-telephone-inbound-fill text-success" : "bi bi-camera-video-fill text-primary";
+                    
+                    playRingtone();
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('incomingCallModal'));
+                    modal.show();
+                }
+
+                function playRingtone() {
+                    ringtone.currentTime = 0;
+                    ringtone.play().catch(e => console.log("Audio play failed:", e));
+                }
+
+                function stopRingtone() {
+                    ringtone.pause();
+                    ringtone.currentTime = 0;
+                }
+
+                document.getElementById('acceptCallBtn').addEventListener('click', function() {
+                    if (currentCallInfo) {
+                        stopRingtone();
+                        const callUrl = currentCallInfo.audioOnly ? 
+                            '${pageContext.request.contextPath}/chat/call/' + currentCallInfo.fromId :
+                            '${pageContext.request.contextPath}/chat/video-call/' + currentCallInfo.fromId;
+                        
+                        // Open call in new window
+                        window.open(callUrl, '_blank', 'width=1000,height=700');
+                        
+                        // Hide modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('incomingCallModal'));
+                        modal.hide();
+                    }
+                });
+
+                document.getElementById('declineCallBtn').addEventListener('click', function() {
+                    if (currentCallInfo && stompClient) {
+                        stopRingtone();
+                        // Send decline signal to caller
+                        stompClient.send("/app/webrtc.signal", {}, JSON.stringify({
+                            type: 'DECLINED',
+                            senderId: userId,
+                            receiverId: currentCallInfo.fromId
+                        }));
+                        
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('incomingCallModal'));
+                        modal.hide();
+                    }
+                });
 
                 function sendMessage() {
                     const messageInput = document.getElementById("message");
@@ -478,7 +587,7 @@
                     <div class="row gy-4">
                         <div class="col-lg-4 col-md-6 footer-about">
                             <a href="index.html" class="d-flex align-items-center">
-                                <span class="sitename">FightTheFire</span>
+                                <span class="sitename">Fight D Fear</span>
                             </a>
 
                             <div class="pt-3">
@@ -527,7 +636,7 @@
                 </div>
 
                 <div class="container copyright text-center mt-4">
-                    <p>© Copyright <strong class="px-1 sitename">FightDFire</strong> All Rights Reserved</p>
+                    <p>© Copyright <strong class="px-1 sitename">Fight D Fear</strong> All Rights Reserved</p>
                     <div class="credits">
                         <!-- All the links in the footer should remain intact. -->
                         <!-- You can delete the links only if you've purchased the pro version. -->

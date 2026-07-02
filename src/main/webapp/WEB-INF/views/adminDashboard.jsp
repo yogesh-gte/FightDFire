@@ -10,7 +10,7 @@
     <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -490,7 +490,7 @@
                     <button class="mobile-toggle" id="sidebarToggle">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <p class="title mb-0">FightDFire Admin Dashboard</p>
+                    <p class="title mb-0">Fight D Fear Admin Dashboard</p>
                 </div>
                 <div class="meta">
                     <span class="badge bg-light text-dark badge-pill">
@@ -891,6 +891,32 @@
                     <div class="admin-card">
                         <div class="rowTop">
                             <div>
+                                <i class="fas fa-gavel"></i>
+                                <h5 class="mb-1">Women Lawyers</h5>
+                                <p class="muted">Review legal providers</p>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/admin/pending-providers?category=WOMEN_LAWYER" class="btn btn-purple w-100 mt-auto">Review Lawyers</a>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="admin-card">
+                        <div class="rowTop">
+                            <div>
+                                <i class="fas fa-running"></i>
+                                <h5 class="mb-1">Fitness & Zumba</h5>
+                                <p class="muted">Review instructors</p>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/admin/pending-providers?category=FITNESS_ZUMBA" class="btn btn-purple w-100 mt-auto">Review Fitness</a>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="admin-card">
+                        <div class="rowTop">
+                            <div>
                                 <i class="fas fa-shopping-cart"></i>
                                 <h5 class="mb-1">Women Sellers</h5>
                                 <p class="muted">Verify product sellers</p>
@@ -1039,4 +1065,5 @@
 
 </body>
 </html>
+
 

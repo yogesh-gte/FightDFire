@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Terms of Service - FightTheFire</title>
+  <title>Terms of Service - Fight D Fear</title>
   <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
@@ -226,7 +226,7 @@
 <div class="terms-container">
   <h1>Terms of Service</h1>
 
-  <p>Welcome to <strong>FightTheFire</strong>. These Terms of Service outline the rules and responsibilities for using our application and related services. By accessing or using our services, you agree to these terms.</p>
+  <p>Welcome to <strong>Fight D Fear</strong>. These Terms of Service outline the rules and responsibilities for using our application and related services. By accessing or using our services, you agree to these terms.</p>
 
   <h3>1. Acceptance of Terms</h3>
   <p>By using our app or website, you confirm that you have read, understood, and agree to be bound by these Terms and our Privacy Policy.</p>
@@ -255,7 +255,7 @@
   <p>Location permissions are used only during emergencies or user-requested tracking features. We do not share your data without consent.</p>
 
   <h3>8. Intellectual Property</h3>
-  <p>All materials on FightTheFire, including text, graphics, logos, and code, are our intellectual property or used with permission.</p>
+  <p>All materials on Fight D Fear, including text, graphics, logos, and code, are our intellectual property or used with permission.</p>
 
   <h3>9. Suspension & Termination</h3>
   <p>We may suspend or terminate your account without prior notice if you breach any of these terms or misuse our services.</p>
@@ -267,10 +267,11 @@
   <p>We may revise these Terms of Service periodically. Continued use after updates implies acceptance of the revised terms.</p>
 
   <h3>12. Contact</h3>
-  <p>For questions or support, contact us at <strong>abc@fightthefire.app</strong>.</p>
+  <p>For questions or support, contact us at <strong>abc@Fight D Fear.app</strong>.</p>
 
-  <a href="${pageContext.request.contextPath}/index.jsp" class="back-link">← Back to Home</a>
+  <a href="${pageContext.request.contextPath}/index.html" class="back-link">← Back to Home</a>
 </div>
 </body>
 </html>
+
 

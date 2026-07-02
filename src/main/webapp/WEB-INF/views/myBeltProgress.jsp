@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Belt Progress Journey | FightDFire</title>
+    <title>Belt Progress Journey | Fight D Fear</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -91,7 +91,7 @@
     <aside class="sidebar">
         <div class="sidebar-logo">
             <i class="fas fa-hand-fist text-danger"></i>
-            <span>FightDFire</span>
+            <span>Fight D Fear</span>
         </div>
         <ul class="nav-menu">
             <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="nav-link"><i class="fas fa-grid-2"></i> Dashboard</a>
@@ -204,3 +204,4 @@
     </script>
 </body>
 </html>
+

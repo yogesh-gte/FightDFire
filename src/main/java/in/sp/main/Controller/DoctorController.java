@@ -106,6 +106,11 @@ public class DoctorController {
             return "doctor/doctor-register";
         }
 
+        if (phone == null || !phone.trim().matches("^\\d{10}$")) {
+            model.addAttribute("error", "Phone number must be exactly 10 digits.");
+            return "doctor/doctor-register";
+        }
+
         try {
             // Save uploaded files
             String profilePhotoPath = fileUploadService.saveFile(profilePhoto);
@@ -193,10 +198,16 @@ public class DoctorController {
             model.addAttribute("error", "Invalid password.");
             return "doctor/doctor-login";
         }
-        if (d.getVerificationStatus() != VerificationStatus.VERIFIED) {
-            model.addAttribute("error", "Your account is pending verification.");
+
+        if (d.getVerificationStatus() == VerificationStatus.PENDING) {
+            model.addAttribute("error", "Your account is pending admin verification. Access denied.");
             return "doctor/doctor-login";
         }
+        if (d.getVerificationStatus() == VerificationStatus.REJECTED) {
+            model.addAttribute("error", "Your account has been rejected by admin.");
+            return "doctor/doctor-login";
+        }
+
         session.setAttribute("loggedDoctor", d);
         return "redirect:/doctors/dashboard";
     }
@@ -250,6 +261,11 @@ public class DoctorController {
                                 RedirectAttributes redirectAttributes) {
         Doctor d = (Doctor) session.getAttribute("loggedDoctor");
         if (d == null) return "redirect:/doctors/login";
+
+        if (phone == null || !phone.trim().matches("^\\d{10}$")) {
+            redirectAttributes.addFlashAttribute("error", "Phone number must be exactly 10 digits.");
+            return "redirect:/doctors/dashboard?section=profile";
+        }
 
         d = doctorRepo.findById(d.getId()).orElse(d);
         d.setFullName(fullName);

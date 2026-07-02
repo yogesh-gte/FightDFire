@@ -5,15 +5,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Contact Us | FightDFire</title>
+    <title>Contact Us | Fight D Fear</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Prata&display=swap" rel="stylesheet">
     
     <!-- Icons & CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
@@ -109,23 +109,7 @@
 </head>
 <body>
 
-    <!-- Header -->
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container-fluid container-xl d-flex align-items-center">
-            <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/index/templates">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/salons">Salons</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/stylists">Stylists</a></li>
-                    <li><a href="${pageContext.request.contextPath}/index/about">About</a></li>
-                    <li><a href="${pageContext.request.contextPath}/index/contact" class="active">Contact</a></li>
-                </ul>
-            </nav>
-            <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&A</a>
-            <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-        </div>
-    </header>
+    <jsp:include page="/WEB-INF/views/fragments/index-beauty-header.jsp" />
 
     <!-- Hero -->
     <div class="contact-hero">
@@ -159,31 +143,30 @@
                         <div class="info-icon"><i class="bi bi-envelope"></i></div>
                         <div>
                             <div class="fw-bold">Support Email</div>
-                            <div class="text-muted small">info@fightdfire.com</div>
+                            <div class="text-muted small">info@Fight D Fear.com</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-lg-7">
                     <h2 class="fw-bold mb-4">Send an Inquiry</h2>
-                    <c:if test="${not empty success}"><div class="alert alert-success">${success}</div></c:if>
-                    <c:if test="${not empty error}"><div class="alert alert-danger">${error}</div></c:if>
-                    <form action="${pageContext.request.contextPath}/sendMessage" method="post">
+                    <div id="alertContainer"></div>
+                    <form id="inquiryForm" action="${pageContext.request.contextPath}/sendMessage" method="post">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <input type="text" name="name" class="form-control p-3 rounded-4" placeholder="Full Name" required>
+                                <input type="text" id="inquiryName" name="name" class="form-control p-3 rounded-4" placeholder="Full Name" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="email" name="email" class="form-control p-3 rounded-4" placeholder="Email Address" required>
+                                <input type="email" id="inquiryEmail" name="email" class="form-control p-3 rounded-4" placeholder="Email Address" required>
                             </div>
                             <div class="col-12">
-                                <input type="text" name="subject" class="form-control p-3 rounded-4" placeholder="Subject" required>
+                                <input type="text" id="inquirySubject" name="subject" class="form-control p-3 rounded-4" placeholder="Subject" required>
                             </div>
                             <div class="col-12">
-                                <textarea name="message" rows="5" class="form-control p-3 rounded-4" placeholder="Message" required></textarea>
+                                <textarea id="inquiryMessage" name="message" rows="5" class="form-control p-3 rounded-4" placeholder="Message" required></textarea>
                             </div>
                         </div>
-                        <button type="submit" class="btn-send-message mt-4">Send Message</button>
+                        <button type="submit" id="btnSubmitMessage" class="btn-send-message mt-4">Send Message</button>
                     </form>
                 </div>
             </div>
@@ -195,7 +178,7 @@
         <div class="container footer-top">
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
-                    <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">FightDFire</a>
+                    <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">Fight D Fear</a>
                     <div class="pt-3">
                         <p class="fw-semibold">Our Values</p>
                         <p>Awareness • Safety • Equality • Empowerment</p>
@@ -214,17 +197,71 @@
                 <div class="col-lg-4 col-md-12">
                     <h4>Follow Us</h4>
                     <p>Stay connected for safety updates.</p>
-                    <div class="social-links d-flex">
-                        <a href="#"><i class="bi bi-twitter"></i></a>
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                        <a href="#"><i class="bi bi-linkedin"></i></a>
-                    </div>
+                    <jsp:include page="/WEB-INF/views/fragments/social-follow.jsp" />
                 </div>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("inquiryForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btnSubmitMessage");
+            const alertContainer = document.getElementById("alertContainer");
+            
+            // Show loading state
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Sending...';
+            alertContainer.innerHTML = '';
+
+            const params = new URLSearchParams();
+            params.append("name", document.getElementById("inquiryName").value);
+            params.append("email", document.getElementById("inquiryEmail").value);
+            params.append("subject", document.getElementById("inquirySubject").value);
+            params.append("message", document.getElementById("inquiryMessage").value);
+
+            fetch(this.action, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-Requested-With": "XMLHttpRequest"
+                },
+                body: params.toString()
+            })
+            .then(async response => {
+                const text = await response.text();
+                if (response.ok) {
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show rounded-4" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i> \${text === "OK" ? "Your message has been sent successfully!" : text}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    document.getElementById("inquiryForm").reset();
+                } else {
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show rounded-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i> \${text}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                }
+            })
+            .catch(err => {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show rounded-4" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Failed to send message. Please try again.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = "Send Message";
+            });
+        });
+    </script>
 </body>
 </html>
+

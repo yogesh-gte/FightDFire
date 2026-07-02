@@ -7,23 +7,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import in.sp.main.Entities.EmergencyContact;
 import in.sp.main.Entities.SOSContactResponse;
 import in.sp.main.Entities.SOSRequest;
 import in.sp.main.Entities.TrustedContact;
 import in.sp.main.Entities.User;
+import in.sp.main.Entities.VerificationStatus;
+import in.sp.main.Entities.VolunteerSOSResponse;
+import in.sp.main.Entities.LiveLocation;
 import in.sp.main.Repository.EmergencyContactRepository;
+import in.sp.main.Repository.LiveLocationRepository;
 import in.sp.main.Repository.SOSContactResponseRepository;
 import in.sp.main.Repository.SOSRequestRepository;
 import in.sp.main.Repository.TrustedContactRepository;
 import in.sp.main.Repository.UserRepository;
+import in.sp.main.Repository.VolunteerSOSResponseRepository;
 
 @Service
+@Transactional
 public class SosService {
     
     @Autowired
     private SOSRequestRepository sosRequestRepository;
+    
+    @Autowired
+    private in.sp.main.Repository.SOSAlertRepository sosAlertRepository;
     
     @Autowired
     private SOSContactResponseRepository sosContactResponseRepository;
@@ -42,6 +52,12 @@ public class SosService {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private LiveLocationRepository liveLocationRepository;
+    
+    @Autowired
+    private VolunteerSOSResponseRepository volunteerSOSResponseRepository;
     
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -284,17 +300,41 @@ public class SosService {
         adminPayload.put("mapsLink", savedRequest.getGoogleMapsLink());
         messagingTemplate.convertAndSend("/topic/admin-sos", adminPayload);
 
+        // === Notify Nearby Volunteers ===
+        List<User> nearbyVolunteers = findNearbyVolunteers(userLat, userLon, 5.0); // 5km radius
+        int volunteersAlerted = 0;
+        
+        for (User volunteer : nearbyVolunteers) {
+            if (volunteer.getId().equals(userId)) continue; // Don't notify the person who triggered SOS
+            
+            Map<String, Object> volunteerPayload = new HashMap<>();
+            volunteerPayload.put("type", "NEARBY_SOS");
+            volunteerPayload.put("sosId", savedRequest.getId());
+            volunteerPayload.put("victimName", userName);
+            volunteerPayload.put("lat", userLat);
+            volunteerPayload.put("lng", userLon);
+            volunteerPayload.put("mapsLink", savedRequest.getGoogleMapsLink());
+            
+            messagingTemplate.convertAndSend("/topic/volunteer-alerts", volunteerPayload);
+            volunteersAlerted++;
+        }
+        
+        savedRequest.setVolunteersAlerted(volunteersAlerted);
+        sosRequestRepository.save(savedRequest);
+
         // === Build response ===
         Map<String, Object> response = new HashMap<>();
         response.put("sosId", savedRequest.getId());
         response.put("status", savedRequest.getStatus().toString());
         response.put("contactsNotified", totalContacts);
+        response.put("volunteersAlerted", volunteersAlerted);
         response.put("autoCallPhone", autoCallPhone);
         response.put("mapsLink", savedRequest.getGoogleMapsLink());
-        response.put("message", "SOS activated! " + totalContacts + " contacts notified.");
+        response.put("message", "SOS activated! " + totalContacts + " contacts and " + volunteersAlerted + " nearby volunteers notified.");
 
         System.out.println("🚨 SOS #" + savedRequest.getId() + " triggered by " + userName);
         System.out.println("📱 Contacts notified: " + totalContacts);
+        System.out.println("🤝 Volunteers alerted: " + volunteersAlerted);
         System.out.println("📞 Auto-call: " + autoCallPhone);
 
         return response;
@@ -374,6 +414,20 @@ public class SosService {
     }
 
     /**
+     * Find active SOS for a user
+     */
+    public Optional<SOSRequest> getActiveSOSForUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) return Optional.empty();
+        
+        // Check for ACTIVE or ACCEPTED status (both mean SOS is in progress)
+        Optional<SOSRequest> active = sosRequestRepository.findTopByUserAndStatusOrderByActivatedAtDesc(user, SOSRequest.SOSStatus.ACTIVE);
+        if (active.isPresent()) return active;
+        
+        return sosRequestRepository.findTopByUserAndStatusOrderByActivatedAtDesc(user, SOSRequest.SOSStatus.ACCEPTED);
+    }
+
+    /**
      * Get real-time SOS status for user dashboard
      */
     public Map<String, Object> getSOSStatus(Long sosId) {
@@ -399,6 +453,8 @@ public class SosService {
         status.put("contactsPending", sos.getContactsPending());
         status.put("isEscalated", sos.isEscalated());
         status.put("autoCallPhone", sos.getAutoCallPhone());
+        status.put("volunteersAlerted", sos.getVolunteersAlerted());
+        status.put("audioPath", sos.getAudioRecordingPath());
 
         // Add contact responses
         List<Map<String, Object>> contacts = new ArrayList<>();
@@ -414,6 +470,34 @@ public class SosService {
             contacts.add(contact);
         }
         status.put("contacts", contacts);
+
+        // Add volunteer responses
+        List<Map<String, Object>> volunteers = new ArrayList<>();
+        int volAccepted = 0;
+        int volDeclined = 0;
+        
+        for (VolunteerSOSResponse response : volunteerSOSResponseRepository.findBySosRequest(sos)) {
+            Map<String, Object> volunteer = new HashMap<>();
+            volunteer.put("name", response.getVolunteer().getFullName());
+            volunteer.put("phone", response.getVolunteer().getPhoneNumber());
+            volunteer.put("status", response.getStatus().toString());
+            volunteer.put("respondedAt", response.getRespondedAt() != null ? response.getRespondedAt().toString() : null);
+            volunteers.add(volunteer);
+            
+            if (response.getStatus() == VolunteerSOSResponse.ResponseStatus.ACCEPTED) volAccepted++;
+            else if (response.getStatus() == VolunteerSOSResponse.ResponseStatus.DECLINED) volDeclined++;
+        }
+        status.put("volunteers", volunteers);
+        
+        // Dynamic volunteersAlerted: Use the stored count or the total responses, whichever is higher
+        int totalResponses = volAccepted + volDeclined;
+        int displayAlerted = Math.max(sos.getVolunteersAlerted(), totalResponses);
+        
+        status.put("volunteersAlerted", displayAlerted);
+        status.put("volunteersAccepted", volAccepted);
+        status.put("volunteersDeclined", volDeclined);
+        status.put("volunteersPending", Math.max(0, displayAlerted - totalResponses));
+        status.put("success", true);
 
         return status;
     }
@@ -432,7 +516,7 @@ public class SosService {
                 return false;
             }
             
-            if (sos.getStatus() == SOSRequest.SOSStatus.ACTIVE) {
+            if (sos.getStatus() == SOSRequest.SOSStatus.ACTIVE || sos.getStatus() == SOSRequest.SOSStatus.ACCEPTED) {
                 sos.setStatus(SOSRequest.SOSStatus.CANCELLED);
                 sosRequestRepository.save(sos);
 
@@ -468,6 +552,27 @@ public class SosService {
     }
 
     /**
+     * Get SOS request details by ID
+     */
+    public Map<String, Object> getSOSRequestDetails(Long sosId) {
+        Optional<SOSRequest> sosOpt = sosRequestRepository.findById(sosId);
+        if (sosOpt.isEmpty()) return null;
+        
+        SOSRequest req = sosOpt.get();
+        Map<String, Object> details = new HashMap<>();
+        details.put("id", req.getId());
+        details.put("victimName", req.getUser().getFullName());
+        details.put("victimPhone", req.getUser().getPhoneNumber());
+        details.put("latitude", req.getLatitude());
+        details.put("longitude", req.getLongitude());
+        details.put("status", req.getStatus().toString());
+        details.put("audioPath", req.getAudioRecordingPath());
+        details.put("activatedAt", req.getActivatedAt() != null ? req.getActivatedAt().toString() : null);
+        
+        return details;
+    }
+
+    /**
      * Get user's SOS history
      */
     public List<Map<String, Object>> getUserSOSHistory(Long userId) {
@@ -491,5 +596,168 @@ public class SosService {
         }
 
         return history;
+    }
+
+    /**
+     * Find nearby verified volunteers within radius (km)
+     */
+    public List<User> findNearbyVolunteers(double lat, double lon, double radiusKm) {
+        List<LiveLocation> activeLocations = liveLocationRepository.findByIsActiveTrue();
+        List<User> nearbyVolunteers = new ArrayList<>();
+        
+        for (LiveLocation loc : activeLocations) {
+            double distance = haversine(lat, lon, loc.getLatitude(), loc.getLongitude());
+            if (distance <= radiusKm) {
+                userRepository.findById(loc.getUserId()).ifPresent(user -> {
+                    if (user.getVerificationStatus() == VerificationStatus.VERIFIED) {
+                        nearbyVolunteers.add(user);
+                    }
+                });
+            }
+        }
+        return nearbyVolunteers;
+    }
+
+    /**
+     * Check if there are any active SOS alerts nearby for a volunteer
+     * Returns the SOS ID of the nearest active alert, or null if none
+     */
+    public Long getActiveNearbySosId(Long userId) {
+        Optional<LiveLocation> lastLoc = liveLocationRepository.findByUserIdAndIsActiveTrue(userId).stream().findFirst();
+        if (lastLoc.isEmpty()) return null;
+        
+        double lat = lastLoc.get().getLatitude();
+        double lon = lastLoc.get().getLongitude();
+        
+        // Only consider SOS requests from the last 2 hours
+        LocalDateTime twoHoursAgo = LocalDateTime.now().minusHours(2);
+        
+        List<SOSRequest> activeRequests = sosRequestRepository.findByStatus(SOSRequest.SOSStatus.ACTIVE);
+        for (SOSRequest req : activeRequests) {
+            if (req.getUser().getId().equals(userId)) continue;
+            
+            // Check if the request is recent
+            if (req.getActivatedAt() != null && req.getActivatedAt().isBefore(twoHoursAgo)) {
+                continue;
+            }
+
+            // NEW: Skip if this volunteer has already responded (Accepted or Declined)
+            if (volunteerSOSResponseRepository.findBySosRequestAndVolunteer(req, userRepository.findById(userId).orElse(null)).isPresent()) {
+                continue;
+            }
+            
+            double dist = haversine(lat, lon, req.getLatitude(), req.getLongitude());
+            if (dist <= 5.0) { // 5km radius
+                return req.getId();
+            }
+        }
+
+        // Also check sosAlert (from SOSRestController)
+        List<in.sp.main.Entities.sosAlert> activeAlerts = sosAlertRepository.findByStatusOrderByTimeOfActivationDesc("ACTIVE");
+        for (in.sp.main.Entities.sosAlert alert : activeAlerts) {
+            if (alert.getUserId() != null && alert.getUserId().equals(userId)) continue;
+            
+            // Check if the alert is recent
+            if (alert.getTimeOfActivation() != null && alert.getTimeOfActivation().isBefore(twoHoursAgo)) {
+                continue;
+            }
+
+            try {
+                double aLat = Double.parseDouble(alert.getLatitude());
+                double aLon = Double.parseDouble(alert.getLongitude());
+                double dist = haversine(lat, lon, aLat, aLon);
+                if (dist <= 5.0) {
+                    return alert.getId();
+                }
+            } catch (Exception e) {
+                // Ignore parsing errors
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * Handle volunteer response (accept/decline)
+     */
+    public Map<String, Object> handleVolunteerResponse(Long sosId, Long volunteerId, String action) {
+        Optional<SOSRequest> sosOpt = sosRequestRepository.findById(sosId);
+        Optional<User> volunteerOpt = userRepository.findById(volunteerId);
+
+        if (sosOpt.isEmpty() || volunteerOpt.isEmpty()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", "SOS or Volunteer not found");
+            return error;
+        }
+
+        SOSRequest sosRequest = sosOpt.get();
+        User volunteer = volunteerOpt.get();
+
+        // Check if SOS is still active
+        if (sosRequest.getStatus() != SOSRequest.SOSStatus.ACTIVE && sosRequest.getStatus() != SOSRequest.SOSStatus.ACCEPTED) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("success", false);
+            error.put("message", "This SOS request is no longer active");
+            return error;
+        }
+
+        VolunteerSOSResponse response = volunteerSOSResponseRepository
+            .findBySosRequestAndVolunteer(sosRequest, volunteer)
+            .orElse(new VolunteerSOSResponse());
+
+        response.setSosRequest(sosRequest);
+        response.setVolunteer(volunteer);
+        response.setStatus("accept".equalsIgnoreCase(action) ? 
+            VolunteerSOSResponse.ResponseStatus.ACCEPTED : 
+            VolunteerSOSResponse.ResponseStatus.DECLINED);
+        response.setRespondedAt(LocalDateTime.now());
+        
+        VolunteerSOSResponse savedResponse = volunteerSOSResponseRepository.save(response);
+
+        // Notify user via WebSocket
+        if ("accept".equalsIgnoreCase(action)) {
+            // Also ensure the SOSRequest knows about this response if needed for some JPA configurations
+            if (!sosRequest.getStatus().equals(SOSRequest.SOSStatus.ACCEPTED)) {
+                sosRequest.setStatus(SOSRequest.SOSStatus.ACCEPTED);
+            }
+            // Force a save to update timestamps/status
+            sosRequestRepository.save(sosRequest);
+
+            Map<String, Object> wsPayload = new HashMap<>();
+            wsPayload.put("type", "VOLUNTEER_ACCEPTED");
+            wsPayload.put("sosId", sosRequest.getId());
+            wsPayload.put("volunteerName", volunteer.getFullName());
+            wsPayload.put("volunteerPhone", volunteer.getPhoneNumber());
+            messagingTemplate.convertAndSend("/topic/sos-updates/user-" + sosRequest.getUser().getId(), wsPayload);
+
+            // Update SOS status if needed
+            if (sosRequest.getStatus() == SOSRequest.SOSStatus.ACTIVE) {
+                sosRequest.setStatus(SOSRequest.SOSStatus.ACCEPTED);
+                sosRequestRepository.save(sosRequest);
+            }
+        } else {
+            // Notify user about decline via WebSocket to update counts immediately
+            Map<String, Object> wsPayload = new HashMap<>();
+            wsPayload.put("type", "VOLUNTEER_DECLINED");
+            wsPayload.put("sosId", sosRequest.getId());
+            messagingTemplate.convertAndSend("/topic/sos-updates/user-" + sosRequest.getUser().getId(), wsPayload);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("message", "Response recorded");
+        return result;
+    }
+
+    private double haversine(double lat1, double lon1, double lat2, double lon2) {
+        final double R = 6371; // Earth radius in km
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                   Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
     }
 }

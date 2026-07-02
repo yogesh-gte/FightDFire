@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centre Login — FightDFire</title>
+    <title>Centre Login — Fight D Fear</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -74,7 +74,7 @@
 <body>
     <div class="left-panel">
         <div class="brand">
-            <div class="brand-logo"><i class="fa-solid fa-dumbbell"></i> FightDFire</div>
+            <div class="brand-logo"><i class="fa-solid fa-dumbbell"></i> Fight D Fear</div>
             <p class="brand-tagline">Empower your students with professional martial arts training and safety education.</p>
             <ul class="feature-list">
                 <li><span class="feat-icon"><i class="bi bi-person-badge-fill"></i></span> Learn Self-Defense from Experts</li>
@@ -113,3 +113,4 @@
     </div>
 </body>
 </html>
+

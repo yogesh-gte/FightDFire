@@ -16,4 +16,6 @@ public interface ExpressPostRepository extends JpaRepository<ExpressPost, Long> 
 
     // Purpose: list community stories/tips by category.
     List<ExpressPost> findByPostTypeOrderByCreatedAtDesc(ExpressPostType postType);
+
+    List<ExpressPost> findTop10ByPostTypeOrderByCreatedAtDesc(ExpressPostType postType);
 }

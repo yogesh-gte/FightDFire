@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>About Us | FightDFire</title>
+    <title>About Us | Fight D Fear</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Prata&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/beauty/css/open-iconic-bootstrap.min.css">
@@ -90,22 +90,7 @@
     </style>
 </head>
 <body>
-    <header id="header" class="header d-flex align-items-center sticky-top">
-        <div class="container-fluid container-xl d-flex align-items-center">
-            <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/index/templates">Home</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/salons">Salons</a></li>
-                    <li><a href="${pageContext.request.contextPath}/user/stylists">Stylists</a></li>
-                    <li><a href="${pageContext.request.contextPath}/index/about" class="active">About</a></li>
-                    <li><a href="${pageContext.request.contextPath}/index/contact">Contact</a></li>
-                </ul>
-            </nav>
-            <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&A</a>
-            <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-        </div>
-    </header>
+    <jsp:include page="/WEB-INF/views/fragments/index-beauty-header.jsp" />
 
     <section class="hero-wrap js-fullheight" 
              style="background-image: linear-gradient(rgba(166, 66, 129, 0.3), rgba(0, 0, 0, 0.7)), url('${pageContext.request.contextPath}/beauty/images/bg_2.jpg'); background-position: center; background-size: cover; background-attachment: fixed;">
@@ -129,9 +114,9 @@
         <div class="container">
             <div class="row justify-content-center mb-5 pb-3">
                 <div class="col-md-7 heading-section ftco-animate text-center">
-                    <h3 class="subheading">About FightDFire</h3>
+                    <h3 class="subheading">About Fight D Fear</h3>
                     <h2 class="mb-4">More Than Just Beauty</h2>
-                    <p>At FightDFire, we believe that empowerment comes in many forms. Whether it's the strength found in self-defense or the confidence that comes from professional self-care, we are here to support every woman's journey toward a safer and more confident life.</p>
+                    <p>At Fight D Fear, we believe that empowerment comes in many forms. Whether it's the strength found in self-defense or the confidence that comes from professional self-care, we are here to support every woman's journey toward a safer and more confident life.</p>
                 </div>
             </div>
             
@@ -154,7 +139,7 @@
                     <div class="services p-4 text-center border rounded">
                         <div class="icon mb-3"><i class="fa-solid fa-handshake-angle fa-2x" style="color:var(--fdf-plum);"></i></div>
                         <h3>Supportive Community</h3>
-                        <p>Joining FightDFire means becoming part of a community dedicated to mutual support and empowerment.</p>
+                        <p>Joining Fight D Fear means becoming part of a community dedicated to mutual support and empowerment.</p>
                     </div>
                 </div>
             </div>
@@ -165,7 +150,7 @@
         <div class="container footer-top">
             <div class="row gy-4">
                 <div class="col-lg-4 col-md-6 footer-about">
-                    <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">FightDFire</a>
+                    <a href="${pageContext.request.contextPath}/index/templates" class="d-flex align-items-center">Fight D Fear</a>
                     <div class="pt-3">
                         <p class="fw-semibold">Our Values</p>
                         <p>Awareness • Safety • Equality • Empowerment</p>
@@ -205,9 +190,17 @@
 
     <script src="${pageContext.request.contextPath}/beauty/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/beauty/js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/beauty/js/popper.min.js"></script>
     <script src="${pageContext.request.contextPath}/beauty/js/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/beauty/js/jquery.easing.1.3.js"></script>
+    <script src="${pageContext.request.contextPath}/beauty/js/jquery.waypoints.min.js"></script>
     <script src="${pageContext.request.contextPath}/beauty/js/jquery.stellar.min.js"></script>
+    <script src="${pageContext.request.contextPath}/beauty/js/owl.carousel.min.js"></script>
+    <script src="${pageContext.request.contextPath}/beauty/js/jquery.magnific-popup.min.js"></script>
     <script src="${pageContext.request.contextPath}/beauty/js/aos.js"></script>
+    <script src="${pageContext.request.contextPath}/beauty/js/jquery.animateNumber.min.js"></script>
+    <script src="${pageContext.request.contextPath}/beauty/js/scrollax.min.js"></script>
     <script src="${pageContext.request.contextPath}/beauty/js/main.js"></script>
 </body>
 </html>
+

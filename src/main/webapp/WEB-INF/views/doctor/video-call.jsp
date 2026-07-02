@@ -5,9 +5,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Video Consultation | FightDFire</title>
+    <title>Video Consultation | Fight D Fear</title>
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <style>
         body, html { height: 100%; margin: 0; background: #0f0f1a; color: white; overflow: hidden; }
         #meet { width: 100%; height: calc(100% - 60px); }
@@ -18,7 +18,7 @@
 <body>
 
     <div class="header-bar">
-        <a href="#" class="logo-text">FightDFire Consultation</a>
+        <a href="#" class="logo-text">Fight D Fear Consultation</a>
         <div class="d-flex align-items-center gap-3">
             <span class="small text-white-50">Appt ID: #${appointment.id}</span>
             <button onclick="window.close();" class="btn btn-sm btn-outline-danger">Leave Call</button>
@@ -57,4 +57,5 @@
     </script>
 </body>
 </html>
+
 

@@ -170,6 +170,7 @@
   function enableSubmit(enabled) {
     if (!dpSubmit) return;
     dpSubmit.disabled = !enabled;
+    dpSubmit.textContent = enabled ? "Submit selected point" : "Click map to select location";
   }
 
   // Purpose: Reverse Geocoding via Nominatim API
@@ -331,15 +332,26 @@
     setText(routeStatus, "Resolving locations...");
     
     try {
+      setText(routeStatus, "Resolving start location...");
       const ptFrom = await geocode(fromStr);
+      
+      if (!ptFrom) {
+        setText(routeStatus, "Could not find start location.");
+        return;
+      }
+
+      // Nominatim rate limit: small delay between requests
+      await new Promise(r => setTimeout(r, 800));
+      
+      setText(routeStatus, "Resolving destination...");
       const ptTo = await geocode(toStr);
       
-      if (!ptFrom || !ptTo) {
-        setText(routeStatus, "Could not find one of the locations.");
+      if (!ptTo) {
+        setText(routeStatus, "Could not find destination.");
         return;
       }
       
-      setText(routeStatus, "Searching routes...");
+      setText(routeStatus, "Searching safest routes...");
       
       // OSRM handles driving by default, or walking/cycling if configured. Use driving for free pub server.
       let osrmProfile = "driving";
@@ -403,11 +415,33 @@
 
     if (dpSubmit) {
       map.on("click", onMapClick);
-      dpSubmit.addEventListener("click", () => submitDangerPoint().catch(err => setText(dpStatus, err.message)));
+      dpSubmit.addEventListener("click", () => {
+        if (dpSubmit.disabled) return;
+        submitDangerPoint().catch(err => {
+            console.error("Submission error:", err);
+            setText(dpStatus, "Error: " + err.message);
+            enableSubmit(true);
+        });
+      });
       enableSubmit(false);
     }
 
-    if (routeGo) routeGo.addEventListener("click", () => findSafestRoute());
+    if (routeGo) {
+        routeGo.addEventListener("click", () => findSafestRoute());
+    }
+
+    // Bug 123: Add Enter key listener for route search
+    [routeFrom, routeTo].forEach(el => {
+        if (el) {
+            el.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    findSafestRoute();
+                }
+            });
+        }
+    });
+
     if (toggleHeatmap) {
       toggleHeatmap.addEventListener("click", () => {
         if (heatmapLayer) {

@@ -8,7 +8,7 @@
     <title>Contact Messages — Admin</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -205,7 +205,7 @@
                     <button class="mobile-toggle" id="sidebarToggle" type="button" aria-label="Open menu">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <p class="title mb-0">FightDFire Admin — Contact Messages</p>
+                    <p class="title mb-0">Fight D Fear Admin — Contact Messages</p>
                 </div>
                 <div class="meta">
                     <c:if test="${unreadContactMessages > 0}">
@@ -344,3 +344,4 @@
     </script>
 </body>
 </html>
+

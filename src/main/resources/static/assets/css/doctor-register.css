@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
    Doctor Registration – Multi-Step Wizard
-   Purple → Coral → Gold palette (FightDFire theme)
+   Purple → Coral → Gold palette (Fight D Fear theme)
    ═══════════════════════════════════════════════════════════ */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
@@ -545,3 +545,4 @@ body.dr-page {
   .dr-btn-next, .dr-btn-submit { margin-left: 0; }
   .dr-consult-group { flex-direction: column; }
 }
+

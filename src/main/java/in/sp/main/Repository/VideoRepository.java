@@ -12,5 +12,6 @@ import in.sp.main.Entities.Videoupload;
 
 public interface VideoRepository extends JpaRepository<Video, Long> {
     List<Video> findByCategory(Category category);
-
+    List<Video> findByIsReel(boolean isReel);
+    List<Video> findByCategoryAndIsReel(Category category, boolean isReel);
 }

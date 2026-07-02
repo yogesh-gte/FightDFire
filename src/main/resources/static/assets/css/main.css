@@ -545,10 +545,17 @@ h6 {
   height: 40px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 16px;
+  font-size: 18px;
   color: white;
   margin-right: 10px;
   transition: 0.3s;
+  text-decoration: none;
+}
+
+.footer .social-links a i {
+  font-family: "Font Awesome 6 Brands", "Font Awesome 6 Free", sans-serif;
+  font-style: normal;
+  line-height: 1;
 }
 
 .footer .social-links a:hover {

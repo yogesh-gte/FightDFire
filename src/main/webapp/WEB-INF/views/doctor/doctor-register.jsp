@@ -5,14 +5,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Professional Registration | FightDFire</title>
+    <title>Professional Registration | Fight D Fear</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
 
     <style>
         :root {
@@ -156,8 +156,19 @@
             transition:0.3s; border:none; font-size: 1rem; width: 100%;
         }
         .btn-dr-next { background:var(--gradient-primary); color:#fff; box-shadow: 0 8px 20px rgba(219,39,119,0.2); }
-        .btn-dr-next:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+        .btn-dr-next.is-disabled { opacity: 0.65; cursor: pointer; transform: none !important; pointer-events: auto; }
         .btn-dr-prev { background:#f1f5f9; color:#64748b; }
+        .error-msg { display: none; color: var(--error-red); font-size: 0.75rem; margin-top: 6px; font-weight: 600; }
+        .password-input-wrap { position: relative; }
+        .password-input-wrap .fdf-input { padding-right: 48px; }
+        .password-toggle-btn {
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            border: none; background: transparent; color: #64748b; cursor: pointer; padding: 4px; font-size: 1.1rem;
+        }
+        .password-toggle-btn:hover { color: var(--brand-pink); }
+        .back-home { display: inline-flex; align-items: center; gap: 6px; color: #64748b; text-decoration: none; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; }
+        .step-hint { display: none; color: var(--error-red); font-size: 0.85rem; margin-bottom: 12px; font-weight: 600; }
+        .step-hint.visible { display: block; }
         
         .btn-dr:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
 
@@ -203,7 +214,7 @@
 
         <div class="left-panel">
             <div class="brand">
-                <div class="brand-logo"><i class="bi bi-heart-pulse"></i> FightDFire</div>
+                <div class="brand-logo"><i class="bi bi-heart-pulse"></i> Fight D Fear</div>
                 <p class="brand-tagline">Providing quality healthcare and support to the community. Dedicated to safety and wellness.</p>
                 <ul class="feature-list">
                     <li><span class="feat-icon"><i class="bi bi-person-heart"></i></span> Consult Trusted Women Doctors</li>
@@ -216,6 +227,7 @@
 
         <div class="form-panel">
             <div class="reg-card">
+                <a href="${pageContext.request.contextPath}/index.html" class="back-home"><i class="bi bi-arrow-left"></i> Back to Home</a>
                 <div class="dr-progress">
                     <div class="dr-step-item active" data-step="1">
                         <div class="dr-step-dot">1</div>
@@ -271,9 +283,9 @@
 
                         <div class="fdf-row">
                             <div class="fdf-group">
-                                <label>Phone</label>
-                                <input type="tel" id="phone" name="phone" class="fdf-input" placeholder="10-digit number">
-                                <div class="error-msg">10-digit Indian number starting with 6-9.</div>
+                                <label>Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" class="fdf-input" placeholder="e.g. 9876543210" required>
+                                <div class="error-msg">Valid 10-digit Indian phone number is required.</div>
                             </div>
                             <div class="fdf-group">
                                 <label>Gender</label>
@@ -289,11 +301,17 @@
 
                         <div class="fdf-group">
                             <label>Account Password</label>
-                            <input type="password" id="password" name="password" class="fdf-input" placeholder="••••••••">
-                            <div class="error-msg">6-8 chars with 1 uppercase and 1 number.</div>
+                            <div class="password-input-wrap">
+                                <input type="password" id="password" name="password" class="fdf-input" placeholder="••••••••" autocomplete="new-password">
+                                <button type="button" class="password-toggle-btn" data-toggle-password="password" aria-label="Show password">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <div class="error-msg">Min 6 characters with 1 uppercase letter and 1 number.</div>
                         </div>
 
-                        <button type="button" class="btn-dr btn-dr-next w-100 mt-3" data-next="2" disabled>Professional Info <i class="bi bi-arrow-right ms-2"></i></button>
+                        <p id="stepValidationHint" class="step-hint">Please complete all required fields above to continue.</p>
+                        <button type="button" class="btn-dr btn-dr-next w-100 mt-3 is-disabled" data-next="2">Professional Info <i class="bi bi-arrow-right ms-2"></i></button>
                     </div>
 
                     <!-- STEP 2: PROFESSIONAL INFO -->
@@ -351,7 +369,7 @@
 
                         <div class="d-flex gap-3 mt-4">
                             <button type="button" class="btn-dr btn-dr-prev flex-fill" data-prev="1">Back</button>
-                            <button type="button" class="btn-dr btn-dr-next flex-fill" data-next="3" disabled>Clinic Location</button>
+                            <button type="button" class="btn-dr btn-dr-next flex-fill is-disabled" data-next="3">Clinic Location</button>
                         </div>
                     </div>
 
@@ -386,7 +404,7 @@
 
                         <div class="d-flex gap-3 mt-4">
                             <button type="button" class="btn-dr btn-dr-prev flex-fill" data-prev="2">Back</button>
-                            <button type="button" class="btn-dr btn-dr-next flex-fill" data-next="4" disabled>Availability</button>
+                            <button type="button" class="btn-dr btn-dr-next flex-fill is-disabled" data-next="4">Availability</button>
                         </div>
                     </div>
 
@@ -397,11 +415,23 @@
                         <div class="fdf-group">
                             <label>Working Days</label>
                             <div class="d-flex flex-wrap gap-2">
-                                <c:forEach var="day" items="${['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY']}">
-                                    <label class="btn btn-outline-purple flex-fill py-2 px-1" style="font-size:0.7rem; font-weight:700;">
-                                        <input type="checkbox" name="availableDays" value="${day}" class="d-none"> ${day.substring(0,3)}
-                                    </label>
-                                </c:forEach>
+                                <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:set var="days"
+       value="MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY"/>
+
+<c:forTokens var="day" items="${days}" delims=",">
+    <label class="btn btn-outline-purple flex-fill py-2 px-1"
+           style="font-size:0.7rem; font-weight:700;">
+
+        <input type="checkbox"
+               name="availableDays"
+               value="${day}"
+               class="d-none">
+
+        ${fn:substring(day,0,3)}
+    </label>
+</c:forTokens>
                             </div>
                             <div class="error-msg">Select at least one day.</div>
                         </div>
@@ -421,7 +451,7 @@
 
                         <div class="d-flex gap-3 mt-4">
                             <button type="button" class="btn-dr btn-dr-prev flex-fill" data-prev="3">Back</button>
-                            <button type="button" class="btn-dr btn-dr-next flex-fill" data-next="5" disabled>Documentation</button>
+                            <button type="button" class="btn-dr btn-dr-next flex-fill is-disabled" data-next="5">Documentation</button>
                         </div>
                     </div>
 
@@ -430,26 +460,26 @@
                         <h2 class="fw-900 mb-4" style="color:var(--brand-purple-darker); font-family:'Montserrat';">Identity Verification</h2>
                         
                         <div class="fdf-group">
-                            <label>Medical License / Registration Proof</label>
-                            <input type="file" id="medicalLicense" name="medicalLicense" class="fdf-input" style="padding:10px;">
+                            <label>Medical License / Registration Proof (PDF/IMG)</label>
+                            <input type="file" id="medicalLicense" name="medicalLicense" class="fdf-input" style="padding:10px;" accept="image/*,.pdf">
                             <div class="error-msg">Required: JPG, PNG or PDF (Max 2MB).</div>
                         </div>
 
                         <div class="fdf-group">
-                            <label>Government ID Proof (Aadhar/Passport)</label>
-                            <input type="file" id="idProof" name="idProof" class="fdf-input" style="padding:10px;">
+                            <label>Government ID Proof (PDF/IMG)</label>
+                            <input type="file" id="idProof" name="idProof" class="fdf-input" style="padding:10px;" accept="image/*,.pdf">
                             <div class="error-msg">Required: JPG, PNG or PDF (Max 2MB).</div>
                         </div>
 
                         <div class="fdf-group">
-                            <label>Highest Degree Certificate</label>
-                            <input type="file" id="degreeCertificate" name="degreeCertificate" class="fdf-input" style="padding:10px;">
+                            <label>Highest Degree Certificate (PDF/IMG)</label>
+                            <input type="file" id="degreeCertificate" name="degreeCertificate" class="fdf-input" style="padding:10px;" accept="image/*,.pdf">
                             <div class="error-msg">Required: JPG, PNG or PDF (Max 2MB).</div>
                         </div>
 
                         <div class="d-flex gap-3 mt-4">
                             <button type="button" class="btn-dr btn-dr-prev flex-fill" data-prev="4">Back</button>
-                            <button type="button" class="btn-dr btn-dr-next flex-fill" data-next="6" disabled>Payment Setup</button>
+                            <button type="button" class="btn-dr btn-dr-next flex-fill is-disabled" data-next="6">Payment Setup</button>
                         </div>
                     </div>
 
@@ -472,7 +502,7 @@
 
                         <div class="d-flex gap-3 mt-4">
                             <button type="button" class="btn-dr btn-dr-prev flex-fill" data-prev="5">Back</button>
-                            <button type="submit" id="submitBtn" class="btn-dr btn-dr-next flex-fill" disabled>Submit Registration</button>
+                            <button type="submit" id="submitBtn" class="btn-dr btn-dr-next flex-fill is-disabled">Submit Registration</button>
                         </div>
                     </div>
                 </form>
@@ -530,7 +560,10 @@
                                checkRegex('upiId', /^[\w.-]+@[\w.-]+$/);
                 }
 
-                if (nextBtn) nextBtn.disabled = !isValid;
+                if (nextBtn) {
+                    nextBtn.classList.toggle("is-disabled", !isValid);
+                    nextBtn.setAttribute("aria-disabled", String(!isValid));
+                }
                 return isValid;
             };
 
@@ -586,9 +619,19 @@
 
             const checkPassword = (id) => {
                 const val = document.getElementById(id).value;
-                const valid = val.length >= 6 && val.length <= 8 && /[A-Z]/.test(val) && /\d/.test(val);
+                const valid = val.length >= 6 && /[A-Z]/.test(val) && /\d/.test(val);
                 toggleError(id, valid);
                 return valid;
+            };
+
+            const stepHint = document.getElementById('stepValidationHint');
+
+            const focusFirstInvalid = (panel) => {
+                const invalid = panel.querySelector('.fdf-input.is-invalid, select.fdf-input.is-invalid');
+                if (invalid) {
+                    invalid.focus();
+                    invalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             };
 
             const checkFile = (id, allowedExts, maxSizeMB) => {
@@ -609,17 +652,34 @@
                 if(e.target.id) validateStep(currentStep);
             });
             form.addEventListener('change', (e) => {
-                if(e.target.id || e.target.name === 'availableDays') validateStep(currentStep);
+                if (e.target.id || e.target.name === 'availableDays') {
+                    validateStep(currentStep);
+                    if (stepHint) stepHint.classList.remove('visible');
+                }
             });
 
             // Navigation
             document.querySelectorAll('.btn-dr-next').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (validateStep(currentStep)) {
-                        const next = parseInt(btn.dataset.next);
-                        if (next) showStep(next);
+                btn.addEventListener('click', (e) => {
+                    if (btn.type === 'submit') return;
+                    const next = parseInt(btn.dataset.next, 10);
+                    if (!next) return;
+                    const panel = document.getElementById('step' + currentStep);
+                    if (!validateStep(currentStep)) {
+                        e.preventDefault();
+                        if (stepHint) stepHint.classList.add('visible');
+                        if (panel) focusFirstInvalid(panel);
+                        return;
                     }
+                    if (stepHint) stepHint.classList.remove('visible');
+                    showStep(next);
                 });
+            });
+
+            document.getElementById('doctorRegForm')?.addEventListener('submit', (e) => {
+                if (!validateStep(currentStep)) {
+                    e.preventDefault();
+                }
             });
 
             document.querySelectorAll('.btn-dr-prev').forEach(btn => {
@@ -656,5 +716,7 @@
             validateStep(1);
         });
     </script>
+    <script src="${pageContext.request.contextPath}/assets/js/password-toggle.js"></script>
 </body>
 </html>
+

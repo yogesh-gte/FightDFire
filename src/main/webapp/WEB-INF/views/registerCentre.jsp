@@ -9,7 +9,7 @@
     <title>Register Martial Arts Center</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap & Font Awesome -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
@@ -163,7 +163,7 @@
     <div class="auth-container">
         <div class="left-panel">
             <div class="brand">
-                <div class="brand-logo"><i class="fas fa-dumbbell"></i> FightDFire</div>
+                <div class="brand-logo"><i class="fas fa-dumbbell"></i> Fight D Fear</div>
                 <p class="brand-tagline">Empower your students with professional martial arts training and safety education.</p>
                 <ul class="feature-list">
                     <li><span class="feat-icon"><i class="bi bi-person-badge-fill"></i></span> Learn Self-Defense from Experts</li>
@@ -198,7 +198,7 @@
                         </div>
                         
                         <div class="fdf-row">
-                            <div class="fdf-group"><label>Phone Number</label><form:input path="phoneNumber" class="fdf-input" placeholder="+91..." required="required"/></div>
+                            <div class="fdf-group"><label>Phone Number</label><form:input path="phoneNumber" class="fdf-input" type="tel" placeholder="10-digit number" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required="required"/></div>
                             <div class="fdf-group"><label>Email Address</label><form:input path="email" type="email" class="fdf-input" placeholder="contact@center.com" required="required"/></div>
                         </div>
                         <div class="fdf-group"><label>Access Password</label><form:password path="password" class="fdf-input" pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).{6,}" placeholder="••••••••" required="required"/></div>
@@ -334,4 +334,5 @@
 
 </body>
 </html>
+
 

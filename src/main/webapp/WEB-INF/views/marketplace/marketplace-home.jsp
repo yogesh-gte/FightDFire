@@ -15,7 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
 
     <style>
         :root {
@@ -317,6 +317,24 @@
                     <p>Explore unique products created and sold by women entrepreneurs.</p>
                 </a>
             </div>
+
+            <!-- Women Lawyer Category -->
+            <div class="col-md-6 col-lg-3">
+                <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="category-card">
+                    <i class="cat-icon fas fa-gavel"></i>
+                    <h3>Legal Assistance</h3>
+                    <p>Connect with professional women lawyers for legal advice and support.</p>
+                </a>
+            </div>
+
+            <!-- Fitness Zumba Category -->
+            <div class="col-md-6 col-lg-3">
+                <a href="${pageContext.request.contextPath}/marketplace/list?category=FITNESS_ZUMBA" class="category-card">
+                    <i class="cat-icon fas fa-running"></i>
+                    <h3>Fitness & Zumba</h3>
+                    <p>Join energizing Zumba sessions and fitness classes led by experts.</p>
+                </a>
+            </div>
         </div>
 
         <!-- Call to Action -->
@@ -334,5 +352,54 @@
 
     <!-- Bootstrap JS -->
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.market-search input');
+            const searchButton = document.querySelector('.market-search button');
+            const categoryCards = document.querySelectorAll('.category-card');
+
+            function performSearch() {
+                const query = searchInput.value.trim().toLowerCase();
+                
+                categoryCards.forEach(card => {
+                    const title = card.querySelector('h3').innerText.toLowerCase();
+                    const desc = card.querySelector('p').innerText.toLowerCase();
+                    const parentCol = card.parentElement;
+
+                    if (title.includes(query) || desc.includes(query)) {
+                        parentCol.style.display = 'block';
+                    } else {
+                        parentCol.style.display = 'none';
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', performSearch);
+
+            searchButton.addEventListener('click', function() {
+                const query = searchInput.value.trim().toLowerCase();
+                let matchUrl = null;
+                categoryCards.forEach(card => {
+                    const title = card.querySelector('h3').innerText.toLowerCase();
+                    const desc = card.querySelector('p').innerText.toLowerCase();
+                    if (title.includes(query) || desc.includes(query)) {
+                        if (!matchUrl) matchUrl = card.getAttribute('href');
+                    }
+                });
+                if (matchUrl) {
+                    window.location.href = matchUrl;
+                } else {
+                    alert('No services matched your query. Try searching for "Tutors", "Bakers", or "Products".');
+                    categoryCards.forEach(card => card.parentElement.style.display = 'block');
+                }
+            });
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchButton.click();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

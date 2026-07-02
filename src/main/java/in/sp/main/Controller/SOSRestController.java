@@ -34,6 +34,9 @@ public class SOSRestController {
     private EmailService emailService;
 
     @Autowired
+    private in.sp.main.Service.SosService sosService;
+
+    @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/trigger")
@@ -120,10 +123,31 @@ public class SOSRestController {
             adminNotification.put("mapsLink", "https://www.google.com/maps?q=" + alert.getLatitude() + "," + alert.getLongitude());
             messagingTemplate.convertAndSend("/topic/admin-sos", adminNotification);
 
+            // === Notify Nearby Volunteers ===
+            double lat = Double.parseDouble(alert.getLatitude());
+            double lng = Double.parseDouble(alert.getLongitude());
+            List<User> nearbyVolunteers = sosService.findNearbyVolunteers(lat, lng, 5.0);
+            int volunteersAlerted = 0;
+            for (User volunteer : nearbyVolunteers) {
+                if (loggedInUser != null && volunteer.getId().equals(loggedInUser.getId())) continue;
+                
+                Map<String, Object> volunteerPayload = new HashMap<>();
+                volunteerPayload.put("type", "NEARBY_SOS");
+                volunteerPayload.put("sosId", alert.getId());
+                volunteerPayload.put("victimName", alert.getUserName());
+                volunteerPayload.put("lat", lat);
+                volunteerPayload.put("lng", lng);
+                volunteerPayload.put("mapsLink", "https://www.google.com/maps?q=" + lat + "," + lng);
+                
+                messagingTemplate.convertAndSend("/topic/volunteer-alerts", volunteerPayload);
+                volunteersAlerted++;
+            }
+
             response.put("success", true);
-            response.put("message", "SOS Alert triggered! " + emailsSent + " contact(s) emailed.");
+            response.put("message", "SOS Alert triggered! " + emailsSent + " contact(s) emailed and " + volunteersAlerted + " volunteers notified.");
             response.put("alertId", alert.getId());
             response.put("emailsSent", emailsSent);
+            response.put("volunteersAlerted", volunteersAlerted);
             
         } catch (Exception e) {
             response.put("success", false);

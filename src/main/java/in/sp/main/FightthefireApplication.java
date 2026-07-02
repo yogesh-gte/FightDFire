@@ -18,3 +18,4 @@ public class FightthefireApplication extends SpringBootServletInitializer {
         System.out.println("Women safety");
     }
 }
+

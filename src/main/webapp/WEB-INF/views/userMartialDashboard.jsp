@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Martial Arts Hub | FightDFire</title>
+    <title>Martial Arts Hub | Fight D Fear</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 
     <style>
         :root {
@@ -925,3 +925,4 @@
     </script>
 </body>
 </html>
+

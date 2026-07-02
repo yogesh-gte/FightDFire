@@ -8,7 +8,8 @@
     <title>${group.name} - Group Chat</title>
 
     <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
+          href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
     <style>
         body {
@@ -282,7 +283,13 @@
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+    const chatBox = document.getElementById('chat-box');
+    if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
 
 </body>
 </html>

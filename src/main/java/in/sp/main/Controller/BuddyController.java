@@ -71,6 +71,17 @@ public class BuddyController {
         return ResponseEntity.ok(res(true, "Buddy Mode stopped."));
     }
 
+    @GetMapping("/requests")
+    @ResponseBody
+    public ResponseEntity<?> pendingRequests(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res(false, "Login required."));
+
+        Map<String, Object> out = buddyService.pendingRequestsPayload(user);
+        out.put("ok", true);
+        return ResponseEntity.ok(out);
+    }
+
     @GetMapping("/matches")
     @ResponseBody
     public ResponseEntity<?> matches(@RequestParam double latitude,

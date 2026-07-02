@@ -218,7 +218,7 @@
 <!-- ======= Header ======= -->
 <header id="header" class="header d-flex align-items-center sticky-top">
   <div class="container-fluid container-xl d-flex align-items-center">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
+    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
     </div>
 </header>
 <!-- ======= Hero Section for Incident & Safety Updates ======= -->
@@ -336,3 +336,4 @@
 
 	</body>
 	</html>
+

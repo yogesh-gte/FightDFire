@@ -15,7 +15,7 @@
 <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 
 			<!-- 🎨 Custom CSS -->
 			</head>
@@ -530,3 +530,4 @@
 
 					  </body>
 					  </html>
+

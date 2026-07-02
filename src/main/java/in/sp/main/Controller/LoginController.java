@@ -86,11 +86,12 @@ public class LoginController {
         }
 
         if (ok) {
-            if (user.getVerificationStatus() == VerificationStatus.PENDING) {
+            VerificationStatus status = user.getVerificationStatus();
+            if (status == null || status == VerificationStatus.PENDING) {
                 model.addAttribute("error", "Your account is pending verification by Admin. Please check back later.");
                 return "login";
             }
-            if (user.getVerificationStatus() == VerificationStatus.REJECTED) {
+            if (status == VerificationStatus.REJECTED) {
                 model.addAttribute("error", "Your account has been rejected by admin.");
                 return "login";
             }

@@ -21,4 +21,6 @@ public interface SOSRequestRepository extends JpaRepository<SOSRequest, Long> {
     List<SOSRequest> findByStatusAndActivatedAtBefore(SOSRequest.SOSStatus status, LocalDateTime time);
     
     List<SOSRequest> findByIsEscalatedFalseAndStatus(SOSRequest.SOSStatus status);
+    
+    List<SOSRequest> findByStatus(SOSRequest.SOSStatus status);
 }

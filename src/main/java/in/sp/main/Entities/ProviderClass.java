@@ -21,6 +21,9 @@ public class ProviderClass {
     @ManyToOne
     private ServiceProvider provider;
 
+    @Enumerated(EnumType.STRING)
+    private ProviderCategory category;
+
     // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -42,4 +45,12 @@ public class ProviderClass {
     public void setMeetingLink(String meetingLink) { this.meetingLink = meetingLink; }
     public ServiceProvider getProvider() { return provider; }
     public void setProvider(ServiceProvider provider) { this.provider = provider; }
+
+    public ProviderCategory getCategory() {
+        if (category == null && provider != null) {
+            return provider.getCategory();
+        }
+        return category;
+    }
+    public void setCategory(ProviderCategory category) { this.category = category; }
 }

@@ -16,7 +16,7 @@
   
   <!-- Theme CSS -->
   <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/doctor-view.css">
 
   <style>
@@ -172,7 +172,7 @@
 </head>
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container-fluid container-xl d-flex align-items-center">
-      <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
+      <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
@@ -372,6 +372,16 @@
             <input type="hidden" id="appointmentTime" value="">
 
             <div class="mb-4">
+              <label class="small fw-800 text-muted mb-2 d-block">PATIENT NAME *</label>
+              <input type="text" id="patientName" class="form-control rounded-3 py-2" value="${user.fullName}" required>
+            </div>
+
+            <div class="mb-4">
+              <label class="small fw-800 text-muted mb-2 d-block">MOBILE NUMBER *</label>
+              <input type="tel" id="patientPhone" class="form-control rounded-3 py-2" value="${user.phoneNumber}" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
+            </div>
+
+            <div class="mb-4">
               <label class="small fw-800 text-muted mb-2 d-block">SELECT DATE</label>
               <div class="d-flex gap-2 overflow-x-auto pb-2" id="dateScroll">
                 <!-- Dates dynamically generated -->
@@ -549,3 +559,4 @@
   </script>
 </body>
 </html>
+

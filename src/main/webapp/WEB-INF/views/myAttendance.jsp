@@ -233,7 +233,7 @@
     <aside class="sidebar">
         <div class="sidebar-logo">
             <i class="fas fa-hand-fist fa-2x text-danger"></i>
-            <span>FightDFire</span>
+            <span>Fight D Fear</span>
         </div>
         
         <ul class="nav-menu">
@@ -443,3 +443,4 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </body>
 </html>
+

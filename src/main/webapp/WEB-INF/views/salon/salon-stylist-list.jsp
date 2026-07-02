@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
      <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Add Offer | FightDFire</title>
+    <title>Add Offer | Fight D Fear</title>
 
     <!-- ================= BOOTSTRAP ================= -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css">
@@ -85,7 +85,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar" id="ftco-navbar">
     <div class="container">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/index/templates">
-            <span class="flaticon-lotus"></span> FightDFire
+            <span class="flaticon-lotus"></span> Fight D Fear
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -165,7 +165,7 @@
             <div class="col-lg-4 col-md-6 footer-about">
                 <a href="${pageContext.request.contextPath}/index/templates"
                    class="d-flex align-items-center">
-                   FightDFire
+                   Fight D Fear
                 </a>
                 <div class="pt-3">
                     <p class="fw-semibold">Our Values</p>
@@ -209,7 +209,7 @@
     </div>
 
     <div class="container text-center mt-4">
-        <p>© <strong>FightDFire</strong> All Rights Reserved</p>
+        <p>© <strong>Fight D Fear</strong> All Rights Reserved</p>
     </div>
 </footer>
 
@@ -233,4 +233,5 @@
 
 </body>
 </html>
+
 

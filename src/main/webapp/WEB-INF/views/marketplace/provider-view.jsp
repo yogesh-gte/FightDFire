@@ -14,7 +14,7 @@
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
 
     <style>
         :root {
@@ -187,6 +187,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
     <div class="profile-header">
         <div class="container">
@@ -292,18 +293,28 @@
                     </c:if>
 
                     <c:forEach var="r" items="${reviews}">
-                        <div class="review-item">
+                        <div class="review-item" style="border-left: 4px solid var(--m-pink); background: rgba(219, 39, 119, 0.02); padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);">
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <h6 class="m-0 fw-800">${r.user.fullName}</h6>
-                                <div class="text-warning">
-                                    <c:forEach begin="1" end="${r.rating}">
-                                        <i class="fas fa-star"></i>
+                                <div>
+                                    <h6 class="m-0 fw-800" style="color: var(--m-purple);">${not empty r.user.fullName ? r.user.fullName : 'Anonymous Client'}</h6>
+                                    <small class="text-muted" style="font-size: 0.8rem;">${not empty r.user.email ? r.user.email : ''}</small>
+                                </div>
+                                <div class="text-warning" style="font-size: 1.1rem;">
+                                    <c:forEach begin="1" end="5" var="star">
+                                        <c:choose>
+                                            <c:when test="${star <= r.rating}">
+                                                <i class="bi bi-star-fill"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-star"></i>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:forEach>
                                 </div>
                             </div>
-                            <p class="small text-muted mb-0">${r.comment}</p>
+                            <p class="small text-muted mb-0" style="line-height: 1.6; font-size: 0.95rem;">${r.comment}</p>
                             <div class="text-end mt-2">
-                                <small class="text-muted" style="font-size: 0.7rem;">${r.createdAt}</small>
+                                <small class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar-event me-1"></i> ${r.createdAt}</small>
                             </div>
                         </div>
                     </c:forEach>
@@ -323,7 +334,7 @@
                         <input type="hidden" name="providerId" value="${provider.id}">
                         <div class="mb-4">
                             <label class="form-label">Preferred Date & Time</label>
-                            <input class="form-control" type="datetime-local" name="requestedTime" required>
+                            <input class="form-control" id="requestedTimeInput" type="datetime-local" name="requestedTime" required>
                         </div>
                         <div class="mb-4">
                             <label class="form-label">Session Topic / Note</label>
@@ -345,5 +356,17 @@
     </div>
 
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const requestedTimeInput = document.getElementById('requestedTimeInput');
+            if (requestedTimeInput) {
+                const now = new Date();
+                const tzOffset = now.getTimezoneOffset() * 60000; // offset in milliseconds
+                const localISOTime = (new Date(now - tzOffset)).toISOString().slice(0, 16);
+                requestedTimeInput.setAttribute('min', localISOTime);
+            }
+        });
+    </script>
 </body>
 </html>
+

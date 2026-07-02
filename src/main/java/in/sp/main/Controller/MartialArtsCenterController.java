@@ -108,6 +108,11 @@ public class MartialArtsCenterController {
                 return "redirect:/centres/login";
             }
 
+            if (center.getPhoneNumber() == null || !center.getPhoneNumber().trim().matches("^\\d{10}$")) {
+                redirectAttributes.addFlashAttribute("error", "Phone number must be exactly 10 digits.");
+                return "redirect:/centres/registerCentre";
+            }
+
             if (galleryPhotos != null) {
                 for (MultipartFile photo : galleryPhotos) {
                     if (!photo.isEmpty()) {
@@ -358,7 +363,11 @@ public class MartialArtsCenterController {
             @RequestParam String email,
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) String location,
+            @RequestParam(required = false) String about,
+            @RequestParam(required = false) String howWeTeach,
+            @RequestParam(required = false) String whatWeOffer,
             @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
+            @RequestParam(value = "galleryPhotos", required = false) MultipartFile[] galleryPhotos,
             HttpSession session) {
         Map<String, Object> res = new HashMap<>();
         MartialArtsCenter sessionCenter = (MartialArtsCenter) session.getAttribute("loggedCentre");
@@ -374,8 +383,20 @@ public class MartialArtsCenterController {
             if (email != null && !email.isBlank()) center.setEmail(email.trim().toLowerCase());
             if (phoneNumber != null) center.setPhoneNumber(phoneNumber.trim());
             if (location != null) center.setLocation(location.trim());
+            if (about != null) center.setAbout(about.trim());
+            if (howWeTeach != null) center.setHowWeTeach(howWeTeach.trim());
+            if (whatWeOffer != null) center.setWhatWeOffer(whatWeOffer.trim());
             if (profileImage != null && !profileImage.isEmpty()) {
                 center.setProfilePhoto(fileuploadService.saveFile(profileImage));
+            }
+            if (galleryPhotos != null && galleryPhotos.length > 0) {
+                List<String> newPhotos = new ArrayList<>(center.getGalleryPhotos());
+                for (MultipartFile photo : galleryPhotos) {
+                    if (!photo.isEmpty()) {
+                        newPhotos.add(fileuploadService.saveFile(photo));
+                    }
+                }
+                center.setGalleryPhotos(newPhotos);
             }
             centreRepository.save(center);
             session.setAttribute("loggedCentre", center);

@@ -3,7 +3,9 @@ package in.sp.main.Controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -79,6 +82,11 @@ public class MarketplaceController {
             return "marketplace/provider-register";
         }
 
+        if (phone == null || !phone.trim().matches("^\\d{10}$")) {
+            model.addAttribute("error", "Phone number must be exactly 10 digits.");
+            return "marketplace/provider-register";
+        }
+
         try {
             String docPath = fileUploadService.saveFile(identityDoc);
 
@@ -87,7 +95,15 @@ public class MarketplaceController {
             p.setEmail(email.trim().toLowerCase());
             p.setPhone(phone);
             p.setPassword(password);
-            p.setCategory(ProviderCategory.valueOf(category.trim().toUpperCase()));
+            
+            // Robust category parsing
+            try {
+                p.setCategory(ProviderCategory.valueOf(category.trim().toUpperCase()));
+            } catch (Exception e) {
+                model.addAttribute("error", "Invalid category: " + category);
+                return "marketplace/provider-register";
+            }
+            
             p.setDescription(description);
             p.setLocationText(locationText);
             p.setIdentityDocumentPath(docPath);
@@ -159,27 +175,36 @@ public class MarketplaceController {
     }
 
     @PostMapping("/provider/bookings/{id}/status")
-    public String updateBookingStatus(@PathVariable Long id,
-                                      @RequestParam String status,
-                                      HttpSession session,
-                                      RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public Map<String, Object> updateBookingStatus(@PathVariable Long id,
+                                                  @RequestParam String status,
+                                                  HttpSession session) {
+        Map<String, Object> response = new HashMap();
         ServiceProvider p = (ServiceProvider) session.getAttribute("loggedProvider");
-        if (p == null) return "redirect:/marketplace/provider/login";
+        if (p == null) {
+            response.put("success", false);
+            response.put("message", "Not logged in");
+            return response;
+        }
 
         ProviderBooking b = bookingRepo.findById(id).orElse(null);
         if (b == null || b.getProvider() == null || !b.getProvider().getId().equals(p.getId())) {
-            redirectAttributes.addFlashAttribute("message", "Booking not found.");
-            return "redirect:/marketplace/provider/dashboard";
+            response.put("success", false);
+            response.put("message", "Booking not found");
+            return response;
         }
 
         try {
-            b.setStatus(ProviderBookingStatus.valueOf(status));
+            ProviderBookingStatus newStatus = ProviderBookingStatus.valueOf(status);
+            b.setStatus(newStatus);
             bookingRepo.save(b);
-            redirectAttributes.addFlashAttribute("message", "Status updated.");
+            response.put("success", true);
+            response.put("newStatus", newStatus.name());
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Invalid status.");
+            response.put("success", false);
+            response.put("message", "Invalid status");
         }
-        return "redirect:/marketplace/provider/dashboard";
+        return response;
     }
 
     // ==============================
@@ -305,6 +330,7 @@ public class MarketplaceController {
                            @RequestParam Double price,
                            @RequestParam Integer seats,
                            @RequestParam String meetingLink,
+                           @RequestParam String category,
                            HttpSession session) {
         ServiceProvider p = (ServiceProvider) session.getAttribute("loggedProvider");
         if (p == null) return "redirect:/marketplace/provider/login";
@@ -319,6 +345,7 @@ public class MarketplaceController {
         pc.setPrice(price);
         pc.setAvailableSeats(seats);
         pc.setMeetingLink(meetingLink);
+        pc.setCategory(ProviderCategory.valueOf(category.trim().toUpperCase()));
 
         classRepo.save(pc);
         return "redirect:/marketplace/provider/dashboard";
@@ -339,10 +366,23 @@ public class MarketplaceController {
             return "redirect:/marketplace";
         }
 
+        LocalDateTime reqTime;
+        try {
+            reqTime = LocalDateTime.parse(requestedTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Invalid date format.");
+            return "redirect:/marketplace/view/" + providerId;
+        }
+
+        if (reqTime.isBefore(LocalDateTime.now())) {
+            redirectAttributes.addFlashAttribute("message", "Booking date/time cannot be in the past.");
+            return "redirect:/marketplace/view/" + providerId;
+        }
+
         ProviderBooking b = new ProviderBooking();
         b.setUser(u);
         b.setProvider(p);
-        b.setRequestedTime(LocalDateTime.parse(requestedTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
+        b.setRequestedTime(reqTime);
         b.setNote(note);
         b.setStatus(ProviderBookingStatus.PENDING);
         bookingRepo.save(b);

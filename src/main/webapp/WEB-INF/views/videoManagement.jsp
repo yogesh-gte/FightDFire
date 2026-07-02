@@ -397,7 +397,7 @@
 <div class="topbar">
   <div style="display:flex;align-items:center;">
     <button class="mobile-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
-    <span class="brand">&#x1F6E1;&#xFE0F; FightDFire Admin</span>
+    <span class="brand">&#x1F6E1;&#xFE0F; Fight D Fear Admin</span>
   </div>
   <a href="${pageContext.request.contextPath}/admin/logout" class="btn-logout">
     <i class="fas fa-sign-out-alt"></i> Logout
@@ -457,6 +457,9 @@
                               <div class="video-meta">
                                   <i class="fas fa-folder text-muted"></i>
                                   <span class="badge-category">${video.category}</span>
+                                  <c:if test="${video.reel}">
+                                      <span class="badge-category bg-info text-white ms-2">REEL</span>
+                                  </c:if>
                               </div>
                               <div class="video-meta">
                                   <i class="fas fa-user-circle text-muted"></i>
@@ -519,3 +522,4 @@
 
 </body>
 </html>
+

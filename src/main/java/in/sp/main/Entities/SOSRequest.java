@@ -31,6 +31,8 @@ public class SOSRequest {
     private int contactsAccepted;
     private int contactsRejected;
     private int contactsPending;
+    private int volunteersAlerted;
+    private String audioRecordingPath;
 
     private boolean isEscalated = false;
     private boolean isAutoCallTriggered = false;
@@ -146,6 +148,22 @@ public class SOSRequest {
 
     public void setContactsPending(int contactsPending) {
         this.contactsPending = contactsPending;
+    }
+
+    public int getVolunteersAlerted() {
+        return volunteersAlerted;
+    }
+
+    public void setVolunteersAlerted(int volunteersAlerted) {
+        this.volunteersAlerted = volunteersAlerted;
+    }
+
+    public String getAudioRecordingPath() {
+        return audioRecordingPath;
+    }
+
+    public void setAudioRecordingPath(String audioRecordingPath) {
+        this.audioRecordingPath = audioRecordingPath;
     }
 
     public boolean isEscalated() {

@@ -33,7 +33,7 @@
 						<link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 						<link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 						<link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
-						<link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+						<link href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css" rel="stylesheet">
 
 					<!-- 🎨 Custom CSS -->
 					<style>
@@ -116,7 +116,7 @@
 	
 	<header id="header" class="header d-flex align-items-center sticky-top">
   <div class="container-fluid container-xl d-flex align-items-center">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
+    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
     <nav id="navmenu" class="navmenu">
       <ul>
         <li><a href="${pageContext.request.contextPath}/incidents/listForUser">Incidents</a></li>
@@ -318,7 +318,7 @@
 			  	        <div class="row d-flex">
 			  	            <div class="col-md">
 			  	                <div class="ftco-footer-widget mb-4">
-			  	                    <h2 class="ftco-heading-2">FightDFire</h2>
+			  	                    <h2 class="ftco-heading-2">Fight D Fear</h2>
 			                       <p>Empowering women to stay safe, strong, and supported through awareness, self-defense, and action.</p>
 			  	                    <ul class="ftco-footer-social list-unstyled float-lft mt-3">
 			  	                        <li class="ftco-animate"><a href="${pageContext.request.contextPath}#"><span class="icon-twitter"></span></a></li>
@@ -357,7 +357,7 @@
 			  	                        <ul>
 			  	                            <li><span class="icon icon-map-marker"></span><span class="text">203 Safe Haven Street, Hyderabad, India</span></li>
 			  	                            <li><a href="${pageContext.request.contextPath}#"><span class="icon icon-phone"></span><span class="text">+91 98765 43210</span></a></li>
-			  	                            <li><a href="${pageContext.request.contextPath}#"><span class="icon icon-envelope"></span><span class="text">support@fightthefire.org</span></a></li>
+			  	                            <li><a href="${pageContext.request.contextPath}#"><span class="icon icon-envelope"></span><span class="text">support@Fight D Fear.org</span></a></li>
 			  	                        </ul>
 			  	                    </div>
 			  	                </div>
@@ -394,3 +394,4 @@
 
 		</body>
 		</html>
+

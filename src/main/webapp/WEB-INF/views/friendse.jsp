@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Friends | FightDFire</title>
+<title>Friends | Fight D Fear</title>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
 
 			<link href="https://fonts.googleapis.com/css?family=Prata&display=swap" rel="stylesheet">
@@ -88,7 +88,7 @@ body { background: #f8f9fa; }
 
 <header id="header" class="header d-flex align-items-center sticky-top">
 		  <div class="container-fluid container-xl d-flex align-items-center">
-		    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
+		    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
 		    <nav id="navmenu" class="navmenu">
 		      <ul>
 				<li class="nav-item"><a href="${pageContext.request.contextPath}/users/dashboard" class="nav-link">Home</a></li>
@@ -199,4 +199,5 @@ function sendReel() {
 
 </body>
 </html>
+
 

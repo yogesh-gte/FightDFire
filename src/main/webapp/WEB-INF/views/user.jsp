@@ -12,7 +12,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <!-- Theme CSS (Assuming it defines the variables) -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     
     <style>
         :root {
@@ -137,6 +137,9 @@
         .fdf-group label { display: block; font-size: 0.75rem; font-weight: 800; color: var(--brand-purple-dark); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
         .fdf-input { width: 100%; padding: 14px 18px; border: 2px solid var(--fdf-border); border-radius: 16px; background: #f8fafc; outline: none; transition: all 0.3s ease; font-family: inherit; font-weight: 500; }
         .fdf-input:focus { border-color: var(--brand-pink); background: #fff; box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.05); }
+        .password-input-wrap { position: relative; }
+        .password-input-wrap .fdf-input { padding-right: 48px; }
+        .password-toggle-btn { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); border: none; background: transparent; color: #64748b; cursor: pointer; padding: 4px; font-size: 1.1rem; }
 
         .btn-dr { padding: 14px 28px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem; width: 100%; }
         .btn-dr-next { background: var(--gradient-primary); color: #fff; box-shadow: 0 8px 20px rgba(124, 45, 94, 0.2); }
@@ -194,7 +197,7 @@
     <div class="auth-container">
         <div class="left-panel">
             <div class="brand">
-                <div class="brand-logo"><i class="bi bi-shield-check"></i> FightDFire</div>
+                <div class="brand-logo"><i class="bi bi-shield-check"></i> Fight D Fear</div>
                 <p class="brand-tagline">Empowering Women's Safety Through Technology. Your safety is our mission — anytime, anywhere.</p>
                 <ul class="feature-list">
                     <li><span class="feat-icon"><i class="bi bi-bell-fill"></i></span> One-tap SOS Emergency Alerts</li>
@@ -231,7 +234,7 @@
                             </div>
                             <div class="fdf-group">
                                 <label>Phone Number</label>
-                                <input type="text" name="phoneNumber" id="phoneNumber" class="fdf-input" placeholder="+91..." required>
+                                <input type="tel" name="phoneNumber" id="phoneNumber" class="fdf-input" placeholder="10-digit number" pattern="[0-9]{10}" maxlength="10" minlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')" required>
                                 <div class="error-feedback">Enter a valid 10-digit number.</div>
                             </div>
                         </div>
@@ -242,7 +245,12 @@
                         </div>
                         <div class="fdf-group">
                             <label>Password</label>
-                            <input type="password" name="password" id="password" class="fdf-input" placeholder="••••••••" required>
+                            <div class="password-input-wrap">
+                                <input type="password" name="password" id="password" class="fdf-input" placeholder="••••••••" required autocomplete="new-password">
+                                <button type="button" class="password-toggle-btn" data-toggle-password="password" aria-label="Show password">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
                             <div class="error-feedback">Min 6 chars with number & uppercase.</div>
                         </div>
                         <div class="fdf-group">
@@ -260,8 +268,8 @@
                         <div class="fdf-row">
                             <div class="fdf-group">
                                 <label>Date of Birth</label>
-                                <input type="date" id="dob" name="dob" class="fdf-input" required>
-                                <div class="error-feedback">DOB is required.</div>
+                                <input type="date" id="dob" name="dob" class="fdf-input" required max="<%= java.time.LocalDate.now() %>">
+                                <div class="error-feedback">DOB is required and cannot be a future date.</div>
                             </div>
                             <div class="fdf-group">
                                 <label>Age</label>
@@ -283,9 +291,9 @@
 
                         <div class="fdf-row">
                             <div class="fdf-group">
-                                <label>Identity Proof</label>
-                                <input type="file" name="identityDoc" id="identityDoc" class="fdf-input" style="padding:10px;" required>
-                                <div class="error-feedback">Identity proof required.</div>
+                                <label>Identity Proof (PDF/IMG)</label>
+                                <input type="file" name="identityDoc" id="identityDoc" class="fdf-input" style="padding:10px;" accept="image/*,.pdf" required>
+                                <div class="error-feedback">Identity proof required (Image or PDF).</div>
                             </div>
                             <div class="fdf-group">
                                 <label>Profile Photo</label>
@@ -329,6 +337,12 @@
             if (isValid && el.id === 'phoneNumber') isValid = /^[6-9]\d{9}$/.test(val);
             if (isValid && el.id === 'email') isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
             if (isValid && el.id === 'password') isValid = val.length >= 6 && /[A-Z]/.test(val) && /\d/.test(val);
+            if (isValid && el.id === 'dob') {
+                const selectedDate = new Date(val);
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                isValid = selectedDate <= today;
+            }
             if (isValid && el.id === 'age') isValid = parseInt(val) >= 10;
 
             if (isValid) {
@@ -352,14 +366,24 @@
         document.addEventListener("DOMContentLoaded", function() {
             const dob = document.getElementById('dob');
             const age = document.getElementById('age');
+
+            // Prevent future dates
+            const todayStr = new Date().toISOString().split('T')[0];
+            dob.setAttribute('max', todayStr);
             
             dob.addEventListener('change', function() {
                 if (this.value) {
-                    const birth = new Date(this.value);
-                    const diff = Date.now() - birth.getTime();
-                    const ageVal = Math.abs(new Date(diff).getUTCFullYear() - 1970);
-                    age.value = ageVal;
-                    validateField(age);
+                    const birthDate = new Date(this.value);
+                    if (!isNaN(birthDate.getTime())) {
+                        const today = new Date();
+                        let computedAge = today.getFullYear() - birthDate.getFullYear();
+                        const m = today.getMonth() - birthDate.getMonth();
+                        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                            computedAge--;
+                        }
+                        age.value = computedAge;
+                        validateField(age);
+                    }
                 }
             });
 
@@ -372,5 +396,7 @@
             });
         });
     </script>
+    <script src="${pageContext.request.contextPath}/assets/js/password-toggle.js"></script>
 </body>
 </html>
+

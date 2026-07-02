@@ -60,29 +60,30 @@
         box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2);
     }
 
-    .sidebar-header { padding: 40px 30px; }
+    /* Issue 132: Compact sidebar header so all menu items are visible */
+    .sidebar-header { padding: 16px 20px; }
     .sidebar-logo {
-        width: 50px; height: 50px;
+        width: 36px; height: 36px;
         background: linear-gradient(135deg, var(--primary), #991B1B);
-        border-radius: 14px;
+        border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem;
-        box-shadow: 0 10px 20px rgba(220, 38, 38, 0.4);
-        margin-bottom: 20px;
+        font-size: 1.1rem;
+        box-shadow: 0 6px 14px rgba(220, 38, 38, 0.4);
+        margin-bottom: 10px;
     }
-    .sidebar-title { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px; }
-    .sidebar-title span { color: var(--primary); display: block; font-size: 0.7rem; text-transform: uppercase; margin-top: 5px; }
+    .sidebar-title { font-size: 0.95rem; font-weight: 800; letter-spacing: -0.5px; }
+    .sidebar-title span { color: var(--primary); display: block; font-size: 0.65rem; text-transform: uppercase; margin-top: 3px; }
 
-    .sidebar-menu { flex-grow: 1; padding: 10px 20px; list-style: none; overflow-y: auto; }
+    .sidebar-menu { flex-grow: 1; padding: 6px 14px; list-style: none; overflow-y: auto; }
     .sidebar-link {
-        display: flex; align-items: center; gap: 15px;
-        padding: 14px 20px; color: var(--sidebar-text);
-        text-decoration: none; font-weight: 600;
-        border-radius: 12px; margin-bottom: 8px;
+        display: flex; align-items: center; gap: 12px;
+        padding: 10px 16px; color: var(--sidebar-text);
+        text-decoration: none; font-weight: 600; font-size: 0.88rem;
+        border-radius: 10px; margin-bottom: 4px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .sidebar-link:hover { background: rgba(255, 255, 255, 0.05); color: white; transform: translateX(5px); }
-    .sidebar-link.active { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
+    .sidebar-link:hover { background: rgba(255, 255, 255, 0.05); color: white; transform: translateX(4px); }
+    .sidebar-link.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
     .sidebar-link.active i { color: white; }
     
     .sidebar-logout { margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; }
@@ -97,15 +98,15 @@
     }
 
     .sidebar-banner {
-        margin: 30px 20px;
-        padding: 30px 20px;
+        margin: 12px 14px;
+        padding: 16px 14px;
         background: rgba(255, 255, 255, 0.03);
-        border-radius: 20px;
+        border-radius: 14px;
         text-align: center;
         border: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .banner-icon { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
-    .banner-text { font-size: 0.9rem; font-weight: 700; color: white; margin: 0; }
+    .banner-icon { font-size: 1.4rem; color: var(--primary); margin-bottom: 8px; }
+    .banner-text { font-size: 0.8rem; font-weight: 700; color: white; margin: 0; }
 
     /* Main Content */
     .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
@@ -399,6 +400,21 @@
                 // In a real app, this would open a Modal with more tabs for attendance, payments etc.
             },
 
+            manageBooking(id) {
+                const e = this.state.enrollments.find(en => en.id === id);
+                if (!e) return;
+                const action = confirm('Manage booking for ' + e.traineeName + '\n\nOK to APPROVE, Cancel to REJECT (Mock logic)');
+                if (action) {
+                    alert('Booking approved for ' + e.traineeName);
+                    e.enrollmentStatus = 'APPROVED';
+                    e.paymentStatus = 'PAID';
+                } else {
+                    alert('Booking rejected for ' + e.traineeName);
+                    e.enrollmentStatus = 'REJECTED';
+                }
+                this.render();
+            },
+
             handleLogoUpload(input) {
                 if (input.files && input.files[0]) {
                     const reader = new FileReader();
@@ -420,9 +436,18 @@
                 formData.append('email', document.getElementById('settingsEmail').value);
                 formData.append('phoneNumber', document.getElementById('settingsPhone').value);
                 formData.append('location', document.getElementById('settingsLocation').value);
+                formData.append('about', document.getElementById('settingsAbout').value);
+                formData.append('howWeTeach', document.getElementById('settingsHowWeTeach').value);
+                formData.append('whatWeOffer', document.getElementById('settingsWhatWeOffer').value);
                 const logoInput = document.getElementById('logoInput');
                 if (logoInput && logoInput.files && logoInput.files[0]) {
                     formData.append('profileImage', logoInput.files[0]);
+                }
+                const galleryInput = document.getElementById('galleryInput');
+                if (galleryInput && galleryInput.files) {
+                    for (let i = 0; i < galleryInput.files.length; i++) {
+                        formData.append('galleryPhotos', galleryInput.files[i]);
+                    }
                 }
                 try {
                     const res = await fetch(App.ctx + '/centres/settings', { method: 'POST', body: formData });
@@ -585,6 +610,7 @@
                     var batches = (App.state.batches || []).filter(function(b){ return b.isBatch !== false; });
                     var meta = App.state.meta || {};
                     var totalEarnings = enrolls.reduce(function(s,e){return s+(parseFloat(e.amount)||0);},0);
+                    var avgTrainees = batches.length > 0 ? (enrolls.length / batches.length).toFixed(1) : 0;
                     var activities = meta.activities || [];
                     var online = meta.onlineBatchCount || 0;
                     var offline = meta.offlineBatchCount || 0;
@@ -596,9 +622,9 @@
                     var onlineDeg = batches.length ? Math.round((online / batches.length) * 360) : 0;
                     return '<div class="stats-grid">'+
                         App.ui.StatCard('Total Trainees',enrolls.length,'red','fa-user-graduate')+
-                        App.ui.StatCard('Active Batches',batches.length,'green','fa-calendar-check')+
+                        App.ui.StatCard('Avg Trainees/Batch',avgTrainees,'green','fa-users')+
                         App.ui.StatCard('Total Bookings',enrolls.length,'blue','fa-bookmark')+
-                        App.ui.StatCard('Earnings','₹ '+totalEarnings.toLocaleString('en-IN'),'purple','fa-wallet')+
+                        App.ui.StatCard('Total Revenue','₹ '+totalEarnings.toLocaleString('en-IN'),'purple','fa-wallet')+
                     '</div>'+
                     '<div class="row">'+
                       '<div class="col-lg-8">'+
@@ -633,15 +659,16 @@
                     return '<div class="panel">'+
                       '<div class="panel-header">'+
                         '<div class="panel-title"><i class="fas fa-layer-group text-danger"></i> Manage Batches ('+batches.length+')</div>'+
-                        '<button class="btn btn-premium" onclick="App.navigate(\'class-types\')"><i class="fas fa-plus me-2"></i>New Batch</button>'+
+                        /* Issue 133: Removed redundant New Batch button here; batch creation is done from Class Types */
                       '</div>'+
+                      '<p class="text-muted small px-1 mb-3"><i class="fas fa-info-circle me-1"></i>To add a new batch, go to <a href="#" onclick="App.navigate(\'class-types\')" class="text-danger fw-bold">Class Types</a> and click Create Batch.</p>'+
                       '<div class="table-container"><table class="custom-table">'+
                         '<thead><tr><th>Batch Name</th><th>Style</th><th>Mode</th><th>Schedule</th><th>Days</th><th>Fee</th><th>Status</th></tr></thead>'+
                         '<tbody>'+
                           batches.map(function(b){return '<tr>'+
                             '<td class="fw-bold">'+b.name+'</td>'+
                             '<td>'+b.style+'</td>'+
-                            '<td><span class="badge '+(b.batchType==="Online"?"bg-info":"bg-secondary")+'">'+(b.batchType||"Offline")+'</span></td>'+
+                            '<td><span class="badge '+(b.batchType==="Online"?"bg-info":"bg-secondary")+'">'+( b.batchType||"Offline")+'</span></td>'+
                             '<td><small class="fw-bold text-muted">'+b.timeSlot+'</small></td>'+
                             '<td><small class="badge bg-light text-dark">'+(b.availableDays||"N/A")+'</small></td>'+
                             '<td class="fw-bold text-danger">₹ '+b.fee+'</td>'+
@@ -652,7 +679,22 @@
                 },
                 Classes: function() {
                     var types = (App.state.meta && App.state.meta.classTypes) ? App.state.meta.classTypes : [];
-                    var img = App.state.userLogo || (App.ctx + '/assets/img/hero-bg.jpg');
+                    // Issue 131: Use distinct thumbnail images based on the martial-arts style name
+                    var styleImages = {
+                        'karate':     App.ctx + '/assets/img/karate.jpg',
+                        'mma':        App.ctx + '/assets/img/mma.jpg',
+                        'kickboxing': App.ctx + '/assets/img/kickboxing.jpg',
+                        'bjj':        App.ctx + '/assets/img/bjj.jpg',
+                        'judo':       App.ctx + '/assets/img/judo.jpg',
+                        'taekwondo':  App.ctx + '/assets/img/taekwondo.jpg',
+                        'boxing':     App.ctx + '/assets/img/boxing.jpg',
+                        'kalaripayattu': App.ctx + '/assets/img/kalari1.jpeg',
+                    };
+                    function getTypeImg(name) {
+                        if (!name) return App.ctx + '/assets/img/hero-bg.jpg';
+                        var key = name.trim().toLowerCase();
+                        return styleImages[key] || App.state.userLogo || (App.ctx + '/assets/img/hero-bg.jpg');
+                    }
                     if (types.length === 0) {
                         return '<div class="panel text-center py-5"><h4 class="fw-bold">No programs registered</h4>'+
                             '<p class="text-muted">Add martial arts programs during centre registration or create a batch with a custom style.</p>'+
@@ -660,14 +702,17 @@
                     }
                     return '<div class="d-flex justify-content-between align-items-center mb-5"><h2 class="fw-bold m-0 h1">Your Class Types</h2></div>'+
                     '<div class="class-grid">'+
-                      types.map(function(t, i){return '<div class="class-card" onclick="App.navigate(\'create-batch\')">'+
-                        '<div class="class-img"><img src="'+img+'" alt="'+App.escapeHtml(t.name)+'">'+
+                      types.map(function(t, i){
+                        var thumb = getTypeImg(t.name);
+                        return '<div class="class-card" onclick="App.navigate(\'create-batch\')">'+ 
+                        '<div class="class-img"><img src="'+thumb+'" alt="'+App.escapeHtml(t.name)+'" onerror="this.src=\''+App.ctx+'/assets/img/hero-bg.jpg\'">'+ 
                           (i===0?'<div style="position:absolute;top:20px;right:20px;background:white;padding:8px 15px;border-radius:12px;font-weight:700;font-size:0.75rem;">REGISTERED</div>':'')+
                         '</div>'+
                         '<div class="class-body"><div class="class-name">'+App.escapeHtml(t.name)+'</div>'+
                           '<p class="text-muted small">'+(t.slotCount||0)+' time slots · ₹ '+(t.cost||0)+' base fee</p>'+
                           '<button class="btn btn-premium w-100 mt-2">Create Batch</button>'+
-                        '</div></div>';}).join('')+
+                        '</div></div>';
+                      }).join('')+
                     '</div>';
                 },
                 CreateBatch: function() {
@@ -737,7 +782,7 @@
                             '<td class="fw-bold">'+(e.traineeName||"Student")+'</td>'+
                             '<td class="fw-bold text-success">₹ '+(e.amount||0)+'</td>'+
                             '<td><span class="badge-pill '+((e.paymentStatus==="PAID")?"bg-success":"bg-warning")+' text-white">'+(e.paymentStatus||"PENDING")+'</span></td>'+
-                            '<td><button class="btn btn-sm btn-light">Manage</button></td>'+
+                            '<td><button class="btn btn-sm btn-premium" onclick="App.manageBooking('+e.id+')">Manage</button></td>'+
                           '</tr>';}).join('')+
                           (enrolls.length===0?'<tr><td colspan="5" class="text-center py-4">No bookings found</td></tr>':'')+
                         '</tbody></table></div></div>';
@@ -787,9 +832,18 @@
                       '<div class="col-lg-8"><div class="panel p-5"><h4 class="fw-bold mb-4">Center Profile</h4>'+
                         '<form id="settingsForm" class="row g-4" onsubmit="event.preventDefault();App.saveSettings();">'+
                           '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Center Name</label><input type="text" id="settingsName" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.name||'')+'" required></div>'+
-                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Contact Email</label><input type="email" id="settingsEmail" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.email||'')+'" required></div>'+
-                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Phone</label><input type="text" id="settingsPhone" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.phone||'')+'"></div>'+
+                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Email Address</label><input type="email" id="settingsEmail" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.email||'')+'"></div>'+
+                          '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Phone Number</label><input type="tel" id="settingsPhone" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.phoneNumber||'')+'"></div>'+
                           '<div class="col-md-6"><label class="form-label fw-bold small text-muted text-uppercase">Location</label><input type="text" id="settingsLocation" class="form-control form-control-lg border-0 bg-light" value="'+App.escapeHtml(c.location||'')+'"></div>'+
+                          '<div class="col-12"><label class="form-label fw-bold small text-muted text-uppercase">About Center</label><textarea id="settingsAbout" class="form-control form-control-lg border-0 bg-light" rows="3">'+App.escapeHtml(c.about||'')+'</textarea></div>'+
+                          '<div class="col-12"><label class="form-label fw-bold small text-muted text-uppercase">How We Teach</label><textarea id="settingsHowWeTeach" class="form-control form-control-lg border-0 bg-light" rows="3">'+App.escapeHtml(c.howWeTeach||'')+'</textarea></div>'+
+                          '<div class="col-12"><label class="form-label fw-bold small text-muted text-uppercase">What We Offer</label><textarea id="settingsWhatWeOffer" class="form-control form-control-lg border-0 bg-light" rows="3">'+App.escapeHtml(c.whatWeOffer||'')+'</textarea></div>'+
+                          '<div class="col-12"><label class="form-label fw-bold small text-muted text-uppercase">Gallery Photos</label>'+
+                            '<input type="file" id="galleryInput" class="form-control border-0 bg-light mb-3" multiple accept="image/*">'+
+                            '<div id="gallery-preview" class="d-flex flex-wrap gap-2">'+
+                              (c.galleryPhotos ? c.galleryPhotos.map(function(p){return '<div class="position-relative" style="width:80px;height:80px;border-radius:10px;overflow:hidden;border:2px solid #eee;"><img src="'+App.ctx+p+'" style="width:100%;height:100%;object-fit:cover;"></div>';}).join('') : '')+
+                            '</div>'+
+                          '</div>'+
                           '<div class="col-12 d-flex justify-content-end gap-3 mt-4"><button type="button" class="btn btn-lg btn-light px-5" onclick="location.reload()">Reset</button><button type="submit" class="btn btn-lg btn-premium px-5">Save Changes</button></div>'+
                         '</form></div></div>'+
                     '</div>';

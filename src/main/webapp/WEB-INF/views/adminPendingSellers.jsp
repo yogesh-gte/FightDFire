@@ -189,7 +189,7 @@
 <body>
 
 <div class="topbar">
-  <span class="brand">&#x1F6E1;&#xFE0F; FightDFire Admin</span>
+  <span class="brand">&#x1F6E1;&#xFE0F; Fight D Fear Admin</span>
   <a href="${pageContext.request.contextPath}/admin/logout" class="btn-logout">
     <i class="fas fa-sign-out-alt"></i> Logout
   </a>
@@ -289,6 +289,54 @@
         </div>
       </div>
 
+      <!-- Marketplace women's product partners (alternate registration path) -->
+      <c:if test="${not empty pendingMarketplace}">
+      <div class="card-table">
+        <div class="card-table-header">
+          <i class="fas fa-store text-warning"></i> Pending — Marketplace Women's Products
+          <span class="badge-count">${pendingMarketplace.size()}</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Contact</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach var="p" items="${pendingMarketplace}">
+                <tr>
+                  <td>
+                    <div class="fw-bold text-dark">${p.fullName}</div>
+                    <div class="text-muted small">${p.description}</div>
+                  </td>
+                  <td>
+                    <div class="seller-meta">
+                      <span><i class="fas fa-envelope text-muted me-1"></i> ${p.email}</span>
+                      <span><i class="fas fa-phone text-muted me-1"></i> ${p.phone}</span>
+                    </div>
+                  </td>
+                  <td>${p.locationText}</td>
+                  <td><span class="badge-status status-PENDING">PENDING</span></td>
+                  <td>
+                    <div class="d-flex justify-content-center gap-1">
+                      <a href="${pageContext.request.contextPath}/admin/providers/${p.id}/profile" class="btn-view-media px-2" title="View"><i class="fas fa-user"></i></a>
+                      <form action="${pageContext.request.contextPath}/admin/providers/${p.id}/verify" method="post" class="m-0"><button class="btn-approve" type="submit"><i class="fas fa-check"></i></button></form>
+                      <form action="${pageContext.request.contextPath}/admin/providers/${p.id}/reject" method="post" class="m-0"><button class="btn-reject" type="submit"><i class="fas fa-times"></i></button></form>
+                    </div>
+                  </td>
+                </tr>
+              </c:forEach>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </c:if>
+
       <!-- Verified Sellers Table -->
       <div class="card-table">
         <div class="card-table-header">
@@ -346,6 +394,50 @@
         </div>
       </div>
 
+      <!-- Marketplace verified women's product partners -->
+      <c:if test="${not empty verifiedMarketplace}">
+      <div class="card-table">
+        <div class="card-table-header">
+          <i class="fas fa-store text-success"></i> Verified — Marketplace Women's Products
+          <span class="badge-count" style="background:#166534;">${verifiedMarketplace.size()}</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Contact</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach var="p" items="${verifiedMarketplace}">
+                <tr>
+                  <td>
+                    <div class="fw-bold text-dark">${p.fullName}</div>
+                    <div class="text-muted small">${p.description}</div>
+                  </td>
+                  <td>
+                    <div class="seller-meta">
+                      <span><i class="fas fa-envelope text-muted me-1"></i> ${p.email}</span>
+                      <span><i class="fas fa-phone text-muted me-1"></i> ${p.phone}</span>
+                    </div>
+                  </td>
+                  <td>${p.locationText}</td>
+                  <td><span class="badge-status status-VERIFIED"><i class="fas fa-check-circle me-1"></i> VERIFIED</span></td>
+                  <td>
+                    <a href="${pageContext.request.contextPath}/admin/providers/${p.id}/profile" class="btn-view-media px-3" title="View"><i class="fas fa-user me-1"></i> View Profile</a>
+                  </td>
+                </tr>
+              </c:forEach>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </c:if>
+
       <!-- Rejected Sellers Table -->
       <div class="card-table">
         <div class="card-table-header">
@@ -397,9 +489,55 @@
         </div>
       </div>
 
+      <!-- Marketplace rejected women's product partners -->
+      <c:if test="${not empty rejectedMarketplace}">
+      <div class="card-table">
+        <div class="card-table-header">
+          <i class="fas fa-store-alt-slash text-danger"></i> Rejected — Marketplace Women's Products
+          <span class="badge-count" style="background:#991b1b;">${rejectedMarketplace.size()}</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Provider</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach var="p" items="${rejectedMarketplace}">
+                <tr>
+                  <td>
+                    <div class="fw-bold text-dark">${p.fullName}</div>
+                    <div class="text-muted small">${p.description}</div>
+                  </td>
+                  <td>
+                    <div class="seller-meta">
+                      <span><i class="fas fa-envelope text-muted me-1"></i> ${p.email}</span>
+                      <span><i class="fas fa-phone text-muted me-1"></i> ${p.phone}</span>
+                    </div>
+                  </td>
+                  <td><span class="badge-status status-REJECTED"><i class="fas fa-times-circle me-1"></i> REJECTED</span></td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="${pageContext.request.contextPath}/admin/providers/${p.id}/profile" class="btn-view-media px-2" title="View"><i class="fas fa-user"></i></a>
+                      <form action="${pageContext.request.contextPath}/admin/providers/${p.id}/verify" method="post" class="m-0"><button class="btn-approve px-3" type="submit"><i class="fas fa-undo me-1"></i> Re-verify</button></form>
+                    </div>
+                  </td>
+                </tr>
+              </c:forEach>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </c:if>
+
     </div>
   </main>
 </div>
 
 </body>
 </html>
+

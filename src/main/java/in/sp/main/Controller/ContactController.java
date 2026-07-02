@@ -1,6 +1,8 @@
 package in.sp.main.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -8,26 +10,26 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import in.sp.main.Entities.*;
+import in.sp.main.Entities.ChatMessage;
 import in.sp.main.Repository.UserRepository;
 import in.sp.main.Service.ChatService;
 import in.sp.main.Service.ContactMessageService;
-import jakarta.servlet.http.HttpSession;
-
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
 
 @Controller
 public class ContactController {
 
-	
-
     @Autowired
     private ChatService chatService;
-    
+
     @Autowired
     private UserRepository userRepo;
 
@@ -40,7 +42,7 @@ public class ContactController {
     @Autowired
     private ContactMessageService contactMessageService;
 
-    @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+    @Value("${spring.mail.username:}")
     private String adminEmail;
 
     @GetMapping("/contact")
@@ -49,39 +51,72 @@ public class ContactController {
         return "index/contact";
     }
 
+    @GetMapping("/sendMessage")
+    public String handleGetSendMessage() {
+        return "redirect:/contact";
+    }
+
     @PostMapping("/sendMessage")
-    public String sendMessage(@RequestParam String name,
-                              @RequestParam String email,
-                              @RequestParam String subject,
-                              @RequestParam String message,
-                              Model model) {
-        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            model.addAttribute("error", "Invalid email format.");
-            return "index/contact";
+    public Object sendMessage(@RequestParam(required = false) String name,
+                              @RequestParam(required = false) String email,
+                              @RequestParam(required = false) String subject,
+                              @RequestParam(required = false) String message,
+                              HttpServletRequest request,
+                              RedirectAttributes redirectAttributes) {
+        String trimmedEmail = email != null ? email.trim() : "";
+        // Improved email validation regex
+        if (trimmedEmail.isEmpty() || !trimmedEmail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
+            return contactResponse(request, redirectAttributes, false, "Invalid email format.");
+        }
+        if (name == null || name.isBlank() || subject == null || subject.isBlank()
+                || message == null || message.isBlank()) {
+            return contactResponse(request, redirectAttributes, false, "Please fill in all fields.");
         }
 
         try {
-            contactMessageService.save(name, email, subject, message);
+            contactMessageService.save(name.trim(), trimmedEmail, subject.trim(), message.trim());
             try {
-                SimpleMailMessage mail = new SimpleMailMessage();
-                mail.setTo(adminEmail);
-                mail.setSubject(subject);
-                mail.setText("From: " + name + "\nEmail: " + email + "\n\nMessage:\n" + message);
-                mailSender.send(mail);
+                if (adminEmail != null && !adminEmail.isBlank()) {
+                    SimpleMailMessage mail = new SimpleMailMessage();
+                    mail.setTo(adminEmail);
+                    mail.setSubject("Fight D Fear Contact: " + subject.trim());
+                    mail.setText("From: " + name.trim() + "\nEmail: " + trimmedEmail
+                            + "\n\nMessage:\n" + message.trim());
+                    mailSender.send(mail);
+                }
             } catch (Exception mailEx) {
-                // Message is stored for admin; email is best-effort
+                // Stored for admin inbox; email is best-effort only
             }
-            model.addAttribute("success", "Your message has been sent!");
+            return contactResponse(request, redirectAttributes, true, "Your message has been sent!");
         } catch (Exception e) {
-            model.addAttribute("error", "Failed to send message. Try again later.");
+            return contactResponse(request, redirectAttributes, false, "Failed to send message. Try again later.");
         }
-        return "index"; 
     }
+
+    private Object contactResponse(HttpServletRequest request,
+                                 RedirectAttributes redirectAttributes,
+                                 boolean ok,
+                                 String msg) {
+        if (isAjax(request)) {
+            if (ok) {
+                return ResponseEntity.ok("OK");
+            }
+            return ResponseEntity.badRequest().body(msg);
+        }
+        if (ok) {
+            redirectAttributes.addFlashAttribute("success", msg);
+        } else {
+            redirectAttributes.addFlashAttribute("error", msg);
+        }
+        return "redirect:/contact";
+    }
+
+    private static boolean isAjax(HttpServletRequest request) {
+        return "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
+    }
+
     @MessageMapping("/chat.send")
     public void send(@Payload ChatMessage chatMessage) {
-
-        System.out.println("Received chat message from " + chatMessage.getSender().getId() + " to " + chatMessage.getReceiver().getId());
-
         in.sp.main.Entities.User sender = userRepo.findById(chatMessage.getSender().getId()).orElse(null);
         in.sp.main.Entities.User receiver = userRepo.findById(chatMessage.getReceiver().getId()).orElse(null);
 
@@ -90,16 +125,15 @@ public class ContactController {
             chatMessage.setReceiver(receiver);
             chatMessage.setTimestamp(LocalDateTime.now());
             chatMessage.setReadStatus(false);
-            
+
             chatService.save(chatMessage);
-            
-            // Build lightweight DTO payload to bypass LazyInitializationException and recursion errors
+
             java.util.Map<String, Object> payload = new java.util.HashMap<>();
             payload.put("id", chatMessage.getId());
             payload.put("message", chatMessage.getMessage());
             payload.put("videoUrl", chatMessage.getVideoUrl());
             payload.put("timestamp", chatMessage.getTimestamp().toString());
-            
+
             java.util.Map<String, Object> senderMap = new java.util.HashMap<>();
             senderMap.put("id", sender.getId());
             senderMap.put("fullName", sender.getFullName());
@@ -110,20 +144,9 @@ public class ContactController {
             receiverMap.put("fullName", receiver.getFullName());
             payload.put("receiver", receiverMap);
 
-            // 👉 SEND TO RECEIVER
-            messagingTemplate.convertAndSend(
-                "/topic/messages/" + receiver.getId(),
-                payload
-            );
-
-            // 👉 SEND BACK TO SENDER
-            messagingTemplate.convertAndSend(
-                "/topic/messages/" + sender.getId(),
-                payload
-            );
-        } else {
-            System.out.println("Sender or Receiver not found.");
+            messagingTemplate.convertAndSend("/topic/messages/" + receiver.getId(), payload);
+            messagingTemplate.convertAndSend("/topic/messages/" + sender.getId(), payload);
         }
     }
-
 }
+
