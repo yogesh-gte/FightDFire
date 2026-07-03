@@ -181,7 +181,7 @@
                             </div>
                             <div class="fdf-group">
                                 <label>Confirm Password</label>
-                                <input type="password" id="confirmPassword" class="fdf-input" placeholder="••••••••" required>
+                                <input type="password" name="confirmPassword" id="confirmPassword" class="fdf-input" placeholder="••••••••" required>
                                 <div class="error-msg" id="err-confirmPassword">❌ Passwords do not match</div>
                                 <div class="valid-msg" id="val-confirmPassword" style="color: #10b981;">✅ Passwords match</div>
                             </div>

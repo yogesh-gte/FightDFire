@@ -483,281 +483,64 @@
 				 </script>
 
 
-    <section class="ftco-section ftco-section-services bg-light">
-    	<div class="container-fluid px-md-5">
-    		<div class="row">
-    			<div class="col-md-6 col-lg-3">
-						<div class="services text-center ftco-animate">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-candle"></span>
-							</div>
-							<div class="text mt-3">
-								<h3>Haircut</h3>
-								<p>Professional haircut and styling to suit your face and fashion, ensuring a confident and refreshing look.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3">
-						<div class="services text-center ftco-animate">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-beauty-treatment"></span>
-							</div>
-							<div class="text mt-3">
-								<h3>Manicure</h3>
-								<p>Get perfectly groomed nails with a relaxing hand massage and polish finish that shines with confidence.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3">
-						<div class="services text-center ftco-animate">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-stone"></span>
-							</div>
-							<div class="text mt-3">
-								<h3>Pedicure</h3>
-								<p>Revitalize tired feet with our rejuvenating pedicure service that smoothens, cleanses, and relaxes.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3">
-						<div class="services text-center ftco-animate">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-relax"></span>
-							</div>
-							<div class="text mt-3">
-								<h3>Spa</h3>
-							    <p>Unwind your senses with our full-body spa sessions designed to rejuvenate mind, body, and soul.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3">
-									<div class="services text-center ftco-animate">
-										<div class="icon d-flex justify-content-center align-items-center">
-											<span class="flaticon-massage"></span>
-										</div>
-										<div class="text mt-3">
-											<h3>Massage</h3>
-											<p>Relax and relieve stress with soothing massage therapies performed by skilled professionals.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-3">
-									<div class="services text-center ftco-animate">
-										<div class="icon d-flex justify-content-center align-items-center">
-											<span class="flaticon-lotus"></span>
-										</div>
-										<div class="text mt-3">
-											<h3>Facial</h3>
-											<p>Refresh your skin with premium facial treatments that bring out your natural glow and smooth texture.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-3">
-									<div class="services text-center ftco-animate">
-										<div class="icon d-flex justify-content-center align-items-center">
-											<span class="flaticon-beauty-treatment"></span>
-										</div>
-										<div class="text mt-3">
-											<h3>Eyebrow Shaping</h3>
-											<p>Perfectly define your brows for a sharp, elegant, and confident look that frames your face beautifully.</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 col-lg-3">
-									<div class="services text-center ftco-animate">
-										<div class="icon d-flex justify-content-center align-items-center">
-											<span class="flaticon-spa-1"></span>
-										</div>
-										<div class="text mt-3">
-											<h3>Hair Spa</h3>
-											<p>Rejuvenate dull and damaged hair with deep-conditioning treatments for silky, healthy, and strong strands.</p>
-										</div>
-									</div>
-								</div>
-
-				</div>
-    	</div>
+    <!-- Dynamic Treatments Section -->
+    <c:if test="${not empty treatmentList}">
+    <section class="ftco-section">
+        <div class="container-fluid px-md-5">
+            <div class="row justify-content-center mb-5 pb-3">
+                <div class="col-md-12 heading-section text-center">
+                    <h3 class="subheading">Services</h3>
+                    <h2 class="mb-1">Treatments</h2>
+                </div>
+            </div>
+            <div class="row">
+                <c:forEach var="treatment" items="${treatmentList}">
+                <div class="col-lg-3 col-md-4 d-flex align-items-stretch mb-4">
+                    <div class="treatment w-100 text-center border p-3 py-4 bg-white rounded shadow-sm">
+                        <div class="icon d-flex justify-content-center align-items-center mb-3 text-primary">
+                            <i class="bi bi-stars" style="font-size: 2rem;"></i>
+                        </div>
+                        <div class="text mt-2">
+                            <h3 class="text-dark"><c:out value="${treatment.serviceName}"/></h3>
+                            <p class="text-muted"><c:out value="${treatment.description}"/></p>
+                            <p class="mb-0"><strong class="text-primary">₹<fmt:formatNumber value="${treatment.price}"/></strong> | <c:out value="${treatment.duration}"/> min</p>
+                            <a href="${pageContext.request.contextPath}/booking/new?treatmentId=${treatment.id}" class="btn btn-primary btn-sm mt-3">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                </c:forEach>
+            </div>
+        </div>
     </section>
+    </c:if>
 
-	  <section class="ftco-section">
-	  	<div class="container-fluid px-md-5">
-	  		<div class="row justify-content-center mb-5 pb-3">
-          <div class="col-md-12 heading-section ftco-animate text-center">
-            <h3 class="subheading">Services</h3>
-            <h2 class="mb-1">Treatments</h2>
-          </div>
+    <!-- Dynamic Offers Section -->
+    <c:if test="${not empty offerList}">
+    <section class="ftco-section bg-light">
+        <div class="container-fluid px-md-5">
+            <div class="row justify-content-center mb-5 pb-3">
+                <div class="col-md-12 heading-section text-center">
+                    <h3 class="subheading">Deals</h3>
+                    <h2 class="mb-1">Special Offers</h2>
+                </div>
+            </div>
+            <div class="row">
+                <c:forEach var="offer" items="${offerList}">
+                <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-4">
+                    <div class="card w-100 text-center shadow-sm border-0 p-3 py-4">
+                        <div class="card-body mt-2">
+                            <h3 class="text-primary fw-bold"><c:out value="${offer.title}"/></h3>
+                            <p class="text-muted"><c:out value="${offer.description}"/></p>
+                            <p class="mb-2 text-success fw-bold">Discount: <c:out value="${offer.discountPercent}"/>%</p>
+                            <a href="${pageContext.request.contextPath}/salon/book?offerId=${offer.id}" class="btn btn-outline-primary mt-3">Book Offer</a>
+                        </div>
+                    </div>
+                </div>
+                </c:forEach>
+            </div>
         </div>
-        <div class="row align-items-center">
-        	<div class="col-lg-4">
-        		<div class="row no-gutters">
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border border-right-0 border-bottom-0 p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-candle"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Facial Glow</h3>
-										<p>Instant radiance and hydration for soft, youthful skin.</p>
-									</div>
-								</div>
-        			</div>
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border border-bottom-0 p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-massage"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Hair Spa</h3>
-									 <p>Repair, nourish, and smoothen your hair for a silky shine.</p>
-									</div>
-								</div>
-        			</div>
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border border-right-0 p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-beauty-treatment"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Makeover</h3>
-										<p>Transform your look with professional makeup artistry.</p>
-									</div>
-								</div>
-        			</div>
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-stone"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Manicure</h3>
-										<p>Clean, polish, and refresh your hands to perfection.</p>
-									</div>
-								</div>
-        			</div>
-        		</div>
-        	</div>
-
-
-        	<div class="col-lg-4 d-flex align-items-stretch">
-        		<div id="accordion" class="myaccordion w-100 text-center py-5 px-1 px-md-4">
-        			<div>
-	        			<h3>Prices</h3>
-	        			<p>Transparent pricing for every pampering experience.</p>
-        			</div>
-					<!-- Facial & Hair -->
-					        <div class="card">
-					          <div class="card-header" id="headingOne">
-					            <h2 class="mb-0">
-					              <button class="d-flex align-items-center justify-content-between btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-					                Facial & Hair Care
-					                <i class="fa" aria-hidden="true"></i>
-					              </button>
-					            </h2>
-					          </div>
-					          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-					            <div class="card-body text-left">
-					              <ul>
-					                <li class="d-flex justify-content-between">
-					                  <span>Classic Facial</span><span>45 min</span><span>₹699</span>
-					                </li>
-					                <li class="d-flex justify-content-between">
-					                  <span>Hair Spa</span><span>60 min</span><span>₹899</span>
-					                </li>
-					                <li class="d-flex justify-content-between">
-					                  <span>Detan Treatment</span><span>40 min</span><span>₹599</span>
-					                </li>
-					                <li class="d-flex justify-content-between">
-					                  <span>Head Massage</span><span>30 min</span><span>₹499</span>
-					                </li>
-					              </ul>
-					            </div>
-					          </div>
-					        </div>
-
-					        <!-- Body & Massage -->
-					        <div class="card">
-					          <div class="card-header" id="headingTwo">
-					            <h2 class="mb-0">
-					              <button class="d-flex align-items-center justify-content-between btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-					                Body & Massage Therapies
-					                <i class="fa" aria-hidden="true"></i>
-					              </button>
-					            </h2>
-					          </div>
-					          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-					            <div class="card-body text-left">
-					              <ul>
-					                <li class="d-flex justify-content-between">
-					                  <span>Full Body Massage</span><span>60 min</span><span>₹1499</span>
-					                </li>
-					                <li class="d-flex justify-content-between">
-					                  <span>Back & Neck Massage</span><span>30 min</span><span>₹799</span>
-					                </li>
-					                <li class="d-flex justify-content-between">
-					                  <span>Aromatherapy</span><span>45 min</span><span>₹999</span>
-					                </li>
-					                <li class="d-flex justify-content-between">
-					                  <span>Body Scrub</span><span>50 min</span><span>₹1299</span>
-					                </li>
-					              </ul>
-					            </div>
-					          </div>
-					        </div>
-
-					      </div>
-					    </div>
-
-        	<div class="col-lg-4">
-        		<div class="row no-gutters">
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border border-right-0 border-bottom-0 p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-massage"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Massage</h3>
-										<p>Relax, unwind, and ease muscle tension naturally.</p>
-									</div>
-								</div>
-        			</div>
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border border-bottom-0 p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-beauty-treatment"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Eyebrow Shaping</h3>
-									    <p>Perfect arches for a confident and elegant look.</p>
-									</div>
-								</div>
-        			</div>
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border border-right-0 p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-candle"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Pedicure</h3>
-										<p>Soft, refreshed feet with a soothing polish finish.</p>
-									</div>
-								</div>
-        			</div>
-        			<div class="col-md-6 d-flex align-items-stretch">
-        				<div class="treatment w-100 text-center ftco-animate border p-3 py-4">
-									<div class="icon d-flex justify-content-center align-items-center">
-										<span class="flaticon-spa-1"></span>
-									</div>
-									<div class="text mt-2">
-										<h3>Aroma Spa</h3>
-									    <p>Calming essential oils for body and mind balance.</p>
-									</div>
-								</div>
-        			</div>
-        		</div>
-        	</div>
-        </div>
-	  	</div>
-	  </section>
+    </section>
+    </c:if>
 
 	  <section class="ftco-section bg-light">
 	    <div class="container">

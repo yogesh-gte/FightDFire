@@ -43,6 +43,13 @@ public class BeautyServiceController {
 	    private OfferBookingRepository offerbookingRepository;
 	   @Autowired
 	    private Booking1Repository booking1Repository;
+	    
+	   @Autowired
+	    private in.sp.main.Repository.ServiceRepository service1Repository;
+	   @Autowired
+	    private in.sp.main.Repository.TreatmentRepository treatmentRepository;
+	   @Autowired
+	    private in.sp.main.Repository.OfferRepository offerRepository;
 
 	
 
@@ -354,16 +361,20 @@ public class BeautyServiceController {
      }
 
      // ✅ Fetch salon services
-     List<StylistService> services = serviceRepository.findBySalonId(salonId);
+     List<Service1> serviceList = service1Repository.findBySalonId(salonId);
+     
+     // ✅ Fetch salon treatments
+     List<Treatment> treatmentList = treatmentRepository.findBySalonId(salonId);
 
-     // ✅ If you want to show all services from all salons too
-     List<Service1> serviceList = serviceService.getAllServicesWithSalonDetails();
+     // ✅ Fetch salon offers
+     List<Offer> offerList = offerRepository.findBySalonId(salonId);
 
      // ✅ Add all data to model
      model.addAttribute("salon", salon);
      model.addAttribute("stylists", stylists);
-     model.addAttribute("services", services);
      model.addAttribute("serviceList", serviceList);
+     model.addAttribute("treatmentList", treatmentList);
+     model.addAttribute("offerList", offerList);
      model.addAttribute("averageRating", average);
 
      return "user/user-salon-view";
