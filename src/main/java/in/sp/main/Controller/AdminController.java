@@ -26,6 +26,10 @@ public class AdminController {
 
     @Autowired
     private MartialArtsCenterService centreService;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
+
     @Autowired
     private EmailService emailService;
     @Autowired
@@ -186,6 +190,7 @@ public class AdminController {
     public String loginAdmin(@RequestParam String email,
                              @RequestParam String password,
                              HttpSession session,
+                             jakarta.servlet.http.HttpServletResponse response,
                              RedirectAttributes redirectAttributes) {
         if (email == null || email.isBlank() || password == null || password.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Please enter both Email and Password!");
@@ -195,6 +200,15 @@ public class AdminController {
         if (admin != null) {
             session.setAttribute("admin", admin);
             session.setAttribute("userRole", "ADMIN");
+            
+            // Generate JWT and add to response
+            String token = jwtUtil.generateToken(admin.getEmail(), "ADMIN");
+            jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+            response.addCookie(cookie);
+            
             return "redirect:/admin/adminDashboard"; 
         } else {
             redirectAttributes.addFlashAttribute("error", "Invalid credentials!");
@@ -370,8 +384,15 @@ public class AdminController {
 
    
     @RequestMapping(value = "/logout", method = GET)
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, jakarta.servlet.http.HttpServletResponse response) {
         session.invalidate();
+        
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        
         return "redirect:/admin/loginAdmin";
     }
 

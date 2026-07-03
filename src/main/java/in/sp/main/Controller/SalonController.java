@@ -45,6 +45,9 @@ public class SalonController {
 
     @Autowired
     private SalonService salonservice;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
 
     // Show registration form
     @GetMapping("/salons/register")
@@ -101,6 +104,7 @@ public class SalonController {
             @RequestParam("username") String username,
             @RequestParam("password") String password,
             HttpSession session,
+            jakarta.servlet.http.HttpServletResponse response,
             Model model) {
 
         Optional<Salon> salonOpt = salonRepository.findByUsername(username);
@@ -114,6 +118,15 @@ public class SalonController {
                     return "salon/salon-login";
                 }
                 session.setAttribute("loggedSalon", salon);
+                
+                // Generate JWT and add to response
+                String token = jwtUtil.generateToken(salon.getUsername(), "SALON");
+                jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+                cookie.setPath("/");
+                cookie.setHttpOnly(true);
+                cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+                response.addCookie(cookie);
+                
                 return "redirect:/salons/dashboard";
             } else {
                 model.addAttribute("error", "Invalid password");
@@ -125,13 +138,19 @@ public class SalonController {
         }
     }
     @GetMapping("/salons/logout")
-    public String logoutSalon(HttpSession session) {
+    public String logoutSalon(HttpSession session, jakarta.servlet.http.HttpServletResponse response) {
 
         // Remove salon session
         session.removeAttribute("loggedSalon");
 
         // Invalidate entire session
         session.invalidate();
+
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
 
         // Redirect to login page
         return "redirect:/salons/login";

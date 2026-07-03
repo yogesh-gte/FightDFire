@@ -58,6 +58,9 @@ public class MarketplaceController {
 
     @Autowired
     private MarketplaceEnrollmentRepository enrollmentRepo;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
 
     // ==============================
     // Provider registration + login
@@ -134,6 +137,7 @@ public class MarketplaceController {
     public String providerLogin(@RequestParam String email,
                                 @RequestParam String password,
                                 HttpSession session,
+                                jakarta.servlet.http.HttpServletResponse response,
                                 Model model) {
         Optional<ServiceProvider> pOpt = providerRepo.findByEmail(email.trim().toLowerCase());
         if (pOpt.isEmpty()) {
@@ -150,6 +154,15 @@ public class MarketplaceController {
             return "marketplace/provider-login";
         }
         session.setAttribute("loggedProvider", p);
+        
+        // Generate JWT and add to response
+        String token = jwtUtil.generateToken(p.getEmail(), "PROVIDER");
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+        response.addCookie(cookie);
+        
         return "redirect:/marketplace/provider/dashboard";
     }
 
