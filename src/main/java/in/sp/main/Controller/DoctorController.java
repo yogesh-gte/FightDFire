@@ -46,6 +46,9 @@ public class DoctorController {
 
     @Autowired
     private FileUploadService fileUploadService;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
 
     // ==============================
     // Doctor Registration + Login
@@ -187,6 +190,7 @@ public class DoctorController {
     public String login(@RequestParam String email,
                         @RequestParam String password,
                         HttpSession session,
+                        jakarta.servlet.http.HttpServletResponse response,
                         Model model) {
         Optional<Doctor> dOpt = doctorRepo.findByEmail(email.trim().toLowerCase());
         if (dOpt.isEmpty()) {
@@ -209,6 +213,15 @@ public class DoctorController {
         }
 
         session.setAttribute("loggedDoctor", d);
+        
+        // Generate JWT and add to response
+        String token = jwtUtil.generateToken(d.getEmail(), "DOCTOR");
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+        response.addCookie(cookie);
+        
         return "redirect:/doctors/dashboard";
     }
 

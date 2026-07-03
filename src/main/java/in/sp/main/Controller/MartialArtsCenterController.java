@@ -60,6 +60,9 @@ public class MartialArtsCenterController {
     
     @Autowired
     private in.sp.main.Repository.AttendanceRepository attendanceRepository;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
 
     public MartialArtsCenterController(MartialArtsCenterService centreService, ObjectMapper objectMapper) {
         this.centreService = centreService;
@@ -293,6 +296,7 @@ public class MartialArtsCenterController {
     public String loginCentre(@RequestParam String email,
                               @RequestParam String password,
                               Model model, HttpSession session,
+                              jakarta.servlet.http.HttpServletResponse response,
                               RedirectAttributes redirectAttributes) {
         if (email == null || email.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Please enter your email.");
@@ -317,13 +321,29 @@ public class MartialArtsCenterController {
         }
 
         session.setAttribute("loggedCentre", center);
+        
+        // Generate JWT and add to response
+        String token = jwtUtil.generateToken(center.getEmail(), "CENTRE");
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+        response.addCookie(cookie);
+        
         return "redirect:/centres/dashboard";
     }
 
     // ---------- LOGOUT ----------
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, jakarta.servlet.http.HttpServletResponse response) {
         session.invalidate();
+        
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        
         return "redirect:/centres/login";
     }
 

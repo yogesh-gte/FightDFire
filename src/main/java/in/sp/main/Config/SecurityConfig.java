@@ -1,10 +1,12 @@
 package in.sp.main.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import jakarta.servlet.DispatcherType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -13,12 +15,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
     /**
      * Paths that must stay public (session-based login is handled in controllers, not Spring Security).
      */
     private static final String[] PUBLIC_URLS = {
             "/",
             "/index.html",
+            "/index",
             "/index/**",
             "/heatmap",
             "/login",
@@ -61,12 +67,24 @@ public class SecurityConfig {
         http
             .securityMatcher("/**")
             .authorizeHttpRequests(auth -> auth
+                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                 .requestMatchers(PUBLIC_URLS).permitAll()
-                .anyRequest().permitAll())
-            // Prevent Spring Security from redirecting unauthenticated users to /login
+                .anyRequest().authenticated())
+            // Add JWT filter
+            .addFilterBefore(jwtAuthenticationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
+            // Session management is handled by JWT, but we don't strictly enforce stateless because our filter hydrates the session
+            // for compatibility with legacy controllers.
+            // Disable default login
             .formLogin(AbstractHttpConfigurer::disable)
             .httpBasic(AbstractHttpConfigurer::disable)
-            .logout(AbstractHttpConfigurer::disable)
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .deleteCookies("JWT_TOKEN")
+                .invalidateHttpSession(true)
+                .permitAll()
+            )
+            .exceptionHandling(e -> e.authenticationEntryPoint(new org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint("/login")))
             .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
