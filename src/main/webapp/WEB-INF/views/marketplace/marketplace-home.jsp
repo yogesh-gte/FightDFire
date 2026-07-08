@@ -259,6 +259,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
     <header class="market-hero">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="back-btn">
             <i class="bi bi-arrow-left"></i> Back to Dashboard
@@ -401,5 +405,7 @@
             });
         });
     </script>
+    </div>
+</div>
 </body>
 </html>

@@ -129,6 +129,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
 
     <header class="list-header">
         <div class="container d-flex justify-content-between align-items-center">
@@ -181,5 +185,7 @@
     </div>
 
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </div>
+</div>
 </body>
 </html>

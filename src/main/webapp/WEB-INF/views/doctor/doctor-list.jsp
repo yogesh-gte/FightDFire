@@ -18,6 +18,10 @@
 <body class="dl-page">
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
     <section class="dl-hero">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="dl-back">
             <i class="bi bi-arrow-left"></i>
@@ -146,6 +150,8 @@
         }
     </script>
     <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+    </div>
+</div>
 </body>
 </html>
 

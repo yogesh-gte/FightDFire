@@ -351,6 +351,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
   <div class="shop-bg-layer">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
@@ -444,6 +448,8 @@
   <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
   <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    </div>
+</div>
 </body>
 </html>
 

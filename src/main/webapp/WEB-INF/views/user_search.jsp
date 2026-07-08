@@ -133,6 +133,10 @@
     <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
   </div>
 </header>
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
 			<!-- END nav -->
 			<!-- 🌸 User Social Profile Section -->
 			<section class="hero-wrap js-fullheight" style="background-image: url('${pageContext.request.contextPath}/beauty/images/bg_1.jpg'); background-size: cover; background-position: center;" data-stellar-background-ratio="0.5">
@@ -392,6 +396,8 @@
 			<script src="${pageContext.request.contextPath}/beauty/js/google-map.js"></script>
 			<script src="${pageContext.request.contextPath}/beauty/js/main.js"></script>
 
-		</body>
+		    </div>
+</div>
+</body>
 		</html>
 

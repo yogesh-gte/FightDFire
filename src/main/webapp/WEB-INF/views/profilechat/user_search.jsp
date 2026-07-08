@@ -275,6 +275,10 @@ html, body {
 <body>
 	
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
 			<!-- END nav -->
 			<!-- 🌸 User Social Profile Section -->
 			<section class="hero-wrap js-fullheight" style="background-image: url('${pageContext.request.contextPath}/beauty/images/women-group.png'); background-size: cover; background-position: center;" data-stellar-background-ratio="0.5">
@@ -769,6 +773,8 @@ html, body {
   </div>
 </div>
 
-		</body>
+		    </div>
+</div>
+</body>
 		</html>
 

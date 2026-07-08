@@ -306,6 +306,10 @@
 </style>
 <body>
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
 
 <div class="container py-4" style="max-width:1000px;">
   <div class="d-flex justify-content-between align-items-center mb-5" style="border-bottom: 1px solid rgba(124, 45, 94, 0.2); padding-bottom: 20px;">
@@ -412,6 +416,8 @@
 </div>
 
     <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+    </div>
+</div>
 </body>
 </html>
 

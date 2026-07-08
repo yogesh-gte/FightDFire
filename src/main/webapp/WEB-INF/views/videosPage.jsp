@@ -239,6 +239,10 @@
 
     <!-- Header -->
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
     <div class="dashboard-bar container-fluid container-xl d-flex justify-content-end gap-3">
         <a href="${pageContext.request.contextPath}/video/allReels" class="dashboard-btn">
             Reels Gallery <i class="bi bi-camera-reels"></i>
@@ -379,6 +383,8 @@
             });
         });
     </script>
+    </div>
+</div>
 </body>
 </html>
 

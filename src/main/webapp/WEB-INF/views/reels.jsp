@@ -617,6 +617,10 @@
 <body class="reels-page-shell">
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
 
 <main class="reels-page-main">
 
@@ -1559,6 +1563,8 @@ function openReportModal(videoId) {
 <script>window.REEL_STUDIO_CTX = "${pageContext.request.contextPath}";</script>
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/reel-studio.js"></script>
+    </div>
+</div>
 </body>
 </html>
 
