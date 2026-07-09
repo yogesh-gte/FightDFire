@@ -754,13 +754,10 @@
       
       <nav class="d-none d-lg-flex align-items-center">
         <a href="#hero" class="nav-link active">Home</a>
-        <a href="#features" class="nav-link">Features</a>
-<<<<<<< HEAD
+        <a href="${pageContext.request.contextPath}/features.jsp" class="nav-link">Features</a>
         <a href="${pageContext.request.contextPath}/women-events" class="nav-link">Events 🌸</a>
         <a href="#tips" class="nav-link">Safety Tips</a>
-=======
         <a href="#awareness" class="nav-link">Awareness</a>
->>>>>>> 0179f3b7fb973952c4e76d525646dc0e2af7ba4f
         <a href="#emergency" class="nav-link">Emergency</a>
         <a href="#howitworks" class="nav-link">How It Works</a>
         <a href="#contact" class="nav-link">Contact</a>
@@ -1273,7 +1270,7 @@
         </div>
         <div class="col-lg-2 col-md-6">
           <h5>Quick Links</h5>
-          <ul><li><a href="#hero">Home</a></li><li><a href="#features">Features</a></li><li><a href="#awareness">Awareness</a></li><li><a href="#emergency">Emergency</a></li><li><a href="#howitworks">How It Works</a></li><li><a href="#contact">Contact</a></li></ul>
+          <ul><li><a href="#hero">Home</a></li><li><a href="${pageContext.request.contextPath}/features.jsp">Features</a></li><li><a href="#awareness">Awareness</a></li><li><a href="#emergency">Emergency</a></li><li><a href="#howitworks">How It Works</a></li><li><a href="#contact">Contact</a></li></ul>
         </div>
         <div class="col-lg-3 col-md-6">
           <h5>Important Links</h5>
