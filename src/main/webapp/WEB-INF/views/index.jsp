@@ -497,6 +497,7 @@
       <nav class="d-none d-lg-flex">
         <a href="#hero" class="nav-link active">Home</a>
         <a href="#features" class="nav-link">Features</a>
+        <a href="${pageContext.request.contextPath}/women-events" class="nav-link">Events 🌸</a>
         <a href="#tips" class="nav-link">Safety Tips</a>
         <a href="#emergency" class="nav-link">Emergency</a>
         <a href="#about" class="nav-link">About Us</a>
@@ -506,11 +507,13 @@
       <div class="d-flex align-items-center gap-3">
         <!-- Dashboard/Login Logic -->
         <c:choose>
-          <c:when test="${not empty user || not empty loggedProvider || not empty loggedCentre || not empty loggedDoctor || not empty loggedSalon || not empty loggedStylist || not empty loggedSeller || not empty admin}">
+          <c:when test="${not empty user || not empty loggedProvider || not empty loggedCentre || not empty loggedDoctor || not empty loggedSalon || not empty loggedStylist || not empty loggedSeller || not empty loggedEntrepreneur || not empty loggedInvestor || not empty admin}">
             <c:set var="dashboardUrl" value="${pageContext.request.contextPath}/users/dashboard" />
             <c:if test="${not empty loggedProvider}"><c:set var="dashboardUrl" value="${pageContext.request.contextPath}/marketplace/provider/dashboard" /></c:if>
             <c:if test="${not empty loggedCentre}"><c:set var="dashboardUrl" value="${pageContext.request.contextPath}/centres/dashboard" /></c:if>
             <c:if test="${not empty loggedDoctor}"><c:set var="dashboardUrl" value="${pageContext.request.contextPath}/doctors/dashboard" /></c:if>
+            <c:if test="${not empty loggedEntrepreneur}"><c:set var="dashboardUrl" value="${pageContext.request.contextPath}/entrepreneur/dashboard" /></c:if>
+            <c:if test="${not empty loggedInvestor}"><c:set var="dashboardUrl" value="${pageContext.request.contextPath}/investor/dashboard" /></c:if>
             <c:if test="${not empty admin}"><c:set var="dashboardUrl" value="${pageContext.request.contextPath}/admin/adminDashboard" /></c:if>
             <a href="${dashboardUrl}" class="btn-outline-custom d-none d-md-inline-block">My Dashboard</a>
           </c:when>
@@ -527,6 +530,8 @@
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/login">Stylist</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/login">Marketplace Provider</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/login">Product Seller</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/login">Entrepreneur</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/login">Investor</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/loginAdmin">Admin</a></li>
               </ul>
@@ -544,6 +549,8 @@
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register">Stylist</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register">Marketplace Provider</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register">Product Seller</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register">Entrepreneur</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register">Investor</a></li>
               </ul>
             </div>
           </c:otherwise>

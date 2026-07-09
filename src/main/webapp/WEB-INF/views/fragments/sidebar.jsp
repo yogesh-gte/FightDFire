@@ -134,11 +134,24 @@
         <a href="${pageContext.request.contextPath}/marketplace" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/marketplace') && !requestScope['javax.servlet.forward.query_string'].contains('category=') ? 'active' : ''}">
             <i class="bi bi-shop"></i> Women Marketplace
         </a>
+        <c:if test="${not empty loggedEntrepreneur}">
+            <a href="${pageContext.request.contextPath}/entrepreneur/dashboard" class="sidebar-list-group-item text-warning fw-bold">
+                <i class="bi bi-briefcase"></i> Entrepreneur Portal
+            </a>
+        </c:if>
+        <c:if test="${not empty loggedInvestor}">
+            <a href="${pageContext.request.contextPath}/investor/dashboard" class="sidebar-list-group-item text-success fw-bold">
+                <i class="bi bi-wallet2"></i> Investor Portal
+            </a>
+        </c:if>
         <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.query_string'].contains('WOMEN_LAWYER') ? 'active' : ''}">
             <i class="bi bi-briefcase"></i> Women Lawyers
         </a>
         <a href="${pageContext.request.contextPath}/marketplace/list?category=FITNESS_ZUMBA" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.query_string'].contains('FITNESS_ZUMBA') ? 'active' : ''}">
             <i class="bi bi-activity"></i> Fitness & Zumba
+        </a>
+        <a href="${pageContext.request.contextPath}/women-events" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/women-events') ? 'active' : ''}">
+            <i class="bi bi-calendar-event"></i> Women Events 🌸
         </a>
         <a href="${pageContext.request.contextPath}/women-products" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/women-products') ? 'active' : ''}">
             <i class="bi bi-bag-heart"></i> Women Products

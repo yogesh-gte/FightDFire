@@ -33,7 +33,15 @@ public class FileUploadService {
             uploadFolder.mkdirs();
         }
 
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        String originalName = file.getOriginalFilename();
+        if (originalName != null) {
+            // Remove non-ASCII and special characters to prevent DB insertion errors (e.g. emojis)
+            originalName = originalName.replaceAll("[^a-zA-Z0-9\\.\\-]", "_");
+        } else {
+            originalName = "file";
+        }
+        
+        String fileName = UUID.randomUUID().toString() + "_" + originalName;
         String filePath = uploadDir + File.separator + fileName;
 
       

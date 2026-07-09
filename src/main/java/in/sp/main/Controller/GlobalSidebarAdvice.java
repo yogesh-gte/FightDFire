@@ -36,6 +36,15 @@ public class GlobalSidebarAdvice {
     @Autowired
     private ContactMessageRepository contactMessageRepository;
 
+    @Autowired
+    private EntrepreneurRepository entrepreneurRepository;
+
+    @Autowired
+    private InvestorRepository investorRepository;
+
+    @Autowired
+    private BusinessProposalRepository businessProposalRepository;
+
     @ModelAttribute
     public void addSidebarCounts(Model model, HttpSession session) {
         if (session.getAttribute("admin") != null) {
@@ -54,6 +63,13 @@ public class GlobalSidebarAdvice {
                         in.sp.main.Entities.ProviderCategory.FITNESS_ZUMBA, VerificationStatus.PENDING).size();
                 long unreadContactMessages = contactMessageRepository.countByReadByAdminFalse();
                 
+                long pendingProposals = businessProposalRepository.findByStatus(VerificationStatus.PENDING).size();
+                long pendingEnt = entrepreneurRepository.findAll().stream()
+                        .filter(e -> e.getVerificationStatus() == VerificationStatus.PENDING).count();
+                long pendingInv = investorRepository.findAll().stream()
+                        .filter(i -> i.getVerificationStatus() == VerificationStatus.PENDING).count();
+                long sidePendingProposals = pendingProposals + pendingEnt + pendingInv;
+
                 model.addAttribute("side_pendingUsers", pendingUsers);
                 model.addAttribute("side_pendingCentres", pendingCentres);
                 model.addAttribute("side_pendingDoctors", pendingDoctors);
@@ -63,6 +79,7 @@ public class GlobalSidebarAdvice {
                 model.addAttribute("side_pendingLawyers", pendingLawyers);
                 model.addAttribute("side_pendingFitness", pendingFitness);
                 model.addAttribute("side_unreadContactMessages", unreadContactMessages);
+                model.addAttribute("side_pendingProposals", sidePendingProposals);
             } catch (Exception e) {
                 // Fail gracefully
             }

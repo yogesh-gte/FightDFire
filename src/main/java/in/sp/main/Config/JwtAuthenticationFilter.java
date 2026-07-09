@@ -50,6 +50,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private WomenProductSellerRepository sellerRepository;
 
+    @Autowired
+    private EntrepreneurRepository entrepreneurRepository;
+
+    @Autowired
+    private InvestorRepository investorRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -118,6 +124,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } else if ("SELLER".equals(role)) {
             if (session.getAttribute("loggedSeller") == null) {
                 sellerRepository.findByEmail(email).ifPresent(s -> session.setAttribute("loggedSeller", s));
+            }
+        } else if ("ENTREPRENEUR".equals(role)) {
+            if (session.getAttribute("loggedEntrepreneur") == null) {
+                entrepreneurRepository.findByEmail(email).ifPresent(e -> session.setAttribute("loggedEntrepreneur", e));
+            }
+        } else if ("INVESTOR".equals(role)) {
+            if (session.getAttribute("loggedInvestor") == null) {
+                investorRepository.findByEmail(email).ifPresent(i -> session.setAttribute("loggedInvestor", i));
             }
         }
     }
