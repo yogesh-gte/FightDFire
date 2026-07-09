@@ -59,6 +59,14 @@ public class SecurityConfig {
             "/*.mp3",
             "/ws-chat/**",
             "/ws-sos/**",
+            "/entrepreneur/login",
+            "/entrepreneur/register",
+            "/entrepreneur/register/**",
+            "/investor/login",
+            "/investor/register",
+            "/investor/register/**",
+            "/women-events",
+            "/women-events/*",
             "/error"
     };
 

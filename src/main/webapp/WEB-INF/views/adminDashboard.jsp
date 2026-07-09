@@ -587,9 +587,80 @@
                             </div>
                         </div>
 
+                        <!-- Row 4: Entrepreneur & Investor Platform (Community) -->
+                        <div class="mt-4">
+                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-handshake"></i> Entrepreneur & Investor Community
+                            </h6>
+                            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
+                                <div style="background:#FFFDF5; border-radius:15px; padding:18px; border:1px solid #FEF3C7; text-align:center;">
+                                    <div style="font-size:1.6rem; font-weight:700; color:#D97706;" id="stat-totalEntrepreneurs">—</div>
+                                    <div style="font-size:0.75rem; color:#92400E; font-weight:600;">👩‍💼 Total Entrepreneurs</div>
+                                </div>
+                                <div style="background:#FFFDF5; border-radius:15px; padding:18px; border:1px solid #FEF3C7; text-align:center;">
+                                    <div style="font-size:1.6rem; font-weight:700; color:#D97706;" id="stat-totalInvestors">—</div>
+                                    <div style="font-size:0.75rem; color:#92400E; font-weight:600;">💼 Total Investors</div>
+                                </div>
+                                <div style="background:#FFFDF5; border-radius:15px; padding:18px; border:1px solid #FEF3C7; text-align:center;">
+                                    <div style="font-size:1.6rem; font-weight:700; color:#D97706;" id="stat-totalProposals">—</div>
+                                    <div style="font-size:0.75rem; color:#92400E; font-weight:600;">📈 Total Proposals</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 5: Entrepreneur & Investor Platform (Financials) -->
+                        <div class="mt-4">
+                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-wallet"></i> Investment & Platform Revenue
+                            </h6>
+                            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
+                                <div style="background:#F0FFF4; border-radius:15px; padding:18px; border:1px solid #C6F6D5; text-align:center;">
+                                    <div style="font-size:1.6rem; font-weight:700; color:#276749;" id="stat-capitalRequested">—</div>
+                                    <div style="font-size:0.75rem; color:#2F855A; font-weight:600;">💰 Capital Requested</div>
+                                </div>
+                                <div style="background:#F0FFF4; border-radius:15px; padding:18px; border:1px solid #C6F6D5; text-align:center;">
+                                    <div style="font-size:1.6rem; font-weight:700; color:#276749;" id="stat-capitalInvested">—</div>
+                                    <div style="font-size:0.75rem; color:#2F855A; font-weight:600;">🤝 Capital Funded</div>
+                                </div>
+                                <div style="background:#FAF5FF; border-radius:15px; padding:18px; border:1px solid #E9D8FD; text-align:center;">
+                                    <div style="font-size:1.6rem; font-weight:700; color:#6B46C1;" id="stat-platformRevenue">—</div>
+                                    <div style="font-size:0.75rem; color:#553C9A; font-weight:600;">💎 Platform Revenue</div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <!-- ── End Categorized Analytics ── -->
+
+                <!-- Row 6: Women Events Platform -->
+                <div class="col-12 mb-4">
+                    <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
+                                <i class="bi bi-calendar-heart-fill"></i> Women Events Platform
+                            </h6>
+                            <a href="${pageContext.request.contextPath}/women-events/admin/list"
+                               class="btn btn-sm" style="background: #7C2D5E; color: #fff; border-radius: 20px; font-weight: 600;">
+                                Manage Events
+                            </a>
+                        </div>
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
+                            <div style="background:#fdf5ff; border-radius:15px; padding:18px; border:1px solid #e9d8fd; text-align:center;">
+                                <div style="font-size:1.6rem; font-weight:700; color:#7C2D5E;" id="stat-totalWomenEvents">—</div>
+                                <div style="font-size:0.75rem; color:#6B46C1; font-weight:600;">🌸 Total Events</div>
+                            </div>
+                            <div style="background:#f0fdf4; border-radius:15px; padding:18px; border:1px solid #C6F6D5; text-align:center;">
+                                <div style="font-size:1.6rem; font-weight:700; color:#276749;" id="stat-approvedWomenEvents">—</div>
+                                <div style="font-size:0.75rem; color:#2F855A; font-weight:600;">✅ Approved Events</div>
+                            </div>
+                            <div style="background:#fffbeb; border-radius:15px; padding:18px; border:1px solid #fde68a; text-align:center;">
+                                <div style="font-size:1.6rem; font-weight:700; color:#92400e;" id="stat-pendingWomenEvents">—</div>
+                                <div style="font-size:0.75rem; color:#b45309; font-weight:600;">⏳ Pending Review</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Recent contact form messages -->
                 <div class="col-12 mb-4">
@@ -636,6 +707,47 @@
                             </c:when>
                             <c:otherwise>
                                 <p class="text-muted mb-0 small">No contact form submissions yet.</p>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+
+                <!-- Recent Entrepreneur & Investor Activity Feed -->
+                <div class="col-12 mb-4">
+                    <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
+                                <i class="fas fa-history"></i> Recent Entrepreneur & Investor Platform Feed
+                            </h6>
+                            <a href="${pageContext.request.contextPath}/admin/pending-proposals" class="btn btn-sm" style="background: #7C2D5E; color: #fff; border-radius: 20px; font-weight: 600;">
+                                Audit Console
+                            </a>
+                        </div>
+                        <c:choose>
+                            <c:when test="${not empty recentPlatformActivities}">
+                                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
+                                        <thead>
+                                            <tr style="color: #7C2D5E;">
+                                                <th style="width: 50px;">Activity</th>
+                                                <th>Description</th>
+                                                <th style="width: 180px;">Time Exchanged</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="act" items="${recentPlatformActivities}">
+                                                <tr>
+                                                    <td class="text-center"><i class="bi ${act.icon} fs-5"></i></td>
+                                                    <td>${act.desc}</td>
+                                                    <td class="text-muted small">${act.time}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <p class="text-muted mb-0 small">No transactions, meetings, messages, or questions exchanged on the platform yet.</p>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -953,6 +1065,35 @@
                 </div>
 
                 <div class="col-md-3 col-sm-6">
+                    <div class="admin-card" style="border-top: 4px solid var(--primary-coral);">
+                        <div class="rowTop">
+                            <div>
+                                <i class="fas fa-hand-holding-usd" style="color: var(--primary-coral);"></i>
+                                <h5 class="mb-1">Proposal Verifications</h5>
+                                <p class="muted">Review projects & partners</p>
+                            </div>
+                            <span class="badge bg-warning text-dark badge-pill" title="Pending verifications">
+                                <span id="pendingVerificationsCount">-</span>
+                            </span>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/admin/pending-proposals" class="btn btn-purple w-100 mt-auto">Review Proposals</a>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="admin-card" style="border-top: 4px solid #16a34a;">
+                        <div class="rowTop">
+                            <div>
+                                <i class="fas fa-dollar-sign" style="color: #16a34a;"></i>
+                                <h5 class="mb-1">Platform Revenue</h5>
+                                <p class="muted">Track commissions & fees</p>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/admin/investment-revenue" class="btn btn-purple w-100 mt-auto">View Revenue</a>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
                     <div class="admin-card">
                         <div class="rowTop">
                             <div>
@@ -1012,6 +1153,22 @@
         setText("stat-totalUsers", data.totalUsers);
         setText("stat-bannedUsers", data.bannedUsers);
         setText("stat-pendingUsers", data.pendingUsers);
+
+        // Entrepreneur & Investor Platform Row (Community & Financials)
+        setText("stat-totalEntrepreneurs", data.totalEntrepreneursCount);
+        setText("stat-totalInvestors", data.totalInvestorsCount);
+        setText("stat-totalProposals", data.totalProposalsCount);
+        setText("stat-capitalRequested", "$" + Number(data.totalCapitalRequested || 0).toLocaleString());
+        setText("stat-capitalInvested", "$" + Number(data.totalCapitalInvested || 0).toLocaleString());
+        setText("stat-platformRevenue", "$" + Number(data.totalPlatformRevenue || 0).toLocaleString());
+
+        // Women Events Platform Row
+        setText("stat-totalWomenEvents",    data.totalWomenEvents);
+        setText("stat-approvedWomenEvents", data.approvedWomenEvents);
+        setText("stat-pendingWomenEvents",  data.pendingWomenEvents);
+
+        // Pending verifications card badge
+        setText("pendingVerificationsCount", data.pendingProposals + data.pendingEntrepreneurs + data.pendingInvestors);
 
         // SOS Monitoring Badge (Sidebar)
         var sideBadge = document.getElementById("sosSideBadge");

@@ -102,6 +102,14 @@
 
     </a>
 
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'investment-revenue') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/admin/investment-revenue">
+
+        <i class="fas fa-dollar-sign"></i>
+        Platform Revenue
+
+    </a>
+
     <!-- MODERATION -->
     <div class="sectionTitle">
         Moderation
@@ -151,6 +159,20 @@
     <div class="sectionTitle">
         Approvals
     </div>
+
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'pending-proposals') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/admin/pending-proposals">
+
+        <i class="fas fa-hand-holding-usd"></i>
+        Proposal Verifications
+
+        <c:if test="${side_pendingProposals > 0}">
+            <span class="badge rounded-pill bg-danger ms-auto">
+                ${side_pendingProposals}
+            </span>
+        </c:if>
+
+    </a>
 
     <a class="navlink ${fn:contains(pageContext.request.requestURI,'martialManagement') ? 'active' : ''}"
        href="${pageContext.request.contextPath}/admin/martialManagement">

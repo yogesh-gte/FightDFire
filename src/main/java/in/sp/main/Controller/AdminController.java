@@ -92,6 +92,30 @@ public class AdminController {
     @Autowired
     private ContactMessageService contactMessageService;
 
+    @Autowired
+    private EntrepreneurRepository entrepreneurRepository;
+
+    @Autowired
+    private InvestorRepository investorRepository;
+
+    @Autowired
+    private BusinessProposalRepository businessProposalRepository;
+
+    @Autowired
+    private InvestmentRepository investmentRepository;
+
+    @Autowired
+    private InvestmentMeetingRepository investmentMeetingRepository;
+
+    @Autowired
+    private ProposalQuestionRepository proposalQuestionRepository;
+
+    @Autowired
+    private ProposalChatMessageRepository proposalChatMessageRepository;
+
+    @Autowired
+    private WomenEventRepository womenEventRepository;
+
     // Sidebar counts are now handled globally via GlobalSidebarAdvice.java
 
     @RequestMapping(value = "/approve/{id}", method = POST)
@@ -226,6 +250,74 @@ public class AdminController {
         model.addAttribute("admin", session.getAttribute("admin"));
         model.addAttribute("recentContactMessages", contactMessageService.findRecent(5));
         model.addAttribute("unreadContactMessages", contactMessageService.countUnread());
+
+        // Platform Activity Feed
+        List<Map<String, Object>> activities = new ArrayList<>();
+
+        List<Investment> investments = investmentRepository.findAll();
+        for (Investment inv : investments) {
+            Map<String, Object> act = new HashMap<>();
+            act.put("type", "INVESTMENT");
+            act.put("icon", "bi-cash-stack text-success");
+            act.put("desc", "Investor <strong>" + inv.getInvestor().getFullName() + "</strong> invested <strong>$" + inv.getAmount() + "</strong> in pitch <em>\"" + inv.getProposal().getTitle() + "\"</em>");
+            act.put("time", inv.getCreatedAt() != null ? inv.getCreatedAt() : LocalDateTime.now());
+            activities.add(act);
+        }
+
+        List<InvestmentMeeting> meetings = investmentMeetingRepository.findAll();
+        for (InvestmentMeeting m : meetings) {
+            Map<String, Object> act = new HashMap<>();
+            act.put("type", "MEETING");
+            act.put("icon", "bi-calendar-event text-primary");
+            act.put("desc", "Investor <strong>" + m.getInvestor().getFullName() + "</strong> requested a meeting with entrepreneur <strong>" + m.getProposal().getEntrepreneur().getFullName() + "</strong> for <em>\"" + m.getProposal().getTitle() + "\"</em>");
+            act.put("time", m.getCreatedAt() != null ? m.getCreatedAt() : LocalDateTime.now());
+            activities.add(act);
+        }
+
+        List<ProposalQuestion> questions = proposalQuestionRepository.findAll();
+        for (ProposalQuestion q : questions) {
+            Map<String, Object> act = new HashMap<>();
+            act.put("type", "QUESTION");
+            act.put("icon", "bi-question-circle text-warning");
+            act.put("desc", "Investor <strong>" + q.getInvestor().getFullName() + "</strong> asked: <em>\"" + q.getQuestion() + "\"</em> on <em>\"" + q.getProposal().getTitle() + "\"</em>");
+            act.put("time", q.getCreatedAt() != null ? q.getCreatedAt() : LocalDateTime.now());
+            activities.add(act);
+
+            if (q.getAnswer() != null && !q.getAnswer().trim().isEmpty()) {
+                Map<String, Object> ansAct = new HashMap<>();
+                ansAct.put("type", "ANSWER");
+                ansAct.put("icon", "bi-chat-left-text text-info");
+                ansAct.put("desc", "Entrepreneur <strong>" + q.getProposal().getEntrepreneur().getFullName() + "</strong> answered: <em>\"" + q.getAnswer() + "\"</em> on <em>\"" + q.getProposal().getTitle() + "\"</em>");
+                ansAct.put("time", q.getCreatedAt() != null ? q.getCreatedAt() : LocalDateTime.now());
+                activities.add(ansAct);
+            }
+        }
+
+        List<ProposalChatMessage> chats = proposalChatMessageRepository.findAll();
+        for (ProposalChatMessage chat : chats) {
+            Map<String, Object> act = new HashMap<>();
+            act.put("type", "CHAT");
+            act.put("icon", "bi-chat-dots text-secondary");
+            String sender = "Investor <strong>" + chat.getInvestor().getFullName() + "</strong>";
+            if ("ENTREPRENEUR".equalsIgnoreCase(chat.getSenderRole())) {
+                sender = "Entrepreneur <strong>" + chat.getProposal().getEntrepreneur().getFullName() + "</strong>";
+            }
+            act.put("desc", sender + " sent a message: <em>\"" + chat.getMessage() + "\"</em> regarding <em>\"" + chat.getProposal().getTitle() + "\"</em>");
+            act.put("time", chat.getTimestamp() != null ? chat.getTimestamp() : LocalDateTime.now());
+            activities.add(act);
+        }
+
+        // Sort chronologically descending
+        activities.sort((a1, a2) -> {
+            LocalDateTime t1 = (LocalDateTime) a1.get("time");
+            LocalDateTime t2 = (LocalDateTime) a2.get("time");
+            if (t1 == null || t2 == null) return 0;
+            return t2.compareTo(t1);
+        });
+
+        List<Map<String, Object>> recentActivities = activities.stream().limit(10).collect(java.util.stream.Collectors.toList());
+        model.addAttribute("recentPlatformActivities", recentActivities);
+
         return "adminDashboard";
     }
 
@@ -282,6 +374,52 @@ public class AdminController {
         // Simple signature: reload/update when any count changes
         String signature = pendingCentres + "|" + incidentsTotal + "|" + totalLiveSos + "|" + totalUsers + "|" + verifiedSalons;
 
+        List<Entrepreneur> allEntrepreneurs = entrepreneurRepository.findAll();
+        List<Investor> allInvestors = investorRepository.findAll();
+        List<BusinessProposal> allProposals = businessProposalRepository.findAll();
+        List<Investment> allInvestments = investmentRepository.findAll();
+
+        long totalEntrepreneurs = allEntrepreneurs.size();
+        long verifiedEntrepreneurs = allEntrepreneurs.stream()
+                .filter(e -> e.getVerificationStatus() == VerificationStatus.VERIFIED)
+                .count();
+        long pendingEntrepreneurs = allEntrepreneurs.stream()
+                .filter(e -> e.getVerificationStatus() == VerificationStatus.PENDING)
+                .count();
+
+        long totalInvestors = allInvestors.size();
+        long verifiedInvestors = allInvestors.stream()
+                .filter(i -> i.getVerificationStatus() == VerificationStatus.VERIFIED)
+                .count();
+        long pendingInvestors = allInvestors.stream()
+                .filter(i -> i.getVerificationStatus() == VerificationStatus.PENDING)
+                .count();
+
+        long totalProposals = allProposals.size();
+        long verifiedProposals = allProposals.stream()
+                .filter(p -> p.getStatus() == VerificationStatus.VERIFIED)
+                .count();
+        long pendingProposals = allProposals.stream()
+                .filter(p -> p.getStatus() == VerificationStatus.PENDING)
+                .count();
+
+        double totalCapitalRequested = allProposals.stream()
+                .mapToDouble(BusinessProposal::getFundingNeeded)
+                .sum();
+        double totalCapitalInvested = allInvestments.stream()
+                .mapToDouble(Investment::getAmount)
+                .sum();
+
+        double verificationFees = allEntrepreneurs.stream().filter(Entrepreneur::isVerificationFeePaid).count() * 49.0;
+        double subscriptionFees = allInvestors.stream().filter(Investor::isSubscribed).count() * 199.0;
+        double premiumListingFees = allProposals.stream().filter(BusinessProposal::isPremium).count() * 99.0;
+        double featuredListingFees = allProposals.stream().filter(BusinessProposal::isFeatured).count() * 99.0;
+        double platformCommissions = allInvestments.stream()
+                .filter(Investment::isCommissionPaid)
+                .mapToDouble(i -> i.getAmount() * 0.02)
+                .sum();
+        double totalPlatformRevenue = verificationFees + subscriptionFees + premiumListingFees + featuredListingFees + platformCommissions;
+
         res.put("pendingCentres", pendingCentres);
         res.put("incidentsTotal", incidentsTotal);
         res.put("totalLiveSos", totalLiveSos);
@@ -296,6 +434,31 @@ public class AdminController {
         res.put("pendingUsers", pendingUsers);
         
         res.put("totalVideos", totalVideos);
+        
+        res.put("totalEntrepreneursCount", totalEntrepreneurs);
+        res.put("verifiedEntrepreneurs", verifiedEntrepreneurs);
+        res.put("pendingEntrepreneurs", pendingEntrepreneurs);
+        
+        res.put("totalInvestorsCount", totalInvestors);
+        res.put("verifiedInvestors", verifiedInvestors);
+        res.put("pendingInvestors", pendingInvestors);
+        
+        res.put("totalProposalsCount", totalProposals);
+        res.put("verifiedProposals", verifiedProposals);
+        res.put("pendingProposals", pendingProposals);
+        
+        res.put("totalCapitalRequested", totalCapitalRequested);
+        res.put("totalCapitalInvested", totalCapitalInvested);
+        res.put("totalPlatformRevenue", totalPlatformRevenue);
+
+        // Women Events Platform stats
+        long totalWomenEvents   = womenEventRepository.count();
+        long approvedWomenEvents = womenEventRepository.countByStatus("APPROVED");
+        long pendingWomenEvents  = womenEventRepository.countByStatus("PENDING");
+        res.put("totalWomenEvents",   totalWomenEvents);
+        res.put("approvedWomenEvents", approvedWomenEvents);
+        res.put("pendingWomenEvents",  pendingWomenEvents);
+
         res.put("signature", signature);
         return res;
     }
@@ -1467,6 +1630,7 @@ public class AdminController {
         return "adminViewStylistProfile";
     }
 
+
     @Autowired
     private JobApplicationRepository jobApplicationRepository;
 
@@ -1497,6 +1661,144 @@ public class AdminController {
         });
         ra.addFlashAttribute("message", "Job Application rejected.");
         return "redirect:/admin/job-applications";
+    }
+    // --- Women Entrepreneur Investment Platform Admin Actions ---
+
+    @GetMapping("/pending-proposals")
+    public String viewPendingProposals(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        
+        List<BusinessProposal> allProposals = businessProposalRepository.findAll();
+        List<Entrepreneur> allEntrepreneurs = entrepreneurRepository.findAll();
+        List<Investor> allInvestors = investorRepository.findAll();
+        List<InvestmentMeeting> allMeetings = investmentMeetingRepository.findAll();
+        List<Investment> allInvestments = investmentRepository.findAll();
+        List<ProposalQuestion> allQuestions = proposalQuestionRepository.findAll();
+        List<ProposalChatMessage> allChats = proposalChatMessageRepository.findAll();
+
+        // Sort chat messages by timestamp descending
+        allChats.sort((c1, c2) -> {
+            if (c1.getTimestamp() == null || c2.getTimestamp() == null) return 0;
+            return c2.getTimestamp().compareTo(c1.getTimestamp());
+        });
+
+        model.addAttribute("allProposals", allProposals);
+        model.addAttribute("allEntrepreneurs", allEntrepreneurs);
+        model.addAttribute("allInvestors", allInvestors);
+        model.addAttribute("allMeetings", allMeetings);
+        model.addAttribute("allInvestments", allInvestments);
+        model.addAttribute("allQuestions", allQuestions);
+        model.addAttribute("allChats", allChats);
+
+        // Pending counts for quick badge counters in UI tabs
+        long pendingProposalsCount = allProposals.stream().filter(p -> p.getStatus() == VerificationStatus.PENDING).count();
+        long pendingEntCount = allEntrepreneurs.stream().filter(e -> e.getVerificationStatus() == VerificationStatus.PENDING).count();
+        long pendingInvCount = allInvestors.stream().filter(i -> i.getVerificationStatus() == VerificationStatus.PENDING).count();
+        
+        model.addAttribute("pendingProposalsCount", pendingProposalsCount);
+        model.addAttribute("pendingEntCount", pendingEntCount);
+        model.addAttribute("pendingInvCount", pendingInvCount);
+
+        return "admin/pendingProposals";
+    }
+
+    @PostMapping("/proposals/{id}/approve")
+    public String approveProposal(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        businessProposalRepository.findById(id).ifPresent(p -> {
+            p.setStatus(VerificationStatus.VERIFIED);
+            businessProposalRepository.save(p);
+        });
+        ra.addFlashAttribute("message", "Business proposal approved successfully.");
+        return "redirect:/admin/pending-proposals";
+    }
+
+    @PostMapping("/proposals/{id}/reject")
+    public String rejectProposal(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        businessProposalRepository.findById(id).ifPresent(p -> {
+            p.setStatus(VerificationStatus.REJECTED);
+            businessProposalRepository.save(p);
+        });
+        ra.addFlashAttribute("message", "Business proposal rejected.");
+        return "redirect:/admin/pending-proposals";
+    }
+
+    @PostMapping("/entrepreneurs/{id}/approve")
+    public String approveEntrepreneur(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        entrepreneurRepository.findById(id).ifPresent(e -> {
+            e.setVerificationStatus(VerificationStatus.VERIFIED);
+            entrepreneurRepository.save(e);
+        });
+        ra.addFlashAttribute("message", "Entrepreneur verified successfully.");
+        return "redirect:/admin/pending-proposals";
+    }
+
+    @PostMapping("/entrepreneurs/{id}/reject")
+    public String rejectEntrepreneur(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        entrepreneurRepository.findById(id).ifPresent(e -> {
+            e.setVerificationStatus(VerificationStatus.REJECTED);
+            entrepreneurRepository.save(e);
+        });
+        ra.addFlashAttribute("message", "Entrepreneur verification rejected.");
+        return "redirect:/admin/pending-proposals";
+    }
+
+    @PostMapping("/investors/{id}/approve")
+    public String approveInvestor(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        investorRepository.findById(id).ifPresent(i -> {
+            i.setVerificationStatus(VerificationStatus.VERIFIED);
+            investorRepository.save(i);
+        });
+        ra.addFlashAttribute("message", "Investor verified successfully.");
+        return "redirect:/admin/pending-proposals";
+    }
+
+    @PostMapping("/investors/{id}/reject")
+    public String rejectInvestor(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        investorRepository.findById(id).ifPresent(i -> {
+            i.setVerificationStatus(VerificationStatus.REJECTED);
+            investorRepository.save(i);
+        });
+        ra.addFlashAttribute("message", "Investor verification rejected.");
+        return "redirect:/admin/pending-proposals";
+    }
+
+    @GetMapping("/investment-revenue")
+    public String viewInvestmentRevenue(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+
+        List<Investment> allInvestments = investmentRepository.findAll();
+        List<Entrepreneur> allEntrepreneurs = entrepreneurRepository.findAll();
+        List<Investor> allInvestors = investorRepository.findAll();
+        List<BusinessProposal> allProposals = businessProposalRepository.findAll();
+
+        double verificationFees = allEntrepreneurs.stream().filter(Entrepreneur::isVerificationFeePaid).count() * 49.0;
+        double subscriptionFees = allInvestors.stream().filter(Investor::isSubscribed).count() * 199.0;
+        
+        double premiumListingFees = allProposals.stream().filter(BusinessProposal::isPremium).count() * 99.0;
+        double featuredListingFees = allProposals.stream().filter(BusinessProposal::isFeatured).count() * 99.0;
+
+        double platformCommissions = allInvestments.stream()
+                .filter(Investment::isCommissionPaid)
+                .mapToDouble(i -> i.getAmount() * 0.02)
+                .sum();
+
+        double totalRevenue = verificationFees + subscriptionFees + premiumListingFees + featuredListingFees + platformCommissions;
+
+        model.addAttribute("verificationFees", verificationFees);
+        model.addAttribute("subscriptionFees", subscriptionFees);
+        model.addAttribute("premiumListingFees", premiumListingFees);
+        model.addAttribute("featuredListingFees", featuredListingFees);
+        model.addAttribute("platformCommissions", platformCommissions);
+        model.addAttribute("totalRevenue", totalRevenue);
+        model.addAttribute("investments", allInvestments);
+
+        return "admin/investmentRevenue";
     }
 }
 
