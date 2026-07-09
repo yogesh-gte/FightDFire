@@ -139,6 +139,10 @@
         <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
         <li><a href="${pageContext.request.contextPath}/users/wallet">Wallet 💰</a></li>
         
+        <!-- Want to Earn Button -->
+        <li><a href="${pageContext.request.contextPath}/marketplace/earn" style="color: var(--uh-coral) !important; font-weight: 800 !important;"><i class="bi bi-briefcase-fill me-1"></i> Want to Earn</a></li>
+
+        
         <!-- Notification Bell for Broadcasts -->
         <li>
             <a href="#" data-bs-toggle="modal" data-bs-target="#broadcastModal" onclick="markBroadcastsAsRead()" style="display: flex; align-items: center; color: white !important;">

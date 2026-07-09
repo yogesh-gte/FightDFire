@@ -50,8 +50,8 @@ public class BeautyServiceController {
 	    private in.sp.main.Repository.TreatmentRepository treatmentRepository;
 	   @Autowired
 	    private in.sp.main.Repository.OfferRepository offerRepository;
-
-	
+	   @Autowired
+	    private in.sp.main.Repository.WorkerBookingRepository workerBookingRepository;
 
     // 1️⃣ User Dashboard
 	/*
@@ -263,6 +263,10 @@ public class BeautyServiceController {
         // ✅ Fetch Offer Bookings
         List<OfferBooking> offerBookings = offerbookingRepository.findByUser(user);
         model.addAttribute("offerBookings", offerBookings);
+
+        // ✅ Fetch Marketplace Worker Bookings
+        List<in.sp.main.Entities.WorkerBooking> workerBookings = workerBookingRepository.findByClient_Id(user.getId());
+        model.addAttribute("workerBookings", workerBookings);
 
         // ✅ Optional: Add discount offers to show in hero section
         List<String> discounts = List.of(

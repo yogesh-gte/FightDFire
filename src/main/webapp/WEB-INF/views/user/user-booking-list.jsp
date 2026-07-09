@@ -253,6 +253,74 @@
 				         </div>
 				       </c:if>
 
+				       <!-- MARKETPLACE WORKER BOOKINGS -->
+				       <c:if test="${not empty workerBookings}">
+				         <h3 class="mt-5 mb-4 fw-bold" style="color: var(--brand-purple);"><i class="fas fa-tools me-2"></i> Booked Workers</h3>
+				         <div class="table-responsive bg-white shadow-sm rounded p-3 ftco-animate">
+				           <table class="table table-bordered table-striped text-center align-middle">
+				             <thead style="background: linear-gradient(135deg, #10b981 0%, #047857 100%); color:white;">
+				               <tr>
+				                 <th>Worker Name</th>
+				                 <th>Category</th>
+				                 <th>Booking Date</th>
+				                 <th>Notes</th>
+				                 <th>Status</th>
+				                 <th>Action</th>
+				               </tr>
+				             </thead>
+				             <tbody>
+				               <c:forEach var="wb" items="${workerBookings}">
+				                 <tr>
+				                   <td class="fw-bold">${wb.jobApplication.user.fullName}</td>
+				                   <td><span class="badge bg-secondary">${wb.jobApplication.jobCategory}</span></td>
+				                   <td>
+				                       ${wb.bookingDate}
+				                       <div class="mt-1 small">
+				                           <span class="badge bg-light text-dark border">
+				                               <c:if test="${wb.hours != null}">Hrs: ${wb.hours}</c:if>
+				                               <c:if test="${wb.hours == null}">Custom Offer</c:if>
+				                           </span>
+				                           <span class="badge bg-success-subtle text-success border border-success-subtle">Total: &#8377;${wb.totalAmount != null ? wb.totalAmount : 0.0}</span>
+				                       </div>
+				                   </td>
+				                   <td><span class="small fst-italic text-muted">${not empty wb.note ? wb.note : '-'}</span></td>
+				                   <td>
+				                     <c:choose>
+				                       <c:when test="${wb.status == 'PENDING'}">
+				                         <span class="badge bg-warning text-dark">Pending</span>
+				                       </c:when>
+				                       <c:when test="${wb.status == 'ACCEPTED'}">
+				                         <span class="badge bg-primary">Accepted</span>
+				                       </c:when>
+				                       <c:when test="${wb.status == 'REJECTED'}">
+				                         <span class="badge bg-danger">Rejected</span>
+				                       </c:when>
+				                       <c:when test="${wb.status == 'PAID'}">
+				                         <span class="badge bg-info text-dark">Paid</span>
+				                       </c:when>
+				                       <c:when test="${wb.status == 'COMPLETED'}">
+				                         <span class="badge bg-success">Completed</span>
+				                       </c:when>
+				                     </c:choose>
+				                   </td>
+				                   <td>
+				                     <c:if test="${wb.status == 'ACCEPTED' || wb.status == 'COMPLETED'}">
+				                         <div class="d-flex gap-2 align-items-center">
+				                             <a href="${pageContext.request.contextPath}/chat/window/${wb.jobApplication.user.id}" class="btn btn-sm btn-outline-primary rounded-pill"><i class="fas fa-comment-dots"></i> Chat</a>
+				                             <button type="button" class="btn btn-sm btn-success rounded-pill px-3" onclick="payForWorker(${wb.id}, 500)">Pay Now</button>
+				                         </div>
+				                     </c:if>
+				                     <c:if test="${wb.status != 'ACCEPTED' && wb.status != 'COMPLETED'}">
+				                       <span class="text-muted small">-</span>
+				                     </c:if>
+				                   </td>
+				                 </tr>
+				               </c:forEach>
+				             </tbody>
+				           </table>
+				         </div>
+				       </c:if>
+
 				     </div>
 				   </section>
 
@@ -381,6 +449,66 @@
 
                 setInterval(checkForUpdates, 8000);
               })();
+            </script>
+
+            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+            <script>
+                function payForWorker(bookingId, amount) {
+                    fetch("${pageContext.request.contextPath}/payment/create-order", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ amount: amount, type: "WORKER_BOOKING" })
+                    })
+                    .then(response => response.json())
+                    .then(orderData => {
+                        if (orderData.error) {
+                            alert("Error creating order: " + orderData.error);
+                            return;
+                        }
+                        var options = {
+                            "key": orderData.key,
+                            "amount": orderData.amount,
+                            "currency": "INR",
+                            "name": "Fight D Fear",
+                            "description": "Worker Booking Payment",
+                            "order_id": orderData.orderId,
+                            "handler": function (response) {
+                                fetch("${pageContext.request.contextPath}/payment/verify", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_signature: response.razorpay_signature,
+                                        type: "WORKER_BOOKING",
+                                        targetId: bookingId,
+                                        amount: amount
+                                    })
+                                })
+                                .then(res => res.json())
+                                .then(verifyData => {
+                                    if (verifyData.status === "success") {
+                                        alert("Payment Successful!");
+                                        window.location.reload();
+                                    } else {
+                                        alert("Payment Verification Failed: " + verifyData.error);
+                                    }
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                    alert("Error verifying payment.");
+                                });
+                            },
+                            "theme": { "color": "#10b981" }
+                        };
+                        var rzp = new Razorpay(options);
+                        rzp.open();
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Failed to initialize payment.");
+                    });
+                }
             </script>
 
 </body>

@@ -60,6 +60,12 @@ public class MarketplaceController {
     private MarketplaceEnrollmentRepository enrollmentRepo;
     
     @Autowired
+    private in.sp.main.Repository.JobApplicationRepository jobAppRepo;
+
+    @Autowired
+    private in.sp.main.Repository.WorkerBookingRepository workerBookingRepo;
+
+    @Autowired
     private in.sp.main.Config.JwtUtil jwtUtil;
 
     // ==============================
@@ -224,8 +230,102 @@ public class MarketplaceController {
     // Users: browse + book + review
     // ==============================
     @GetMapping
-    public String categories() {
+    public String categories(Model model) {
+        List<String> dynamicCategories = jobAppRepo.findDistinctJobCategoriesByStatus(VerificationStatus.VERIFIED);
+        model.addAttribute("dynamicCategories", dynamicCategories);
         return "marketplace/marketplace-home";
+    }
+
+    @GetMapping("/workers")
+    public String workersList(@RequestParam String category, Model model, HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        if (u == null) return "redirect:/login";
+
+        List<in.sp.main.Entities.JobApplication> workers = jobAppRepo.findByJobCategoryAndStatus(category, VerificationStatus.VERIFIED);
+        model.addAttribute("category", category);
+        model.addAttribute("workers", workers);
+        return "marketplace/worker-list";
+    }
+
+    @GetMapping("/worker/{id}")
+    public String workerDetails(@PathVariable Long id, Model model, HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        if (u == null) return "redirect:/login";
+
+        in.sp.main.Entities.JobApplication app = jobAppRepo.findById(id).orElse(null);
+        if (app == null || app.getStatus() != VerificationStatus.VERIFIED) {
+            return "redirect:/marketplace";
+        }
+
+        List<in.sp.main.Entities.WorkerBooking> bookings = workerBookingRepo.findByJobApplication_Id(id);
+        List<String> bookedTimes = bookings.stream()
+                .filter(b -> !"REJECTED".equals(b.getStatus()))
+                .map(b -> b.getBookingDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")))
+                .collect(java.util.stream.Collectors.toList());
+
+        model.addAttribute("workerApp", app);
+        model.addAttribute("bookedTimes", bookedTimes);
+        return "marketplace/worker-details";
+    }
+
+    @PostMapping("/worker/{id}/book")
+    public String bookWorker(@PathVariable Long id,
+                             @RequestParam String bookingDate,
+                             @RequestParam(required = false) Double totalAmount,
+                             @RequestParam(required = false) String note,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes) {
+        User u = (User) session.getAttribute("user");
+        if (u == null) return "redirect:/login";
+
+        in.sp.main.Entities.JobApplication app = jobAppRepo.findById(id).orElse(null);
+        if (app == null || app.getStatus() != VerificationStatus.VERIFIED) {
+            redirectAttributes.addFlashAttribute("message", "Worker not found or not verified.");
+            return "redirect:/marketplace";
+        }
+
+        if (app.getUser() != null && app.getUser().getId().equals(u.getId())) {
+            redirectAttributes.addFlashAttribute("error", "You cannot book your own services.");
+            return "redirect:/marketplace/worker/" + id;
+        }
+
+        try {
+            LocalDateTime reqTime = LocalDateTime.parse(bookingDate, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+            if (reqTime.isBefore(LocalDateTime.now())) {
+                redirectAttributes.addFlashAttribute("error", "Booking date/time cannot be in the past.");
+                return "redirect:/marketplace/worker/" + id;
+            }
+            if (reqTime.isAfter(LocalDateTime.now().plusDays(2))) {
+                redirectAttributes.addFlashAttribute("error", "Bookings can only be made up to 2 days in advance.");
+                return "redirect:/marketplace/worker/" + id;
+            }
+
+            // Check if slot is already booked (within 1 hour)
+            List<in.sp.main.Entities.WorkerBooking> existingBookings = workerBookingRepo.findByJobApplication_Id(id);
+            boolean isBooked = existingBookings.stream()
+                .filter(b -> !"REJECTED".equals(b.getStatus()))
+                .anyMatch(b -> java.time.Duration.between(b.getBookingDate(), reqTime).abs().toMinutes() < 60);
+
+            if (isBooked) {
+                redirectAttributes.addFlashAttribute("error", "This time slot is already booked.");
+                return "redirect:/marketplace/worker/" + id;
+            }
+
+            in.sp.main.Entities.WorkerBooking booking = new in.sp.main.Entities.WorkerBooking();
+            booking.setClient(u);
+            booking.setJobApplication(app);
+            booking.setBookingDate(reqTime);
+            booking.setTotalAmount(totalAmount != null ? totalAmount : 0.0);
+            booking.setNote(note);
+            booking.setStatus("PENDING");
+            
+            workerBookingRepo.save(booking);
+            redirectAttributes.addFlashAttribute("success", "Booking request sent successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Invalid date format or booking failed.");
+        }
+
+        return "redirect:/marketplace/worker/" + id;
     }
 
     @GetMapping("/list")
@@ -404,13 +504,62 @@ public class MarketplaceController {
         return "redirect:/marketplace/myBookings";
     }
 
+    @GetMapping("/worker-bookings")
+    public String workerBookings(HttpSession session, Model model) {
+        User u = (User) session.getAttribute("user");
+        if (u == null) return "redirect:/login";
+
+        in.sp.main.Entities.JobApplication app = jobAppRepo.findByStatus(VerificationStatus.VERIFIED)
+                .stream().filter(a -> a.getUser().getId().equals(u.getId())).findFirst().orElse(null);
+
+        if (app == null) {
+            return "redirect:/users/dashboard";
+        }
+
+        List<in.sp.main.Entities.WorkerBooking> incomingBookings = workerBookingRepo.findByJobApplication_Id(app.getId());
+        model.addAttribute("incomingBookings", incomingBookings);
+        return "marketplace/worker-dashboard-bookings";
+    }
+
     @GetMapping("/myBookings")
     public String myBookings(HttpSession session, Model model) {
         User u = (User) session.getAttribute("user");
         if (u == null) return "redirect:/login";
 
         model.addAttribute("bookings", bookingRepo.findByUserOrderByRequestedTimeDesc(u));
+        model.addAttribute("workerBookings", workerBookingRepo.findByClient_Id(u.getId()));
         return "marketplace/my-bookings";
+    }
+
+    @PostMapping("/worker-booking/{id}/status")
+    public String updateWorkerBookingStatus(@PathVariable Long id, @RequestParam String status, HttpSession session, RedirectAttributes redirectAttributes) {
+        User u = (User) session.getAttribute("user");
+        if (u == null) return "redirect:/login";
+        
+        in.sp.main.Entities.WorkerBooking booking = workerBookingRepo.findById(id).orElse(null);
+        if (booking != null && booking.getJobApplication().getUser().getId().equals(u.getId())) {
+            booking.setStatus(status); // ACCEPTED, REJECTED, COMPLETED
+            workerBookingRepo.save(booking);
+            redirectAttributes.addFlashAttribute("success", "Booking updated successfully!");
+        }
+        return "redirect:/marketplace/worker-bookings";
+    }
+
+    @PostMapping("/worker-booking/{id}/pay")
+    public String payWorkerBooking(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
+        User u = (User) session.getAttribute("user");
+        if (u == null) return "redirect:/login";
+
+        Optional<in.sp.main.Entities.WorkerBooking> bOpt = workerBookingRepo.findById(id);
+        if (bOpt.isPresent()) {
+            in.sp.main.Entities.WorkerBooking booking = bOpt.get();
+            if (booking.getClient().getId().equals(u.getId()) && booking.getStatus().equals("ACCEPTED")) {
+                booking.setStatus("PAID");
+                workerBookingRepo.save(booking);
+                redirectAttributes.addFlashAttribute("success", "Payment successful!");
+            }
+        }
+        return "redirect:/user/bookings";
     }
 
     @PostMapping("/review")

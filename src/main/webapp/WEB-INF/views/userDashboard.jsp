@@ -331,6 +331,12 @@
                 <i class="bi bi-house-door"></i> Dashboard
             </a>
             
+            <c:if test="${isWorker}">
+                <a href="${pageContext.request.contextPath}/marketplace/worker-bookings" class="list-group-item">
+                    <i class="bi bi-briefcase-fill text-success"></i> Job Bookings
+                </a>
+            </c:if>
+            
             <!-- Restored previous links -->
             <a href="${pageContext.request.contextPath}/sos/dashboard" class="list-group-item">
                 <i class="bi bi-exclamation-triangle text-danger"></i> SOS Emergency
@@ -393,7 +399,14 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
         <div class="dashboard-header-flex">
-            <h2 class="dashboard-title">General Report</h2>
+            <h2 class="dashboard-title">
+                General Report
+                <c:if test="${isWorker}">
+                    <span class="badge bg-success ms-2 fs-6 align-middle">
+                        <i class="fas fa-user-check me-1"></i> Verified Worker
+                    </span>
+                </c:if>
+            </h2>
             <div class="header-actions">
                 <a href="#" class="reload-data" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i> Reload Data</a>
             </div>
@@ -556,6 +569,8 @@
             <!-- RIGHT COLUMN -->
             <div class="right-col">
                 
+                <!-- Incoming Job requests moved to a dedicated page -->
+
                 <!-- Transactions (Recent Broadcasts) -->
                 <div class="panel-new">
                     <h3 class="panel-title mb-4">Recent Alerts</h3>

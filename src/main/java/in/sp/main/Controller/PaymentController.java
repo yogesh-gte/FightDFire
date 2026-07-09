@@ -44,6 +44,12 @@ public class PaymentController {
     private StylistServiceRepository serviceRepository;
 
     @Autowired
+    private ReviewRepository reviewRepo;
+    
+    @Autowired
+    private in.sp.main.Repository.WalletTransactionRepository walletTransactionRepo;
+
+    @Autowired
     private UserRepository userRepo;
 
     @Autowired
@@ -66,6 +72,9 @@ public class PaymentController {
 
     @Autowired
     private MarketplaceEnrollmentRepository marketplaceEnrollmentRepo;
+    
+    @Autowired
+    private in.sp.main.Repository.WorkerBookingRepository workerBookingRepo;
 
     @GetMapping("")
     public String showPaymentPage(HttpSession session) {
@@ -366,6 +375,37 @@ public class PaymentController {
                         }
                         enrollment.setAmountPaid(parsedAmount);
                         marketplaceEnrollmentRepo.save(enrollment);
+                    }
+                } else if ("WORKER_BOOKING".equals(type)) {
+                    Object targetIdObj = data.get("targetId");
+                    Long targetId = Long.parseLong(targetIdObj.toString());
+                    in.sp.main.Entities.WorkerBooking booking = workerBookingRepo.findById(targetId).orElse(null);
+                    if (booking != null) {
+                        booking.setStatus("PAID");
+                        workerBookingRepo.save(booking);
+
+                        double amountPaid = booking.getTotalAmount() != null ? booking.getTotalAmount() : 0.0;
+                        
+                        // Update Worker Wallet (CREDIT)
+                        User worker = booking.getJobApplication().getUser();
+                        if (worker != null) {
+                            worker.setWalletBalance((worker.getWalletBalance() != null ? worker.getWalletBalance() : 0.0) + amountPaid);
+                            userRepo.save(worker);
+                            
+                            in.sp.main.Entities.WalletTransaction workerTx = new in.sp.main.Entities.WalletTransaction(
+                                worker, amountPaid, "CREDIT", "Payment received for booking from " + booking.getClient().getFullName(), java.time.LocalDateTime.now()
+                            );
+                            walletTransactionRepo.save(workerTx);
+                        }
+
+                        // Record Client Transaction (DEBIT)
+                        User client = booking.getClient();
+                        if (client != null) {
+                            in.sp.main.Entities.WalletTransaction clientTx = new in.sp.main.Entities.WalletTransaction(
+                                client, amountPaid, "DEBIT", "Payment made for worker booking", java.time.LocalDateTime.now()
+                            );
+                            walletTransactionRepo.save(clientTx);
+                        }
                     }
                 }
 

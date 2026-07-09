@@ -20,6 +20,9 @@ public class WalletController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private in.sp.main.Repository.WalletTransactionRepository walletTransactionRepo;
+
     @GetMapping("/users/wallet")
     public String viewWallet(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -37,6 +40,9 @@ public class WalletController {
         rewards.add("Free Martial Arts Trial - 200 Coins");
         rewards.add("Exclusive Badge - 50 Coins");
         model.addAttribute("rewards", rewards);
+        // Fetch Transaction History
+        List<in.sp.main.Entities.WalletTransaction> transactions = walletTransactionRepo.findByUser_IdOrderByTransactionDateDesc(user.getId());
+        model.addAttribute("transactions", transactions);
         
         return "wallet";
     }

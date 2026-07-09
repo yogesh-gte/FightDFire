@@ -296,6 +296,14 @@
 
     </a>
 
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'job-applications') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/admin/job-applications">
+
+        <i class="fas fa-briefcase"></i>
+        Job Applications
+
+    </a>
+
     <!-- CONTENT -->
     <div class="sectionTitle">
         Content

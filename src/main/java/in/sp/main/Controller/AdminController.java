@@ -1466,5 +1466,37 @@ public class AdminController {
         model.addAttribute("stylist", stylist);
         return "adminViewStylistProfile";
     }
+
+    @Autowired
+    private JobApplicationRepository jobApplicationRepository;
+
+    @GetMapping("/job-applications")
+    public String manageJobApplications(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        model.addAttribute("pendingApplications", jobApplicationRepository.findByStatus(VerificationStatus.PENDING));
+        model.addAttribute("approvedApplications", jobApplicationRepository.findByStatus(VerificationStatus.VERIFIED));
+        model.addAttribute("rejectedApplications", jobApplicationRepository.findByStatus(VerificationStatus.REJECTED));
+        return "adminPendingJobs";
+    }
+
+    @PostMapping("/job-applications/{id}/approve")
+    public String approveJobApplication(@PathVariable Long id, RedirectAttributes ra) {
+        jobApplicationRepository.findById(id).ifPresent(app -> {
+            app.setStatus(VerificationStatus.VERIFIED);
+            jobApplicationRepository.save(app);
+        });
+        ra.addFlashAttribute("message", "Job Application approved successfully.");
+        return "redirect:/admin/job-applications";
+    }
+
+    @PostMapping("/job-applications/{id}/reject")
+    public String rejectJobApplication(@PathVariable Long id, RedirectAttributes ra) {
+        jobApplicationRepository.findById(id).ifPresent(app -> {
+            app.setStatus(VerificationStatus.REJECTED);
+            jobApplicationRepository.save(app);
+        });
+        ra.addFlashAttribute("message", "Job Application rejected.");
+        return "redirect:/admin/job-applications";
+    }
 }
 
