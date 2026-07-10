@@ -15,6 +15,10 @@ jobs:
           wc -l /tmp/key
           ssh-keygen -y -f /tmp/key > /tmp/key.pub || echo "FAILED TO DERIVE PUBLIC KEY - PRIVATE KEY IS MALFORMED"
           ssh-keygen -lf /tmp/key.pub || true
+          echo "---"
+          echo "HOST=[${{ secrets.SSH_HOST }}] len=$(echo -n "${{ secrets.SSH_HOST }}" | wc -c) lines=$(echo -n "${{ secrets.SSH_HOST }}" | wc -l)"
+          echo "USER=[${{ secrets.SSH_USER }}] len=$(echo -n "${{ secrets.SSH_USER }}" | wc -c) lines=$(echo -n "${{ secrets.SSH_USER }}" | wc -l)"
+          echo "PORT=[${{ secrets.SSH_PORT }}] len=$(echo -n "${{ secrets.SSH_PORT }}" | wc -c) lines=$(echo -n "${{ secrets.SSH_PORT }}" | wc -l)"
 
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.0.3
