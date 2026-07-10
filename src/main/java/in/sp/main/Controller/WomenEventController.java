@@ -37,6 +37,12 @@ public class WomenEventController {
     private UserRepository userRepository;
 
     @Autowired
+    private EventHostRepository eventHostRepository;
+
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
+
+    @Autowired
     private FileUploadService fileUploadService;
 
     // =========================================================
@@ -210,6 +216,13 @@ public class WomenEventController {
         reg.setEvent(event);
         reg.setUser(loggedUser);
         reg.setRole("ATTENDEE");
+        if (event.isFree()) {
+            reg.setPaid(true);
+            reg.setAmountPaid(0.0);
+        } else {
+            reg.setPaid(true);
+            reg.setAmountPaid(event.getEntryFee());
+        }
         womenEventRegistrationRepository.save(reg);
 
         ra.addFlashAttribute("success", "🎉 You're registered! Your ticket code: " + reg.getTicketCode());
@@ -346,6 +359,118 @@ public class WomenEventController {
     }
 
     // =========================================================
+    // HOST REGISTRATION & LOGIN MAPPINGS
+    // =========================================================
+
+    private EventHost checkAndGetHost(HttpSession session) {
+        EventHost host = (EventHost) session.getAttribute("loggedHost");
+        if (host == null) return null;
+        EventHost refreshed = eventHostRepository.findById(host.getId()).orElse(host);
+        session.setAttribute("loggedHost", refreshed);
+        if (refreshed.getVerificationStatus() == VerificationStatus.VERIFIED) {
+            return refreshed;
+        }
+        return null;
+    }
+
+    @GetMapping("/host/register")
+    public String showHostRegisterForm() {
+        return "women-events/host-register";
+    }
+
+    @PostMapping("/host/register")
+    public String submitHostRegister(@RequestParam String fullName,
+                                     @RequestParam String email,
+                                     @RequestParam String phone,
+                                     @RequestParam String password,
+                                     @RequestParam String organizerName,
+                                     @RequestParam String organizerType,
+                                     @RequestParam String hostContact,
+                                     @RequestParam String hostBio,
+                                     Model model) {
+        if (eventHostRepository.findByEmail(email.trim().toLowerCase()).isPresent()) {
+            model.addAttribute("error", "Email already registered.");
+            return "women-events/host-register";
+        }
+        if (phone == null || !phone.trim().matches("^\\d{10}$")) {
+            model.addAttribute("error", "Phone number must be exactly 10 digits.");
+            return "women-events/host-register";
+        }
+
+        EventHost host = new EventHost();
+        host.setFullName(fullName);
+        host.setEmail(email.trim().toLowerCase());
+        host.setPhone(phone);
+        host.setPassword(password);
+        host.setOrganizerName(organizerName);
+        host.setOrganizerType(organizerType);
+        host.setHostContact(hostContact);
+        host.setHostBio(hostBio);
+        host.setVerificationStatus(VerificationStatus.PENDING);
+
+        eventHostRepository.save(host);
+        return "redirect:/women-events/host/login?registered=true";
+    }
+
+    @GetMapping("/host/login")
+    public String showHostLoginForm() {
+        return "women-events/host-login";
+    }
+
+    @PostMapping("/host/login")
+    public String loginHost(@RequestParam String email,
+                            @RequestParam String password,
+                            HttpSession session,
+                            jakarta.servlet.http.HttpServletResponse response,
+                            Model model) {
+        Optional<EventHost> hostOpt = eventHostRepository.findByEmail(email.trim().toLowerCase());
+        if (hostOpt.isEmpty()) {
+            model.addAttribute("error", "Event Host not found.");
+            return "women-events/host-login";
+        }
+        EventHost host = hostOpt.get();
+        if (!host.getPassword().equals(password)) {
+            model.addAttribute("error", "Invalid password.");
+            return "women-events/host-login";
+        }
+        if (host.getVerificationStatus() == VerificationStatus.PENDING) {
+            model.addAttribute("error", "Your account is pending verification by Admin. Please check back later.");
+            return "women-events/host-login";
+        }
+        if (host.getVerificationStatus() == VerificationStatus.REJECTED) {
+            model.addAttribute("error", "Your account has been rejected by admin.");
+            return "women-events/host-login";
+        }
+
+        session.setAttribute("loggedHost", host);
+
+        // Generate JWT token if possible
+        try {
+            String token = jwtUtil.generateToken(host.getEmail(), "HOST");
+            jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+            response.addCookie(cookie);
+        } catch (Exception ex) {
+            // jwtUtil exception fallback
+        }
+
+        return "redirect:/women-events/organizer/dashboard";
+    }
+
+    @GetMapping("/host/logout")
+    public String hostLogout(HttpSession session, jakarta.servlet.http.HttpServletResponse response) {
+        session.removeAttribute("loggedHost");
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/women-events";
+    }
+
+    // =========================================================
     // ORGANIZER ROUTES
     // =========================================================
 
@@ -354,10 +479,12 @@ public class WomenEventController {
      */
     @GetMapping("/organizer/dashboard")
     public String organizerDashboard(HttpSession session, Model model) {
-        User loggedUser = (User) session.getAttribute("user");
-        if (loggedUser == null) return "redirect:/login";
+        EventHost host = checkAndGetHost(session);
+        if (host == null) {
+            return "redirect:/women-events/host/login";
+        }
 
-        List<WomenEvent> myEvents = womenEventRepository.findByOrganizerOrderByCreatedAtDesc(loggedUser);
+        List<WomenEvent> myEvents = womenEventRepository.findByOrganizerOrderByCreatedAtDesc(host);
         long totalRegistrations = myEvents.stream()
                 .mapToLong(e -> womenEventRegistrationRepository.countByEvent(e)).sum();
         long approvedCount = myEvents.stream().filter(e -> "APPROVED".equals(e.getStatus())).count();
@@ -374,21 +501,18 @@ public class WomenEventController {
         model.addAttribute("approvedCount", approvedCount);
         model.addAttribute("pendingCount", pendingCount);
         model.addAttribute("commissionsDue", commissionsDue);
-        model.addAttribute("loggedUser", loggedUser);
-        model.addAttribute("user", loggedUser);
+        model.addAttribute("loggedUser", host);
+        model.addAttribute("user", host);
         return "women-events/organizer-dashboard";
     }
 
-    /**
-     * Show event creation form.
-     */
     @GetMapping("/organizer/create")
     public String createEventForm(HttpSession session, Model model) {
-        User loggedUser = (User) session.getAttribute("user");
-        if (loggedUser == null) return "redirect:/login";
+        EventHost host = checkAndGetHost(session);
+        if (host == null) return "redirect:/women-events/host/login";
         model.addAttribute("categories", WomenEventCategory.values());
-        model.addAttribute("loggedUser", loggedUser);
-        model.addAttribute("user", loggedUser);
+        model.addAttribute("loggedUser", host);
+        model.addAttribute("user", host);
         return "women-events/create-event";
     }
 
@@ -414,8 +538,8 @@ public class WomenEventController {
                                @RequestParam(defaultValue = "0") Double boothFee,
                                @RequestParam(required = false) MultipartFile bannerImage,
                                HttpSession session, RedirectAttributes ra) {
-        User loggedUser = (User) session.getAttribute("user");
-        if (loggedUser == null) return "redirect:/login";
+        EventHost host = checkAndGetHost(session);
+        if (host == null) return "redirect:/women-events/host/login";
 
         WomenEvent event = new WomenEvent();
         event.setName(name);
@@ -433,7 +557,7 @@ public class WomenEventController {
         event.setMapsLocation(mapsLocation);
         event.setOrganizerName(organizerName);
         event.setOrganizerType(organizerType);
-        event.setOrganizer(loggedUser);
+        event.setOrganizer(host);
         event.setVirtual(virtual);
         event.setStreamLink(streamLink);
         event.setBoothFee(boothFee);
@@ -453,16 +577,13 @@ public class WomenEventController {
         return "redirect:/women-events/organizer/dashboard";
     }
 
-    /**
-     * View attendees and volunteers for an organizer's event.
-     */
     @GetMapping("/organizer/{id}/attendees")
     public String viewAttendees(@PathVariable Long id, HttpSession session, Model model) {
-        User loggedUser = (User) session.getAttribute("user");
-        if (loggedUser == null) return "redirect:/login";
+        EventHost host = checkAndGetHost(session);
+        if (host == null) return "redirect:/women-events/host/login";
 
         WomenEvent event = womenEventRepository.findById(id).orElse(null);
-        if (event == null || !event.getOrganizer().getId().equals(loggedUser.getId())) {
+        if (event == null || !event.getOrganizer().getId().equals(host.getId())) {
             return "redirect:/women-events/organizer/dashboard";
         }
 
@@ -471,21 +592,18 @@ public class WomenEventController {
         model.addAttribute("event", event);
         model.addAttribute("attendees", attendees);
         model.addAttribute("volunteers", volunteers);
-        model.addAttribute("loggedUser", loggedUser);
-        model.addAttribute("user", loggedUser);
+        model.addAttribute("loggedUser", host);
+        model.addAttribute("user", host);
         return "women-events/attendees";
     }
 
-    /**
-     * Check-in an attendee / volunteer via code or button.
-     */
     @PostMapping("/organizer/{id}/checkin")
     public String checkIn(@PathVariable Long id, @RequestParam String ticketCode, HttpSession session, RedirectAttributes ra) {
-        User loggedUser = (User) session.getAttribute("user");
-        if (loggedUser == null) return "redirect:/login";
+        EventHost host = checkAndGetHost(session);
+        if (host == null) return "redirect:/women-events/host/login";
 
         WomenEvent event = womenEventRepository.findById(id).orElse(null);
-        if (event == null || !event.getOrganizer().getId().equals(loggedUser.getId())) {
+        if (event == null || !event.getOrganizer().getId().equals(host.getId())) {
             return "redirect:/women-events/organizer/dashboard";
         }
 
@@ -518,7 +636,32 @@ public class WomenEventController {
         if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
         model.addAttribute("allEvents", womenEventRepository.findAll());
         model.addAttribute("categories", WomenEventCategory.values());
+        
+        List<EventHost> hostApplications = eventHostRepository.findAll();
+        model.addAttribute("hostApplications", hostApplications);
         return "women-events/admin-events";
+    }
+
+    @PostMapping("/admin/host/{id}/approve")
+    public String approveHost(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        eventHostRepository.findById(id).ifPresent(h -> {
+            h.setVerificationStatus(VerificationStatus.VERIFIED);
+            eventHostRepository.save(h);
+        });
+        ra.addFlashAttribute("success", "Event host approved!");
+        return "redirect:/women-events/admin/list";
+    }
+
+    @PostMapping("/admin/host/{id}/reject")
+    public String rejectHost(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        eventHostRepository.findById(id).ifPresent(h -> {
+            h.setVerificationStatus(VerificationStatus.REJECTED);
+            eventHostRepository.save(h);
+        });
+        ra.addFlashAttribute("success", "Event host application rejected.");
+        return "redirect:/women-events/admin/list";
     }
 
     @PostMapping("/admin/{id}/approve")

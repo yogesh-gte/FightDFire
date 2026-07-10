@@ -182,11 +182,11 @@
                         <div>
                             <h5 class="fw-bold text-primary-emphasis"><i class="bi bi-star-fill text-warning"></i> Access Premium Investment Flows</h5>
                             <p class="text-secondary mb-md-0" style="font-size:0.95rem;">
-                                Subscribe to our **Premium Investor Plan for $199/yr** to unlock direct meeting scheduling, Q&A boards, and chat with entrepreneurs.
+                                Subscribe to our **Premium Investor Plan for ₹1999/yr** to unlock direct meeting scheduling, Q&A boards, and chat with entrepreneurs.
                             </p>
                         </div>
-                        <button class="btn btn-primary fw-bold px-4 py-2 mt-3 mt-md-0 rounded-pill shadow-sm" onclick="triggerCheckout('subscription', null, 199.00, '${pageContext.request.contextPath}/investor/subscribe')">
-                            Subscribe Now ($199)
+                        <button class="btn btn-primary fw-bold px-4 py-2 mt-3 mt-md-0 rounded-pill shadow-sm" onclick="triggerCheckout('subscription', null, 1999.00, '${pageContext.request.contextPath}/investor/subscribe')">
+                            Subscribe Now (₹1999)
                         </button>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
                         <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">
                             <i class="bi bi-safe-fill"></i>
                         </div>
-                        <div class="fs-3 fw-bold">$${totalInvested}</div>
+                        <div class="fs-3 fw-bold">₹${totalInvested}</div>
                         <p class="text-muted m-0 small">Total Capital Invested</p>
                     </div>
                 </div>
@@ -208,7 +208,7 @@
                         <div class="stat-icon" style="background-color: #dcfce7; color: #16a34a;">
                             <i class="bi bi-graph-up"></i>
                         </div>
-                        <div class="fs-3 fw-bold">$${estimatedMonthlyROI}</div>
+                        <div class="fs-3 fw-bold">₹${estimatedMonthlyROI}</div>
                         <p class="text-muted m-0 small">Estimated Monthly Income (ROI)</p>
                     </div>
                 </div>
@@ -234,6 +234,7 @@
                                 <th>Category / Location</th>
                                 <th>Amount Invested</th>
                                 <th>Target Goal</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -242,8 +243,28 @@
                                 <tr>
                                     <td><strong class="text-navy">${inv.proposal.title}</strong></td>
                                     <td>${inv.proposal.category} | ${inv.proposal.location}</td>
-                                    <td><strong class="text-success">$${inv.amount}</strong></td>
-                                    <td>$${inv.proposal.fundingNeeded}</td>
+                                    <td>
+                                        <strong class="text-success">₹${inv.amount}</strong>
+                                        <c:if test="${inv.status == 'COMPLETED'}">
+                                            <div class="text-muted small" style="font-size:0.7rem; line-height: 1.2;">
+                                                Released: ₹${inv.releasedAmount != null ? inv.releasedAmount : inv.amount}
+                                                <c:if test="${inv.adminAmount != null && inv.adminAmount > 0}">
+                                                    <br>Retained: ₹${inv.adminAmount}
+                                                </c:if>
+                                            </div>
+                                        </c:if>
+                                    </td>
+                                    <td>₹${inv.proposal.fundingNeeded}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${inv.status == 'PENDING'}">
+                                                <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Awaiting Transfer</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-success"><i class="bi bi-check-circle-fill"></i> Transferred</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                     <td>
                                         <a href="${pageContext.request.contextPath}/investor/proposal/${inv.proposal.id}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
                                             View Progress
@@ -356,7 +377,7 @@
             <div class="modal-body p-4 text-center">
                 <div class="mb-4">
                     <p class="text-muted mb-1 text-uppercase fw-semibold" style="font-size: 11px;" id="checkoutTypeLabel">Investor Premium Plan</p>
-                    <h3 class="fw-bold" style="color:var(--navy-dark);" id="checkoutAmountLabel">$199.00</h3>
+                    <h3 class="fw-bold" style="color:var(--navy-dark);" id="checkoutAmountLabel">₹1999.00</h3>
                 </div>
 
                 <!-- Simulation content -->
@@ -412,7 +433,7 @@
 
         // Update modal UI
         document.getElementById('checkoutTypeLabel').innerText = type.toUpperCase() + " PAYMENT";
-        document.getElementById('checkoutAmountLabel').innerText = "$" + amount.toFixed(2);
+        document.getElementById('checkoutAmountLabel').innerText = "₹" + amount.toFixed(2);
 
         // Reset Modal states
         document.getElementById('checkoutFormContent').style.display = 'block';

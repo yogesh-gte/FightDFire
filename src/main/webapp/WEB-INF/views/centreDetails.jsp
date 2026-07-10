@@ -162,62 +162,92 @@
 									            <h4 class="mb-4 text-dark fw-bold"><i class="fas fa-calendar-alt text-primary me-3"></i>Available Training Batches</h4>
 									            <div class="row g-4">
 									              <c:forEach var="batch" items="${batches}">
-									                <div class="col-md-6 col-lg-4">
-									                  <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden training-batch-card" style="transition: transform 0.3s ease; border: 1px solid rgba(0,0,0,0.05) !important;">
-									                    <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
-									                        <div class="d-flex justify-content-between align-items-start">
-									                            <div>
-									                                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 mb-2">${batch.batchType}</span>
-									                                <h5 class="fw-bold text-dark mb-0">${batch.name}</h5>
-									                            </div>
-									                            <span class="fw-bold text-primary fs-5">₹${batch.fee}</span>
-									                        </div>
-									                    </div>
-									                    <div class="card-body p-4">
-									                        <div class="d-flex align-items-center mb-3">
-									                            <div class="bg-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-									                                <i class="fas fa-user-tie text-primary small"></i>
-									                            </div>
-									                            <div>
-									                                <small class="text-muted d-block">Instructor</small>
-									                                <span class="fw-semibold small">${batch.instructor}</span>
-									                            </div>
-									                        </div>
-									                        <div class="d-flex align-items-center mb-3">
-									                            <div class="bg-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-									                                <i class="fas fa-hand-fist text-primary small"></i>
-									                            </div>
-									                            <div>
-									                                <small class="text-muted d-block">Style</small>
-									                                <span class="fw-semibold small">${batch.style}</span>
-									                            </div>
-									                        </div>
-									                        <div class="d-flex align-items-center">
-									                            <div class="bg-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-									                                <i class="fas fa-clock text-primary small"></i>
-									                            </div>
-									                            <div>
-									                                <small class="text-muted d-block">Time Slot</small>
-									                                <span class="fw-semibold small">${batch.timeSlot}</span>
-									                            </div>
-									                        </div>
-									                    </div>
-									                    <div class="card-footer bg-light border-0 p-3 text-center">
-									                        <c:choose>
-									                          <c:when test="${not empty user}">
-									                            <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${center.id}?batchId=${batch.id}" class="btn btn-sm btn-primary rounded-pill px-4">
-									                              Book This Batch
-									                            </a>
-									                          </c:when>
-									                          <c:otherwise>
-									                            <a href="${pageContext.request.contextPath}/login?redirect=/enrollment/enrollForm/${center.id}%3FbatchId%3D${batch.id}" class="btn btn-sm btn-primary rounded-pill px-4">
-									                              Login to Book
-									                            </a>
-									                          </c:otherwise>
-									                        </c:choose>
-									                    </div>
-									                  </div>
-									                </div>
+	                                			        <div class="col-md-6 col-lg-4">
+                                			          <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden training-batch-card" style="transition: transform 0.3s ease; border: 1px solid rgba(0,0,0,0.05) !important;">
+                                			            <div class="card-header bg-white border-0 pt-4 px-4 pb-0">
+                                			                <div class="d-flex justify-content-between align-items-start">
+                                			                    <div>
+                                			                        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 mb-2">${batch.batchType}</span>
+                                			                        <h5 class="fw-bold text-dark mb-0">${batch.name}</h5>
+                                			                    </div>
+                                			                    <div class="text-end">
+                                                                <c:choose>
+                                                                    <c:when test="${batch.fee == null || batch.fee == 0}">
+                                                                        <span class="fw-bold text-success fs-5">FREE</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="fw-bold text-primary fs-5">&#8377;${batch.fee}</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </div>
+                                			                </div>
+                                			            </div>
+                                			            <div class="card-body p-4">
+                                			                <div class="d-flex align-items-center mb-3">
+                                			                    <div class="bg-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                			                        <i class="fas fa-user-tie text-primary small"></i>
+                                			                    </div>
+                                			                    <div>
+                                			                        <small class="text-muted d-block">Instructor</small>
+                                			                        <span class="fw-semibold small">${batch.instructor}</span>
+                                			                    </div>
+                                			                </div>
+                                			                <div class="d-flex align-items-center mb-3">
+                                			                    <div class="bg-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                			                        <i class="fas fa-hand-fist text-primary small"></i>
+                                			                    </div>
+                                			                    <div>
+                                			                        <small class="text-muted d-block">Style</small>
+                                			                        <span class="fw-semibold small">${batch.style}</span>
+                                			                    </div>
+                                			                </div>
+                                			                <div class="d-flex align-items-center mb-3">
+                                			                    <div class="bg-light rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                			                        <i class="fas fa-clock text-primary small"></i>
+                                			                    </div>
+                                			                    <div>
+                                			                        <small class="text-muted d-block">Time Slot</small>
+                                			                        <span class="fw-semibold small">${batch.timeSlot}</span>
+                                			                    </div>
+                                			                </div>
+                                                        <%-- Seat count display --%>
+                                                        <c:if test="${batch.capacity != null && batch.capacity > 0}">
+                                                            <c:set var="enrolled" value="${enrolledCountByBatch[batch.id]}"/>
+                                                            <c:set var="isFull" value="${enrolled >= batch.capacity}"/>
+                                                            <div class="mt-2">
+                                                                <small class="text-muted">Seats: </small>
+                                                                <c:choose>
+                                                                    <c:when test="${isFull}">
+                                                                        <span class="badge bg-danger rounded-pill">FULL</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="badge bg-success rounded-pill">${enrolled} / ${batch.capacity} filled</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </div>
+                                                        </c:if>
+                                			            </div>
+                                			            <div class="card-footer bg-light border-0 p-3 text-center">
+                                			                <c:set var="batchEnrolled" value="${enrolledCountByBatch[batch.id]}"/>
+                                			                <c:set var="batchFull" value="${batch.capacity != null && batch.capacity > 0 && batchEnrolled >= batch.capacity}"/>
+                                			                <c:choose>
+                                			                    <c:when test="${batchFull}">
+                                			                        <button class="btn btn-sm btn-secondary rounded-pill px-4" disabled>Batch Full</button>
+                                			                    </c:when>
+                                			                    <c:when test="${not empty user}">
+                                			                        <a href="${pageContext.request.contextPath}/enrollment/enrollForm/${center.id}?batchId=${batch.id}" class="btn btn-sm btn-primary rounded-pill px-4">
+                                			                          Book This Batch
+                                			                        </a>
+                                			                    </c:when>
+                                			                    <c:otherwise>
+                                			                        <a href="${pageContext.request.contextPath}/login?redirect=/enrollment/enrollForm/${center.id}%3FbatchId%3D${batch.id}" class="btn btn-sm btn-primary rounded-pill px-4">
+                                			                          Login to Book
+                                			                        </a>
+                                			                    </c:otherwise>
+                                			                </c:choose>
+                                			            </div>
+                                			          </div>
+                                			        </div>
 									              </c:forEach>
 									              <c:if test="${empty batches}">
 									                <div class="col-12">

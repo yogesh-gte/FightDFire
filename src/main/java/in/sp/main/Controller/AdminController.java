@@ -116,6 +116,9 @@ public class AdminController {
     @Autowired
     private WomenEventRepository womenEventRepository;
 
+    @Autowired
+    private WomenEventRegistrationRepository womenEventRegistrationRepository;
+
     // Sidebar counts are now handled globally via GlobalSidebarAdvice.java
 
     @RequestMapping(value = "/approve/{id}", method = POST)
@@ -259,7 +262,7 @@ public class AdminController {
             Map<String, Object> act = new HashMap<>();
             act.put("type", "INVESTMENT");
             act.put("icon", "bi-cash-stack text-success");
-            act.put("desc", "Investor <strong>" + inv.getInvestor().getFullName() + "</strong> invested <strong>$" + inv.getAmount() + "</strong> in pitch <em>\"" + inv.getProposal().getTitle() + "\"</em>");
+            act.put("desc", "Investor <strong>" + inv.getInvestor().getFullName() + "</strong> invested <strong>₹" + inv.getAmount() + "</strong> in pitch <em>\"" + inv.getProposal().getTitle() + "\"</em>");
             act.put("time", inv.getCreatedAt() != null ? inv.getCreatedAt() : LocalDateTime.now());
             activities.add(act);
         }
@@ -410,10 +413,10 @@ public class AdminController {
                 .mapToDouble(Investment::getAmount)
                 .sum();
 
-        double verificationFees = allEntrepreneurs.stream().filter(Entrepreneur::isVerificationFeePaid).count() * 49.0;
-        double subscriptionFees = allInvestors.stream().filter(Investor::isSubscribed).count() * 199.0;
-        double premiumListingFees = allProposals.stream().filter(BusinessProposal::isPremium).count() * 99.0;
-        double featuredListingFees = allProposals.stream().filter(BusinessProposal::isFeatured).count() * 99.0;
+        double verificationFees = allEntrepreneurs.stream().filter(Entrepreneur::isVerificationFeePaid).count() * 499.0;
+        double subscriptionFees = allInvestors.stream().filter(Investor::isSubscribed).count() * 1999.0;
+        double premiumListingFees = allProposals.stream().filter(BusinessProposal::isPremium).count() * 999.0;
+        double featuredListingFees = allProposals.stream().filter(BusinessProposal::isFeatured).count() * 999.0;
         double platformCommissions = allInvestments.stream()
                 .filter(Investment::isCommissionPaid)
                 .mapToDouble(i -> i.getAmount() * 0.02)
@@ -458,6 +461,26 @@ public class AdminController {
         res.put("totalWomenEvents",   totalWomenEvents);
         res.put("approvedWomenEvents", approvedWomenEvents);
         res.put("pendingWomenEvents",  pendingWomenEvents);
+
+        long totalEventBookings = womenEventRegistrationRepository.count();
+        double totalEventTicketRevenue = womenEventRegistrationRepository.findAll().stream()
+                .filter(r -> r.isPaid())
+                .mapToDouble(r -> r.getAmountPaid())
+                .sum();
+
+        String mostPopularEvent = "None";
+        List<WomenEventRegistration> allEventRegs = womenEventRegistrationRepository.findAll();
+        if (!allEventRegs.isEmpty()) {
+            Map<String, Long> countMap = allEventRegs.stream()
+                    .collect(java.util.stream.Collectors.groupingBy(r -> r.getEvent().getName(), java.util.stream.Collectors.counting()));
+            mostPopularEvent = countMap.entrySet().stream()
+                    .max(Map.Entry.comparingByValue())
+                    .map(Map.Entry::getKey)
+                    .orElse("None");
+        }
+        res.put("totalEventBookings", totalEventBookings);
+        res.put("totalEventTicketRevenue", totalEventTicketRevenue);
+        res.put("mostPopularEvent", mostPopularEvent);
 
         res.put("signature", signature);
         return res;
@@ -1777,28 +1800,78 @@ public class AdminController {
         List<Investor> allInvestors = investorRepository.findAll();
         List<BusinessProposal> allProposals = businessProposalRepository.findAll();
 
-        double verificationFees = allEntrepreneurs.stream().filter(Entrepreneur::isVerificationFeePaid).count() * 49.0;
-        double subscriptionFees = allInvestors.stream().filter(Investor::isSubscribed).count() * 199.0;
+        double verificationFees = allEntrepreneurs.stream().filter(Entrepreneur::isVerificationFeePaid).count() * 499.0;
+        double subscriptionFees = allInvestors.stream().filter(Investor::isSubscribed).count() * 1999.0;
         
-        double premiumListingFees = allProposals.stream().filter(BusinessProposal::isPremium).count() * 99.0;
-        double featuredListingFees = allProposals.stream().filter(BusinessProposal::isFeatured).count() * 99.0;
+        double premiumListingFees = allProposals.stream().filter(BusinessProposal::isPremium).count() * 999.0;
+        double featuredListingFees = allProposals.stream().filter(BusinessProposal::isFeatured).count() * 999.0;
 
         double platformCommissions = allInvestments.stream()
                 .filter(Investment::isCommissionPaid)
-                .mapToDouble(i -> i.getAmount() * 0.02)
+                .mapToDouble(i -> (i.getReleasedAmount() != null ? i.getReleasedAmount() : i.getAmount()) * 0.02)
                 .sum();
 
-        double totalRevenue = verificationFees + subscriptionFees + premiumListingFees + featuredListingFees + platformCommissions;
+        double adminRetainedAmount = allInvestments.stream()
+                .filter(i -> "COMPLETED".equals(i.getStatus()) && i.getAdminAmount() != null)
+                .mapToDouble(Investment::getAdminAmount)
+                .sum();
+
+        double totalRevenue = verificationFees + subscriptionFees + premiumListingFees + featuredListingFees + platformCommissions + adminRetainedAmount;
 
         model.addAttribute("verificationFees", verificationFees);
         model.addAttribute("subscriptionFees", subscriptionFees);
         model.addAttribute("premiumListingFees", premiumListingFees);
         model.addAttribute("featuredListingFees", featuredListingFees);
         model.addAttribute("platformCommissions", platformCommissions);
+        model.addAttribute("adminRetainedAmount", adminRetainedAmount);
         model.addAttribute("totalRevenue", totalRevenue);
         model.addAttribute("investments", allInvestments);
 
         return "admin/investmentRevenue";
+    }
+
+    @PostMapping("/investments/{id}/release")
+    @Transactional
+    public String releaseInvestment(
+            @PathVariable("id") Long id,
+            @RequestParam("releasedAmount") Double releasedAmount,
+            HttpSession session,
+            RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+        
+        Optional<Investment> opt = investmentRepository.findById(id);
+        if (opt.isPresent()) {
+            Investment inv = opt.get();
+            if ("PENDING".equals(inv.getStatus())) {
+                if (releasedAmount == null || releasedAmount < 0 || releasedAmount > inv.getAmount()) {
+                    ra.addFlashAttribute("error", "Invalid release amount. Must be between 0 and ₹" + inv.getAmount() + ".");
+                    return "redirect:/admin/pending-proposals";
+                }
+                
+                inv.setStatus("COMPLETED");
+                inv.setReleasedAmount(releasedAmount);
+                double adminAmount = inv.getAmount() - releasedAmount;
+                inv.setAdminAmount(adminAmount);
+                investmentRepository.save(inv);
+                
+                BusinessProposal proposal = inv.getProposal();
+                proposal.setAmountRaised(proposal.getAmountRaised() + releasedAmount);
+                businessProposalRepository.save(proposal);
+                
+                String msg = "Successfully processed investment release: ₹" + releasedAmount + " released to entrepreneur " + proposal.getEntrepreneur().getFullName();
+                if (adminAmount > 0) {
+                    msg += " and ₹" + adminAmount + " retained by Admin account.";
+                } else {
+                    msg += ".";
+                }
+                ra.addFlashAttribute("message", msg);
+            } else {
+                ra.addFlashAttribute("error", "Investment is not in PENDING status.");
+            }
+        } else {
+            ra.addFlashAttribute("error", "Investment not found.");
+        }
+        return "redirect:/admin/pending-proposals";
     }
 }
 

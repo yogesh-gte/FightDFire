@@ -85,7 +85,7 @@
     <!-- Stats summary card -->
     <div class="card border-0 shadow-sm p-4 mb-4 bg-dark text-white text-center" style="border-radius: 20px; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);">
         <p class="text-white-50 text-uppercase fw-semibold mb-1" style="font-size: 0.8rem; letter-spacing: 1px;">Total Investment Platform Revenue</p>
-        <h1 class="fw-bold display-4 text-warning">$${totalRevenue}</h1>
+        <h1 class="fw-bold display-4 text-warning">₹${totalRevenue}</h1>
     </div>
 
     <!-- Breakdown Grid -->
@@ -93,36 +93,43 @@
         <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="stat-icon" style="background-color: #fee2e2; color: #ef4444;"><i class="bi bi-shield-check"></i></div>
-                <div class="fs-4 fw-bold">$${verificationFees}</div>
+                <div class="fs-4 fw-bold">₹${verificationFees}</div>
                 <p class="text-muted small m-0">Verification Fees</p>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="stat-icon" style="background-color: #e0f2fe; color: #0ea5e9;"><i class="bi bi-award"></i></div>
-                <div class="fs-4 fw-bold">$${premiumListingFees}</div>
+                <div class="fs-4 fw-bold">₹${premiumListingFees}</div>
                 <p class="text-muted small m-0">Premium Listings</p>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="stat-icon" style="background-color: #fef3c7; color: #d97706;"><i class="bi bi-star"></i></div>
-                <div class="fs-4 fw-bold">$${featuredListingFees}</div>
+                <div class="fs-4 fw-bold">₹${featuredListingFees}</div>
                 <p class="text-muted small m-0">Featured Pins</p>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="stat-icon" style="background-color: #dcfce7; color: #16a34a;"><i class="bi bi-percent"></i></div>
-                <div class="fs-4 fw-bold">$${platformCommissions}</div>
+                <div class="fs-4 fw-bold">₹${platformCommissions}</div>
                 <p class="text-muted small m-0">Platform Commissions</p>
             </div>
         </div>
-        <div class="col-6 col-md-3 mx-auto">
+        <div class="col-6 col-md-3">
             <div class="stat-card">
                 <div class="stat-icon" style="background-color: #f3e8ff; color: #a855f7;"><i class="bi bi-person-fill-check"></i></div>
-                <div class="fs-4 fw-bold">$${subscriptionFees}</div>
+                <div class="fs-4 fw-bold">₹${subscriptionFees}</div>
                 <p class="text-muted small m-0">Investor Subscriptions</p>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon" style="background-color: #ffedd5; color: #ea580c;"><i class="bi bi-bank"></i></div>
+                <div class="fs-4 fw-bold">₹${adminRetainedAmount}</div>
+                <p class="text-muted small m-0">Admin Retained Funds</p>
             </div>
         </div>
     </div>
@@ -137,7 +144,9 @@
                         <th>Proposal Title</th>
                         <th>Investor</th>
                         <th>Entrepreneur</th>
-                        <th>Total Invested</th>
+                        <th>Gateway Total</th>
+                        <th>Released</th>
+                        <th>Retained</th>
                         <th>Commission Fee (2%)</th>
                         <th>Status</th>
                     </tr>
@@ -148,8 +157,28 @@
                             <td><strong>${inv.proposal.title}</strong></td>
                             <td>${inv.investor.fullName}</td>
                             <td>${inv.proposal.entrepreneur.fullName}</td>
-                            <td>$${inv.amount}</td>
-                            <td><strong class="text-success">$${inv.amount * 0.02}</strong></td>
+                            <td>₹${inv.amount}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${inv.status == 'COMPLETED'}">
+                                        ₹${inv.releasedAmount != null ? inv.releasedAmount : inv.amount}
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="text-muted">₹0 (Pending)</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${inv.status == 'COMPLETED'}">
+                                        ₹${inv.adminAmount != null ? inv.adminAmount : 0.0}
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="text-muted">₹0 (Pending)</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td><strong class="text-success">₹${(inv.releasedAmount != null ? inv.releasedAmount : inv.amount) * 0.02}</strong></td>
                             <td>
                                 <c:choose>
                                     <c:when test="${inv.commissionPaid}">
@@ -164,7 +193,7 @@
                     </c:forEach>
                     <c:if test="${empty investments}">
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-4">No completed investments recorded.</td>
+                            <td colspan="8" class="text-center text-muted py-4">No completed investments recorded.</td>
                         </tr>
                     </c:if>
                 </tbody>

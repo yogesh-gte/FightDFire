@@ -328,12 +328,32 @@
                style="display:block; background:#f9f0ff; color:#7C2D5E; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600; margin-bottom:10px;">
                 <i class="bi bi-ticket-perforated-fill"></i> My Tickets
             </a>
-            <a href="${pageContext.request.contextPath}/women-events/organizer/dashboard"
-               style="display:block; background:#f0fdf4; color:#15803d; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600;">
-                <i class="bi bi-calendar-plus-fill"></i> Host an Event
-            </a>
         </c:if>
-        <c:if test="${empty loggedUser}">
+
+        <c:choose>
+            <c:when test="${not empty loggedHost}">
+                <a href="${pageContext.request.contextPath}/women-events/organizer/dashboard"
+                   style="display:block; background:#f0fdf4; color:#15803d; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600; margin-bottom:10px;">
+                    <i class="bi bi-calendar-plus-fill"></i> Organizer Dashboard
+                </a>
+                <a href="${pageContext.request.contextPath}/women-events/host/logout"
+                   style="display:block; background:#fee2e2; color:#ef4444; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600; margin-bottom:10px;">
+                    <i class="bi bi-box-arrow-right"></i> Host Logout
+                </a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/women-events/host/register"
+                   style="display:block; background:#fef3c7; color:#d97706; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600; margin-bottom:10px;">
+                    <i class="bi bi-person-badge-fill"></i> Register as Host
+                </a>
+                <a href="${pageContext.request.contextPath}/women-events/host/login"
+                   style="display:block; background:#f0fdf4; color:#16a34a; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600; margin-bottom:10px;">
+                    <i class="bi bi-box-arrow-in-right"></i> Host Login
+                </a>
+            </c:otherwise>
+        </c:choose>
+
+        <c:if test="${empty loggedUser && empty loggedHost}">
             <a href="${pageContext.request.contextPath}/login"
                style="display:block; background: linear-gradient(135deg, #7C2D5E, #a855f7); color:white; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600;">
                 <i class="bi bi-person-circle me-1"></i> Login to Register
@@ -419,11 +439,12 @@
             <h3>🌺 Host Your Own Event</h3>
             <p>Are you an NGO, college, company, gym, or women entrepreneur? List your event on our platform and reach thousands of women.</p>
             <c:choose>
-                <c:when test="${not empty loggedUser}">
-                    <a href="${pageContext.request.contextPath}/women-events/organizer/create" class="cta-btn">Create Event Now</a>
+                <c:when test="${not empty loggedHost}">
+                    <a href="${pageContext.request.contextPath}/women-events/organizer/dashboard" class="cta-btn">Organizer Dashboard</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/login" class="cta-btn">Login to Host an Event</a>
+                    <a href="${pageContext.request.contextPath}/women-events/host/login" class="cta-btn me-2" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); text-decoration:none;">Host Login</a>
+                    <a href="${pageContext.request.contextPath}/women-events/host/register" class="cta-btn" style="text-decoration:none;">Register to Host</a>
                 </c:otherwise>
             </c:choose>
         </div>

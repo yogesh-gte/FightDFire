@@ -20,6 +20,8 @@ public class Investment {
     private Investor investor;
 
     private Double amount;
+    private Double releasedAmount;
+    private Double adminAmount;
     private String status; // PENDING, COMPLETED
 
     private boolean commissionPaid = false;
@@ -87,5 +89,21 @@ public class Investment {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Double getReleasedAmount() {
+        return releasedAmount;
+    }
+
+    public void setReleasedAmount(Double releasedAmount) {
+        this.releasedAmount = releasedAmount;
+    }
+
+    public Double getAdminAmount() {
+        return adminAmount;
+    }
+
+    public void setAdminAmount(Double adminAmount) {
+        this.adminAmount = adminAmount;
     }
 }

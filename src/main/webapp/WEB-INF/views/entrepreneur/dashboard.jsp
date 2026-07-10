@@ -215,11 +215,11 @@
                         <div>
                             <h5 class="fw-bold text-warning-emphasis"><i class="bi bi-shield-exclamation"></i> Business Profile Unverified</h5>
                             <p class="text-secondary mb-md-0" style="font-size:0.95rem;">
-                                Pay the one-time **Business Verification Fee of $49** to get verified by the FightDFire Admin. Verified profiles get 5x more visibility from banks, angels, and NGOs.
+                                Pay the one-time **Business Verification Fee of ₹499** to get verified by the FightDFire Admin. Verified profiles get 5x more visibility from banks, angels, and NGOs.
                             </p>
                         </div>
-                        <button class="btn btn-warning fw-bold px-4 py-2 mt-3 mt-md-0 rounded-pill shadow-sm" onclick="triggerCheckout('verification', null, 49.00, '${pageContext.request.contextPath}/entrepreneur/pay-verification')">
-                            Verify Now ($49)
+                        <button class="btn btn-warning fw-bold px-4 py-2 mt-3 mt-md-0 rounded-pill shadow-sm" onclick="triggerCheckout('verification', null, 499.00, '${pageContext.request.contextPath}/entrepreneur/pay-verification')">
+                            Verify Now (₹499)
                         </button>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                         <div class="stat-icon" style="background-color: #e0f2fe; color: #0284c7;">
                             <i class="bi bi-cash-stack"></i>
                         </div>
-                        <div class="fs-3 fw-bold">$${totalRequested}</div>
+                        <div class="fs-3 fw-bold">₹${totalRequested}</div>
                         <p class="text-muted m-0 small">Total Funding Requested</p>
                     </div>
                 </div>
@@ -241,7 +241,7 @@
                         <div class="stat-icon" style="background-color: #dcfce7; color: #16a34a;">
                             <i class="bi bi-graph-up-arrow"></i>
                         </div>
-                        <div class="fs-3 fw-bold">$${totalRaised}</div>
+                        <div class="fs-3 fw-bold">₹${totalRaised}</div>
                         <p class="text-muted m-0 small">Total Raised from Investors</p>
                     </div>
                 </div>
@@ -250,7 +250,7 @@
                         <div class="stat-icon" style="background-color: #fef2f2; color: #ef4444;">
                             <i class="bi bi-clock-history"></i>
                         </div>
-                        <div class="fs-3 fw-bold">$${remaining > 0 ? remaining : 0}</div>
+                        <div class="fs-3 fw-bold">₹${remaining > 0 ? remaining : 0}</div>
                         <p class="text-muted m-0 small">Remaining Funding Needed</p>
                     </div>
                 </div>
@@ -282,8 +282,8 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-between small text-muted mb-1" style="font-size:0.75rem;">
-                                                    <span>$${proposal.amountRaised} raised</span>
-                                                    <span>$${proposal.fundingNeeded} target</span>
+                                                    <span>₹${proposal.amountRaised} raised</span>
+                                                    <span>₹${proposal.fundingNeeded} target</span>
                                                 </div>
                                                 <div class="progress" style="height:6px;">
                                                     <div class="progress-bar bg-success" role="progressbar" style="width: ${(proposal.amountRaised/proposal.fundingNeeded)*100}%;"></div>
@@ -305,13 +305,13 @@
                                             <td>
                                                 <div class="d-flex flex-column gap-1">
                                                     <c:if test="${not proposal.premium}">
-                                                        <button class="btn btn-outline-secondary btn-xs rounded-pill" style="font-size:0.75rem; padding: 2px 8px;" onclick="triggerCheckout('premium', ${proposal.id}, 99.00, '${pageContext.request.contextPath}/entrepreneur/proposal/premium/${proposal.id}')">
-                                                            Premium ($99)
+                                                        <button class="btn btn-outline-secondary btn-xs rounded-pill" style="font-size:0.75rem; padding: 2px 8px;" onclick="triggerCheckout('premium', ${proposal.id}, 999.00, '${pageContext.request.contextPath}/entrepreneur/proposal/premium/${proposal.id}')">
+                                                            Premium (₹999)
                                                         </button>
                                                     </c:if>
                                                     <c:if test="${not proposal.featured}">
-                                                        <button class="btn btn-outline-secondary btn-xs rounded-pill" style="font-size:0.75rem; padding: 2px 8px;" onclick="triggerCheckout('featured', ${proposal.id}, 99.00, '${pageContext.request.contextPath}/entrepreneur/proposal/featured/${proposal.id}')">
-                                                            Feature ($99)
+                                                        <button class="btn btn-outline-secondary btn-xs rounded-pill" style="font-size:0.75rem; padding: 2px 8px;" onclick="triggerCheckout('featured', ${proposal.id}, 999.00, '${pageContext.request.contextPath}/entrepreneur/proposal/featured/${proposal.id}')">
+                                                            Feature (₹999)
                                                         </button>
                                                     </c:if>
                                                     <c:if test="${proposal.premium && proposal.featured}">
@@ -454,8 +454,16 @@
                             <c:forEach var="inv" items="${investments}">
                                 <div class="border-bottom py-2 d-flex justify-content-between align-items-center" style="font-size:0.85rem;">
                                     <div>
-                                        <div class="fw-bold">$${inv.amount} Investment</div>
-                                        <div class="text-muted small">Fee (2%): **$${inv.amount * 0.02}**</div>
+                                        <div class="fw-bold">₹${inv.amount} Investment (${inv.status})</div>
+                                        <c:if test="${inv.status == 'COMPLETED'}">
+                                            <div class="text-muted small" style="font-size: 0.75rem;">
+                                                Released: ₹${inv.releasedAmount != null ? inv.releasedAmount : inv.amount} 
+                                                <c:if test="${inv.adminAmount != null && inv.adminAmount > 0}">
+                                                    (Retained: ₹${inv.adminAmount})
+                                                </c:if>
+                                            </div>
+                                        </c:if>
+                                        <div class="text-muted small">Fee (2%): **₹${(inv.releasedAmount != null ? inv.releasedAmount : inv.amount) * 0.02}**</div>
                                     </div>
                                     <div>
                                         <c:choose>
@@ -463,7 +471,7 @@
                                                 <span class="badge bg-success-subtle text-success rounded-pill px-2">Paid</span>
                                             </c:when>
                                             <c:otherwise>
-                                                <button class="btn btn-outline-danger btn-xs rounded-pill" style="font-size:0.75rem; padding: 2px 8px;" onclick="triggerCheckout('commission', ${inv.id}, ${inv.amount * 0.02}, '${pageContext.request.contextPath}/entrepreneur/commission/pay/${inv.id}')">
+                                                <button class="btn btn-outline-danger btn-xs rounded-pill" style="font-size:0.75rem; padding: 2px 8px;" onclick="triggerCheckout('commission', ${inv.id}, ${(inv.releasedAmount != null ? inv.releasedAmount : inv.amount) * 0.02}, '${pageContext.request.contextPath}/entrepreneur/commission/pay/${inv.id}')">
                                                     Pay
                                                 </button>
                                             </c:otherwise>
@@ -502,7 +510,7 @@
             <div class="modal-body p-4 text-center">
                 <div class="mb-4">
                     <p class="text-muted mb-1 text-uppercase fw-semibold" style="font-size: 11px;" id="checkoutTypeLabel">Service Payment</p>
-                    <h3 class="fw-bold" style="color:var(--navy-dark);" id="checkoutAmountLabel">$0.00</h3>
+                    <h3 class="fw-bold" style="color:var(--navy-dark);" id="checkoutAmountLabel">₹0.00</h3>
                 </div>
 
                 <!-- Simulation content -->
@@ -558,7 +566,7 @@
 
         // Update modal UI
         document.getElementById('checkoutTypeLabel').innerText = type.toUpperCase() + " PAYMENT";
-        document.getElementById('checkoutAmountLabel').innerText = "$" + amount.toFixed(2);
+        document.getElementById('checkoutAmountLabel').innerText = "₹" + amount.toFixed(2);
 
         // Reset Modal states
         document.getElementById('checkoutFormContent').style.display = 'block';

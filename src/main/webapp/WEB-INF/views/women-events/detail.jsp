@@ -307,11 +307,21 @@
                         <button class="reg-btn" disabled>Event Has Passed</button>
                     </c:when>
                     <c:otherwise>
-                        <form action="${pageContext.request.contextPath}/women-events/${event.id}/register" method="post">
-                            <button type="submit" class="reg-btn">
-                                <i class="bi bi-ticket-perforated-fill me-2"></i>Register Now — ${event.free ? 'FREE' : '₹'.concat(event.entryFee.toString())}
-                            </button>
-                        </form>
+                        <c:choose>
+                            <c:when test="${event.free}">
+                                <form action="${pageContext.request.contextPath}/women-events/${event.id}/register" method="post">
+                                    <button type="submit" class="reg-btn">
+                                        <i class="bi bi-ticket-perforated-fill me-2"></i>Register Now — FREE
+                                    </button>
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <button type="button" class="reg-btn" onclick="openEventCheckoutModal()">
+                                    <i class="bi bi-ticket-perforated-fill me-2"></i>Register Now — ₹${event.entryFee}
+                                </button>
+                                <form id="eventRegisterForm" action="${pageContext.request.contextPath}/women-events/${event.id}/register" method="post" style="display:none;"></form>
+                            </c:otherwise>
+                        </c:choose>
                     </c:otherwise>
                 </c:choose>
             </div>
@@ -348,6 +358,71 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
+
+<!-- Event Paid Booking Checkout Modal -->
+<div class="modal fade" id="eventCheckoutModal" tabindex="-1" aria-hidden="true" style="backdrop-filter: blur(8px);">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 450px;">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; background: #ffffff;">
+            <!-- Modal Header -->
+            <div class="modal-header border-0 pb-0" style="padding: 24px 24px 0;">
+                <div class="d-flex align-items-center">
+                    <div style="background: #fdf2f8; color: #db2777; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                        <i class="bi bi-wallet2"></i>
+                    </div>
+                    <div class="ms-3">
+                        <h5 class="modal-title fw-bold" style="color: #1e1b4b; font-size: 1.15rem; font-family:'Outfit',sans-serif;">Razorpay Secure Gateway</h5>
+                        <p class="text-muted small mb-0" style="font-size:0.75rem;">Simulated Test Transaction</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="box-shadow: none;"></button>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body py-4" style="padding: 24px;">
+                <div class="p-3 mb-4" style="background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0;">
+                    <div class="d-flex justify-content-between mb-2 small text-muted">
+                        <span>Event Ticket</span>
+                        <span>₹${event.entryFee}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2 small text-muted">
+                        <span>Internet Fee</span>
+                        <span class="text-success">₹0.00</span>
+                    </div>
+                    <hr style="border-style: dashed; margin: 12px 0;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-semibold" style="color: #1e1b4b;">Total Payout</span>
+                        <span class="fs-5 fw-bold text-primary" style="font-family:'Outfit',sans-serif;">₹${event.entryFee}</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label small text-muted mb-1">Select Payment Mode</label>
+                    <div class="d-grid gap-2">
+                        <div class="border rounded-3 p-2 d-flex align-items-center bg-white" style="font-size: 0.88rem; border-color: #cbd5e1;">
+                            <input type="radio" name="eventPayMode" value="upi" checked class="me-2">
+                            <i class="bi bi-qr-code text-primary me-2"></i> UPI (PhonePe / GPay / Paytm)
+                        </div>
+                        <div class="border rounded-3 p-2 d-flex align-items-center bg-white" style="font-size: 0.88rem; border-color: #cbd5e1;">
+                            <input type="radio" name="eventPayMode" value="card" class="me-2">
+                            <i class="bi bi-credit-card text-success me-2"></i> Credit or Debit Card
+                        </div>
+                    </div>
+                </div>
+                <div id="eventOtpSection" style="display:none;" class="mt-3">
+                    <label class="form-label small text-danger mb-1">Enter Simulated OTP (123456)</label>
+                    <input type="text" id="eventOtpInput" class="form-control text-center fs-5 fw-bold" maxlength="6" placeholder="------" style="letter-spacing: 5px;">
+                    <div class="text-danger small mt-1 text-center" id="eventOtpError" style="display:none;">Invalid OTP! Please enter 123456.</div>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer border-0 pt-0" style="padding: 0 24px 24px;">
+                <button type="button" class="btn btn-outline-secondary w-100 mb-2 rounded-pill small" data-bs-dismiss="modal">Cancel Payout</button>
+                <button type="button" class="btn btn-primary w-100 rounded-pill fw-semibold py-2" id="eventPayBtn" onclick="processEventBookingPayment()" style="background: linear-gradient(135deg, #7C2D5E, #a855f7); border: none;">
+                    Pay ₹${event.entryFee} Securely
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
     setTimeout(() => {
@@ -356,6 +431,28 @@
             setTimeout(()=>el.remove(),500);
         });
     }, 4000);
+
+    function openEventCheckoutModal() {
+        var modal = new bootstrap.Modal(document.getElementById('eventCheckoutModal'));
+        modal.show();
+    }
+
+    var eventPaymentStep = 1;
+    function processEventBookingPayment() {
+        if (eventPaymentStep === 1) {
+            document.getElementById('eventOtpSection').style.display = 'block';
+            document.getElementById('eventPayBtn').textContent = 'Submit OTP & Verify';
+            eventPaymentStep = 2;
+        } else if (eventPaymentStep === 2) {
+            var otp = document.getElementById('eventOtpInput').value;
+            if (otp === '123456') {
+                document.getElementById('eventOtpError').style.display = 'none';
+                document.getElementById('eventRegisterForm').submit();
+            } else {
+                document.getElementById('eventOtpError').style.display = 'block';
+            }
+        }
+    }
 </script>
 </body>
 </html>

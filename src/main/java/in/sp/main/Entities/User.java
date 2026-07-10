@@ -320,6 +320,61 @@ public class User {
         this.banned = banned;
     }
 
+    private boolean eventHost = false;
+    private String eventHostStatus = "NONE"; // NONE, PENDING, APPROVED, REJECTED
+    private String organizerName;
+    private String organizerType;
+    private String hostContact;
+    private String hostBio;
+
+    public boolean isEventHost() {
+        return eventHost;
+    }
+
+    public void setEventHost(boolean eventHost) {
+        this.eventHost = eventHost;
+    }
+
+    public String getEventHostStatus() {
+        return eventHostStatus;
+    }
+
+    public void setEventHostStatus(String eventHostStatus) {
+        this.eventHostStatus = eventHostStatus;
+    }
+
+    public String getOrganizerName() {
+        return organizerName;
+    }
+
+    public void setOrganizerName(String organizerName) {
+        this.organizerName = organizerName;
+    }
+
+    public String getOrganizerType() {
+        return organizerType;
+    }
+
+    public void setOrganizerType(String organizerType) {
+        this.organizerType = organizerType;
+    }
+
+    public String getHostContact() {
+        return hostContact;
+    }
+
+    public void setHostContact(String hostContact) {
+        this.hostContact = hostContact;
+    }
+
+    public String getHostBio() {
+        return hostBio;
+    }
+
+    public void setHostBio(String hostBio) {
+        this.hostBio = hostBio;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

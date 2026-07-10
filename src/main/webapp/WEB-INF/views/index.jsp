@@ -719,27 +719,239 @@
     
     .copyright { text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; margin-top: 50px; font-size: 14px; color: #64748b; }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero-carousel-section .carousel-item .hero-title { font-size: 2.4rem; }
-      .hero-carousel-section .carousel-item { height: 80vh; }
-      .sos-circle-center { width: 120px; height: 120px; }
-      .sos-circle-center h3 { font-size: 22px; }
-      .brand-logo { height: 55px; }
-      .nav-link { font-size: 0.85rem; padding: 6px 12px; }
-      .btn-sos { padding: 6px 16px; font-size: 0.75rem; }
-      .how-it-works-image img { height: 350px; }
-      .step-wrapper { padding-left: 60px; }
-      .step-icon-circle { width: 42px; height: 42px; font-size: 1rem; }
-      .how-it-works-section .section-title-custom { font-size: 2rem; }
-      .awareness-img { height: 250px; }
-      .awareness-text { padding: 15px; }
-      .awareness-text h3 { font-size: 1.6rem; }
-      .feature-module-card { padding: 25px 20px; }
+    /* ===== MOBILE NAV OFFCANVAS ===== */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      font-size: 1.4rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      align-items: center;
+      justify-content: center;
     }
-    @media (max-width: 992px) {
+    .mobile-menu-toggle:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1998;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .mobile-nav-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+    .mobile-nav-drawer {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 300px;
+      max-width: 85vw;
+      height: 100vh;
+      background: white;
+      z-index: 1999;
+      transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+      box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+    }
+    .mobile-nav-drawer.active {
+      right: 0;
+    }
+    .mobile-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .mobile-nav-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-gray);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    .mobile-nav-close:hover {
+      background: #fee2e2;
+      color: var(--primary);
+    }
+    .mobile-nav-links {
+      padding: 15px 0;
+    }
+    .mobile-nav-links a {
+      display: block;
+      padding: 14px 25px;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      border-left: 3px solid transparent;
+      transition: all 0.3s;
+    }
+    .mobile-nav-links a:hover, .mobile-nav-links a.active {
+      background: rgba(244, 63, 94, 0.05);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+    .mobile-nav-links a i {
+      width: 24px;
+      margin-right: 10px;
+      font-size: 0.95rem;
+    }
+    .mobile-nav-actions {
+      padding: 20px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mobile-nav-actions .btn-sos {
+      text-align: center;
+      text-decoration: none;
+      justify-content: center;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1199px) {
+      .nav-link { font-size: 0.85rem; margin: 0 4px; padding: 8px 12px; }
+      .btn-outline-custom, .btn-primary-custom { padding: 7px 18px; font-size: 0.82rem; }
+    }
+
+    @media (max-width: 991px) {
+      .mobile-menu-toggle { display: flex; }
+      .header-nav .container { padding: 0 15px; }
+      .brand-logo { height: 55px; }
       .how-it-works-image { margin-top: 40px; }
       .awareness-block { margin-bottom: 50px; }
+      .cta-section { padding: 50px 30px; flex-direction: column; text-align: center; }
+      .hero-carousel-section .carousel-item .hero-title { font-size: 3rem; }
+      .hero-carousel-section .carousel-item .hero-desc { font-size: 1rem; }
+      .how-it-works-section .section-title-custom { font-size: 2.2rem; }
+      .stats-banner { border-radius: 16px; margin: 40px auto; }
+      .stat-item { justify-content: flex-start; padding: 10px 20px; }
+      .stat-item .stat-details { text-align: left; }
+      .awareness-section { padding: 70px 0; }
+      .features-section { padding: 70px 0; }
+      .how-it-works-section { padding: 70px 0; }
+      .emergency-section { padding: 70px 0; }
+      .map-section { padding: 70px 0; }
+      .how-it-works-image img { height: 400px; }
+      .footer { padding: 60px 0 25px; }
+    }
+
+    @media (max-width: 767px) {
+      .hero-carousel-section { min-height: 80vh; }
+      .hero-carousel-section .carousel-item { height: 80vh; }
+      .hero-carousel-section .carousel-item .hero-title { font-size: 2.2rem; }
+      .hero-carousel-section .carousel-item .hero-desc { font-size: 0.95rem; line-height: 1.6; padding: 0 10px; }
+      .hero-carousel-section .carousel-item .hero-badge { font-size: 0.75rem; padding: 6px 20px; }
+      .hero-carousel-section .carousel-item .hero-content { padding: 15px; }
+      .hero-carousel-section .carousel-control-prev,
+      .hero-carousel-section .carousel-control-next { width: 40px; height: 40px; }
+      .hero-carousel-section .carousel-indicators { bottom: 20px; }
+      .hero-carousel-section .carousel-indicators button { width: 10px; height: 10px; margin: 0 6px; }
+      .sos-circle-center { width: 110px; height: 110px; }
+      .sos-circle-center h3 { font-size: 22px; }
+      .sos-circle-center span { font-size: 10px; }
+      .brand-logo { height: 50px; }
+      .btn-sos { padding: 6px 16px; font-size: 0.75rem; }
+      .btn-outline-custom, .btn-primary-custom { padding: 6px 16px; font-size: 0.8rem; }
+      .awareness-img { height: 280px; }
+      .awareness-text { padding: 20px 5px; }
+      .awareness-text h3 { font-size: 1.6rem; }
+      .awareness-text p { font-size: 0.95rem; }
+      .feature-module-card { padding: 25px 20px; }
+      .section-title { font-size: 1.6rem; margin-bottom: 35px; }
+      .how-it-works-image img { height: 300px; }
+      .step-wrapper { padding-left: 60px; margin-bottom: 25px; }
+      .step-icon-circle { width: 42px; height: 42px; font-size: 1rem; }
+      .step-wrapper h4 { font-size: 1.1rem; }
+      .step-wrapper p { font-size: 0.88rem; }
+      .how-it-works-section .section-title-custom { font-size: 1.8rem; }
+      .how-it-works-section .section-sub { font-size: 0.95rem; }
+      .how-it-works-image .image-overlay { padding: 25px; }
+      .how-it-works-image .image-overlay h3 { font-size: 1.2rem; }
+      .emergency-card { padding: 18px; gap: 15px; }
+      .em-icon { width: 55px; height: 55px; font-size: 22px; }
+      .em-details h3 { font-size: 22px; }
+      .stats-banner { padding: 30px 0; border-radius: 12px; margin: 30px 15px; }
+      .stat-icon { font-size: 28px; }
+      .stat-details h3 { font-size: 24px; }
+      .stat-details p { font-size: 11px; }
+      .stat-item { gap: 10px; border-right: none !important; padding: 12px 20px; }
+      .cta-section { padding: 40px 20px; border-radius: 20px; margin: 60px 15px; }
+      .cta-section img { height: 150px !important; }
+      .app-btns img { height: 38px !important; margin-right: 8px; }
+      .footer h5 { font-size: 16px; margin-bottom: 18px; }
+      .copyright { font-size: 12px; margin-top: 30px; padding-top: 20px; }
+      .map-container { height: 280px !important; }
+      .testimonial-card { padding: 25px 20px; }
+      .user-info img { width: 45px; height: 45px; }
+    }
+
+    @media (max-width: 575px) {
+      .hero-carousel-section { min-height: 75vh; }
+      .hero-carousel-section .carousel-item { height: 75vh; }
+      .hero-carousel-section .carousel-item .hero-title { font-size: 1.8rem; }
+      .hero-carousel-section .carousel-item .hero-desc { font-size: 0.88rem; }
+      .hero-carousel-section .carousel-item .hero-content { max-width: 100%; }
+      .sos-circle-center { width: 100px; height: 100px; }
+      .sos-circle-center h3 { font-size: 20px; }
+      .brand-logo { height: 45px; }
+      .header-nav { padding: 6px 0; }
+      .feature-module-card { padding: 22px 16px; }
+      .feature-module-icon { width: 60px; height: 60px; font-size: 24px; }
+      .feature-module-card h4 { font-size: 1.05rem; }
+      .awareness-section { padding: 50px 0; }
+      .awareness-img { height: 220px; }
+      .awareness-text h3 { font-size: 1.4rem; }
+      .features-section { padding: 50px 0; }
+      .how-it-works-section { padding: 50px 0; }
+      .emergency-section { padding: 50px 0; }
+      .map-section { padding: 50px 0; }
+      .step-wrapper { padding-left: 50px; }
+      .step-icon-circle { width: 36px; height: 36px; font-size: 0.85rem; }
+      .step-wrapper h4 { font-size: 1rem; }
+      .stats-banner .row { flex-direction: column; }
+      .stat-item { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 15px 25px; }
+      .stat-item:last-child { border-bottom: none; }
+      .cta-section { padding: 30px 15px; margin: 40px 10px; }
+      .app-btns { flex-direction: column; align-items: center; }
+      .app-btns img { height: 42px !important; margin: 0; }
+      .footer { padding: 40px 0 20px; }
+      .social-links a { width: 36px; height: 36px; margin-right: 8px; }
+      .newsletter-input { padding: 10px 15px; }
+      .newsletter-btn { padding: 10px; }
+      .map-container { height: 220px !important; border-width: 2px !important; }
+      .emergency-card { flex-direction: column; text-align: center; }
+      .em-details { text-align: center; }
+    }
+
+    @media (max-width: 400px) {
+      .hero-carousel-section .carousel-item .hero-title { font-size: 1.5rem; }
+      .hero-carousel-section .carousel-item .hero-desc { font-size: 0.82rem; }
+      .sos-circle-center { width: 85px; height: 85px; }
+      .sos-circle-center h3 { font-size: 18px; }
+      .brand-logo { height: 40px; }
+      .section-title { font-size: 1.4rem; }
+      .how-it-works-section .section-title-custom { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -754,14 +966,19 @@
       
       <nav class="d-none d-lg-flex align-items-center">
         <a href="#hero" class="nav-link active">Home</a>
-        <a href="${pageContext.request.contextPath}/features.jsp" class="nav-link">Features</a>
-        <a href="${pageContext.request.contextPath}/women-events" class="nav-link"> Events</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="${pageContext.request.contextPath}/women-events" class="nav-link">Events </a>
+       
+       
         <a href="#tips" class="nav-link"> Safety</a>
         <a href="#resources" class="nav-link">Resources</a>
         <a href="#emergency" class="nav-link"> Emergency</a>
         <a href="#community" class="nav-link"> Community</a>
         <a href="#contact" class="nav-link"> Contact</a>
       </nav>
+      <button class="mobile-menu-toggle d-lg-none" onclick="openMobileNav()" aria-label="Open Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
 
       <div class="d-flex align-items-center gap-2">
         <c:choose>
@@ -777,14 +994,14 @@
           </c:when>
           <c:otherwise>
             <div class="dropdown d-none d-md-inline-block">
-             
-            </div>
+
+           
             <div class="dropdown d-none d-md-inline-block">
               <button class="btn-primary-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-user-plus me-1"></i> Join Us</button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register"><i class="fa-regular fa-user" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Join as Member</a></li>
+<li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register"><i class="fa-regular fa-user" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Join as Member</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register"><i class="fa-solid fa-stethoscope" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Women Doctor</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre"><i class="fa-solid fa-child-reaching" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Self-Defense Trainer</a></li>
+               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre"><i class="fa-solid fa-child-reaching" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Self-Defense Trainer</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register"><i class="fa-solid fa-spa" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Beauty and wellness</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register"><i class="fa-solid fa-scissors" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Hair Stylist</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register"><i class="fa-regular fa-handshake" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Service Partner</a></li>
@@ -792,7 +1009,7 @@
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-jobs/jobs/register"><i class="fa-solid fa-briefcase" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> women jobs</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register"><i class="fa-regular fa-lightbulb" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Entrepreneur</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register"><i class="fa-solid fa-chart-line" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Investor</a></li>
-              </ul>
+
             </div>
           </c:otherwise>
         </c:choose>
@@ -800,6 +1017,36 @@
       </div>
     </div>
   </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav-drawer" id="mobileNavDrawer">
+    <div class="mobile-nav-header">
+      <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/assets/img/fightdfear-logo.jpg" alt="Fight D Fear" style="height: 45px; border-radius: 8px;"></a>
+      <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Close Menu"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="#hero" class="active" onclick="closeMobileNav()"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="#features" onclick="closeMobileNav()"><i class="fa-solid fa-star"></i> Features</a>
+      <a href="${pageContext.request.contextPath}/women-events" onclick="closeMobileNav()"><i class="fa-solid fa-calendar"></i> Events 🌸</a>
+      <a href="#awareness" onclick="closeMobileNav()"><i class="fa-solid fa-hand-fist"></i> Awareness</a>
+      <a href="#emergency" onclick="closeMobileNav()"><i class="fa-solid fa-phone-volume"></i> Emergency</a>
+      <a href="#howitworks" onclick="closeMobileNav()"><i class="fa-solid fa-circle-check"></i> How It Works</a>
+      <a href="#contact" onclick="closeMobileNav()"><i class="fa-solid fa-envelope"></i> Contact</a>
+    </div>
+    <div class="mobile-nav-actions">
+      <c:choose>
+        <c:when test="${not empty user || not empty loggedProvider || not empty loggedCentre || not empty loggedDoctor || not empty loggedSalon || not empty loggedStylist || not empty loggedSeller || not empty loggedEntrepreneur || not empty loggedInvestor || not empty admin}">
+          <a href="${dashboardUrl}" class="btn-outline-custom" style="text-align:center; text-decoration:none;"><i class="fa-solid fa-gauge-high me-1"></i> Dashboard</a>
+        </c:when>
+        <c:otherwise>
+          <a href="${pageContext.request.contextPath}/login" class="btn-outline-custom" style="text-align:center; text-decoration:none;"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</a>
+          <a href="${pageContext.request.contextPath}/users/register" class="btn-primary-custom" style="text-align:center; text-decoration:none;"><i class="fa-solid fa-user-plus me-1"></i> Register</a>
+        </c:otherwise>
+      </c:choose>
+      <a href="${pageContext.request.contextPath}/sos/dashboard" class="btn-sos" style="text-decoration:none;"><i class="fa-solid fa-phone"></i> SOS Emergency</a>
+    </div>
+  </div>
 
   <!-- ===== HERO CAROUSEL ===== -->
   <section id="hero" class="hero-carousel-section">
@@ -1300,6 +1547,18 @@
         carousel.cycle();
       }
     });
+
+    // Mobile Navigation
+    function openMobileNav() {
+      document.getElementById('mobileNavDrawer').classList.add('active');
+      document.getElementById('mobileNavOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+      document.getElementById('mobileNavDrawer').classList.remove('active');
+      document.getElementById('mobileNavOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
   </script>
 </body>
 </html>

@@ -60,6 +60,18 @@
         .flash-alert { position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 380px;
             border-radius: 14px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); animation: slideIn 0.4s ease; }
         @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        .nav-pills .nav-link.active {
+            background-color: #7C2D5E !important;
+            color: white !important;
+            border-color: #7C2D5E !important;
+        }
+        .nav-pills .nav-link:not(.active) {
+            background-color: white;
+            color: #555;
+            border: 1.5px solid #e5e7eb;
+        }
+        .s-NONE { background: #e2e8f0; color: #475569; }
     </style>
 </head>
 <body>
@@ -133,87 +145,174 @@
         </div>
     </div>
 
-    <!-- Events Table -->
-    <div class="panel">
-        <div style="padding: 20px 20px 10px; border-bottom: 1px solid #f5f0f8;">
-            <h6 style="color:#7C2D5E; font-weight:700; display:flex; align-items:center; gap:8px; margin:0;">
-                <i class="bi bi-table"></i>All Events
-            </h6>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Event</th>
-                        <th>Category</th>
-                        <th>Date</th>
-                        <th>City</th>
-                        <th>Organizer</th>
-                        <th>Fee</th>
-                        <th>Featured</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="ev" items="${allEvents}">
-                        <tr>
-                            <td>
-                                <div style="font-weight:700; max-width:180px;">${ev.name}</div>
-                                <div style="font-size:0.75rem; color:#888;">ID: ${ev.id}</div>
-                            </td>
-                            <td><span style="font-size:0.78rem; color:#7C2D5E; font-weight:600;">${ev.category.displayName}</span></td>
-                            <td style="white-space:nowrap; font-size:0.82rem;">${ev.eventDate}</td>
-                            <td>${ev.city}</td>
-                            <td>
-                                <div style="font-weight:600; font-size:0.85rem;">${ev.organizerName}</div>
-                                <div style="font-size:0.75rem; color:#aaa;">${ev.organizerType}</div>
-                            </td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${ev.free}"><span style="color:#166534; font-weight:700;">FREE</span></c:when>
-                                    <c:otherwise><span style="color:#c2410c; font-weight:700;">₹${ev.entryFee}</span></c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td class="text-center">
-                                <c:choose>
-                                    <c:when test="${ev.featured}"><i class="bi bi-star-fill" style="color:#f59e0b; font-size:1.1rem;"></i></c:when>
-                                    <c:otherwise><i class="bi bi-star" style="color:#d1d5db;"></i></c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td><span class="status-pill s-${ev.status}">${ev.status}</span></td>
-                            <td>
-                                <div class="d-flex gap-1 flex-wrap">
-                                    <a href="${pageContext.request.contextPath}/women-events/${ev.id}" target="_blank" class="btn btn-outline-secondary btn-sm rounded-pill" style="font-size:0.75rem;">View</a>
-
-                                    <c:if test="${ev.status == 'PENDING'}">
-                                        <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/approve" method="post" style="display:inline;">
-                                            <button type="submit" class="btn-approve">✓ Approve</button>
-                                        </form>
-                                        <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/reject" method="post" style="display:inline;">
-                                            <button type="submit" class="btn-reject">✗ Reject</button>
-                                        </form>
-                                    </c:if>
-                                    <c:if test="${ev.status == 'APPROVED'}">
-                                        <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/feature" method="post" style="display:inline;">
-                                            <button type="submit" class="btn-feature">
-                                                <i class="bi bi-star${ev.featured ? '-fill' : ''}"></i>${ev.featured ? 'Unfeature' : 'Feature'}
-                                            </button>
-                                        </form>
-                                    </c:if>
-                                    <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/delete" method="post" style="display:inline;"
-                                          onsubmit="return confirm('Delete this event permanently?')">
-                                        <button type="submit" class="btn-delete"><i class="bi bi-trash-fill"></i></button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    <c:if test="${empty allEvents}">
-                        <tr><td colspan="9" class="text-center text-muted py-5">No events submitted yet.</td></tr>
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-pills mb-4" id="adminEventsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active rounded-pill px-4 me-2" id="events-tab" data-bs-toggle="tab" data-bs-target="#events-content" type="button" role="tab">
+                <i class="bi bi-calendar-event me-2"></i>Events List
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-pill px-4 text-dark" id="hosts-tab" data-bs-toggle="tab" data-bs-target="#hosts-content" type="button" role="tab">
+                <i class="bi bi-person-badge me-2"></i>Host Applications
+                <c:set var="pendingHostsCount" value="0"/>
+                <c:forEach var="host" items="${hostApplications}">
+                    <c:if test="${host.verificationStatus == 'PENDING'}">
+                        <c:set var="pendingHostsCount" value="${pendingHostsCount + 1}"/>
                     </c:if>
-                </tbody>
-            </table>
+                </c:forEach>
+                <c:if test="${pendingHostsCount > 0}">
+                    <span class="badge bg-danger ms-1">${pendingHostsCount}</span>
+                </c:if>
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="adminEventsTabsContent">
+        <!-- Tab 1: Events List -->
+        <div class="tab-pane fade show active" id="events-content" role="tabpanel">
+            <div class="panel">
+                <div style="padding: 20px 20px 10px; border-bottom: 1px solid #f5f0f8;">
+                    <h6 style="color:#7C2D5E; font-weight:700; display:flex; align-items:center; gap:8px; margin:0;">
+                        <i class="bi bi-table"></i>All Events
+                    </h6>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>City</th>
+                                <th>Organizer</th>
+                                <th>Fee</th>
+                                <th>Featured</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="ev" items="${allEvents}">
+                                <tr>
+                                    <td>
+                                        <div style="font-weight:700; max-width:180px;">${ev.name}</div>
+                                        <div style="font-size:0.75rem; color:#888;">ID: ${ev.id}</div>
+                                    </td>
+                                    <td><span style="font-size:0.78rem; color:#7C2D5E; font-weight:600;">${ev.category.displayName}</span></td>
+                                    <td style="white-space:nowrap; font-size:0.82rem;">${ev.eventDate}</td>
+                                    <td>${ev.city}</td>
+                                    <td>
+                                        <div style="font-weight:600; font-size:0.85rem;">${ev.organizerName}</div>
+                                        <div style="font-size:0.75rem; color:#aaa;">${ev.organizerType}</div>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${ev.free}"><span style="color:#166534; font-weight:700;">FREE</span></c:when>
+                                            <c:otherwise><span style="color:#c2410c; font-weight:700;">₹${ev.entryFee}</span></c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="text-center">
+                                        <c:choose>
+                                            <c:when test="${ev.featured}"><i class="bi bi-star-fill" style="color:#f59e0b; font-size:1.1rem;"></i></c:when>
+                                            <c:otherwise><i class="bi bi-star" style="color:#d1d5db;"></i></c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td><span class="status-pill s-${ev.status}">${ev.status}</span></td>
+                                    <td>
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            <a href="${pageContext.request.contextPath}/women-events/${ev.id}" target="_blank" class="btn btn-outline-secondary btn-sm rounded-pill" style="font-size:0.75rem;">View</a>
+
+                                            <c:if test="${ev.status == 'PENDING'}">
+                                                <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/approve" method="post" style="display:inline;">
+                                                    <button type="submit" class="btn-approve">✓ Approve</button>
+                                                </form>
+                                                <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/reject" method="post" style="display:inline;">
+                                                    <button type="submit" class="btn-reject">✗ Reject</button>
+                                                </form>
+                                            </c:if>
+                                            <c:if test="${ev.status == 'APPROVED'}">
+                                                <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/feature" method="post" style="display:inline;">
+                                                    <button type="submit" class="btn-feature">
+                                                        <i class="bi bi-star${ev.featured ? '-fill' : ''}"></i>${ev.featured ? 'Unfeature' : 'Feature'}
+                                                    </button>
+                                                </form>
+                                            </c:if>
+                                            <form action="${pageContext.request.contextPath}/women-events/admin/${ev.id}/delete" method="post" style="display:inline;"
+                                                  onsubmit="return confirm('Delete this event permanently?')">
+                                                <button type="submit" class="btn-delete"><i class="bi bi-trash-fill"></i></button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty allEvents}">
+                                <tr><td colspan="9" class="text-center text-muted py-5">No events submitted yet.</td></tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Host Applications -->
+        <div class="tab-pane fade" id="hosts-content" role="tabpanel">
+            <div class="panel">
+                <div style="padding: 20px 20px 10px; border-bottom: 1px solid #f5f0f8;">
+                    <h6 style="color:#7C2D5E; font-weight:700; display:flex; align-items:center; gap:8px; margin:0;">
+                        <i class="bi bi-people-fill"></i>Event Host Applications
+                    </h6>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Applicant</th>
+                                <th>Organization Name</th>
+                                <th>Organization Type</th>
+                                <th>Contact</th>
+                                <th>Bio / Purpose</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="host" items="${hostApplications}">
+                                <tr>
+                                    <td>
+                                        <div style="font-weight:700;">${host.fullName}</div>
+                                        <div style="font-size:0.75rem; color:#888;">Host ID: ${host.id}</div>
+                                    </td>
+                                    <td><strong>${host.organizerName}</strong></td>
+                                    <td><span style="font-size:0.78rem; color:#7C2D5E; font-weight:600;">${host.organizerType}</span></td>
+                                    <td>${host.hostContact}</td>
+                                    <td>
+                                        <div style="max-width: 250px; font-size: 0.82rem; color: #555; white-space: normal; word-break: break-word;">
+                                            ${host.hostBio}
+                                        </div>
+                                    </td>
+                                    <td><span class="status-pill s-${host.verificationStatus}">${host.verificationStatus}</span></td>
+                                    <td>
+                                        <div class="d-flex gap-1 flex-wrap">
+                                            <c:if test="${host.verificationStatus == 'PENDING'}">
+                                                <form action="${pageContext.request.contextPath}/women-events/admin/host/${host.id}/approve" method="post" style="display:inline;">
+                                                    <button type="submit" class="btn-approve">✓ Approve</button>
+                                                </form>
+                                                <form action="${pageContext.request.contextPath}/women-events/admin/host/${host.id}/reject" method="post" style="display:inline;">
+                                                    <button type="submit" class="btn-reject">✗ Reject</button>
+                                                </form>
+                                            </c:if>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            <c:if test="${empty hostApplications}">
+                                <tr><td colspan="7" class="text-center text-muted py-5">No host applications submitted yet.</td></tr>
+                            </c:if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

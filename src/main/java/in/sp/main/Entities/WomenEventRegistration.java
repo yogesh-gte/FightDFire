@@ -63,4 +63,23 @@ public class WomenEventRegistration {
 
     public boolean isCheckedIn() { return checkedIn; }
     public void setCheckedIn(boolean checkedIn) { this.checkedIn = checkedIn; }
+
+    private boolean paid = false;
+    private Double amountPaid = 0.0;
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public Double getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(Double amountPaid) {
+        this.amountPaid = amountPaid;
+    }
 }

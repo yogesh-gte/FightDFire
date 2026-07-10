@@ -110,6 +110,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </c:if>
+    <c:if test="${not empty error}">
+        <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> ${error}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </c:if>
 
     <!-- Summary Stats Bar -->
     <div class="row g-3 mb-4">
@@ -223,8 +229,8 @@
                                     </td>
                                     <td>${p.entrepreneur.fullName}</td>
                                     <td>
-                                        <strong>$${p.fundingNeeded}</strong>
-                                        <div class="text-muted small">$${p.amountRaised} raised</div>
+                                        <strong>₹${p.fundingNeeded}</strong>
+                                        <div class="text-muted small">₹${p.amountRaised} raised</div>
                                     </td>
                                     <td>
                                         <c:if test="${p.premium}">
@@ -316,7 +322,7 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${e.verificationFeePaid}">
-                                                <span class="badge bg-success-subtle text-success px-2 py-1"><i class="bi bi-credit-card-fill"></i> Paid ($49)</span>
+                                                 <span class="badge bg-success-subtle text-success px-2 py-1"><i class="bi bi-credit-card-fill"></i> Paid (₹499)</span>
                                             </c:when>
                                             <c:otherwise>
                                                 <span class="badge bg-secondary-subtle text-secondary px-2 py-1">Unpaid</span>
@@ -402,7 +408,7 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${i.subscribed}">
-                                                <span class="badge bg-success-subtle text-success px-2 py-1"><i class="bi bi-gem"></i> Premium ($199)</span>
+                                                 <span class="badge bg-success-subtle text-success px-2 py-1"><i class="bi bi-gem"></i> Premium (₹1999)</span>
                                             </c:when>
                                             <c:otherwise>
                                                 <span class="badge bg-secondary-subtle text-secondary px-2 py-1">Basic</span>
@@ -514,6 +520,7 @@
                                 <th>Investor</th>
                                 <th>Funding Amount</th>
                                 <th>Platform Commission</th>
+                                <th>Status / Gateway Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -525,14 +532,37 @@
                                     <td><div class="fw-bold text-navy">${inv.proposal.title}</div></td>
                                     <td>${inv.proposal.entrepreneur.fullName}</td>
                                     <td>${inv.investor.fullName} (${inv.investor.companyName})</td>
-                                    <td><strong class="text-success">$${inv.amount}</strong></td>
+                                    <td><strong class="text-success">₹${inv.amount}</strong></td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${inv.commissionPaid}">
-                                                <span class="badge bg-success-subtle text-success px-2 py-1"><i class="bi bi-check-circle-fill"></i> Paid ($${inv.amount * 0.02})</span>
+                                                <span class="badge bg-success-subtle text-success px-2 py-1"><i class="bi bi-check-circle-fill"></i> Paid (₹${(inv.releasedAmount != null ? inv.releasedAmount : inv.amount) * 0.02})</span>
                                             </c:when>
                                             <c:otherwise>
-                                                <span class="badge bg-danger-subtle text-danger px-2 py-1"><i class="bi bi-exclamation-circle-fill"></i> Pending ($${inv.amount * 0.02})</span>
+                                                <span class="badge bg-danger-subtle text-danger px-2 py-1"><i class="bi bi-exclamation-circle-fill"></i> Pending (₹${(inv.releasedAmount != null ? inv.releasedAmount : inv.amount) * 0.02})</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${inv.status == 'PENDING'}">
+                                                <span class="badge bg-warning text-dark mb-1 d-block text-center" style="max-width: 140px;"><i class="bi bi-hourglass-split"></i> Held in Gateway</span>
+                                                <form action="${pageContext.request.contextPath}/admin/investments/${inv.id}/release" method="post" class="d-flex flex-column gap-1 align-items-center">
+                                                    <div class="input-group input-group-sm" style="max-width: 140px;">
+                                                        <span class="input-group-text px-2" style="font-size:0.75rem; padding: 2px 5px;">₹</span>
+                                                        <input type="number" name="releasedAmount" class="form-control px-2" value="${inv.amount}" min="0" max="${inv.amount}" step="1" required style="font-size:0.75rem; height: 26px; padding: 2px 5px;">
+                                                    </div>
+                                                    <button type="submit" class="btn btn-approve btn-xs w-100" style="font-size:0.75rem; padding: 3px 10px; max-width: 140px;">Release Transfer</button>
+                                                </form>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-success text-white d-block text-center mb-1" style="max-width: 140px;"><i class="bi bi-check-circle-fill"></i> Released</span>
+                                                <div class="small text-muted" style="font-size:0.7rem; line-height: 1.2; text-align: left; max-width: 140px; margin: 0 auto;">
+                                                    Released: <strong>₹${inv.releasedAmount != null ? inv.releasedAmount : inv.amount}</strong><br>
+                                                    <c:if test="${inv.adminAmount != null && inv.adminAmount > 0}">
+                                                        Retained: <strong class="text-danger">₹${inv.adminAmount}</strong>
+                                                    </c:if>
+                                                </div>
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
@@ -682,8 +712,8 @@
                                             <div class="text-muted small">${p.category} | ${p.location}</div>
                                         </div>
                                         <div>
-                                            <span class="badge bg-secondary-subtle text-secondary small">Goal: $${p.fundingNeeded}</span>
-                                            <span class="badge bg-success-subtle text-success small">Raised: $${p.amountRaised}</span>
+                                            <span class="badge bg-secondary-subtle text-secondary small">Goal: ₹${p.fundingNeeded}</span>
+                                            <span class="badge bg-success-subtle text-success small">Raised: ₹${p.amountRaised}</span>
                                         </div>
                                     </li>
                                 </c:if>
@@ -793,7 +823,7 @@
                                     <c:set var="hasInvestments" value="true" />
                                     <li class="list-group-item d-flex justify-content-between align-items-center py-2 border-0 border-bottom">
                                         <div>
-                                            <strong class="text-success">Invested $${inv.amount}</strong>
+                                            <strong class="text-success">Invested ₹${inv.amount}</strong>
                                             <div class="text-muted small">In Pitch: "${inv.proposal.title}" (Entrepreneur: ${inv.proposal.entrepreneur.fullName})</div>
                                         </div>
                                         <div>

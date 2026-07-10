@@ -565,9 +565,10 @@
                 <div class="mb-3">
                     <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
                 </div>
-                <h3 class="fw-bold">Enrollment Submitted!</h3>
-                <p class="text-muted">Your details have been saved. Proceed to payment to finalize your enrollment.</p>
+                <h3 class="fw-bold" id="successModalTitle">Enrollment Submitted!</h3>
+                <p class="text-muted" id="successModalBody">Your details have been saved. Proceed to payment to finalize your enrollment.</p>
                 <button id="proceedPaymentBtn" class="btn btn-danger w-100 py-3 rounded-pill fw-bold">Proceed to Payment</button>
+                <a id="goToDashboardBtn" href="${pageContext.request.contextPath}/users/dashboard" class="btn btn-success w-100 py-3 rounded-pill fw-bold mt-2" style="display:none;">Go to My Dashboard</a>
             </div>
         </div>
     </div>
@@ -730,14 +731,38 @@
                     body: JSON.stringify(payload)
                 });
 
+                if (res.status === 409) {
+                    // Batch is full
+                    alert('⚠️ This batch is full! No more seats are available. Please choose another batch.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-send-fill"></i> Submit Enrollment';
+                    return;
+                }
+
                 if (res.ok) {
                     const data = await res.json();
-                    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                    successModal.show();
-                    
-                    document.getElementById('proceedPaymentBtn').onclick = () => {
-                        initiateRazorpay(data.enrollmentId, payload.monthlyFee);
-                    };
+
+                    if (data.free === true) {
+                        // FREE BATCH: skip Razorpay, show success directly
+                        document.getElementById('successModalTitle').innerText = '🎉 Enrollment Confirmed!';
+                        document.getElementById('successModalBody').innerText = 'You have been enrolled for free! Your training starts soon. Check your dashboard for updates.';
+                        document.getElementById('proceedPaymentBtn').style.display = 'none';
+                        document.getElementById('goToDashboardBtn').style.display = 'block';
+                        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                        successModal.show();
+                    } else {
+                        // PAID BATCH: open Razorpay
+                        document.getElementById('successModalTitle').innerText = 'Enrollment Submitted!';
+                        document.getElementById('successModalBody').innerText = 'Your details have been saved. Proceed to payment to finalize your enrollment.';
+                        document.getElementById('proceedPaymentBtn').style.display = 'block';
+                        document.getElementById('goToDashboardBtn').style.display = 'none';
+                        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                        successModal.show();
+
+                        document.getElementById('proceedPaymentBtn').onclick = () => {
+                            initiateRazorpay(data.enrollmentId, payload.monthlyFee);
+                        };
+                    }
                 } else {
                     const err = await res.text();
                     alert("Error: " + err);

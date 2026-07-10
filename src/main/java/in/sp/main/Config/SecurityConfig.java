@@ -67,6 +67,7 @@ public class SecurityConfig {
             "/investor/register/**",
             "/women-events",
             "/women-events/*",
+            "/women-events/host/**",
             "/error"
     };
 

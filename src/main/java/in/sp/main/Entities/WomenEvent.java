@@ -43,8 +43,8 @@ public class WomenEvent {
     private String organizerType; // NGO, Government, College, Company, Community, Gym, Hospital, Fitness Trainer, Women Entrepreneur
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organizer_user_id")
-    private User organizer;
+    @JoinColumn(name = "organizer_host_id")
+    private EventHost organizer;
 
     // Admin control
     private String status = "PENDING"; // PENDING, APPROVED, REJECTED
@@ -123,8 +123,8 @@ public class WomenEvent {
     public String getOrganizerType() { return organizerType; }
     public void setOrganizerType(String organizerType) { this.organizerType = organizerType; }
 
-    public User getOrganizer() { return organizer; }
-    public void setOrganizer(User organizer) { this.organizer = organizer; }
+    public EventHost getOrganizer() { return organizer; }
+    public void setOrganizer(EventHost organizer) { this.organizer = organizer; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }

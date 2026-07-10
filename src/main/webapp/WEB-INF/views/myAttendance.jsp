@@ -343,6 +343,14 @@
         </div>
     </div>
 
+    <!-- Today's Online Classes – Self Check-In -->
+    <div id="todayClassesPanel" style="display:none; margin-bottom: 1.5rem;">
+        <div class="table-card p-3">
+            <h5 class="fw-bold mb-3"><i class="fas fa-video text-danger me-2"></i>Today's Online Classes – Check In</h5>
+            <div id="todayClassesList" class="row g-3"></div>
+        </div>
+    </div>
+
     <!-- Attendance Table -->
     <div class="table-card">
         <div class="table-responsive">
@@ -441,6 +449,92 @@
     </main>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script>
+        // ---- Today's Online Classes Check-In ----
+        (async function() {
+            const today = new Date().toISOString().split('T')[0];
+            try {
+                const res = await fetch('${pageContext.request.contextPath}/api/attendance/sessions?date=' + today);
+                if (!res.ok) return;
+                const data = await res.json();
+                const classes = data.classes || [];
+                if (classes.length === 0) return;
+
+                const panel = document.getElementById('todayClassesPanel');
+                const list = document.getElementById('todayClassesList');
+                panel.style.display = 'block';
+
+                classes.forEach(cls => {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-4';
+                    col.innerHTML = `
+                        <div class="card border-0 shadow-sm rounded-4 p-3 d-flex flex-row align-items-center gap-3">
+                            <div class="bg-danger bg-opacity-10 rounded-3 p-3">
+                                <i class="fas fa-video text-danger fs-4"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="fw-bold">${cls.name}</div>
+                                <small class="text-muted">${cls.time}</small>
+                            </div>
+                            <button class="btn btn-sm btn-danger rounded-pill px-3 checkin-btn"
+                                    id="checkin-${cls.id}"
+                                    onclick="checkInNow(${cls.id}, '${today}', this)">
+                                Check In
+                            </button>
+                        </div>`;
+                    list.appendChild(col);
+                });
+            } catch(e) { /* silently ignore if no session data */ }
+        })();
+
+        async function checkInNow(onlineClassId, date, btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+            try {
+                const res = await fetch('${pageContext.request.contextPath}/api/attendance/user-checkin', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ onlineClassId: onlineClassId, date: date })
+                });
+                if (res.ok) {
+                    btn.innerHTML = '✅ Checked In';
+                    btn.classList.remove('btn-danger');
+                    btn.classList.add('btn-success');
+                } else {
+                    const msg = await res.text();
+                    btn.innerHTML = '❌ Failed';
+                    btn.disabled = false;
+                    alert(msg || 'Check-in failed. You may not be enrolled in this class.');
+                }
+            } catch(e) {
+                btn.innerHTML = 'Check In';
+                btn.disabled = false;
+                alert('Network error. Please try again.');
+            }
+        }
+
+        // ---- Existing table filter logic ----
+        document.getElementById('searchInput').addEventListener('input', filterTable);
+        document.getElementById('monthFilter').addEventListener('change', filterTable);
+        document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+        function filterTable() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const month = document.getElementById('monthFilter').value;
+            const status = document.getElementById('statusFilter').value;
+
+            document.querySelectorAll('.attendance-row').forEach(row => {
+                const text = row.innerText.toLowerCase();
+                const rowMonth = row.dataset.month || '';
+                const rowStatus = row.dataset.status || '';
+                const matchSearch = !search || text.includes(search);
+                const matchMonth = !month || rowMonth === month;
+                const matchStatus = !status || rowStatus === status;
+                row.style.display = (matchSearch && matchMonth && matchStatus) ? '' : 'none';
+            });
+        }
+    </script>
 </body>
 </html>
 
