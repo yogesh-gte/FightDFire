@@ -286,59 +286,20 @@
         </div>
 
         <div class="row g-4">
-            <!-- Tutors Category -->
-            <div class="col-md-6 col-lg-3">
-                <a href="${pageContext.request.contextPath}/marketplace/list?category=TUTOR" class="category-card">
-                    <i class="cat-icon fas fa-user-graduate"></i>
-                    <h3>Verified Tutors</h3>
-                    <p>Academic help, specialized training, and hobby classes from experts.</p>
-                </a>
-            </div>
-
-            <!-- Home Bakers Category -->
-            <div class="col-md-6 col-lg-3">
-                <a href="${pageContext.request.contextPath}/marketplace/list?category=HOME_BAKER" class="category-card">
-                    <i class="cat-icon fas fa-birthday-cake"></i>
-                    <h3>Home Bakers</h3>
-                    <p>Delicious homemade cakes, treats, and pastries for your special moments.</p>
-                </a>
-            </div>
-
-            <!-- Language Trainers Category -->
-            <div class="col-md-6 col-lg-3">
-                <a href="${pageContext.request.contextPath}/marketplace/list?category=LANGUAGE_TRAINER" class="category-card">
-                    <i class="cat-icon fas fa-language"></i>
-                    <h3>Language Experts</h3>
-                    <p>Master new languages with personalized coaching and native speakers.</p>
-                </a>
-            </div>
-
-            <!-- Women Products Category -->
-            <div class="col-md-6 col-lg-3">
-                <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_PRODUCTS" class="category-card">
-                    <i class="cat-icon fas fa-store"></i>
-                    <h3>Handcrafted Goods</h3>
-                    <p>Explore unique products created and sold by women entrepreneurs.</p>
-                </a>
-            </div>
-
-            <!-- Women Lawyer Category -->
-            <div class="col-md-6 col-lg-3">
-                <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="category-card">
-                    <i class="cat-icon fas fa-gavel"></i>
-                    <h3>Legal Assistance</h3>
-                    <p>Connect with professional women lawyers for legal advice and support.</p>
-                </a>
-            </div>
-
-            <!-- Fitness Zumba Category -->
-            <div class="col-md-6 col-lg-3">
-                <a href="${pageContext.request.contextPath}/marketplace/list?category=FITNESS_ZUMBA" class="category-card">
-                    <i class="cat-icon fas fa-running"></i>
-                    <h3>Fitness & Zumba</h3>
-                    <p>Join energizing Zumba sessions and fitness classes led by experts.</p>
-                </a>
-            </div>
+            <c:forEach var="cat" items="${dynamicCategories}">
+                <div class="col-md-6 col-lg-3">
+                    <a href="${pageContext.request.contextPath}/marketplace/workers?category=${cat}" class="category-card">
+                        <i class="cat-icon fas fa-briefcase"></i>
+                        <h3>${cat}</h3>
+                        <p>Find verified women professionals in ${cat}.</p>
+                    </a>
+                </div>
+            </c:forEach>
+            <c:if test="${empty dynamicCategories}">
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted fs-5">No verified worker categories available yet.</p>
+                </div>
+            </c:if>
         </div>
 
         <!-- Call to Action -->

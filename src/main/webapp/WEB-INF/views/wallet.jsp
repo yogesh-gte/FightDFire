@@ -296,12 +296,24 @@
 
 <div class="wallet-header">
     <div class="container">
-        <h5>My Wallet Balance</h5>
-        <div class="coin-balance">
-            <i class="bi bi-coin coin-icon"></i> 
-            <span id="current-coins">${user.rewardPoints != null ? user.rewardPoints : 0}</span>
+    <div class="container row mx-auto text-center">
+        <div class="col-md-6 mb-3">
+            <h5>Coin Balance</h5>
+            <div class="coin-balance">
+                <i class="bi bi-coin coin-icon"></i> 
+                <span id="current-coins">${user.rewardPoints != null ? user.rewardPoints : 0}</span>
+            </div>
+            <p>Keep watching Reels to earn more coins!</p>
         </div>
-        <p>Keep watching Reels to earn more coins!</p>
+        <div class="col-md-6 mb-3 border-start border-light border-opacity-25">
+            <h5>Cash Balance (&#8377;)</h5>
+            <div class="coin-balance" style="color: var(--primary-teal);">
+                <i class="bi bi-wallet2 me-2 text-white"></i> 
+                <span id="current-cash">${user.walletBalance != null ? user.walletBalance : 0.0}</span>
+            </div>
+            <p>Earnings from your bookings</p>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -390,8 +402,52 @@
             </div>
         </div>
     </div>
-</div>
+    
+    <!-- Transaction History Section -->
+    <div class="mt-5 mb-5 p-4 rounded-4 shadow-sm" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+        <h4 class="mb-4">Transaction History <i class="bi bi-clock-history"></i></h4>
+        <c:choose>
+            <c:when test="${empty transactions}">
+                <p class="text-muted">No recent transactions.</p>
+            </c:when>
+            <c:otherwise>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="tx" items="${transactions}">
+                                <tr>
+                                    <td>
+                                        <div class="small">${tx.transactionDate.toLocalDate()}</div>
+                                        <div class="text-muted" style="font-size: 0.8em;">${tx.transactionDate.toLocalTime()}</div>
+                                    </td>
+                                    <td>${tx.description}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${tx.type == 'CREDIT'}">
+                                                <span class="badge bg-success">+ &#8377;${tx.amount}</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge bg-danger">- &#8377;${tx.amount}</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </div>
 
+</div>
 
 <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 

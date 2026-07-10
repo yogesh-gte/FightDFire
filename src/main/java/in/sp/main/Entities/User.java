@@ -56,6 +56,8 @@ public class User {
     private MartialArtsCenter martialArtsCenter;  // Reference to the martial arts center
     
     private Integer rewardPoints = 0;
+    
+    private Double walletBalance = 0.0;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> bookings;
@@ -92,6 +94,14 @@ public class User {
 
 	public void setRewardPoints(Integer rewardPoints) {
 		this.rewardPoints = rewardPoints;
+	}
+	
+	public Double getWalletBalance() {
+		return walletBalance;
+	}
+
+	public void setWalletBalance(Double walletBalance) {
+		this.walletBalance = walletBalance;
 	}
 	
 	public java.time.LocalDateTime getLastReadBroadcastTime() {
