@@ -182,11 +182,11 @@
                         <input type="text" name="location" class="form-control" placeholder="City or State" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Investment Needed ($) *</label>
+                        <label class="form-label fw-semibold">Investment Needed (₹) *</label>
                         <input type="number" name="fundingNeeded" class="form-control" min="1" placeholder="Total funding requested" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-semibold">Expected Monthly Income ($) *</label>
+                        <label class="form-label fw-semibold">Expected Monthly Income (₹) *</label>
                         <input type="number" name="expectedMonthlyIncome" class="form-control" min="1" placeholder="Expected profit/income" required>
                     </div>
                     <div class="col-12">

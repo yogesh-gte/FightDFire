@@ -174,14 +174,17 @@
             <div class="mb-5 bg-light p-4 rounded-4">
                 <h5 class="fw-bold mb-3" style="color: var(--navy-dark);"><i class="bi bi-graph-up-arrow"></i> Funding Target</h5>
                 <div class="d-flex justify-content-between mb-2 fw-semibold" style="font-size:0.95rem;">
-                    <span class="text-success">$${proposal.amountRaised} Raised</span>
-                    <span class="text-navy">$${proposal.fundingNeeded} Target</span>
+                    <span class="text-success">₹${proposal.amountRaised} Raised</span>
+                    <span class="text-navy">₹${proposal.fundingNeeded} Target</span>
                 </div>
                 <div class="progress mb-3">
                     <div class="progress-bar bg-success" role="progressbar" style="width: ${(proposal.amountRaised/proposal.fundingNeeded)*100}%;"></div>
                 </div>
-                <div class="text-muted small">
-                    Remaining required capital: <strong>$${proposal.fundingNeeded - proposal.amountRaised}</strong>
+                <div class="text-muted small d-flex justify-content-between flex-wrap">
+                    <span>Remaining required capital: <strong>₹${proposal.fundingNeeded - proposal.amountRaised}</strong></span>
+                    <c:if test="${pendingAmount > 0}">
+                        <span class="text-warning">Pending gateway transfer: <strong>₹${pendingAmount}</strong></span>
+                    </c:if>
                 </div>
             </div>
 
@@ -237,7 +240,7 @@
                                     <strong>Email:</strong> ${proposal.entrepreneur.email}<br>
                                     <strong>Phone:</strong> ${proposal.entrepreneur.phone}<br>
                                     <strong>Aadhaar:</strong> ${proposal.entrepreneur.aadhaarNumber} (Verified)<br>
-                                    <strong>Expected Monthly Profit:</strong> $${proposal.expectedMonthlyIncome}<br>
+                                    <strong>Expected Monthly Profit:</strong> ₹${proposal.expectedMonthlyIncome}<br>
                                     <strong>Bank:</strong> ${proposal.entrepreneur.bankName}<br>
                                     <strong>Account:</strong> ${proposal.entrepreneur.accountNumber}<br>
                                     <strong>UPI ID:</strong> ${proposal.entrepreneur.upiId}
@@ -249,8 +252,8 @@
                                     <i class="bi bi-lock-fill text-warning fs-1"></i>
                                     <h6 class="fw-bold mt-2">Unlock Profile Details</h6>
                                     <p class="text-muted small mb-3">Reveal identity documents, direct contacts, bank details, schedule meetings and invest.</p>
-                                    <button class="btn btn-warning fw-bold btn-sm rounded-pill px-4" onclick="triggerCheckout('subscription', null, 199.00, '${pageContext.request.contextPath}/investor/subscribe')">
-                                        Subscribe for $199
+                                    <button class="btn btn-warning fw-bold btn-sm rounded-pill px-4" onclick="triggerCheckout('subscription', null, 1999.00, '${pageContext.request.contextPath}/investor/subscribe')">
+                                        Subscribe for ₹1999
                                     </button>
                                 </div>
                                 <div class="masked-blur">
@@ -264,7 +267,7 @@
                                         <strong>Email:</strong> jane.doe@example.com<br>
                                         <strong>Phone:</strong> 555-019-2831<br>
                                         <strong>Aadhaar:</strong> 000000000000<br>
-                                        <strong>Expected Profit:</strong> $500<br>
+                                        <strong>Expected Profit:</strong> ₹500<br>
                                         <strong>Bank Name:</strong> Sandbox Bank
                                     </div>
                                 </div>
@@ -272,14 +275,14 @@
                         </c:choose>
                     </div>
 
-                    <!-- Funding Selector Card (Restricted if not Premium) -->
+                    <!-- Funding Selector Card -->
                     <div class="card border-0 shadow-sm p-4 position-relative mb-4" style="border-radius: 16px; border: 1px solid rgba(0,0,0,0.03);">
                         <c:if test="${not investor.subscribed}">
                             <div class="premium-overlay-card p-3 text-center">
                                 <i class="bi bi-lock-fill text-warning fs-3"></i>
                                 <h6 class="fw-bold mt-1" style="font-size:0.9rem;">Unlock Investments</h6>
                                 <p class="text-muted small mb-2" style="font-size:0.75rem;">Purchase subscription to invest.</p>
-                                <button class="btn btn-warning fw-bold btn-xs rounded-pill px-3 py-1" style="font-size:0.75rem;" onclick="triggerCheckout('subscription', null, 199.00, '${pageContext.request.contextPath}/investor/subscribe')">
+                                <button class="btn btn-warning fw-bold btn-xs rounded-pill px-3 py-1" style="font-size:0.75rem;" onclick="triggerCheckout('subscription', null, 1999.00, '${pageContext.request.contextPath}/investor/subscribe')">
                                     Subscribe
                                 </button>
                             </div>
@@ -293,14 +296,19 @@
                                         <i class="bi bi-patch-check-fill"></i> 100% Fully Funded!
                                     </div>
                                 </c:when>
+                                <c:when test="${openRemaining <= 0}">
+                                     <div class="alert alert-warning text-center py-2 mb-0" style="font-size: 0.8rem;">
+                                         <i class="bi bi-hourglass-split"></i> Fully Committed (Awaiting Admin Gateway Transfer)
+                                     </div>
+                                </c:when>
                                 <c:otherwise>
                                     <div class="mb-3">
-                                        <label class="form-label fw-semibold small">Choose Investment Amount ($):</label>
-                                        <input type="range" class="form-range" id="fundingSlider" min="100" max="${proposal.fundingNeeded - proposal.amountRaised}" step="100" value="100" oninput="updateInvestmentDisplay(this.value)">
+                                        <label class="form-label fw-semibold small">Choose Investment Amount (₹):</label>
+                                        <input type="range" class="form-range" id="fundingSlider" min="100" max="${openRemaining}" step="100" value="100" oninput="updateInvestmentDisplay(this.value)">
                                         <div class="d-flex justify-content-between small text-muted mt-1" style="font-size:0.75rem;">
-                                            <span>Min: $100</span>
-                                            <span class="fw-bold text-navy" id="sliderValueDisplay">$100</span>
-                                            <span>Max: $${proposal.fundingNeeded - proposal.amountRaised}</span>
+                                            <span>Min: ₹100</span>
+                                            <span class="fw-bold text-navy" id="sliderValueDisplay">₹100</span>
+                                            <span>Max: ₹${openRemaining}</span>
                                         </div>
                                     </div>
                                     <button class="btn btn-primary w-100 py-2 rounded-pill fw-bold" style="background-color: var(--coral); border:none; font-size:0.85rem;" onclick="triggerInvestmentCheckout()">
@@ -318,7 +326,7 @@
                                 <i class="bi bi-lock-fill text-warning fs-3"></i>
                                 <h6 class="fw-bold mt-1" style="font-size:0.9rem;">Unlock Meetings</h6>
                                 <p class="text-muted small mb-2" style="font-size:0.75rem;">Schedule meetings to ask details.</p>
-                                <button class="btn btn-warning fw-bold btn-xs rounded-pill px-3 py-1" style="font-size:0.75rem;" onclick="triggerCheckout('subscription', null, 199.00, '${pageContext.request.contextPath}/investor/subscribe')">
+                                <button class="btn btn-warning fw-bold btn-xs rounded-pill px-3 py-1" style="font-size:0.75rem;" onclick="triggerCheckout('subscription', null, 1999.00, '${pageContext.request.contextPath}/investor/subscribe')">
                                     Subscribe
                                 </button>
                             </div>
@@ -350,7 +358,7 @@
                                 <i class="bi bi-lock-fill text-warning fs-3"></i>
                                 <h6 class="fw-bold mt-1" style="font-size:0.9rem;">Unlock Q&A Board</h6>
                                 <p class="text-muted small mb-2" style="font-size:0.75rem;">Submit questions regarding project.</p>
-                                <button class="btn btn-warning fw-bold btn-xs rounded-pill px-3 py-1" style="font-size:0.75rem;" onclick="triggerCheckout('subscription', null, 199.00, '${pageContext.request.contextPath}/investor/subscribe')">
+                                <button class="btn btn-warning fw-bold btn-xs rounded-pill px-3 py-1" style="font-size:0.75rem;" onclick="triggerCheckout('subscription', null, 1999.00, '${pageContext.request.contextPath}/investor/subscribe')">
                                     Subscribe
                                 </button>
                             </div>
@@ -417,7 +425,7 @@
             <div class="modal-body p-4 text-center">
                 <div class="mb-4">
                     <p class="text-muted mb-1 text-uppercase fw-semibold" style="font-size: 11px;" id="checkoutTypeLabel">Investment</p>
-                    <h3 class="fw-bold" style="color:var(--navy-dark);" id="checkoutAmountLabel">$0.00</h3>
+                    <h3 class="fw-bold" style="color:var(--navy-dark);" id="checkoutAmountLabel">₹0.00</h3>
                 </div>
 
                 <!-- Simulation content -->
@@ -463,7 +471,7 @@
     let activeCheckoutForm = null;
 
     function updateInvestmentDisplay(val) {
-        document.getElementById('sliderValueDisplay').innerText = "$" + val;
+        document.getElementById('sliderValueDisplay').innerText = "₹" + val;
     }
 
     function triggerInvestmentCheckout() {
@@ -482,7 +490,7 @@
         document.body.appendChild(form);
 
         document.getElementById('checkoutTypeLabel').innerText = type.toUpperCase() + " PAYMENT";
-        document.getElementById('checkoutAmountLabel').innerText = "$" + amount.toFixed(2);
+        document.getElementById('checkoutAmountLabel').innerText = "₹" + amount.toFixed(2);
 
         document.getElementById('checkoutFormContent').style.display = 'block';
         document.getElementById('checkoutLoadingContent').style.display = 'none';

@@ -160,10 +160,10 @@
                         <label class="form-label fw-semibold">Budget Range (Investment Capacity) *</label>
                         <select name="budgetRange" class="form-select" required>
                             <option value="">Select Budget Range</option>
-                            <option value="Under $5,000">Under $5,000</option>
-                            <option value="$5,000 - $20,000">$5,000 - $20,000</option>
-                            <option value="$20,000 - $100,000">$20,000 - $100,000</option>
-                            <option value="$100,000+">$100,000+</option>
+                            <option value="Under Rs. 50,000">Under ₹50,000</option>
+                            <option value="Rs. 50,000 - Rs. 2,00,000">₹50,000 - ₹2,00,000</option>
+                            <option value="Rs. 2,00,000 - Rs. 10,00,000">₹2,00,000 - ₹10,00,000</option>
+                            <option value="Rs. 10,00,000+">₹10,00,000+</option>
                         </select>
                     </div>
                     <div class="col-12">

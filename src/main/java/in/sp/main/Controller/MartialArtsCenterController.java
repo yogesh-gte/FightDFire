@@ -256,10 +256,18 @@ public class MartialArtsCenterController {
             List<DayAvailable> sortedDays = new ArrayList<>(center.getAvailableDays());
             sortedDays.sort((d1, d2) -> d1.ordinal() - d2.ordinal());
 
+            // Build enrolled count map for capacity display on each batch
+            java.util.Map<Long, Long> enrolledCountByBatch = new java.util.HashMap<>();
+            for (MartialArtsBatch batch : center.getBatches()) {
+                long count = enrollmentRepository.countPaidByBatchId(batch.getId());
+                enrolledCountByBatch.put(batch.getId(), count);
+            }
+
             model.addAttribute("center", center);
             model.addAttribute("sortedAvailableDays", sortedDays);
             model.addAttribute("batches", center.getBatches());
             model.addAttribute("user", session.getAttribute("user"));
+            model.addAttribute("enrolledCountByBatch", enrolledCountByBatch);
             return "centreDetails";
         } catch (IllegalStateException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());

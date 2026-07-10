@@ -266,11 +266,20 @@ public class InvestorController {
                     .filter(i -> i.getInvestor().getId().equals(refreshedInv.getId()))
                     .collect(Collectors.toList());
 
+            double pendingAmount = investmentRepository.findByProposal(proposal).stream()
+                    .filter(i -> "PENDING".equals(i.getStatus()))
+                    .mapToDouble(Investment::getAmount)
+                    .sum();
+            double openRemaining = proposal.getFundingNeeded() - proposal.getAmountRaised() - pendingAmount;
+            if (openRemaining < 0) openRemaining = 0.0;
+
             model.addAttribute("investor", refreshedInv);
             model.addAttribute("proposal", proposal);
             model.addAttribute("qna", qna);
             model.addAttribute("meetings", meetings);
             model.addAttribute("myInvestments", myInvestments);
+            model.addAttribute("pendingAmount", pendingAmount);
+            model.addAttribute("openRemaining", openRemaining);
 
             return "investor/proposalDetails";
         }
@@ -298,10 +307,15 @@ public class InvestorController {
         Optional<BusinessProposal> opt = businessProposalRepository.findById(id);
         if (opt.isPresent()) {
             BusinessProposal proposal = opt.get();
-            double remaining = proposal.getFundingNeeded() - proposal.getAmountRaised();
+            double pendingAmount = investmentRepository.findByProposal(proposal).stream()
+                    .filter(i -> "PENDING".equals(i.getStatus()))
+                    .mapToDouble(Investment::getAmount)
+                    .sum();
+            double openRemaining = proposal.getFundingNeeded() - proposal.getAmountRaised() - pendingAmount;
+            if (openRemaining < 0) openRemaining = 0.0;
 
-            if (amount <= 0 || amount > remaining) {
-                redirectAttributes.addFlashAttribute("error", "Invalid investment amount. Remaining funding needed is: $" + remaining);
+            if (amount <= 0 || amount > openRemaining) {
+                redirectAttributes.addFlashAttribute("error", "Invalid investment amount. Remaining funding needed is: ₹" + openRemaining);
                 return "redirect:/investor/proposal/" + id;
             }
 
@@ -310,14 +324,10 @@ public class InvestorController {
             investment.setProposal(proposal);
             investment.setInvestor(inv);
             investment.setAmount(amount);
-            investment.setStatus("COMPLETED"); // Mock payment completed immediately
+            investment.setStatus("PENDING"); // Held by Admin gateway
             investmentRepository.save(investment);
 
-            // Update Proposal Raised Amount
-            proposal.setAmountRaised(proposal.getAmountRaised() + amount);
-            businessProposalRepository.save(proposal);
-
-            redirectAttributes.addFlashAttribute("success", "Investment of $" + amount + " made successfully! Thank you for supporting women entrepreneurs.");
+            redirectAttributes.addFlashAttribute("success", "Investment of ₹" + amount + " submitted to Admin! It is currently held in gateway and will be released to the entrepreneur upon Admin verification.");
         }
         return "redirect:/investor/proposal/" + id;
     }

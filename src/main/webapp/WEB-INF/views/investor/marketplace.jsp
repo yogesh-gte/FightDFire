@@ -233,8 +233,8 @@
 
                                 <div class="border-top pt-3">
                                     <div class="d-flex justify-content-between small text-muted mb-1">
-                                        <span>$${p.amountRaised} raised</span>
-                                        <span>$${p.fundingNeeded} target</span>
+                                        <span>₹${p.amountRaised} raised</span>
+                                        <span>₹${p.fundingNeeded} target</span>
                                     </div>
                                     <div class="progress mb-2">
                                         <div class="progress-bar bg-success" role="progressbar" style="width: ${(p.amountRaised/p.fundingNeeded)*100}%;"></div>

@@ -658,6 +658,18 @@
                                 <div style="font-size:1.6rem; font-weight:700; color:#92400e;" id="stat-pendingWomenEvents">—</div>
                                 <div style="font-size:0.75rem; color:#b45309; font-weight:600;">⏳ Pending Review</div>
                             </div>
+                            <div style="background:#edf2f7; border-radius:15px; padding:18px; border:1px solid #cbd5e1; text-align:center;">
+                                <div style="font-size:1.6rem; font-weight:700; color:#475569;" id="stat-totalEventBookings">—</div>
+                                <div style="font-size:0.75rem; color:#64748b; font-weight:600;">🎟️ Ticket Bookings</div>
+                            </div>
+                            <div style="background:#ecfdf5; border-radius:15px; padding:18px; border:1px solid #a7f3d0; text-align:center;">
+                                <div style="font-size:1.6rem; font-weight:700; color:#047857;" id="stat-totalEventTicketRevenue">—</div>
+                                <div style="font-size:0.75rem; color:#065f46; font-weight:600;">💳 Ticket Revenue</div>
+                            </div>
+                            <div style="background:#fff7ed; border-radius:15px; padding:18px; border:1px solid #ffedd5; text-align:center; overflow: hidden;">
+                                <div style="font-size:1.2rem; font-weight:700; color:#c2410c; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;" id="stat-mostPopularEvent">—</div>
+                                <div style="font-size:0.75rem; color:#9a3412; font-weight:600;">🏆 Popular Event</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1084,7 +1096,7 @@
                     <div class="admin-card" style="border-top: 4px solid #16a34a;">
                         <div class="rowTop">
                             <div>
-                                <i class="fas fa-dollar-sign" style="color: #16a34a;"></i>
+                                <i class="fas fa-rupee-sign" style="color: #16a34a;"></i>
                                 <h5 class="mb-1">Platform Revenue</h5>
                                 <p class="muted">Track commissions & fees</p>
                             </div>
@@ -1158,14 +1170,17 @@
         setText("stat-totalEntrepreneurs", data.totalEntrepreneursCount);
         setText("stat-totalInvestors", data.totalInvestorsCount);
         setText("stat-totalProposals", data.totalProposalsCount);
-        setText("stat-capitalRequested", "$" + Number(data.totalCapitalRequested || 0).toLocaleString());
-        setText("stat-capitalInvested", "$" + Number(data.totalCapitalInvested || 0).toLocaleString());
-        setText("stat-platformRevenue", "$" + Number(data.totalPlatformRevenue || 0).toLocaleString());
+        setText("stat-capitalRequested", "₹" + Number(data.totalCapitalRequested || 0).toLocaleString());
+        setText("stat-capitalInvested", "₹" + Number(data.totalCapitalInvested || 0).toLocaleString());
+        setText("stat-platformRevenue", "₹" + Number(data.totalPlatformRevenue || 0).toLocaleString());
 
         // Women Events Platform Row
         setText("stat-totalWomenEvents",    data.totalWomenEvents);
         setText("stat-approvedWomenEvents", data.approvedWomenEvents);
         setText("stat-pendingWomenEvents",  data.pendingWomenEvents);
+        setText("stat-totalEventBookings",  data.totalEventBookings);
+        setText("stat-totalEventTicketRevenue", "₹" + Number(data.totalEventTicketRevenue || 0).toLocaleString());
+        setText("stat-mostPopularEvent",    data.mostPopularEvent || 'None');
 
         // Pending verifications card badge
         setText("pendingVerificationsCount", data.pendingProposals + data.pendingEntrepreneurs + data.pendingInvestors);
