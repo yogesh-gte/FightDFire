@@ -60,6 +60,9 @@ public class MartialArtsCenterController {
     
     @Autowired
     private in.sp.main.Repository.AttendanceRepository attendanceRepository;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
 
     public MartialArtsCenterController(MartialArtsCenterService centreService, ObjectMapper objectMapper) {
         this.centreService = centreService;
@@ -222,6 +225,7 @@ public class MartialArtsCenterController {
         model.addAttribute("totalBatchCount", totalBatches);
         model.addAttribute("videos", videos);
         model.addAttribute("user", user);
+        model.addAttribute("activeTab", "explore");
 
         // Sorting days for all centers chronologically
         for (MartialArtsCenter c : centers) {
@@ -252,10 +256,18 @@ public class MartialArtsCenterController {
             List<DayAvailable> sortedDays = new ArrayList<>(center.getAvailableDays());
             sortedDays.sort((d1, d2) -> d1.ordinal() - d2.ordinal());
 
+            // Build enrolled count map for capacity display on each batch
+            java.util.Map<Long, Long> enrolledCountByBatch = new java.util.HashMap<>();
+            for (MartialArtsBatch batch : center.getBatches()) {
+                long count = enrollmentRepository.countPaidByBatchId(batch.getId());
+                enrolledCountByBatch.put(batch.getId(), count);
+            }
+
             model.addAttribute("center", center);
             model.addAttribute("sortedAvailableDays", sortedDays);
             model.addAttribute("batches", center.getBatches());
             model.addAttribute("user", session.getAttribute("user"));
+            model.addAttribute("enrolledCountByBatch", enrolledCountByBatch);
             return "centreDetails";
         } catch (IllegalStateException ex) {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
@@ -292,6 +304,7 @@ public class MartialArtsCenterController {
     public String loginCentre(@RequestParam String email,
                               @RequestParam String password,
                               Model model, HttpSession session,
+                              jakarta.servlet.http.HttpServletResponse response,
                               RedirectAttributes redirectAttributes) {
         if (email == null || email.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Please enter your email.");
@@ -316,13 +329,29 @@ public class MartialArtsCenterController {
         }
 
         session.setAttribute("loggedCentre", center);
+        
+        // Generate JWT and add to response
+        String token = jwtUtil.generateToken(center.getEmail(), "CENTRE");
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+        response.addCookie(cookie);
+        
         return "redirect:/centres/dashboard";
     }
 
     // ---------- LOGOUT ----------
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, jakarta.servlet.http.HttpServletResponse response) {
         session.invalidate();
+        
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        
         return "redirect:/centres/login";
     }
 

@@ -66,7 +66,7 @@
             position: relative;
         }
         .navmenu a, .navmenu a:focus {
-            color: var(--uh-purple-light) !important;
+            color: rgba(255, 255, 255, 0.92) !important;
             font-weight: 600 !important;
             padding: 18px 15px !important;
             font-size: 16px !important;
@@ -93,8 +93,8 @@
             width: calc(100% - 30px);
         }
         .navmenu a:hover, .navmenu .active {
-            color: var(--uh-purple) !important;
-            text-shadow: 0 0 4px rgba(74,14,120,0.2);
+            color: var(--uh-coral) !important;
+            text-shadow: none;
         }
     }
 
@@ -135,9 +135,14 @@
     <nav id="navmenu" class="navmenu">
       <ul>
         <li><a href="${pageContext.request.contextPath}/index.html">Home</a></li>
+        <li><a href="${pageContext.request.contextPath}/women-events">Events 🌸</a></li>
         <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
         <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
         <li><a href="${pageContext.request.contextPath}/users/wallet">Wallet 💰</a></li>
+        
+        <!-- Want to Earn Button -->
+        <li><a href="${pageContext.request.contextPath}/marketplace/earn" style="color: var(--uh-coral) !important; font-weight: 800 !important;"><i class="bi bi-briefcase-fill me-1"></i> Want to Earn</a></li>
+
         
         <!-- Notification Bell for Broadcasts -->
         <li>

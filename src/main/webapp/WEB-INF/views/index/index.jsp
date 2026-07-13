@@ -58,6 +58,10 @@
 		    <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
 		  </div>
 		</header>
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
   
 
    <section class="hero-wrap js-fullheight" 
@@ -905,7 +909,9 @@
 									<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 
 
-		</body>
+		    </div>
+</div>
+</body>
 		</html>
 
 

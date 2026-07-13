@@ -8,4 +8,5 @@ import in.sp.main.Entities.User;
 
 public interface DoctorChatRepository extends JpaRepository<DoctorChatMessage, Long> {
     List<DoctorChatMessage> findByUserAndDoctorOrderByTimestampAsc(User user, Doctor doctor);
+    List<DoctorChatMessage> findByDoctorOrderByTimestampDesc(Doctor doctor);
 }

@@ -102,6 +102,12 @@ public class UserController {
     @Autowired
     private in.sp.main.Repository.IncidentRepository incidentRepository;
 
+    @Autowired
+    private in.sp.main.Repository.JobApplicationRepository jobApplicationRepository;
+
+    @Autowired
+    private in.sp.main.Repository.WorkerBookingRepository workerBookingRepo;
+
     @GetMapping("/training-journey")
     public String showTrainingJourney(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -524,6 +530,15 @@ public class UserController {
 
         List<in.sp.main.Entities.Incident> myIncidents = incidentRepository.findByUser(loggedInUser);
         model.addAttribute("myIncidents", myIncidents);
+
+        boolean isWorker = jobApplicationRepository.findByStatus(in.sp.main.Entities.VerificationStatus.VERIFIED)
+                .stream().anyMatch(app -> app.getUser().getId().equals(loggedInUser.getId()));
+        model.addAttribute("isWorker", isWorker);
+
+        if (isWorker) {
+            List<in.sp.main.Entities.WorkerBooking> incomingBookings = workerBookingRepo.findByJobApplication_User_Id(loggedInUser.getId());
+            model.addAttribute("incomingBookings", incomingBookings);
+        }
 
         return "userDashboard";
     }

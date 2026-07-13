@@ -192,6 +192,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-5" style="border-bottom: 1px solid rgba(124, 45, 94, 0.2); padding-bottom: 20px;">
     <div>
@@ -261,6 +265,8 @@
 </script>
 <script src="${pageContext.request.contextPath}/assets/js/journey.js"></script>
 
+    </div>
+</div>
 </body>
 </html>
 

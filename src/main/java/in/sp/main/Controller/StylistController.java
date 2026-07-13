@@ -35,6 +35,9 @@ public class StylistController {
     
     @Autowired
     private FileUploadService fileUploadService;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
 
 
     // ==============================
@@ -73,6 +76,7 @@ public class StylistController {
     public String loginStylist(@RequestParam String email,
                                @RequestParam String password,
                                HttpSession session,
+                               jakarta.servlet.http.HttpServletResponse response,
                                Model model) {
         Optional<Stylist> stylistOpt = stylistRepository.findByEmail(email);
         if (stylistOpt.isPresent()) {
@@ -83,6 +87,15 @@ public class StylistController {
                     return "stylist/stylist-login";
                 }
                 session.setAttribute("loggedStylist", stylist);
+                
+                // Generate JWT and add to response
+                String token = jwtUtil.generateToken(stylist.getEmail(), "STYLIST");
+                jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+                cookie.setPath("/");
+                cookie.setHttpOnly(true);
+                cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+                response.addCookie(cookie);
+                
                 return "redirect:/stylists/dashboard";
             } else {
                 model.addAttribute("error", "Invalid password");
@@ -309,8 +322,15 @@ public class StylistController {
     // 8️⃣ Logout
     // ==============================
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
+    public String logout(HttpSession session, jakarta.servlet.http.HttpServletResponse response) {
         session.invalidate();
+        
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        
         return "redirect:/stylists/login";
     } 
 }

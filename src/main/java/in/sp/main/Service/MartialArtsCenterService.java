@@ -132,12 +132,6 @@ public class MartialArtsCenterService {
         List<MartialArtsCenter> centers = centerRepository.findByApproved(true);
         for (MartialArtsCenter center : centers) {
             initializeLazyCollections(center);
-            List<MartialArtsBatch> batches = batchRepository.findByCenterId(center.getId());
-            batches = batches.stream()
-                    .filter(b -> b.getStatus() == null
-                            || !"Closed".equalsIgnoreCase(b.getStatus()))
-                    .toList();
-            center.setBatches(batches);
         }
         return centers;
     }
@@ -150,9 +144,6 @@ public class MartialArtsCenterService {
             throw new IllegalStateException("This training centre is not available for booking yet.");
         }
         initializeLazyCollections(center);
-        center.setBatches(batchRepository.findByCenterId(id).stream()
-                .filter(b -> b.getStatus() == null || !"Closed".equalsIgnoreCase(b.getStatus()))
-                .toList());
         return center;
     }
 

@@ -43,8 +43,15 @@ public class BeautyServiceController {
 	    private OfferBookingRepository offerbookingRepository;
 	   @Autowired
 	    private Booking1Repository booking1Repository;
-
-	
+	    
+	   @Autowired
+	    private in.sp.main.Repository.ServiceRepository service1Repository;
+	   @Autowired
+	    private in.sp.main.Repository.TreatmentRepository treatmentRepository;
+	   @Autowired
+	    private in.sp.main.Repository.OfferRepository offerRepository;
+	   @Autowired
+	    private in.sp.main.Repository.WorkerBookingRepository workerBookingRepository;
 
     // 1️⃣ User Dashboard
 	/*
@@ -257,6 +264,10 @@ public class BeautyServiceController {
         List<OfferBooking> offerBookings = offerbookingRepository.findByUser(user);
         model.addAttribute("offerBookings", offerBookings);
 
+        // ✅ Fetch Marketplace Worker Bookings
+        List<in.sp.main.Entities.WorkerBooking> workerBookings = workerBookingRepository.findByClient_Id(user.getId());
+        model.addAttribute("workerBookings", workerBookings);
+
         // ✅ Optional: Add discount offers to show in hero section
         List<String> discounts = List.of(
             "💅 20% off on Hair Spa this weekend!",
@@ -354,16 +365,20 @@ public class BeautyServiceController {
      }
 
      // ✅ Fetch salon services
-     List<StylistService> services = serviceRepository.findBySalonId(salonId);
+     List<Service1> serviceList = service1Repository.findBySalonId(salonId);
+     
+     // ✅ Fetch salon treatments
+     List<Treatment> treatmentList = treatmentRepository.findBySalonId(salonId);
 
-     // ✅ If you want to show all services from all salons too
-     List<Service1> serviceList = serviceService.getAllServicesWithSalonDetails();
+     // ✅ Fetch salon offers
+     List<Offer> offerList = offerRepository.findBySalonId(salonId);
 
      // ✅ Add all data to model
      model.addAttribute("salon", salon);
      model.addAttribute("stylists", stylists);
-     model.addAttribute("services", services);
      model.addAttribute("serviceList", serviceList);
+     model.addAttribute("treatmentList", treatmentList);
+     model.addAttribute("offerList", offerList);
      model.addAttribute("averageRating", average);
 
      return "user/user-salon-view";

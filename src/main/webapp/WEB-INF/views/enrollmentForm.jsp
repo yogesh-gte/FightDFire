@@ -317,21 +317,33 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Preferred Batch *</label>
-                                <select id="batchId" class="form-select" required onchange="updateBatchInfo(); updateSummary()">
-                                    <option value="">Select a batch</option>
-                                    <c:forEach var="batch" items="${batches}">
-                                        <option value="${batch.id}" 
-                                                data-style="${batch.style}"
-                                                data-level="${batch.skillLevel}"
-                                                data-days="${batch.availableDays}"
-                                                data-slot="${batch.timeSlot}"
-                                                data-fee="${batch.fee}"
-                                                data-instructor="${batch.instructor}"
-                                                data-agegroup="${batch.ageGroup}">
-                                            ${batch.name} (${batch.style})
-                                        </option>
-                                    </c:forEach>
-                                </select>
+                                <c:choose>
+                                    <c:when test="${empty batches}">
+                                        <div class="alert alert-warning py-2 px-3 rounded-3 small">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            No batches have been added for this centre yet. Please check back later or contact the centre.
+                                        </div>
+                                        <input type="hidden" id="batchId" value="">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <select id="batchId" name="batchId" class="form-select" required onchange="updateBatchInfo(); updateSummary()">
+                                            <option value="">Select a batch</option>
+                                            <c:forEach var="batch" items="${batches}">
+                                                <option value="${batch.id}"
+                                                        data-style="${batch.style}"
+                                                        data-level="${batch.skillLevel}"
+                                                        data-days="${batch.availableDays}"
+                                                        data-slot="${batch.timeSlot}"
+                                                        data-fee="${batch.fee}"
+                                                        data-instructor="${batch.instructor}"
+                                                        data-agegroup="${batch.ageGroup}"
+                                                        ${batch.id == preselectedBatchId ? 'selected' : ''}>
+                                                    ${batch.name} (${batch.style})
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Skill Level</label>
@@ -553,9 +565,10 @@
                 <div class="mb-3">
                     <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
                 </div>
-                <h3 class="fw-bold">Enrollment Submitted!</h3>
-                <p class="text-muted">Your details have been saved. Proceed to payment to finalize your enrollment.</p>
+                <h3 class="fw-bold" id="successModalTitle">Enrollment Submitted!</h3>
+                <p class="text-muted" id="successModalBody">Your details have been saved. Proceed to payment to finalize your enrollment.</p>
                 <button id="proceedPaymentBtn" class="btn btn-danger w-100 py-3 rounded-pill fw-bold">Proceed to Payment</button>
+                <a id="goToDashboardBtn" href="${pageContext.request.contextPath}/users/dashboard" class="btn btn-success w-100 py-3 rounded-pill fw-bold mt-2" style="display:none;">Go to My Dashboard</a>
             </div>
         </div>
     </div>
@@ -568,6 +581,15 @@
 
     <script>
         AOS.init({ duration: 800, once: true });
+
+        // Auto-trigger batch info if a batch was preselected from URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const batchSelect = document.getElementById('batchId');
+            if (batchSelect && batchSelect.value) {
+                updateBatchInfo();
+                updateSummary();
+            }
+        });
 
         function calculateAge() {
             const dobInput = document.getElementById('dob');
@@ -709,14 +731,38 @@
                     body: JSON.stringify(payload)
                 });
 
+                if (res.status === 409) {
+                    // Batch is full
+                    alert('⚠️ This batch is full! No more seats are available. Please choose another batch.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="bi bi-send-fill"></i> Submit Enrollment';
+                    return;
+                }
+
                 if (res.ok) {
                     const data = await res.json();
-                    const successModal = new bootstrap.Modal(document.getElementById('successModal'));
-                    successModal.show();
-                    
-                    document.getElementById('proceedPaymentBtn').onclick = () => {
-                        initiateRazorpay(data.enrollmentId, payload.monthlyFee);
-                    };
+
+                    if (data.free === true) {
+                        // FREE BATCH: skip Razorpay, show success directly
+                        document.getElementById('successModalTitle').innerText = '🎉 Enrollment Confirmed!';
+                        document.getElementById('successModalBody').innerText = 'You have been enrolled for free! Your training starts soon. Check your dashboard for updates.';
+                        document.getElementById('proceedPaymentBtn').style.display = 'none';
+                        document.getElementById('goToDashboardBtn').style.display = 'block';
+                        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                        successModal.show();
+                    } else {
+                        // PAID BATCH: open Razorpay
+                        document.getElementById('successModalTitle').innerText = 'Enrollment Submitted!';
+                        document.getElementById('successModalBody').innerText = 'Your details have been saved. Proceed to payment to finalize your enrollment.';
+                        document.getElementById('proceedPaymentBtn').style.display = 'block';
+                        document.getElementById('goToDashboardBtn').style.display = 'none';
+                        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                        successModal.show();
+
+                        document.getElementById('proceedPaymentBtn').onclick = () => {
+                            initiateRazorpay(data.enrollmentId, payload.monthlyFee);
+                        };
+                    }
                 } else {
                     const err = await res.text();
                     alert("Error: " + err);

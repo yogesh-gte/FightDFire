@@ -27,7 +27,11 @@ public class WomenProductController {
     @Autowired private WomenProductOrderRepository orderRepo;
     @Autowired private WomenCartItemRepository cartRepo;
     @Autowired private WomenWishlistItemRepository wishlistRepo;
-    @Autowired private FileUploadService fileUploadService;
+    @Autowired
+    private FileUploadService fileUploadService;
+    
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
     @Autowired private WomenReturnRequestRepository returnRepo;
 
     // ══════════════════════════════════════
@@ -84,12 +88,14 @@ public class WomenProductController {
     }
 
     @PostMapping("/seller/login")
-    public String sellerLogin(@RequestParam String email,
+    public String loginSeller(@RequestParam String email,
                               @RequestParam String password,
-                              HttpSession session, Model model) {
-        Optional<WomenProductSeller> opt = sellerRepo.findByEmail(email.trim().toLowerCase());
-        if (opt.isEmpty()) { model.addAttribute("error", "Seller not found."); return "women-products/seller-login"; }
-        WomenProductSeller s = opt.get();
+                              HttpSession session,
+                              jakarta.servlet.http.HttpServletResponse response,
+                              Model model) {
+        Optional<WomenProductSeller> sOpt = sellerRepo.findByEmail(email.trim().toLowerCase());
+        if (sOpt.isEmpty()) { model.addAttribute("error", "Seller not found."); return "women-products/seller-login"; }
+        WomenProductSeller s = sOpt.get();
         if (!s.getPassword().equals(password)) { model.addAttribute("error", "Invalid password."); return "women-products/seller-login"; }
         if (s.getVerificationStatus() == VerificationStatus.PENDING) {
             model.addAttribute("error", "Your account is pending verification by Admin. Please check back later.");
@@ -100,6 +106,15 @@ public class WomenProductController {
             return "women-products/seller-login";
         }
         session.setAttribute("loggedSeller", s);
+        
+        // Generate JWT and add to response
+        String token = jwtUtil.generateToken(s.getEmail(), "SELLER");
+        jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+        response.addCookie(cookie);
+        
         return "redirect:/women-products/seller/dashboard";
     }
 

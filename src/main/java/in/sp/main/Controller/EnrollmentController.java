@@ -141,6 +141,14 @@ public class EnrollmentController {
                 return ResponseEntity.badRequest().body("You are already enrolled in this batch.");
             }
 
+            // --- CAPACITY ENFORCEMENT ---
+            if (batch.getCapacity() != null && batch.getCapacity() > 0) {
+                long currentCount = enrollmentRepository.countPaidByBatchId(batch.getId());
+                if (currentCount >= batch.getCapacity()) {
+                    return ResponseEntity.status(409).body("This batch is full. No seats available.");
+                }
+            }
+
             Enrollment enrollment = new Enrollment();
             enrollment.setUser(user);
             enrollment.setCenter(center);
@@ -193,10 +201,28 @@ public class EnrollmentController {
             enrollment.setConsentRules(request.isConsentRules());
 
             Enrollment saved = enrollmentRepository.save(enrollment);
-            
+
+            // --- FREE BATCH: auto-approve immediately ---
+            boolean isFree = (batch.getFee() == null || batch.getFee() <= 0);
+            if (isFree) {
+                saved.setPaymentStatus("PAID");
+                saved.setStatus(TrainingStatus.APPROVED);
+                saved.setAmountPaid(0.0);
+                enrollmentRepository.save(saved);
+                // Mark batch as Full if capacity reached
+                if (batch.getCapacity() != null && batch.getCapacity() > 0) {
+                    long newCount = enrollmentRepository.countPaidByBatchId(batch.getId());
+                    if (newCount >= batch.getCapacity()) {
+                        batch.setStatus("Full");
+                        batchRepository.save(batch);
+                    }
+                }
+            }
+
             java.util.Map<String, Object> response = new java.util.HashMap<>();
-            response.put("message", "Enrollment saved successfully");
+            response.put("message", isFree ? "Enrolled successfully!" : "Enrollment saved successfully");
             response.put("enrollmentId", saved.getId());
+            response.put("free", isFree);
             return ResponseEntity.ok(response);
             
         } catch (Exception e) {

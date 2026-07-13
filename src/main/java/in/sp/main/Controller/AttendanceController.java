@@ -298,4 +298,57 @@ public class AttendanceController {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());
         }
     }
+
+    // ---------- USER SELF CHECK-IN (Online Classes) ----------
+    @PostMapping("/api/attendance/user-checkin")
+    @ResponseBody
+    public ResponseEntity<?> userCheckIn(@RequestBody Map<String, Object> data, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) return ResponseEntity.status(401).body("Please login first");
+
+        try {
+            Long onlineClassId = Long.parseLong(data.get("onlineClassId").toString());
+            java.time.LocalDate date = java.time.LocalDate.parse(data.get("date").toString());
+
+            OnlineClass oc = onlineClassRepository.findById(onlineClassId).orElse(null);
+            if (oc == null) return ResponseEntity.badRequest().body("Online class not found");
+
+            // Validate: user must have a PAID+APPROVED enrollment in the batch
+            if (oc.getBatch() != null) {
+                List<Enrollment> enrollments = enrollmentRepository.findByBatchId(oc.getBatch().getId());
+                boolean isEnrolled = enrollments.stream().anyMatch(e ->
+                    e.getUser() != null && e.getUser().getId().equals(user.getId())
+                    && "PAID".equalsIgnoreCase(e.getPaymentStatus())
+                    && (e.getStatus() == in.sp.main.Entities.TrainingStatus.APPROVED
+                        || e.getStatus() == in.sp.main.Entities.TrainingStatus.IN_PROGRESS)
+                );
+                if (!isEnrolled) {
+                    return ResponseEntity.status(403).body("You are not enrolled in this class");
+                }
+            }
+
+            // Prevent duplicate check-in
+            List<Attendance> existing = attendanceRepository.findByOnlineClassAndAttendanceDate(oc, date);
+            Attendance att = existing.stream()
+                    .filter(a -> a.getUser() != null && a.getUser().getId().equals(user.getId()))
+                    .findFirst()
+                    .orElse(new Attendance());
+
+            att.setUser(user);
+            att.setOnlineClass(oc);
+            att.setAttendanceDate(date);
+            att.setStatus(AttendanceStatus.PRESENT);
+            att.setMode("ONLINE");
+            if (oc.getCenter() != null) att.setCenter(oc.getCenter());
+            attendanceRepository.save(att);
+
+            Map<String, Object> res = new HashMap<>();
+            res.put("status", "success");
+            res.put("message", "Checked in successfully!");
+            return ResponseEntity.ok(res);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Check-in failed: " + e.getMessage());
+        }
+    }
 }

@@ -215,6 +215,10 @@
 
     <!-- Header -->
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
 
     <!-- Hero Section -->
     <section class="hero-mini">
@@ -396,6 +400,8 @@
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
     <script>AOS.init();</script>
+    </div>
+</div>
 </body>
 </html>
 

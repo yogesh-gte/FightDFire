@@ -200,6 +200,10 @@
 
     <!-- ======= Header ======= -->
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
     <div class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
             Dashboard <i class="bi bi-arrow-right"></i>
@@ -490,6 +494,8 @@
             });
     </script>
     <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+    </div>
+</div>
 </body>
 </html>
 

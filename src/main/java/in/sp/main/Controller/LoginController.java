@@ -28,6 +28,8 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private in.sp.main.Config.JwtUtil jwtUtil;
 
     // Show login page
     @GetMapping
@@ -50,29 +52,12 @@ public class LoginController {
     }
 
  // Handle login action
-	/*
-	 * @PostMapping public String login(@RequestParam("email") String email,
-	 * 
-	 * @RequestParam("password") String password, HttpSession session, Model model)
-	 * { User user = userService.findByUsername(email);
-	 * 
-	 * if (user != null && user.getPassword().equals(password)) {
-	 * session.setAttribute("loggedUser", user);
-	 * 
-	 * String redirect = (String) session.getAttribute("redirectAfterLogin"); if
-	 * (redirect != null) { session.removeAttribute("redirectAfterLogin"); return
-	 * "redirect:" + redirect; }
-	 * 
-	 * return "redirect:/users/dashboard"; } else { model.addAttribute("error",
-	 * "Invalid credentials. Please try again."); return "login"; } }
-	 */
-    
- // Handle login action
     @RequestMapping(method = RequestMethod.POST)
     public String login(@RequestParam("email") String email,
                         @RequestParam("password") String password,
                         Model model,
-                        HttpSession session) {
+                        HttpSession session,
+                        jakarta.servlet.http.HttpServletResponse response) {
         String normEmail = (email == null) ? "" : email.trim().toLowerCase();
         String rawPassword = (password == null) ? "" : password;
 
@@ -101,6 +86,15 @@ public class LoginController {
             }
 
             session.setAttribute("user", user);
+
+            // Generate JWT and add to response
+            String token = jwtUtil.generateToken(user.getEmail(), "USER");
+            jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
+            response.addCookie(cookie);
+
             String redirect = (String) session.getAttribute("redirectAfterLogin");
             if (redirect != null && !redirect.isBlank()) {
                 session.removeAttribute("redirectAfterLogin");

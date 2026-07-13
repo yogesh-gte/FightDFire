@@ -22,6 +22,13 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Enrollment> findByBatch(in.sp.main.Entities.MartialArtsBatch batch);
     List<Enrollment> findByBatchId(Long batchId);
 
+    /** Count total enrollments in a batch (for capacity enforcement). */
+    long countByBatchId(Long batchId);
+
+    /** Count only paid enrollments for a batch (for accurate seat display). */
+    @Query("SELECT COUNT(e) FROM Enrollment e WHERE e.batch.id = :batchId AND e.paymentStatus = 'PAID'")
+    long countPaidByBatchId(@Param("batchId") Long batchId);
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Enrollment e WHERE e.user.id = :userId")
