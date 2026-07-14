@@ -18,15 +18,15 @@
        ORIGINAL STYLES (kept exactly as is)
        ============================================ */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
         --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.15);
@@ -649,13 +649,13 @@
       width: 90%;
     ">
       <div style="font-size: 60px; margin-bottom: 16px;">🎬</div>
-      <h3 style="color:#7C2D5E; font-weight:800; margin-bottom:10px; font-size:1.6rem;">No reels yet</h3>
-      <p style="color:#a64281; margin-bottom:28px; font-size:1rem;">
+      <h3 style="color:#1e1b4b; font-weight:800; margin-bottom:10px; font-size:1.6rem;">No reels yet</h3>
+      <p style="color:#312e81; margin-bottom:28px; font-size:1rem;">
         Upload a reel first, then come back to Reels.
       </p>
       <div style="display:flex; gap:12px; justify-content:center;">
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#reelStudioModal"
-           style="background:linear-gradient(135deg,#7C2D5E,#DB2777); color:white; border:none; padding:10px 28px; border-radius:30px; font-weight:700; font-size:0.95rem;">
+           style="background:linear-gradient(135deg,#1e1b4b,#f43f5e); color:white; border:none; padding:10px 28px; border-radius:30px; font-weight:700; font-size:0.95rem;">
           Shoot Reel
         </button>
         <a href="${pageContext.request.contextPath}/users/dashboard"

@@ -112,7 +112,7 @@
     padding: 0 15px;
   }
   .dashboard-btn {
-    background: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
     color: #fff !important;
     padding: 10px 24px;
     border-radius: 50px;

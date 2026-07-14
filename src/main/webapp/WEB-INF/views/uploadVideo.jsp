@@ -12,12 +12,12 @@
 
    <style>
     :root {
-        --maroon:        #7d2a5a;
-        --maroon-light:  #a0375e;
-        --maroon-dark:   #5a1d40;
-        --maroon-pale:   #f6f0f4;
-        --maroon-border: rgba(125,42,90,0.18);
-        --gradient-maroon: linear-gradient(135deg, #7d2a5a 0%, #a0375e 100%);
+        --maroon:        #1e1b4b;
+        --maroon-light:  #312e81;
+        --maroon-dark:   #0b0920;
+        --maroon-pale:   #f8fafc;
+        --maroon-border: rgba(30, 27, 75, 0.12);
+        --gradient-maroon: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
         --shadow-sm: 0 10px 30px rgba(125,42,90,0.08);
         --shadow-md: 0 20px 40px rgba(125,42,90,0.12);
     }

@@ -17,7 +17,7 @@
 
         /* Hero */
         .hero {
-            background: linear-gradient(135deg, #7C2D5E 0%, #a855f7 50%, #ec4899 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #a855f7 50%, #ec4899 100%);
             padding: 70px 20px 80px;
             position: relative;
             overflow: hidden;
@@ -37,14 +37,14 @@
             display: flex; align-items: center; gap: 8px; max-width: 620px; margin: 0 auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
         .search-bar input { border: none; outline: none; flex: 1; font-size: 1rem; color: #1a1a2e; font-family: 'Outfit', sans-serif; }
-        .search-bar button { background: linear-gradient(135deg, #7C2D5E, #a855f7);
+        .search-bar button { background: linear-gradient(135deg, #1e1b4b, #a855f7);
             border: none; color: white; border-radius: 40px; padding: 10px 24px;
             font-weight: 600; cursor: pointer; font-family: 'Outfit', sans-serif; white-space: nowrap; }
 
         /* Stats strip */
         .stats-strip { background: white; padding: 20px 0; border-bottom: 1px solid #f0e8f5; }
         .stat-item { text-align: center; }
-        .stat-num { font-size: 1.8rem; font-weight: 800; color: #7C2D5E; }
+        .stat-num { font-size: 1.8rem; font-weight: 800; color: #1e1b4b; }
         .stat-label { font-size: 0.8rem; color: #888; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 
         /* Category pills */
@@ -69,17 +69,17 @@
         /* Filter panel */
         .filter-panel { background: white; border-radius: 20px; padding: 24px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05); height: fit-content; position: sticky; top: 24px; }
-        .filter-title { font-weight: 700; font-size: 1rem; color: #7C2D5E; margin-bottom: 16px;
+        .filter-title { font-weight: 700; font-size: 1rem; color: #1e1b4b; margin-bottom: 16px;
             display: flex; align-items: center; gap: 8px; }
         .filter-label { font-size: 0.8rem; font-weight: 600; color: #555; text-transform: uppercase;
             letter-spacing: 0.5px; margin-bottom: 8px; margin-top: 16px; }
         .filter-input { width: 100%; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 10px 14px;
             font-family: 'Outfit', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-        .filter-input:focus { border-color: #7C2D5E; }
-        .filter-btn { width: 100%; background: linear-gradient(135deg, #7C2D5E, #a855f7);
+        .filter-input:focus { border-color: #1e1b4b; }
+        .filter-btn { width: 100%; background: linear-gradient(135deg, #1e1b4b, #a855f7);
             color: white; border: none; border-radius: 10px; padding: 12px; font-family: 'Outfit', sans-serif;
             font-weight: 600; cursor: pointer; margin-top: 18px; font-size: 0.95rem; }
-        .filter-clear { display: block; text-align: center; margin-top: 8px; color: #7C2D5E;
+        .filter-clear { display: block; text-align: center; margin-top: 8px; color: #1e1b4b;
             font-size: 0.85rem; text-decoration: none; font-weight: 500; }
 
         /* Event cards */
@@ -88,12 +88,12 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s; cursor: pointer; }
         .event-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(124,45,94,0.15); }
         .event-card a { text-decoration: none; color: inherit; }
-        .card-banner { width: 100%; height: 180px; object-fit: cover; background: linear-gradient(135deg, #7C2D5E, #a855f7); }
-        .card-banner-placeholder { width: 100%; height: 180px; background: linear-gradient(135deg, #7C2D5E22, #a855f722);
+        .card-banner { width: 100%; height: 180px; object-fit: cover; background: linear-gradient(135deg, #1e1b4b, #a855f7); }
+        .card-banner-placeholder { width: 100%; height: 180px; background: linear-gradient(135deg, #1e1b4b22, #a855f722);
             display: flex; align-items: center; justify-content: center; font-size: 3rem; }
         .card-body { padding: 18px; }
         .card-cat { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
-            color: #7C2D5E; margin-bottom: 6px; }
+            color: #1e1b4b; margin-bottom: 6px; }
         .card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .card-meta { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
@@ -105,14 +105,14 @@
         .featured-badge { position: absolute; top: 12px; left: 12px; background: linear-gradient(135deg,#f59e0b,#ef4444);
             color: white; font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
         .card-img-wrap { position: relative; }
-        .register-btn { font-size: 0.82rem; font-weight: 600; color: #7C2D5E; text-decoration: none;
-            border: 1.5px solid #7C2D5E; border-radius: 20px; padding: 5px 14px;
+        .register-btn { font-size: 0.82rem; font-weight: 600; color: #1e1b4b; text-decoration: none;
+            border: 1.5px solid #1e1b4b; border-radius: 20px; padding: 5px 14px;
             transition: all 0.2s; display: inline-block; }
-        .register-btn:hover { background: #7C2D5E; color: white; }
+        .register-btn:hover { background: #1e1b4b; color: white; }
 
         /* Featured strip */
-        .featured-section { background: linear-gradient(135deg, #7C2D5E11, #a855f711); padding: 30px 0; margin-bottom: 0; }
-        .section-title { font-size: 1.4rem; font-weight: 800; color: #7C2D5E; margin-bottom: 20px;
+        .featured-section { background: linear-gradient(135deg, #1e1b4b11, #a855f711); padding: 30px 0; margin-bottom: 0; }
+        .section-title { font-size: 1.4rem; font-weight: 800; color: #1e1b4b; margin-bottom: 20px;
             display: flex; align-items: center; gap: 10px; }
         .featured-scroll { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
         .featured-scroll::-webkit-scrollbar { display: none; }
@@ -126,15 +126,15 @@
         .no-events .icon { font-size: 4rem; margin-bottom: 16px; display: block; }
 
         /* Organizer CTA */
-        .organizer-cta { background: linear-gradient(135deg, #1a1a2e, #7C2D5E);
+        .organizer-cta { background: linear-gradient(135deg, #1a1a2e, #1e1b4b);
             color: white; border-radius: 24px; padding: 40px; text-align: center; margin: 40px auto;
             max-width: 800px; }
         .organizer-cta h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
         .organizer-cta p { opacity: 0.85; margin-bottom: 24px; }
-        .cta-btn { background: white; color: #7C2D5E; border: none; border-radius: 30px;
+        .cta-btn { background: white; color: #1e1b4b; border: none; border-radius: 30px;
             padding: 14px 36px; font-weight: 700; font-family: 'Outfit', sans-serif; cursor: pointer;
             font-size: 1rem; text-decoration: none; display: inline-block; transition: all 0.2s; }
-        .cta-btn:hover { background: #f9f0ff; transform: scale(1.03); color: #7C2D5E; }
+        .cta-btn:hover { background: #f9f0ff; transform: scale(1.03); color: #1e1b4b; }
 
         /* Alert */
         .flash-alert { position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 380px; border-radius: 14px;
@@ -165,7 +165,7 @@
         <h1>Women's Events Platform 🌸</h1>
         <p>Discover, participate, and thrive — health, fitness, entrepreneurship, education & more events designed for women.</p>
         <form method="get" action="${pageContext.request.contextPath}/women-events" class="search-bar">
-            <i class="bi bi-search" style="color:#7C2D5E; font-size:1.1rem;"></i>
+            <i class="bi bi-search" style="color:#1e1b4b; font-size:1.1rem;"></i>
             <input type="text" name="query" placeholder="Search events by name..." value="${query}"/>
             <button type="submit"><i class="bi bi-search me-1"></i>Search</button>
         </form>
@@ -325,7 +325,7 @@
 
         <c:if test="${not empty loggedUser}">
             <a href="${pageContext.request.contextPath}/women-events/my-registrations"
-               style="display:block; background:#f9f0ff; color:#7C2D5E; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600; margin-bottom:10px;">
+               style="display:block; background:#f9f0ff; color:#1e1b4b; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600; margin-bottom:10px;">
                 <i class="bi bi-ticket-perforated-fill"></i> My Tickets
             </a>
         </c:if>
@@ -355,7 +355,7 @@
 
         <c:if test="${empty loggedUser && empty loggedHost}">
             <a href="${pageContext.request.contextPath}/login"
-               style="display:block; background: linear-gradient(135deg, #7C2D5E, #a855f7); color:white; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600;">
+               style="display:block; background: linear-gradient(135deg, #1e1b4b, #a855f7); color:white; border-radius:12px; padding:12px; text-align:center; text-decoration:none; font-weight:600;">
                 <i class="bi bi-person-circle me-1"></i> Login to Register
             </a>
         </c:if>
@@ -403,7 +403,7 @@
                                     <div class="card-cat">${ev.category.displayName}</div>
                                     <div class="card-title">${ev.name}</div>
                                     <div class="card-meta">
-                                        <span><i class="bi bi-calendar3" style="color:#7C2D5E;"></i>
+                                        <span><i class="bi bi-calendar3" style="color:#1e1b4b;"></i>
                                             <fmt:formatDate value="${ev.eventDate}" pattern="dd MMM yyyy" type="date"/>
                                             ${ev.eventDate}
                                         </span>
@@ -429,7 +429,7 @@
                 <div class="no-events">
                     <span class="icon">🔍</span>
                     <h4 style="color:#555; font-weight:700;">No events found</h4>
-                    <p>Try adjusting your filters or <a href="${pageContext.request.contextPath}/women-events" style="color:#7C2D5E; font-weight:600;">browse all events</a>.</p>
+                    <p>Try adjusting your filters or <a href="${pageContext.request.contextPath}/women-events" style="color:#1e1b4b; font-weight:600;">browse all events</a>.</p>
                 </div>
             </c:otherwise>
         </c:choose>

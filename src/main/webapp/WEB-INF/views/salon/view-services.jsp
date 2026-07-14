@@ -126,7 +126,7 @@
 
         .service-card-modern:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(124, 45, 94, 0.1);
+            box-shadow: 0 20px 40px rgba(30, 27, 75, 0.1);
             border-color: var(--brand-pink-light);
         }
 

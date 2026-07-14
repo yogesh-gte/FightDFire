@@ -22,7 +22,7 @@
     <style>
         :root {
             --fdf-mulberry: #6a0dad;
-            --fdf-plum: #a64281;
+            --fdf-plum: #312e81;
             --fdf-rose: #d63384;
             --brand-purple: #7d265a;
         }

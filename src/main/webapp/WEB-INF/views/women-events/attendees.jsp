@@ -11,15 +11,15 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css"/>
     <style>
         body { font-family: 'Outfit', sans-serif; background: #faf7fb; }
-        .page-header { background: linear-gradient(135deg, #7C2D5E, #a855f7); padding: 40px 20px; color: white; }
+        .page-header { background: linear-gradient(135deg, #1e1b4b, #a855f7); padding: 40px 20px; color: white; }
         .container-main { max-width: 1000px; margin: 0 auto; padding: 36px 20px 60px; }
         .panel { background: white; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
         .panel-header { padding: 20px 24px; border-bottom: 1px solid #f5f0f8; display: flex; justify-content: space-between; align-items: center; }
-        .panel-title { font-weight: 700; color: #7C2D5E; font-size: 1.05rem; }
+        .panel-title { font-weight: 700; color: #1e1b4b; font-size: 1.05rem; }
         table { width: 100%; border-collapse: collapse; }
         th { padding: 12px 18px; text-align: left; font-size: 0.78rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; background: #faf7fb; }
         td { padding: 12px 18px; border-top: 1px solid #f5f0f8; font-size: 0.9rem; }
-        .ticket-code { font-family: monospace; font-size: 0.85rem; background: #f5f0f8; color: #7C2D5E; padding: 3px 8px; border-radius: 6px; }
+        .ticket-code { font-family: monospace; font-size: 0.85rem; background: #f5f0f8; color: #1e1b4b; padding: 3px 8px; border-radius: 6px; }
         .status-pill { border-radius: 20px; padding: 3px 10px; font-size: 0.75rem; font-weight: 700; }
         .status-REGISTERED { background: #dcfce7; color: #166534; }
         .status-CANCELLED  { background: #ffe4e6; color: #9f1239; }

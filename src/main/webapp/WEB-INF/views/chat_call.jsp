@@ -81,7 +81,7 @@
       width: 150px;
       height: 150px;
       border-radius: 50%;
-      background: var(--gradient-primary, linear-gradient(135deg, #7C2D5E, #DB2777));
+      background: var(--gradient-primary, linear-gradient(135deg, #1e1b4b, #f43f5e));
       display: flex;
       align-items: center;
       justify-content: center;

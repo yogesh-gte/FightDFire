@@ -18,14 +18,14 @@
 
     <style>
     :root {
-        --pp: #7C2D5E;
-        --pp-light: #a64281;
-        --coral: #DB2777;
+        --pp: #1e1b4b;
+        --pp-light: #312e81;
+        --coral: #f43f5e;
         --bg-primary: #150510;
         --bg-secondary: #210a1b;
         --text-primary: #ffffff;
         --text-secondary: rgba(255, 255, 255, 0.7);
-        --accent-red: #DB2777;
+        --accent-red: #f43f5e;
         --accent-green: #30d158;
         --border-subtle: rgba(255, 255, 255, 0.15);
     }
@@ -194,7 +194,7 @@
         // Add Victim Marker
         const victimIcon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div style="background-color:#DB2777; width:20px; height:20px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(0,0,0,0.5);"></div>`,
+            html: `<div style="background-color:#f43f5e; width:20px; height:20px; border-radius:50%; border:3px solid white; box-shadow:0 0 10px rgba(0,0,0,0.5);"></div>`,
             iconSize: [20, 20],
             iconAnchor: [10, 10]
         });
@@ -206,8 +206,8 @@
             
         // Add a pulsing circle around the victim
         L.circle([victimLat, victimLng], {
-            color: '#DB2777',
-            fillColor: '#DB2777',
+            color: '#f43f5e',
+            fillColor: '#f43f5e',
             fillOpacity: 0.2,
             radius: 100
         }).addTo(map);

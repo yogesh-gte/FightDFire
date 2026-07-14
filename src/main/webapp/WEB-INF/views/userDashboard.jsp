@@ -309,8 +309,43 @@
         .stat-cards-grid { grid-template-columns: repeat(2, 1fr); }
         .right-col { flex-direction: column; }
     }
-    @media (max-width: 576px) {
-        .stat-cards-grid { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+        #wrapper {
+            flex-direction: column !important;
+        }
+        #sidebar-wrapper {
+            min-width: 100% !important;
+            max-width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-left-radius: 20px !important;
+            border-bottom-right-radius: 20px !important;
+            position: relative !important;
+            top: 0 !important;
+            padding: 15px !important;
+        }
+        .list-group {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            margin-top: 10px !important;
+        }
+        .list-group-item {
+            padding: 8px 12px !important;
+            border-radius: 30px !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            font-size: 13px !important;
+            display: inline-flex !important;
+            white-space: nowrap !important;
+        }
+        .list-group-item::before {
+            display: none !important;
+        }
+        .list-group-item:hover, .list-group-item.active {
+            background: var(--primary-coral) !important;
+            color: white !important;
+        }
     }
 </style>
 </head>
@@ -329,6 +364,10 @@
             <!-- Dashboard (Active) -->
             <a href="${pageContext.request.contextPath}/users/dashboard" class="list-group-item active">
                 <i class="bi bi-house-door"></i> Dashboard
+            </a>
+            
+            <a href="${pageContext.request.contextPath}/creator-hub" class="list-group-item">
+                <i class="bi bi-camera-reels text-warning"></i> Creator Hub 🎥
             </a>
             
             <c:if test="${isWorker}">
@@ -381,8 +420,8 @@
             <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="list-group-item">
                 <i class="bi bi-briefcase"></i> Women Lawyers
             </a>
-            <a href="${pageContext.request.contextPath}/marketplace/list?category=FITNESS_ZUMBA" class="list-group-item">
-                <i class="bi bi-activity"></i> Fitness & Zumba
+            <a href="${pageContext.request.contextPath}/fitness" class="list-group-item">
+                <i class="bi bi-activity text-success"></i> Fitness & Wellness 🏃‍♀️
             </a>
             <a href="${pageContext.request.contextPath}/women-products" class="list-group-item">
                 <i class="bi bi-bag-heart"></i> Women Products
@@ -519,6 +558,237 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Upcoming Fitness Classes -->
+                <div class="panel-new mb-4">
+                    <div class="panel-header-flex">
+                        <h3 class="panel-title"><i class="bi bi-calendar-event text-success me-2"></i> Upcoming Fitness Classes</h3>
+                        <a href="${pageContext.request.contextPath}/fitness" class="panel-link">Browse All</a>
+                    </div>
+                    
+                    <c:choose>
+                        <c:when test="${not empty upcomingFitnessClasses}">
+                            <div class="row g-3 mt-2">
+                                <c:forEach var="fc" items="${upcomingFitnessClasses}">
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="border rounded-4 p-3 bg-white shadow-sm h-100 d-flex flex-column" style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <h6 class="fw-bold mb-0 text-dark">${fc.className}</h6>
+                                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size:0.7rem;">${fc.category}</span>
+                                            </div>
+                                            <div class="text-muted small mb-3"><i class="bi bi-person-badge text-secondary me-1"></i> By <strong>${fc.trainer.fullName}</strong></div>
+                                            
+                                            <div class="d-flex align-items-center gap-2 mb-2 small text-dark fw-medium">
+                                                <i class="bi bi-calendar2-check text-primary"></i> ${fc.classDate} @ ${fc.classTime}
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 mb-3 small text-dark fw-medium">
+                                                <i class="bi bi-people-fill text-info"></i> ${fc.maxCapacity - fc.currentEnrollment} Seats Left
+                                            </div>
+                                            
+                                            <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
+                                                <div class="fw-bold text-success fs-5">₹${fc.price}</div>
+                                                <div class="d-flex gap-2">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 20px; font-weight: 600; padding: 6px 12px;" onclick="openUserChat(${fc.trainer.id}, '${fc.trainer.fullName}')" title="Chat with Trainer">
+                                                        <i class="bi bi-chat-dots-fill"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm" style="background: linear-gradient(135deg, #0f766e, #10b981); color: white; border-radius: 20px; font-weight: 600; padding: 6px 16px; border: none; box-shadow: 0 4px 10px rgba(16,185,129,0.2);" data-bs-toggle="modal" data-bs-target="#bookClassModal${fc.id}">Enroll</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Book Class Modal -->
+                                    <div class="modal fade" id="bookClassModal${fc.id}" tabindex="-1">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content border-0 rounded-4 shadow-lg">
+                                                <div class="modal-header bg-light border-0 rounded-top-4">
+                                                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-calendar2-check-fill text-success me-2"></i> Book Group Class</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <form action="${pageContext.request.contextPath}/fitness/class/book" method="POST">
+                                                    <div class="modal-body p-4">
+                                                        <input type="hidden" name="classId" value="${fc.id}">
+                                                        <div class="mb-4 text-center">
+                                                            <h4 class="fw-bold text-dark mb-1">${fc.className}</h4>
+                                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 mb-3">${fc.category}</span>
+                                                        </div>
+                                                        
+                                                        <div class="p-3 bg-light rounded-3 mb-4">
+                                                            <div class="d-flex justify-content-between mb-2">
+                                                                <span class="text-muted small">Trainer</span>
+                                                                <span class="fw-bold text-dark small">${fc.trainer.fullName}</span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between mb-2">
+                                                                <span class="text-muted small">Date & Time</span>
+                                                                <span class="fw-bold text-dark small">${fc.classDate} @ ${fc.classTime}</span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between mb-2">
+                                                                <span class="text-muted small">Duration</span>
+                                                                <span class="fw-bold text-dark small">${fc.durationMinutes} Minutes</span>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between mb-2">
+                                                                <span class="text-muted small">Format</span>
+                                                                <span class="fw-bold text-dark small">${fc.sessionType}</span>
+                                                            </div>
+                                                            <hr class="my-2">
+                                                            <div class="d-flex justify-content-between">
+                                                                <span class="text-muted fw-bold">Total Payable</span>
+                                                                <span class="fw-bold text-success fs-5">₹${fc.price}</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="alert alert-warning py-2 mb-0" style="font-size:0.85rem;">
+                                                            <i class="bi bi-info-circle-fill me-1"></i> The fee of ₹${fc.price} will be deducted directly from your wallet balance.
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer border-0 pt-0">
+                                                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-success rounded-pill px-4">Confirm Booking</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="text-center py-4 bg-light rounded-4 mt-3">
+                                <i class="bi bi-clock-history text-muted fs-3 opacity-50"></i>
+                                <p class="text-muted small mt-2 mb-0 fw-medium">No upcoming classes available right now. Check back later!</p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+                <!-- Active Fitness Subscriptions / Progress -->
+                <c:if test="${not empty activeSubscriptions}">
+                    <div class="panel-new mb-4">
+                        <div class="panel-header-flex">
+                            <h3 class="panel-title"><i class="bi bi-activity text-success me-2"></i> My Personal Coaching Subscriptions</h3>
+                            <span class="badge bg-success text-white">${activeSubscriptions.size()} Active</span>
+                        </div>
+                        <div class="row g-3 mt-2">
+                            <c:forEach var="sub" items="${activeSubscriptions}">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="border rounded-4 p-3 bg-white shadow-sm h-100 d-flex flex-column" style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="fw-bold mb-0 text-dark">${sub.category} Coaching</h6>
+                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size:0.7rem;">
+                                                <c:choose>
+                                                    <c:when test="${sub.duration == 'SINGLE'}">Single Session</c:when>
+                                                    <c:when test="${sub.duration == 'MONTHLY'}">Monthly Package</c:when>
+                                                    <c:when test="${sub.duration == 'QUARTERLY'}">Quarterly Package</c:when>
+                                                    <c:when test="${sub.duration == 'HALF_YEAR'}">6 Months Package</c:when>
+                                                    <c:when test="${sub.duration == 'YEAR'}">1 Year Package</c:when>
+                                                    <c:otherwise>Active Plan</c:otherwise>
+                                                </c:choose>
+                                            </span>
+                                        </div>
+                                        <div class="text-muted small mb-2"><i class="bi bi-person-badge text-secondary me-1"></i> Trainer: <strong>${sub.trainer.fullName}</strong></div>
+                                        <div class="text-muted small mb-3"><i class="bi bi-calendar2-week text-secondary me-1"></i> Validity: <strong>${sub.startDate} to ${sub.endDate}</strong></div>
+
+                                        <c:set var="pct" value="0" />
+                                        <c:if test="${sub.totalSessions > 0}">
+                                            <c:set var="pct" value="${(sub.completedSessions * 100) / sub.totalSessions}" />
+                                        </c:if>
+                                        <div class="mt-auto">
+                                            <div class="d-flex justify-content-between mb-1 small text-dark fw-medium">
+                                                <span>Progress Tracker</span>
+                                                <span>${sub.completedSessions} / ${sub.totalSessions} Sessions</span>
+                                            </div>
+                                            <div class="progress" style="height: 10px; border-radius: 5px; background-color:#e9ecef;">
+                                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${pct}%; border-radius: 5px;" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </c:if>
+
+                <!-- Completed Fitness Classes / Ratings -->
+                <c:if test="${not empty completedFitnessBookings}">
+                    <div class="panel-new mb-4">
+                        <div class="panel-header-flex">
+                            <h3 class="panel-title"><i class="bi bi-star-fill text-warning me-2"></i> Rate Your Sessions</h3>
+                            <span class="badge bg-warning text-dark">${completedFitnessBookings.size()} Pending Reviews</span>
+                        </div>
+                        <style>
+                        .rating-container > label:hover,
+                        .rating-container > label:hover ~ label,
+                        .rating-container > input:checked ~ label {
+                            color: #ffc107 !important;
+                        }
+                        </style>
+                        <div class="row g-3 mt-2">
+                            <c:forEach var="cb" items="${completedFitnessBookings}">
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="border rounded-4 p-3 bg-white shadow-sm h-100 d-flex flex-column" style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <h6 class="fw-bold mb-0 text-dark">${cb.fitnessClass.className}</h6>
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25" style="font-size:0.7rem;">Completed</span>
+                                        </div>
+                                        <div class="text-muted small mb-3"><i class="bi bi-person-badge text-secondary me-1"></i> Trained by <strong>${cb.trainer.fullName}</strong></div>
+                                        
+                                        <div class="d-flex align-items-center gap-2 mb-3 small text-dark fw-medium">
+                                            <i class="bi bi-calendar-check text-success"></i> Session on ${cb.bookingDate}
+                                        </div>
+                                        
+                                        <div class="mt-auto d-flex justify-content-end pt-2 border-top">
+                                            <button type="button" class="btn btn-sm btn-warning fw-bold text-dark rounded-pill px-3 shadow-sm d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#reviewModal${cb.id}">
+                                                <i class="bi bi-star-fill"></i> Leave a Rating
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Review Modal -->
+                                <div class="modal fade" id="reviewModal${cb.id}" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 rounded-4 shadow-lg">
+                                            <div class="modal-header bg-warning rounded-top-4 border-0">
+                                                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-star-fill me-2"></i> Rate ${cb.trainer.fullName}</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <form action="${pageContext.request.contextPath}/fitness/review/submit" method="POST">
+                                                <div class="modal-body p-4">
+                                                    <input type="hidden" name="bookingId" value="${cb.id}">
+                                                    
+                                                    <div class="mb-4 text-center">
+                                                        <h6 class="text-muted fw-bold mb-3">How was ${cb.fitnessClass.className}?</h6>
+                                                        <div class="d-flex justify-content-center gap-2 flex-row-reverse rating-container">
+                                                            <input type="radio" id="star5_${cb.id}" name="rating" value="5" class="d-none" required/>
+                                                            <label for="star5_${cb.id}" class="fs-2 text-muted" style="cursor:pointer; transition: 0.2s;"><i class="bi bi-star-fill"></i></label>
+                                                            <input type="radio" id="star4_${cb.id}" name="rating" value="4" class="d-none"/>
+                                                            <label for="star4_${cb.id}" class="fs-2 text-muted" style="cursor:pointer; transition: 0.2s;"><i class="bi bi-star-fill"></i></label>
+                                                            <input type="radio" id="star3_${cb.id}" name="rating" value="3" class="d-none"/>
+                                                            <label for="star3_${cb.id}" class="fs-2 text-muted" style="cursor:pointer; transition: 0.2s;"><i class="bi bi-star-fill"></i></label>
+                                                            <input type="radio" id="star2_${cb.id}" name="rating" value="2" class="d-none"/>
+                                                            <label for="star2_${cb.id}" class="fs-2 text-muted" style="cursor:pointer; transition: 0.2s;"><i class="bi bi-star-fill"></i></label>
+                                                            <input type="radio" id="star1_${cb.id}" name="rating" value="1" class="d-none"/>
+                                                            <label for="star1_${cb.id}" class="fs-2 text-muted" style="cursor:pointer; transition: 0.2s;"><i class="bi bi-star-fill"></i></label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-3">
+                                                        <label class="form-label fw-bold small text-muted">Write a comment (optional)</label>
+                                                        <textarea name="comment" class="form-control rounded-3 bg-light border-0" rows="4" placeholder="Share your experience..."></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-0 pt-0 bg-white rounded-bottom-4">
+                                                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-warning fw-bold rounded-pill px-4 shadow-sm text-dark">Submit Review</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </div>
+                </c:if>
 
                 <!-- Bottom Grid -->
                 <div class="bottom-grid">
@@ -777,6 +1047,114 @@
     }
     applyCount(${requestCount == null ? 0 : requestCount});
   })();
+</script>
+
+<!-- Floating Chat Window for User -->
+<div id="userFloatingChat" class="card shadow-lg d-none" style="position: fixed; bottom: 25px; right: 25px; width: 360px; z-index: 1050; border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;">
+    <div class="card-header text-white d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(135deg, #1e1b4b, #312e81); border-radius: 16px 16px 0 0;">
+        <h6 class="mb-0 fw-bold d-flex align-items-center gap-2">
+            <i class="bi bi-chat-dots-fill text-warning"></i> <span id="userChatTrainerName">Trainer Name</span>
+        </h6>
+        <button type="button" class="btn-close btn-close-white" onclick="closeUserChat()"></button>
+    </div>
+    <div class="card-body p-3 overflow-auto" id="userChatMessages" style="height: 350px; background-color: #f4f6fa;">
+        <!-- Messages loaded dynamically -->
+    </div>
+    <div class="card-footer bg-white p-3 border-top">
+        <form id="userChatForm" onsubmit="sendUserMessage(event)" class="d-flex gap-2">
+            <input type="hidden" id="userChatTrainerId">
+            <input type="hidden" id="userChatUserId" value="${user.id}">
+            <input type="text" id="userChatInput" class="form-control rounded-pill bg-light border-0 px-3" placeholder="Type a message..." required autocomplete="off">
+            <button type="submit" class="btn btn-primary rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; min-width: 40px;"><i class="bi bi-send-fill ms-1"></i></button>
+        </form>
+    </div>
+</div>
+
+<script>
+    let userChatPollingInterval;
+
+    function openUserChat(trainerId, trainerName) {
+        document.getElementById('userFloatingChat').classList.remove('d-none');
+        document.getElementById('userChatTrainerName').innerText = trainerName;
+        document.getElementById('userChatTrainerId').value = trainerId;
+        
+        const userId = document.getElementById('userChatUserId').value;
+        fetchUserChatMessages(userId, trainerId);
+
+        if(userChatPollingInterval) clearInterval(userChatPollingInterval);
+        userChatPollingInterval = setInterval(() => fetchUserChatMessages(userId, trainerId, false), 3000);
+    }
+
+    function closeUserChat() {
+        document.getElementById('userFloatingChat').classList.add('d-none');
+        if(userChatPollingInterval) clearInterval(userChatPollingInterval);
+    }
+
+    function fetchUserChatMessages(userId, trainerId, scrollToBottom = true) {
+        fetch(`${pageContext.request.contextPath}/api/fitness/chat/` + userId + `/` + trainerId)
+            .then(res => res.json())
+            .then(data => {
+                const chatBox = document.getElementById('userChatMessages');
+                const isAtBottom = chatBox.scrollHeight - chatBox.scrollTop === chatBox.clientHeight;
+                
+                chatBox.innerHTML = '';
+                
+                data.forEach(msg => {
+                    const isMe = (msg.senderType === 'USER');
+                    const align = isMe ? 'justify-content-end' : 'justify-content-start';
+                    const bgClass = isMe ? 'text-white' : 'bg-white text-dark border shadow-sm';
+                    
+                    // Realistic Chat Bubble Styling
+                    const customBg = isMe ? 'background: linear-gradient(135deg, #0ea5e9, #2563eb);' : '';
+                    const radiusClass = isMe ? 'border-radius: 18px 18px 0px 18px;' : 'border-radius: 18px 18px 18px 0px;';
+                    
+                    const dateObj = new Date(msg.timestamp);
+                    const timeString = isNaN(dateObj) ? '' : dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    
+                    const msgElement = `
+                        <div class="d-flex mb-3 `+align+`">
+                            <div class="p-3 `+bgClass+`" style="`+customBg+` `+radiusClass+` max-width: 85%; line-height: 1.4;">
+                                <p class="mb-1" style="font-size: 0.95rem;">`+msg.message+`</p>
+                                <small class="d-block `+(isMe ? 'text-white-50' : 'text-muted')+` text-end" style="font-size: 0.7rem; margin-top: 4px;">`+timeString+`</small>
+                            </div>
+                        </div>
+                    `;
+                    chatBox.innerHTML += msgElement;
+                });
+                
+                if (scrollToBottom || isAtBottom) {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            })
+            .catch(err => console.error("Error fetching messages:", err));
+    }
+
+    function sendUserMessage(e) {
+        e.preventDefault();
+        const userId = document.getElementById('userChatUserId').value;
+        const trainerId = document.getElementById('userChatTrainerId').value;
+        const input = document.getElementById('userChatInput');
+        const message = input.value;
+
+        if(!message.trim()) return;
+
+        const formData = new URLSearchParams();
+        formData.append('userId', userId);
+        formData.append('trainerId', trainerId);
+        formData.append('message', message);
+
+        fetch(`${pageContext.request.contextPath}/api/fitness/chat/send`, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
+        .then(res => {
+            if(res.ok) {
+                input.value = '';
+                fetchUserChatMessages(userId, trainerId, true);
+            }
+        });
+    }
 </script>
 
 </body>

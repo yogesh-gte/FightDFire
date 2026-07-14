@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css"/>
     <style>
         body { font-family: 'Outfit', sans-serif; background: #faf7fb; color: #1a1a2e; }
-        .page-header { background: linear-gradient(135deg, #1a1a2e 0%, #7C2D5E 100%);
+        .page-header { background: linear-gradient(135deg, #1a1a2e 0%, #1e1b4b 100%);
             padding: 40px 20px; color: white; text-align: center; }
         .container-main { max-width: 680px; margin: 0 auto; padding: 40px 20px 80px; }
         .card-form { background: white; border-radius: 20px; padding: 40px;
@@ -20,11 +20,11 @@
         .form-control, .form-select { border-radius: 12px; border: 1.5px solid #e2e8f0; padding: 12px;
             font-family: 'Outfit', sans-serif; font-size: 0.92rem; }
         .form-control:focus, .form-select:focus { border-color: #a855f7; box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
-        .btn-submit { background: linear-gradient(135deg, #7C2D5E, #a855f7); color: white;
+        .btn-submit { background: linear-gradient(135deg, #1e1b4b, #a855f7); color: white;
             border: none; border-radius: 12px; padding: 14px; width: 100%; font-weight: 700;
             font-size: 1rem; cursor: pointer; transition: all 0.2s; }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(124,45,94,0.3); }
-        .reg-link { color: #7C2D5E; font-weight: 600; text-decoration: none; }
+        .reg-link { color: #1e1b4b; font-weight: 600; text-decoration: none; }
         .reg-link:hover { color: #a855f7; text-decoration: underline; }
     </style>
 </head>
@@ -39,7 +39,7 @@
 
 <div class="container-main">
     <div class="card-form">
-        <h4 class="fw-bold mb-4" style="color: #7C2D5E;"><i class="bi bi-file-earmark-person me-2"></i>Create Host Profile</h4>
+        <h4 class="fw-bold mb-4" style="color: #1e1b4b;"><i class="bi bi-file-earmark-person me-2"></i>Create Host Profile</h4>
         
         <c:if test="${not empty error}">
             <div class="alert alert-danger border-0 small py-2 px-3 mb-4" style="border-radius: 12px;">

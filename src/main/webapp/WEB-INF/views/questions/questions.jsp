@@ -10,14 +10,14 @@
         
 <style>
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
         --primary-gold: #ffd700;
         --dark-bg: #150510;
         --text-primary: #ffffff;
         --text-secondary: rgba(255, 255, 255, 0.7);
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #f43f5e 100%);
     }
 
     body {

@@ -26,7 +26,7 @@
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0px 10px 20px rgba(123, 44, 191, 0.2);
-            border-top: 5px solid #a64281; /* Dark Lavender */
+            border-top: 5px solid #312e81; /* Dark Lavender */
             transition: transform 0.3s ease-in-out;
         }
 
@@ -78,7 +78,7 @@
 
         /* Submit Button */
         .btn-submit {
-           background: linear-gradient(to right, #a64281, #5a189a); /* Gradient Button */
+           background: linear-gradient(to right, #312e81, #5a189a); /* Gradient Button */
             border: none;
             border-radius: 8px;
             padding: 12px;
@@ -89,7 +89,7 @@
         }
 
         .btn-submit:hover {
-           background: linear-gradient(to right, #5a189a, #a64281);
+           background: linear-gradient(to right, #5a189a, #312e81);
             transform: scale(1.03);
             box-shadow: 0px 5px 12px rgba(123, 44, 191, 0.3);
         }

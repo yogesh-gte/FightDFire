@@ -87,15 +87,15 @@
 
                 /* 1. Root variables for brand colors (optional, not used in original styles) */
                 :root {
-                    --primary-purple: #7C2D5E;
-                    --primary-purple-light: #a64281;
-                    --primary-coral: #DB2777;
-                    --primary-coral-dark: #5E1F47;
+                    --primary-purple: #1e1b4b;
+                    --primary-purple-light: #312e81;
+                    --primary-coral: #f43f5e;
+                    --primary-coral-dark: #1e1b4b;
                     --primary-teal: #20c997;
                     --primary-gold: #ffd700;
                     --dark-bg: #0f0f1a;
                     --light-bg: #fffcfd;
-                    --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+                    --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
                     --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
                     --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
                 }
@@ -128,12 +128,12 @@
                 }
 
                 .chat-box::-webkit-scrollbar-thumb {
-                    background: #a64281;
+                    background: #312e81;
                     border-radius: 10px;
                 }
 
                 .chat-box::-webkit-scrollbar-thumb:hover {
-                    background: #7C2D5E;
+                    background: #1e1b4b;
                 }
 
                 /* 4. Message hover effect (subtle scale) */
@@ -257,7 +257,7 @@
             align-items: center;
             justify-content: center;
             padding: 0 !important;
-            background: var(--gradient-primary, #7C2D5E) !important;
+            background: var(--gradient-primary, #1e1b4b) !important;
             border: none !important;
             color: #fff !important;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important;

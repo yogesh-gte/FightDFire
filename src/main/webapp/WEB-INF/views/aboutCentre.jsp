@@ -14,9 +14,9 @@
 
     <style>
         :root {
-            --maroon: #7d2a5a;
-            --maroon-light: #a0375e;
-            --maroon-dark: #5a1d40;
+            --maroon: #1e1b4b;
+            --maroon-light: #312e81;
+            --maroon-dark: #0b0920;
             --maroon-pale: #fdf2f8;
             --maroon-border: rgba(125, 42, 90, 0.15);
             --shadow-lg: 0 15px 35px rgba(125, 42, 90, 0.12);

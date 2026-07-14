@@ -18,8 +18,8 @@
 
     <style>
         :root {
-            --m-purple: #7C2D5E;
-            --m-pink: #DB2777;
+            --m-purple: #1e1b4b;
+            --m-pink: #f43f5e;
             --m-bg: #2D0B2E;
             --m-glass: rgba(255, 255, 255, 0.03);
             --m-glass-border: rgba(255, 255, 255, 0.08);
@@ -237,7 +237,7 @@
                         }
                     },
                     theme: {
-                        color: '#DB2777'
+                        color: '#f43f5e'
                     }
                 };
 

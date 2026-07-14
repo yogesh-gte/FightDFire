@@ -14,7 +14,7 @@
     
     <style>
         :root {
-            --primary: #7C2D5E;
+            --primary: #1e1b4b;
             --secondary: #a855f7;
             --dark-navy: #1e1b4b;
         }

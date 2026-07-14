@@ -11,9 +11,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --maroon: #7C2D5E;
-    --maroon-light: #a64281;
-    --maroon-dark: #5E1F47;
+    --maroon: #1e1b4b;
+    --maroon-light: #312e81;
+    --maroon-dark: #1e1b4b;
     --maroon-pale: #fffcfd;
     --maroon-border: rgba(124, 45, 94, 0.12);
     --shadow-premium: 0 20px 40px rgba(124, 45, 94, 0.08);

@@ -36,7 +36,7 @@
     h1 {
         font-size: 2rem;
         text-align: center;
-        color: #a64281;
+        color: #312e81;
         margin-bottom: 30px;
         font-family: 'Playfair Display', serif;
         display: flex;
@@ -46,7 +46,7 @@
     }
 
     h1 i {
-        color: #a64281;
+        color: #312e81;
     }
 
     label {
@@ -75,7 +75,7 @@
 
     .btn-submit {
         width: 100%;
-        background-color: #a64281;
+        background-color: #312e81;
         color: white;
         font-weight: 600;
         padding: 12px;
@@ -91,7 +91,7 @@
     }
 
    .btn-back {
-        background-color: #a64281;
+        background-color: #312e81;
         border: none;
         color: white;
         padding: 10px 20px;
@@ -143,7 +143,7 @@
     /* 2. Input focus enhancement (glow + border) */
     .form-control:focus,
     input[type="file"]:focus {
-        border-color: #a64281;
+        border-color: #312e81;
         outline: none;
         box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.2);
         transition: all 0.2s;
@@ -207,7 +207,7 @@
         border-radius: 10px;
     }
     ::-webkit-scrollbar-thumb {
-        background: #a64281;
+        background: #312e81;
         border-radius: 10px;
     }
     ::-webkit-scrollbar-thumb:hover {
@@ -224,7 +224,7 @@
 
     /* 9. Enhance file input button styling (if supported) */
     input[type="file"]::file-selector-button {
-        background-color: #a64281;
+        background-color: #312e81;
         color: white;
         border: none;
         border-radius: 6px;

@@ -18,8 +18,8 @@
     .call-info .badge{padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700}
     .call-info .badge.video{background:rgba(74,144,217,0.2);color:#4a90d9}
     .call-info .badge.voice{background:rgba(32,201,151,0.2);color:#20c997}
-    .call-leave{padding:6px 16px;border-radius:999px;border:2px solid rgba(255,107,107,0.5);background:transparent;color:#DB2777;font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px}
-    .call-leave:hover{background:#DB2777;color:#fff}
+    .call-leave{padding:6px 16px;border-radius:999px;border:2px solid rgba(255,107,107,0.5);background:transparent;color:#f43f5e;font-size:12px;font-weight:600;font-family:'Poppins',sans-serif;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:5px}
+    .call-leave:hover{background:#f43f5e;color:#fff}
     #meet{width:100%;height:calc(100vh - 56px)}
   </style>
 </head>

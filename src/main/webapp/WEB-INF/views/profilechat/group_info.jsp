@@ -13,7 +13,7 @@
 
 <style>
     .bg-purple{
-        background:#7C2D5E;
+        background:#1e1b4b;
         color:white;
     }
 

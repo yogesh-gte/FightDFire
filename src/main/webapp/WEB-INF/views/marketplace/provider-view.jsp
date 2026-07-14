@@ -18,8 +18,8 @@
 
     <style>
         :root {
-            --m-purple: #7C2D5E;
-            --m-pink: #DB2777;
+            --m-purple: #1e1b4b;
+            --m-pink: #f43f5e;
             --m-bg: #f9f6f8;
         }
 

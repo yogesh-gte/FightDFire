@@ -68,7 +68,7 @@
     width: 60px;
     height: 60px;
     border: 4px solid rgba(219, 39, 119, 0.1);
-    border-top-color: #DB2777;
+    border-top-color: #f43f5e;
     border-radius: 50%;
     animation: spinPremium 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
   }
@@ -133,7 +133,7 @@
   50%{ transform: translate3d(18px,-10px,0) scale(1.06); }
 }
 
-.hero-title{font-size:clamp(2.25rem, 8vw, 3.5rem);font-weight:800;color:#3F1430!important;margin-bottom:20px;line-height:1.1}.text-gradient{background:linear-gradient(90deg,#7C2D5E,#DB2777,#7C2D5E);background-size:200% auto;animation:shine 3s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent}@keyframes shine{to{background-position:200% center}}.hero-content,.hero-image-wrapper{position:relative;z-index:2}.hero-lead,.hero-values{font-size:clamp(1rem, 4vw, 1.2rem);line-height:1.6;color:#5E1F47!important;margin-bottom:20px;max-width:540px}.hero-values strong{color:#DB2777!important}.btn-funky,.btn-funky-outline{border-radius:999px;font-weight:900;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);padding:14px 30px;position:relative;overflow:hidden;z-index:1}.btn-funky{background:linear-gradient(45deg,#7C2D5E,#DB2777,#7C2D5E);background-size:200% auto;color:#fff!important;border:0;box-shadow:0 10px 20px rgba(124,45,94,0.2)}.btn-funky:hover{background-position:right center;box-shadow:0 15px 30px rgba(219,39,119,0.4);transform:translateY(-3px) scale(1.02)}.btn-funky-outline{background:rgba(255,255,255,0.7);color:#7C2D5E!important;border:1px solid rgba(124,45,94,0.3);backdrop-filter:blur(10px)}.btn-funky-outline:hover{background:#fff;box-shadow:0 10px 20px rgba(124,45,94,0.15);transform:translateY(-3px) scale(1.02)}.hero-actions{margin-top:25px;display:flex;gap:15px;flex-wrap:wrap}.navmenu a,.navmenu a:focus{color:#3F1430!important;font-weight:600;transition:color 0.3s ease}.navmenu a:hover{color:#DB2777!important}
+.hero-title{font-size:clamp(2.25rem, 8vw, 3.5rem);font-weight:800;color:#3F1430!important;margin-bottom:20px;line-height:1.1}.text-gradient{background:linear-gradient(90deg,#1e1b4b,#f43f5e,#1e1b4b);background-size:200% auto;animation:shine 3s linear infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent}@keyframes shine{to{background-position:200% center}}.hero-content,.hero-image-wrapper{position:relative;z-index:2}.hero-lead,.hero-values{font-size:clamp(1rem, 4vw, 1.2rem);line-height:1.6;color:#1e1b4b!important;margin-bottom:20px;max-width:540px}.hero-values strong{color:#f43f5e!important}.btn-funky,.btn-funky-outline{border-radius:999px;font-weight:900;transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);padding:14px 30px;position:relative;overflow:hidden;z-index:1}.btn-funky{background:linear-gradient(45deg,#1e1b4b,#f43f5e,#1e1b4b);background-size:200% auto;color:#fff!important;border:0;box-shadow:0 10px 20px rgba(124,45,94,0.2)}.btn-funky:hover{background-position:right center;box-shadow:0 15px 30px rgba(219,39,119,0.4);transform:translateY(-3px) scale(1.02)}.btn-funky-outline{background:rgba(255,255,255,0.7);color:#1e1b4b!important;border:1px solid rgba(124,45,94,0.3);backdrop-filter:blur(10px)}.btn-funky-outline:hover{background:#fff;box-shadow:0 10px 20px rgba(124,45,94,0.15);transform:translateY(-3px) scale(1.02)}.hero-actions{margin-top:25px;display:flex;gap:15px;flex-wrap:wrap}.navmenu a,.navmenu a:focus{color:#3F1430!important;font-weight:600;transition:color 0.3s ease}.navmenu a:hover{color:#f43f5e!important}
 
 /* HERO IMAGE */
 .hero-image{max-width:420px;width:100%;border-radius:18px}.hero-content{margin-top:-35px}.hero-image-wrapper{margin-top:-15px}
@@ -187,7 +187,7 @@
     left: 50%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, #FB7185, #DB2777);
+    background: radial-gradient(circle, #FB7185, #f43f5e);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     z-index: -1;
@@ -344,7 +344,7 @@
   display: block;
   font-size: 2rem;
   font-weight: 600;
-  color: #DB2777;
+  color: #f43f5e;
   animation: slideInTextPremium 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   opacity: 0;
   transform-origin: left;
@@ -369,7 +369,7 @@
    border-radius: 50px;
    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
    font-weight: 700;
-   color: #DB2777;
+   color: #f43f5e;
    display: flex;
    align-items: center;
    gap: 8px;
@@ -393,7 +393,7 @@
   .main-visual {
     position: relative;
     height: 300px;
-    background: radial-gradient(circle, #7C2D5E, #3F1430);
+    background: radial-gradient(circle, #1e1b4b, #3F1430);
     border-radius: 20px;
     overflow: hidden;
     display: flex;
@@ -489,13 +489,13 @@
  .feature-item-anim:hover {
    transform: translateY(-5px);
    background: #fff;
-   border-color: #DB2777;
+   border-color: #f43f5e;
    box-shadow: 0 10px 20px rgba(219, 39, 119, 0.1);
  }
 
  .feature-item-anim i {
    font-size: 24px;
-   color: #7C2D5E;
+   color: #1e1b4b;
    margin-bottom: 8px;
    display: block;
  }
@@ -577,7 +577,7 @@
 }
 .trust-badge i { color: #8e44ad; font-size: 1.25rem; }
 .cta-band {
-  background: linear-gradient(45deg, #7C2D5E, #DB2777);
+  background: linear-gradient(45deg, #1e1b4b, #f43f5e);
   color: #fff;
   border-radius: 18px;
   padding: 20px;
@@ -598,7 +598,7 @@
 }
 
 .role-dropdown-btn {
-  background: linear-gradient(135deg, #5E1F47, #7C2D5E);
+  background: linear-gradient(135deg, #1e1b4b, #1e1b4b);
   color: #fff;
   border: none;
   padding: 12px 30px;
@@ -614,7 +614,7 @@
 }
 
 .role-dropdown-btn:hover {
-  background: linear-gradient(135deg, #7C2D5E, #5E1F47);
+  background: linear-gradient(135deg, #1e1b4b, #1e1b4b);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(94, 31, 71, 0.45);
 }
@@ -722,10 +722,10 @@
 }
 
 /* Role icon colors */
-.role-icon.user-icon { background: #fff1f8; color: #7C2D5E; }
+.role-icon.user-icon { background: #fff1f8; color: #1e1b4b; }
 .role-icon.vendor-icon { background: #e8f5e9; color: #2e7d32; }
 .role-icon.centre-icon { background: #fff3e0; color: #e65100; }
-.role-icon.product-icon { background: #fff1f8; color: #DB2777; }
+.role-icon.product-icon { background: #fff1f8; color: #f43f5e; }
 .role-icon.lawyer-icon { background: #e3f2fd; color: #1565c0; }
 .role-icon.fitness-icon { background: #f3e5f5; color: #7b1fa2; }
 
@@ -950,14 +950,14 @@
     display: inline-block;
     padding: 6px 16px;
     background: rgba(219, 39, 119, 0.1);
-    color: #DB2777;
+    color: #f43f5e;
     border-radius: 50px;
     font-weight: 600;
     margin-bottom: 15px;
     transition: all 0.3s;
   }
   .audience-card:hover .audience-pill {
-    background: #DB2777;
+    background: #f43f5e;
     color: #fff;
     transform: scale(1.05);
   }
@@ -995,7 +995,7 @@
     color: #fff;
   }
   .live-strip .trust-badge i {
-    color: #DB2777;
+    color: #f43f5e;
     text-shadow: 0 0 10px rgba(219, 39, 119, 0.6);
   }
   .live-strip .ticker {
@@ -1069,7 +1069,7 @@
   }
   .form-select:focus, .form-control:focus {
     box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.2);
-    border-color: #DB2777;
+    border-color: #f43f5e;
     transform: translateY(-2px);
   }
 
@@ -1092,8 +1092,8 @@
     font-weight: 600;
   }
   .btn-outline-dark:hover {
-    background: #DB2777;
-    border-color: #DB2777;
+    background: #f43f5e;
+    border-color: #f43f5e;
     color: white;
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(219, 39, 119, 0.3);
@@ -1112,7 +1112,7 @@
     transform: translateX(-50%);
     width: 60px;
     height: 4px;
-    background: linear-gradient(90deg, #7C2D5E, #DB2777);
+    background: linear-gradient(90deg, #1e1b4b, #f43f5e);
     border-radius: 10px;
     transition: width 0.4s ease;
   }
@@ -1184,7 +1184,7 @@
   z-index: 10;
   width: 120px;
   height: 120px;
-  background: linear-gradient(135deg, #DB2777, #7C2D5E);
+  background: linear-gradient(135deg, #f43f5e, #1e1b4b);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -1482,7 +1482,7 @@
       <svg viewBox="-60 0 420 500" width="300px" height="350px" style="position: absolute; overflow: visible; z-index: 10; pointer-events: none;" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="neonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#DB2777" />
+            <stop offset="0%" stop-color="#f43f5e" />
             <stop offset="100%" stop-color="#ff9eb5" />
           </linearGradient>
           <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">

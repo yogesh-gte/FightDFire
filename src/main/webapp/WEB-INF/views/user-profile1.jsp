@@ -37,15 +37,15 @@
        ORIGINAL STYLES (kept exactly as is)
        ============================================ */
 :root {
-	--primary-purple: #7C2D5E;
-	--primary-purple-light: #a64281;
-	--primary-coral: #DB2777;
-	--primary-coral-dark: #5E1F47;
+	--primary-purple: #1e1b4b;
+	--primary-purple-light: #312e81;
+	--primary-coral: #f43f5e;
+	--primary-coral-dark: #1e1b4b;
 	--primary-teal: #20c997;
 	--primary-gold: #ffd700;
 	--dark-bg: #0f0f1a;
 	--light-bg: #fffcfd;
-	--gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+	--gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
 	--shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
 	--shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
 	--shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.15);
@@ -384,7 +384,7 @@ background-position
 					<img src="${pageContext.request.contextPath}${user.profilePhoto}"
 						onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
 						alt="User Profile Picture"
-						style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #DB2777; box-shadow: 0 4px 14px rgba(219, 39, 119, 0.35);">
+						style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #f43f5e; box-shadow: 0 4px 14px rgba(219, 39, 119, 0.35);">
 				</div>
 
 				<!-- 📋 Right Side: User Details -->

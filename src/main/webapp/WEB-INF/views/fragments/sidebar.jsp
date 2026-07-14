@@ -80,8 +80,43 @@
         background: #f4f6fa !important;
     }
     
-    body {
-        background: #f4f6fa !important;
+    @media (max-width: 768px) {
+        #wrapper {
+            flex-direction: column !important;
+        }
+        #sidebar-wrapper {
+            min-width: 100% !important;
+            max-width: 100% !important;
+            min-height: auto !important;
+            height: auto !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-left-radius: 20px !important;
+            border-bottom-right-radius: 20px !important;
+            position: relative !important;
+            top: 0 !important;
+            padding: 15px !important;
+        }
+        .list-group {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            margin-top: 10px !important;
+        }
+        .sidebar-list-group-item {
+            padding: 8px 12px !important;
+            border-radius: 30px !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            font-size: 13px !important;
+            display: inline-flex !important;
+            white-space: nowrap !important;
+        }
+        .sidebar-list-group-item::before {
+            display: none !important;
+        }
+        .sidebar-list-group-item:hover, .sidebar-list-group-item.active {
+            background: #f43f5e !important;
+            color: white !important;
+        }
     }
 </style>
 
@@ -93,6 +128,9 @@
     <div class="list-group list-group-flush mt-3">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/users/dashboard') ? 'active' : ''}">
             <i class="bi bi-house-door"></i> Dashboard
+        </a>
+        <a href="${pageContext.request.contextPath}/creator-hub" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/creator-hub') ? 'active' : ''}">
+            <i class="bi bi-camera-reels text-warning"></i> Creator Hub 🎥
         </a>
         <a href="${pageContext.request.contextPath}/sos/dashboard" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/sos') ? 'active' : ''}">
             <i class="bi bi-exclamation-triangle text-danger"></i> SOS Emergency
@@ -147,8 +185,8 @@
         <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.query_string'].contains('WOMEN_LAWYER') ? 'active' : ''}">
             <i class="bi bi-briefcase"></i> Women Lawyers
         </a>
-        <a href="${pageContext.request.contextPath}/marketplace/list?category=FITNESS_ZUMBA" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.query_string'].contains('FITNESS_ZUMBA') ? 'active' : ''}">
-            <i class="bi bi-activity"></i> Fitness & Zumba
+        <a href="${pageContext.request.contextPath}/fitness" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/fitness') ? 'active' : ''}">
+            <i class="bi bi-activity text-success"></i> Fitness & Wellness 🏃‍♀️
         </a>
         <a href="${pageContext.request.contextPath}/women-events" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/women-events') ? 'active' : ''}">
             <i class="bi bi-calendar-event"></i> Women Events 🌸

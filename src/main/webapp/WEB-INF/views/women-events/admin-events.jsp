@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css"/>
     <style>
         body { font-family: 'Outfit', sans-serif; background: #faf7fb; }
-        .page-header { background: linear-gradient(135deg, #1a1a2e 0%, #7C2D5E 100%);
+        .page-header { background: linear-gradient(135deg, #1a1a2e 0%, #1e1b4b 100%);
             padding: 40px 20px; color: white; }
         .container-main { max-width: 1300px; margin: 0 auto; padding: 36px 20px 60px; }
 
@@ -26,10 +26,10 @@
         .filter-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
         .filter-tab { border-radius: 20px; padding: 8px 18px; font-size: 0.85rem; font-weight: 600;
             cursor: pointer; text-decoration: none; border: 2px solid transparent; transition: all 0.2s; }
-        .filter-tab.active-all    { background: #7C2D5E; color: white; }
+        .filter-tab.active-all    { background: #1e1b4b; color: white; }
         .filter-tab.active-pending { background: #f59e0b; color: white; }
         .filter-tab:not(.active-all):not(.active-pending) { background: white; color: #555; border-color: #e5e7eb; }
-        .filter-tab:hover { border-color: #7C2D5E; }
+        .filter-tab:hover { border-color: #1e1b4b; }
 
         /* Table panel */
         .panel { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
@@ -62,9 +62,9 @@
         @keyframes slideIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
         .nav-pills .nav-link.active {
-            background-color: #7C2D5E !important;
+            background-color: #1e1b4b !important;
             color: white !important;
-            border-color: #7C2D5E !important;
+            border-color: #1e1b4b !important;
         }
         .nav-pills .nav-link:not(.active) {
             background-color: white;
@@ -108,7 +108,7 @@
     <!-- Stats Row -->
     <div class="stat-row">
         <div class="stat-card">
-            <div class="stat-num" style="color:#7C2D5E;">${allEvents.size()}</div>
+            <div class="stat-num" style="color:#1e1b4b;">${allEvents.size()}</div>
             <div class="stat-label">Total Events</div>
         </div>
         <div class="stat-card">
@@ -173,7 +173,7 @@
         <div class="tab-pane fade show active" id="events-content" role="tabpanel">
             <div class="panel">
                 <div style="padding: 20px 20px 10px; border-bottom: 1px solid #f5f0f8;">
-                    <h6 style="color:#7C2D5E; font-weight:700; display:flex; align-items:center; gap:8px; margin:0;">
+                    <h6 style="color:#1e1b4b; font-weight:700; display:flex; align-items:center; gap:8px; margin:0;">
                         <i class="bi bi-table"></i>All Events
                     </h6>
                 </div>
@@ -199,7 +199,7 @@
                                         <div style="font-weight:700; max-width:180px;">${ev.name}</div>
                                         <div style="font-size:0.75rem; color:#888;">ID: ${ev.id}</div>
                                     </td>
-                                    <td><span style="font-size:0.78rem; color:#7C2D5E; font-weight:600;">${ev.category.displayName}</span></td>
+                                    <td><span style="font-size:0.78rem; color:#1e1b4b; font-weight:600;">${ev.category.displayName}</span></td>
                                     <td style="white-space:nowrap; font-size:0.82rem;">${ev.eventDate}</td>
                                     <td>${ev.city}</td>
                                     <td>
@@ -259,7 +259,7 @@
         <div class="tab-pane fade" id="hosts-content" role="tabpanel">
             <div class="panel">
                 <div style="padding: 20px 20px 10px; border-bottom: 1px solid #f5f0f8;">
-                    <h6 style="color:#7C2D5E; font-weight:700; display:flex; align-items:center; gap:8px; margin:0;">
+                    <h6 style="color:#1e1b4b; font-weight:700; display:flex; align-items:center; gap:8px; margin:0;">
                         <i class="bi bi-people-fill"></i>Event Host Applications
                     </h6>
                 </div>
@@ -284,7 +284,7 @@
                                         <div style="font-size:0.75rem; color:#888;">Host ID: ${host.id}</div>
                                     </td>
                                     <td><strong>${host.organizerName}</strong></td>
-                                    <td><span style="font-size:0.78rem; color:#7C2D5E; font-weight:600;">${host.organizerType}</span></td>
+                                    <td><span style="font-size:0.78rem; color:#1e1b4b; font-weight:600;">${host.organizerType}</span></td>
                                     <td>${host.hostContact}</td>
                                     <td>
                                         <div style="max-width: 250px; font-size: 0.82rem; color: #555; white-space: normal; word-break: break-word;">

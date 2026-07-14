@@ -23,8 +23,8 @@
         :root {
             --v-bg: #0f0f1a;
             --v-card: #1a1a2e;
-            --v-accent: #DB2777;
-            --v-purple: #7C2D5E;
+            --v-accent: #f43f5e;
+            --v-purple: #1e1b4b;
             --v-glass: rgba(255, 255, 255, 0.05);
             --v-glass-border: rgba(255, 255, 255, 0.1);
         }
@@ -206,7 +206,7 @@
             padding-right: 15px;
         }
         .dashboard-btn {
-            background: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
             color: #fff !important;
             padding: 10px 24px;
             border-radius: 50px;

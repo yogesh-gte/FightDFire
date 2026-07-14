@@ -12,15 +12,15 @@
        ORIGINAL STYLES (kept exactly as is)
        ============================================ */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
         --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.15);
@@ -187,7 +187,7 @@
     <div class="container">
         <h2>Martial Arts Center Registration Successful</h2>
         <p class="success-message">${message}</p>
-        <p style="color:#5E1F47; margin-top:20px;">You cannot sign in until an admin approves your centre.</p>
+        <p style="color:#1e1b4b; margin-top:20px;">You cannot sign in until an admin approves your centre.</p>
         <a href="${pageContext.request.contextPath}/centres/login" class="home-link" style="margin-top:16px; display:inline-block;">Go to Centre Login</a>
         <a href="${pageContext.request.contextPath}/" class="home-link" style="margin-top:10px; display:inline-block; background:#6b7280;">Back to Home</a>
     </div>

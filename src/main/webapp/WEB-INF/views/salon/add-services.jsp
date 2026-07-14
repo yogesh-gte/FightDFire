@@ -109,7 +109,7 @@
         .form-control-custom {
             padding: 12px 15px;
             border-radius: 12px;
-            border: 2px solid rgba(124, 45, 94, 0.1);
+            border: 2px solid rgba(30, 27, 75, 0.1);
             background: #f8f9fa;
             font-weight: 500;
             transition: all 0.3s ease;

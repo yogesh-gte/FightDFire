@@ -18,7 +18,7 @@
         /* === Left Panel — Visual Side === */
         .left-panel {
             flex: 1;
-            background: linear-gradient(135deg, #5E1F47 0%, #7C2D5E 40%, #DB2777 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #1e1b4b 40%, #f43f5e 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;

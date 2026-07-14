@@ -21,7 +21,7 @@
         /* === Left Panel — Visual Side === */
         .left-panel {
             flex: 1;
-            background: linear-gradient(135deg, #5E1F47 0%, #7C2D5E 40%, #DB2777 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #1e1b4b 40%, #f43f5e 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -170,8 +170,8 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #7C2D5E;
-            box-shadow: 0 0 0 4px rgba(124, 45, 94, 0.1);
+            border-color: #1e1b4b;
+            box-shadow: 0 0 0 4px rgba(30, 27, 75, 0.1);
         }
 
         .form-input::placeholder {
@@ -192,7 +192,7 @@
             z-index: 2;
         }
 
-        .password-toggle-btn:hover { color: #7C2D5E; }
+        .password-toggle-btn:hover { color: #1e1b4b; }
 
         .input-wrapper.password-field .form-input {
             padding-right: 46px;
@@ -216,26 +216,26 @@
 
         .remember-me input[type="checkbox"] {
             width: 16px; height: 16px;
-            accent-color: #7C2D5E;
+            accent-color: #1e1b4b;
             cursor: pointer;
         }
 
         .forgot-link {
             font-size: 0.85rem;
-            color: #7C2D5E;
+            color: #1e1b4b;
             text-decoration: none;
             font-weight: 600;
             transition: color 0.2s;
         }
 
         .forgot-link:hover {
-            color: #5E1F47;
+            color: #1e1b4b;
         }
 
         .btn-login {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, #5E1F47, #7C2D5E);
+            background: linear-gradient(135deg, #1e1b4b, #1e1b4b);
             color: white;
             border: none;
             border-radius: 12px;
@@ -248,7 +248,7 @@
         }
 
         .btn-login:hover {
-            background: linear-gradient(135deg, #7C2D5E, #5E1F47);
+            background: linear-gradient(135deg, #1e1b4b, #1e1b4b);
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(124, 45, 94, 0.45);
         }
@@ -280,20 +280,20 @@
         }
 
         .register-link a {
-            color: #7C2D5E;
+            color: #1e1b4b;
             text-decoration: none;
             font-weight: 700;
             transition: color 0.2s;
         }
 
         .register-link a:hover {
-            color: #5E1F47;
+            color: #1e1b4b;
         }
 
         .error-alert {
             background: #fff1f8;
             border: 1px solid #ffc2df;
-            color: #7C2D5E;
+            color: #1e1b4b;
             padding: 12px 16px;
             border-radius: 10px;
             font-size: 0.85rem;
@@ -316,7 +316,7 @@
         }
 
         .back-home:hover {
-            color: #7C2D5E;
+            color: #1e1b4b;
         }
 
         /* === Responsive === */

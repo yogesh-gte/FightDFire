@@ -11,11 +11,11 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 :root {
-  --maroon:        #7d2a5a;
-  --maroon-light:  #a0375e;
-  --maroon-dark:   #5a1d40;
-  --maroon-pale:   #f6f0f4;
-  --maroon-border: rgba(125,42,90,0.18);
+  --maroon:        #1e1b4b;
+  --maroon-light:  #312e81;
+  --maroon-dark:   #0b0920;
+  --maroon-pale:   #f8fafc;
+  --maroon-border: rgba(30, 27, 75, 0.12);
   --shadow-sm: 0 6px 20px rgba(125,42,90,0.10);
   --sidebar-w: 272px;
   
@@ -89,7 +89,7 @@ tr:hover td{background:rgba(123,44,191,.03);}
   <p class="title"><i class="fas fa-map-marked-alt me-2"></i>Incident Heatmap</p>
   <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
     <span style="font-size:.88rem;opacity:.85;">Real-time safety hotspot view</span>
-    <a href="${pageContext.request.contextPath}/admin/adminDashboard" style="background:#fff;color:#7C2D5E;padding:6px 14px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.85rem;">&#8592; Dashboard</a>
+    <a href="${pageContext.request.contextPath}/admin/adminDashboard" style="background:#fff;color:#1e1b4b;padding:6px 14px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.85rem;">&#8592; Dashboard</a>
     <a href="${pageContext.request.contextPath}/admin/logout" style="background:rgba(255,255,255,.2);color:#fff;padding:6px 14px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.85rem;">Logout</a>
   </div>
 </div>
@@ -148,7 +148,7 @@ tr:hover td{background:rgba(123,44,191,.03);}
         <div class="li"><div class="ld" style="background:#f97316;"></div>Assault</div>
         <div class="li"><div class="ld" style="background:#3b82f6;"></div>Theft</div>
         <div class="li"><div class="ld" style="background:#4c1d95;"></div>Poor Lighting</div>
-        <div class="li"><div class="ld" style="background:#7c2d5e;"></div>Verified Danger</div>
+        <div class="li"><div class="ld" style="background:#1e1b4b;"></div>Verified Danger</div>
         <div class="li" style="margin-left:auto;font-size:.8rem;color:#6b7280;"><i class="fas fa-fire me-1" style="color:#ef4444;"></i>Hotter = more incidents</div>
       </div>
     </div>
@@ -185,7 +185,7 @@ tr:hover td{background:rgba(123,44,191,.03);}
       OTHER:'#6b7280',
       POOR_LIGHTING:'#4c1d95',
       ISOLATED_AREA:'#92400e',
-      DANGER_POINT:'#7c2d5e'
+      DANGER_POINT:'#1e1b4b'
   };
 
   var rawData=[], allData=[], markers=[], heatLayer=null;
@@ -306,7 +306,7 @@ tr:hover td{background:rgba(123,44,191,.03);}
     var m=L.circleMarker([d.lat,d.lng],{radius:9,color:c,fillColor:c,fillOpacity:.8,weight:2}).addTo(map);
     m.bindPopup(
       '<div style="font-family:Poppins,sans-serif;min-width:210px;">'+
-      '<b style="color:#7C2D5E;font-size:1rem;">'+(d.type||'Incident')+'</b>'+
+      '<b style="color:#1e1b4b;font-size:1rem;">'+(d.type||'Incident')+'</b>'+
       '<hr style="margin:4px 0;border-color:#eee;">'+
       '<small><b>&#128205; Location:</b> '+(d.location||'Unknown')+'</small><br>'+
       '<small><b>&#9889; Status:</b> '+(d.status||'–')+'</small><br>'+
@@ -349,7 +349,7 @@ tr:hover td{background:rgba(123,44,191,.03);}
     if(!data||!data.length) return;
     data.forEach(function(d,i){
       var src=d.source === 'DANGER_POINT'
-        ?'<span style="color:#7c2d5e;font-size:.75rem;"><i class="fas fa-shield-alt"></i> Verified Danger</span>'
+        ?'<span style="color:#1e1b4b;font-size:.75rem;"><i class="fas fa-shield-alt"></i> Verified Danger</span>'
         :(d.hasGps
           ?'<span style="color:#16a34a;font-size:.75rem;"><i class="fas fa-satellite-dish"></i> GPS Report</span>'
           :(d.location&&d.location.trim()!==''

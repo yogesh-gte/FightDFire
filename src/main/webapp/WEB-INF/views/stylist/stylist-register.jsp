@@ -11,21 +11,21 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
     <style>
         :root {
-            --brand-purple: #7C2D5E;
-            --brand-purple-dark: #5E1F47;
+            --brand-purple: #1e1b4b;
+            --brand-purple-dark: #1e1b4b;
             --brand-purple-darker: #3F1430;
-            --brand-pink: #DB2777;
+            --brand-pink: #f43f5e;
             --fdf-border: #f1f3f5;
             --fdf-text: #1e293b;
             --fdf-muted: #64748b;
-            --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #DB2777 100%);
+            --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #f43f5e 100%);
             --error-red: #ef4444;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; min-height: 100vh; display: flex; background: #fffcfd; color: var(--fdf-text); }
         .auth-container { flex: 1; display: flex; width: 100%; }
         
-        .left-panel { flex: 1; background: linear-gradient(135deg, #5E1F47 0%, #7C2D5E 40%, #DB2777 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 40px; position: relative; overflow: hidden; color: white; }
+        .left-panel { flex: 1; background: linear-gradient(135deg, #1e1b4b 0%, #1e1b4b 40%, #f43f5e 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 40px; position: relative; overflow: hidden; color: white; }
         .brand-logo { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
         .brand-logo i { font-size: 2.22rem; opacity: 0.9; }
         .brand-tagline { font-size: 1.15rem; font-weight: 300; opacity: 0.9; max-width: 380px; line-height: 1.7; margin-bottom: 40px; text-align: center; }

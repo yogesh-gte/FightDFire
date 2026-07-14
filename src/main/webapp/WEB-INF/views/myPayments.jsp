@@ -17,7 +17,7 @@
         :root {
             --sidebar-width: 260px;
             --primary-red: #E11D48;
-            --primary-purple: #7C2D5E;
+            --primary-purple: #1e1b4b;
             --primary-dark: #0F172A;
             --bg-light: #F8FAFC;
             --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);

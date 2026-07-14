@@ -25,8 +25,8 @@
     <style>
         :root {
             --r-bg: #fffcfd;
-            --r-purple: #7C2D5E;
-            --r-pink: #DB2777;
+            --r-purple: #1e1b4b;
+            --r-pink: #f43f5e;
             --r-dark: #2D0B2E;
             --r-glass: rgba(255, 255, 255, 0.9);
             --r-shadow: 0 20px 40px rgba(45, 11, 46, 0.1);
@@ -63,7 +63,7 @@
             border-radius: 30px;
             padding: 50px;
             margin-top: -80px;
-            border: 1px solid rgba(124, 45, 94, 0.1);
+            border: 1px solid rgba(30, 27, 75, 0.1);
             box-shadow: var(--r-shadow);
             z-index: 10;
             position: relative;
@@ -87,7 +87,7 @@
         }
 
         .fdf-input {
-            border: 2px solid rgba(124, 45, 94, 0.1);
+            border: 2px solid rgba(30, 27, 75, 0.1);
             border-radius: 15px;
             padding: 12px 20px;
             transition: 0.3s;
@@ -101,7 +101,7 @@
 
         #incidentMap {
             border-radius: 20px;
-            border: 2px solid rgba(124, 45, 94, 0.1);
+            border: 2px solid rgba(30, 27, 75, 0.1);
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
         }
 

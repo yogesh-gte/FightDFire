@@ -179,7 +179,7 @@
 
         .reply-textarea {
             border-radius: 15px;
-            border: 2px solid rgba(124, 45, 94, 0.1);
+            border: 2px solid rgba(30, 27, 75, 0.1);
             padding: 15px;
             font-size: 0.9rem;
             resize: none;

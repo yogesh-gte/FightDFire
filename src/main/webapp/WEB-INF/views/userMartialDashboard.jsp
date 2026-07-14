@@ -20,13 +20,13 @@
 
     <style>
         :root {
-            --primary-purple: #7C2D5E;
-            --primary-purple-light: #a64281;
-            --primary-coral: #DB2777;
+            --primary-purple: #1e1b4b;
+            --primary-purple-light: #312e81;
+            --primary-coral: #f43f5e;
             --dark-bg: #0f0f1a;
             --light-bg: #fffcfd;
             --glass-bg: rgba(255, 255, 255, 0.9);
-            --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 100%);
+            --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
             --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.08);
             --transition-smooth: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
@@ -528,7 +528,7 @@
         .timeline-item.active .timeline-dot {
             border-color: var(--primary-purple);
             background: var(--primary-purple);
-            box-shadow: 0 0 0 5px rgba(124, 45, 94, 0.1);
+            box-shadow: 0 0 0 5px rgba(30, 27, 75, 0.1);
         }
         .timeline-item.completed .timeline-dot {
             border-color: #198754;

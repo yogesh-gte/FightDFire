@@ -729,7 +729,7 @@ html, body {
     <div class="mb-4">
       <label class="form-label" style="color: var(--primary-purple); font-weight: 700;">Add Friends</label>
 
-      <div style="max-height:200px; overflow-y:auto; padding: 10px; border: 1px solid rgba(124, 45, 94, 0.1); border-radius: 12px; background: #fbf6f9;">
+      <div style="max-height:200px; overflow-y:auto; padding: 10px; border: 1px solid rgba(30, 27, 75, 0.1); border-radius: 12px; background: #fbf6f9;">
         <c:forEach var="f" items="${friends}">
           <div class="form-check mb-2 p-2" style="border-bottom: 1px solid rgba(124, 45, 94, 0.05);">
             <input class="form-check-input"
@@ -752,7 +752,7 @@ html, body {
 
   </div>
 
-  <div class="modal-footer" style="padding: 20px 25px; border-top: 1px solid rgba(124, 45, 94, 0.1); background: #fffcfd;">
+  <div class="modal-footer" style="padding: 20px 25px; border-top: 1px solid rgba(30, 27, 75, 0.1); background: #fffcfd;">
     <button type="button"
             class="btn"
             style="background: #6c757d; color: white; border-radius: 50px; padding: 10px 25px; font-weight: 600;"

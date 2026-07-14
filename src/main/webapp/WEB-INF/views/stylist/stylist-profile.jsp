@@ -144,7 +144,7 @@
 
         .input-group-custom {
             border-radius: 12px;
-            border: 2px solid rgba(124, 45, 94, 0.1);
+            border: 2px solid rgba(30, 27, 75, 0.1);
             background: #f8f9fa;
             overflow: hidden;
             transition: all 0.3s ease;

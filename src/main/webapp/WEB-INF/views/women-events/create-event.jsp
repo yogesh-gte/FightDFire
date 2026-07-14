@@ -12,12 +12,12 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background: #faf7fb; color: #1a1a2e; }
-        .page-header { background: linear-gradient(135deg, #7C2D5E, #a855f7); padding: 50px 20px; color: white; text-align: center; }
+        .page-header { background: linear-gradient(135deg, #1e1b4b, #a855f7); padding: 50px 20px; color: white; text-align: center; }
         .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
         .form-container { max-width: 860px; margin: -30px auto 60px; padding: 0 20px; }
         .form-card { background: white; border-radius: 24px; padding: 40px;
             box-shadow: 0 20px 60px rgba(124,45,94,0.1); }
-        .section-title { font-size: 1.05rem; font-weight: 700; color: #7C2D5E; margin: 28px 0 16px;
+        .section-title { font-size: 1.05rem; font-weight: 700; color: #1e1b4b; margin: 28px 0 16px;
             display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0e8f5; padding-bottom: 10px; }
         .section-title:first-child { margin-top: 0; }
         .form-group { margin-bottom: 18px; }
@@ -27,7 +27,7 @@
             width: 100%; border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 12px 16px;
             font-family: 'Outfit', sans-serif; font-size: 0.95rem; outline: none; transition: border-color 0.2s;
             background: #fafafa; }
-        .form-control:focus, .form-select:focus { border-color: #7C2D5E; background: white; }
+        .form-control:focus, .form-select:focus { border-color: #1e1b4b; background: white; }
         textarea.form-control { resize: vertical; min-height: 120px; }
 
         .upload-zone { border: 2px dashed #d8b4fe; border-radius: 14px; padding: 30px;
@@ -35,7 +35,7 @@
         .upload-zone:hover { background: #f5f0ff; border-color: #a855f7; }
         .upload-preview { max-width: 100%; max-height: 200px; border-radius: 12px; margin-top: 12px; display: none; }
 
-        .submit-btn { width: 100%; background: linear-gradient(135deg, #7C2D5E, #a855f7); color: white;
+        .submit-btn { width: 100%; background: linear-gradient(135deg, #1e1b4b, #a855f7); color: white;
             border: none; border-radius: 14px; padding: 18px; font-family: 'Outfit', sans-serif;
             font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-top: 24px; }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(124,45,94,0.35); }
@@ -45,8 +45,8 @@
             padding: 10px 18px; border-radius: 10px; border: 1.5px solid #e5e7eb; font-weight: 600;
             font-size: 0.9rem; transition: all 0.2s; }
         .fee-toggle input { display: none; }
-        .fee-toggle input:checked + span { color: #7C2D5E; }
-        .fee-toggle label:has(input:checked) { border-color: #7C2D5E; background: #fdf5ff; color: #7C2D5E; }
+        .fee-toggle input:checked + span { color: #1e1b4b; }
+        .fee-toggle label:has(input:checked) { border-color: #1e1b4b; background: #fdf5ff; color: #1e1b4b; }
 
         .hint { font-size: 0.78rem; color: #aaa; margin-top: 4px; }
         .row { display: flex; gap: 16px; }

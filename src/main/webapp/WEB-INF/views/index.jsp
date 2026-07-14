@@ -1007,6 +1007,7 @@
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/login">Entrepreneur</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/login">Investor</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-events/host/login">Event Host</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/fitness/trainer/login">Fitness Trainer</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/loginAdmin">Admin</a></li>
               </ul>
             </div>
@@ -1024,6 +1025,7 @@
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register">Entrepreneur</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register">Investor</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-events/host/register">Event Host</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/fitness/trainer/register">Fitness Trainer</a></li>
               </ul>
             </div>
           </c:otherwise>
