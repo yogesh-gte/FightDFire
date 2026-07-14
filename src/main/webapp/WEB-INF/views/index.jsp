@@ -7,12 +7,12 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Fight D Fear - Empowering Women</title>
   
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/img/favicon.png" rel="icon">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 
   <style>
     :root {
@@ -953,6 +953,118 @@
       .section-title { font-size: 1.4rem; }
       .how-it-works-section .section-title-custom { font-size: 1.5rem; }
     }
+
+    /* ===== FLOATING QUICK ACTIONS ===== */
+    .hero-quick-actions-container {
+      position: relative;
+      margin-top: -65px;
+      z-index: 100;
+      padding-bottom: 20px;
+    }
+    .quick-action-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 20px 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+      text-decoration: none !important;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .quick-action-card i {
+      font-size: 24px;
+      color: var(--primary);
+      width: 52px;
+      height: 52px;
+      background: rgba(244, 63, 94, 0.08);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s ease;
+    }
+    .quick-action-card h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin: 0 0 2px 0;
+    }
+    .quick-action-card p {
+      font-size: 0.78rem;
+      color: var(--text-gray);
+      margin: 0;
+    }
+    .quick-action-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px rgba(244, 63, 94, 0.18);
+      background: white;
+      border-color: rgba(244, 63, 94, 0.3);
+    }
+    .quick-action-card:hover i {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+    .quick-action-card.active-emergency {
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      border: none;
+    }
+    .quick-action-card.active-emergency h5 {
+      color: white;
+    }
+    .quick-action-card.active-emergency p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .quick-action-card.active-emergency i {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    .quick-action-card.active-emergency:hover {
+      box-shadow: 0 30px 60px rgba(244, 63, 94, 0.35);
+    }
+    @media (max-width: 768px) {
+      .hero-quick-actions-container {
+        margin-top: 20px;
+      }
+      .quick-action-card {
+        padding: 16px;
+      }
+    }
+
+    /* ===== LOOK WISE UPGRADES ===== */
+    .features-section {
+      background: radial-gradient(circle at 10% 20%, rgba(244,63,94,0.03) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(49,46,129,0.03) 0%, transparent 50%);
+    }
+    .testimonial-card {
+      background: rgba(255, 255, 255, 0.8) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3) !important;
+    }
+    .cta-section {
+      background: linear-gradient(135deg, var(--navy-dark) 0%, #0f172a 100%) !important;
+      color: white !important;
+      border-radius: 30px;
+      padding: 80px 50px;
+      margin: 100px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section h3 {
+      color: white !important;
+    }
+    .cta-section p {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
   </style>
 </head>
 <body>
@@ -994,32 +1106,33 @@
           </c:when>
           <c:otherwise>
             <div class="dropdown d-none d-md-inline-block">
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/login">Stylist</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/login">Marketplace Provider</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/login">Product Seller</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/login">Entrepreneur</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/login">Investor</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-events/host/login">Event Host</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/fitness/trainer/login">Fitness Trainer</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/loginAdmin">Admin</a></li>
+              <button class="btn-outline-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/login">User Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/login">Women Doctor Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/loginCentre">Self-Defense Center Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/login">Beauty Salon Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/login">Hair Stylist Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/login">Service Partner Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/login">Marketplace Seller Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/login">Entrepreneur Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/login">Investor Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-events/host/login">Event Host Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/fitness/trainer/login">Fitness Trainer Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/loginAdmin">Admin Login</a></li>
               </ul>
             </div>
-            <div class="dropdown d-none d-md-inline-block">
+            <div class="dropdown d-none d-md-inline-block ms-2">
               <button class="btn-primary-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-user-plus me-1"></i> Join Us</button>
               <ul class="dropdown-menu">
-<li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register"><i class="fa-regular fa-user" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Join as Member</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register"><i class="fa-solid fa-stethoscope" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Women Doctor</a></li>
-               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre"><i class="fa-solid fa-child-reaching" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Self-Defense Trainer</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register"><i class="fa-solid fa-spa" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Beauty and wellness</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register"><i class="fa-solid fa-scissors" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Hair Stylist</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register"><i class="fa-regular fa-handshake" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Service Partner</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register"><i class="fa-solid fa-bag-shopping" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Marketplace Seller</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-jobs/jobs/register"><i class="fa-solid fa-briefcase" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> women jobs</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register"><i class="fa-regular fa-lightbulb" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Entrepreneur</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register"><i class="fa-solid fa-chart-line" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Investor</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register">Stylist</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register">Marketplace Provider</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register">Product Seller</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register">Join as Member</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register">Women Doctor</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre">Self-Defense Trainer</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register">Beauty and wellness</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register">Hair Stylist</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register">Service Partner</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register">Marketplace Seller</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-jobs/jobs/register">women jobs</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register">Entrepreneur</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register">Investor</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-events/host/register">Event Host</a></li>
@@ -1145,6 +1258,48 @@
       </button>
     </div>
   </section>
+
+  <!-- ===== FLOATING QUICK ACTIONS BAR ===== -->
+  <div class="container hero-quick-actions-container">
+    <div class="row g-3 justify-content-center hero-quick-actions-row">
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+        <a href="${pageContext.request.contextPath}/sos/dashboard" class="quick-action-card active-emergency">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <h5>SOS Emergency</h5>
+            <p>One-Tap Danger Alert</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="200">
+        <a href="${pageContext.request.contextPath}/map" class="quick-action-card">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <div>
+            <h5>Danger Map</h5>
+            <p>Avoid Unsafe Zones</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+        <a href="${pageContext.request.contextPath}/women-events" class="quick-action-card">
+          <i class="fa-solid fa-calendar-days"></i>
+          <div>
+            <h5>Women Events</h5>
+            <p>Empowerment Meetups</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="400">
+        <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="quick-action-card">
+          <i class="fa-solid fa-hand-fist"></i>
+          <div>
+            <h5>Self-Defense</h5>
+            <p>Verified Academies</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 
   <!-- ===== FEATURES SECTION - 9 MODULES ===== -->
   <section id="features" class="features-section">
@@ -1306,7 +1461,7 @@
 
       <div class="row align-items-center awareness-block">
         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-          <img src="assets/img/awareness_solidarity_1779965397029.png" alt="Women Solidarity" class="awareness-img">
+          <img src="${pageContext.request.contextPath}/assets/img/awareness_solidarity_1779965397029.png" alt="Women Solidarity" class="awareness-img">
         </div>
         <div class="col-lg-6" data-aos="fade-left">
           <div class="awareness-text">
@@ -1320,7 +1475,7 @@
 
       <div class="row align-items-center awareness-block flex-lg-row-reverse">
         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-left">
-          <img src="assets/img/awareness_tech_shield_1779965413589.png" alt="Tech Shield" class="awareness-img">
+          <img src="${pageContext.request.contextPath}/assets/img/awareness_tech_shield_1779965413589.png" alt="Tech Shield" class="awareness-img">
         </div>
         <div class="col-lg-6" data-aos="fade-right">
           <div class="awareness-text">
@@ -1334,7 +1489,7 @@
 
       <div class="row align-items-center awareness-block">
         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-          <img src="assets/img/awareness_self_defense_1779965432813.png" alt="Self Defense Training" class="awareness-img">
+          <img src="${pageContext.request.contextPath}/assets/img/awareness_self_defense_1779965432813.png" alt="Self Defense Training" class="awareness-img">
         </div>
         <div class="col-lg-6" data-aos="fade-left">
           <div class="awareness-text">
@@ -1466,13 +1621,13 @@
       <h2 class="section-title" data-aos="fade-up">What Users Say</h2>
       <div class="row g-4 mt-4">
         <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-          <div class="testimonial-card"><div class="user-info"><img src="assets/img/chat-user-1.png" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Sneha Patil</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The SOS feature helped me alert my family instantly. I feel so much safer now!</p></div>
+          <div class="testimonial-card"><div class="user-info"><img src="${pageContext.request.contextPath}/assets/img/chat-user-1.png" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Sneha Patil</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The SOS feature helped me alert my family instantly. I feel so much safer now!</p></div>
         </div>
         <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-          <div class="testimonial-card"><div class="user-info"><img src="assets/img/chat-user-2.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Anjali Sharma</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">Live tracking and audio recording features are amazing. A must-have app for every woman.</p></div>
+          <div class="testimonial-card"><div class="user-info"><img src="${pageContext.request.contextPath}/assets/img/chat-user-2.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Anjali Sharma</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">Live tracking and audio recording features are amazing. A must-have app for every woman.</p></div>
         </div>
         <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-          <div class="testimonial-card"><div class="user-info"><img src="assets/img/chat-user-3.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Riya Singh</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The unsafe area alerts are very helpful. Thank you for creating such a wonderful app!</p></div>
+          <div class="testimonial-card"><div class="user-info"><img src="${pageContext.request.contextPath}/assets/img/chat-user-3.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Riya Singh</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The unsafe area alerts are very helpful. Thank you for creating such a wonderful app!</p></div>
         </div>
       </div>
     </div>
@@ -1483,7 +1638,7 @@
     <div class="cta-section" data-aos="fade-up">
       <div class="row align-items-center w-100">
         <div class="col-lg-4 d-flex justify-content-center mb-4 mb-lg-0">
-          <img src="assets/img/about-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 200px;" alt="App Interface">
+          <img src="${pageContext.request.contextPath}/assets/img/about-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 200px;" alt="App Interface">
         </div>
         <div class="col-lg-4 text-center">
           <h3 style="color: var(--navy-dark); font-weight: 800; margin-bottom: 15px;">Download Our App</h3>
@@ -1494,7 +1649,7 @@
           </div>
         </div>
         <div class="col-lg-4 d-flex justify-content-center mt-4 mt-lg-0">
-           <img src="assets/img/hero-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 250px;" alt="Phone Mockup">
+           <img src="${pageContext.request.contextPath}/assets/img/hero-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 250px;" alt="Phone Mockup">
         </div>
       </div>
     </div>
@@ -1540,8 +1695,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
   <script>
     AOS.init({
       duration: 800,

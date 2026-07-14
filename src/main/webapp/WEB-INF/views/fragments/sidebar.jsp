@@ -130,10 +130,10 @@
             <i class="bi bi-house-door"></i> Dashboard
         </a>
         <a href="${pageContext.request.contextPath}/creator-hub" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/creator-hub') ? 'active' : ''}">
-            <i class="bi bi-camera-reels text-warning"></i> Creator Hub 🎥
+            <i class="bi bi-camera-reels"></i> Creator Hub
         </a>
         <a href="${pageContext.request.contextPath}/sos/dashboard" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/sos') ? 'active' : ''}">
-            <i class="bi bi-exclamation-triangle text-danger"></i> SOS Emergency
+            <i class="bi bi-exclamation-triangle"></i> SOS Emergency
         </a>
         <a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/users/profile') ? 'active' : ''}">
             <i class="bi bi-person-badge"></i> Your Profile
@@ -173,12 +173,12 @@
             <i class="bi bi-shop"></i> Women Marketplace
         </a>
         <c:if test="${not empty loggedEntrepreneur}">
-            <a href="${pageContext.request.contextPath}/entrepreneur/dashboard" class="sidebar-list-group-item text-warning fw-bold">
+            <a href="${pageContext.request.contextPath}/entrepreneur/dashboard" class="sidebar-list-group-item fw-bold">
                 <i class="bi bi-briefcase"></i> Entrepreneur Portal
             </a>
         </c:if>
         <c:if test="${not empty loggedInvestor}">
-            <a href="${pageContext.request.contextPath}/investor/dashboard" class="sidebar-list-group-item text-success fw-bold">
+            <a href="${pageContext.request.contextPath}/investor/dashboard" class="sidebar-list-group-item fw-bold">
                 <i class="bi bi-wallet2"></i> Investor Portal
             </a>
         </c:if>
@@ -186,10 +186,10 @@
             <i class="bi bi-briefcase"></i> Women Lawyers
         </a>
         <a href="${pageContext.request.contextPath}/fitness" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/fitness') ? 'active' : ''}">
-            <i class="bi bi-activity text-success"></i> Fitness & Wellness 🏃‍♀️
+            <i class="bi bi-activity"></i> Fitness & Wellness
         </a>
         <a href="${pageContext.request.contextPath}/women-events" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/women-events') ? 'active' : ''}">
-            <i class="bi bi-calendar-event"></i> Women Events 🌸
+            <i class="bi bi-calendar-event"></i> Women Events
         </a>
         <a href="${pageContext.request.contextPath}/women-products" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/women-products') ? 'active' : ''}">
             <i class="bi bi-bag-heart"></i> Women Products

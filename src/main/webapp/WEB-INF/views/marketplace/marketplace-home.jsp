@@ -243,7 +243,7 @@
 
         /* 📱 Global Mobile Fixes */
         html, body {
-            overflow-x: hidden;
+            overflow-x: clip;
             width: 100%;
             position: relative;
         }

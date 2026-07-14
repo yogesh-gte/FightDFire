@@ -233,6 +233,15 @@
     <!-- ======= Header ======= -->
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: var(--light-bg);">
+        <div class="container-fluid pt-3 px-3">
+            <a href="${pageContext.request.contextPath}/users/dashboard" class="btn btn-outline-secondary rounded-pill px-4 btn-sm">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
     <!-- Hub Hero Collage -->
     <section class="collage-hero">
         <div class="collage-panel" onclick="window.location.href='${pageContext.request.contextPath}/centres/allacceptedcentres'">
@@ -933,6 +942,8 @@
         }
 
     </script>
+    </div>
+</div>
 </body>
 </html>
 

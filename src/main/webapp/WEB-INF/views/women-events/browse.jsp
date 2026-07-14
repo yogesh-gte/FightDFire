@@ -17,7 +17,7 @@
 
         /* Hero */
         .hero {
-            background: linear-gradient(135deg, #1e1b4b 0%, #a855f7 50%, #ec4899 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
             padding: 70px 20px 80px;
             position: relative;
             overflow: hidden;
@@ -145,6 +145,10 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
+
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: #faf7fb;">
 
 <c:if test="${not empty success}">
     <div class="flash-alert alert alert-success alert-dismissible fade show" role="alert">
@@ -448,6 +452,9 @@
                 </c:otherwise>
             </c:choose>
         </div>
+    </div>
+</div>
+
     </div>
 </div>
 

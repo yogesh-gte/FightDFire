@@ -179,7 +179,7 @@
     <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto" style="text-decoration: none;"><h1>Fight D Fear</h1></a>
     <nav id="navmenu" class="navmenu">
       <ul>
-        <li><a href="${pageContext.request.contextPath}/index.html">Home</a></li>
+        <li><a href="${pageContext.request.contextPath}/">Home</a></li>
         <li><a href="${pageContext.request.contextPath}/women-events">Events 🌸</a></li>
         <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
         <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>

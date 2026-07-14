@@ -13,12 +13,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #10b981; /* Emerald green theme */
-            --primary-light: #d1fae5;
-            --dark-navy: #0f172a;
+            --primary: #f43f5e;
+            --primary-light: #ffe4e6;
+            --dark-navy: #1e1b4b;
             --glass-bg: rgba(255, 255, 255, 0.85);
-            --gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            --shadow: 0 10px 30px rgba(16, 185, 129, 0.08);
+            --gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
+            --shadow: 0 10px 30px rgba(244, 63, 94, 0.08);
         }
         body {
             font-family: 'Outfit', sans-serif;
@@ -26,7 +26,7 @@
             color: var(--dark-navy);
         }
         .hero-banner {
-            background: linear-gradient(135deg, #065f46 0%, #0f172a 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
             color: white;
             padding: 60px 0;
             border-radius: 0 0 40px 40px;
@@ -40,7 +40,7 @@
             position: absolute;
             top: -50%; right: -10%;
             width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(244, 63, 94, 0.3) 0%, transparent 70%);
             pointer-events: none;
         }
         .category-chip {

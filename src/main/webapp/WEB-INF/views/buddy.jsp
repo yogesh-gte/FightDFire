@@ -42,7 +42,7 @@
         margin: 0;
         font-family: 'Poppins', sans-serif;
         color: #fff;
-        overflow-x: hidden;
+        overflow-x: clip;
     }
     h2, h5 { color: #fff; }
     .muted, .text-muted { color: rgba(255, 255, 255, 0.7) !important; }

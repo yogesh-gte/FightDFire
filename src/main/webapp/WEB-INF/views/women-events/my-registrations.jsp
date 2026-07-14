@@ -13,7 +13,7 @@
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background: #faf7fb; color: #1a1a2e; }
 
-        .page-header { background: linear-gradient(135deg, #1e1b4b 0%, #a855f7 100%);
+        .page-header { background: linear-gradient(135deg, #1e1b4b 0%, #f43f5e 100%);
             padding: 50px 20px; color: white; text-align: center; }
         .page-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
 
@@ -21,9 +21,9 @@
 
         /* Ticket card */
         .ticket { background: white; border-radius: 24px; overflow: hidden; margin-bottom: 24px;
-            box-shadow: 0 8px 40px rgba(124,45,94,0.08); transition: transform 0.3s; }
+            box-shadow: 0 8px 40px rgba(244,63,94,0.08); transition: transform 0.3s; }
         .ticket:hover { transform: translateY(-4px); }
-        .ticket-header { background: linear-gradient(135deg, #1e1b4b, #a855f7); color: white;
+        .ticket-header { background: linear-gradient(135deg, #1e1b4b, #f43f5e); color: white;
             padding: 20px 28px; display: flex; justify-content: space-between; align-items: flex-start; }
         .ticket-name { font-size: 1.25rem; font-weight: 800; }
         .ticket-cat { font-size: 0.78rem; opacity: 0.85; margin-top: 4px; }
@@ -59,7 +59,7 @@
         .action-btn { border-radius: 20px; padding: 8px 18px; font-size: 0.85rem; font-weight: 600;
             text-decoration: none; border: 1.5px solid; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
         .action-btn-primary { background: #1e1b4b; color: white; border-color: #1e1b4b; }
-        .action-btn-primary:hover { background: #6b2450; color: white; }
+        .action-btn-primary:hover { background: #f43f5e; color: white; }
         .action-btn-outline { background: transparent; color: #1e1b4b; border-color: #1e1b4b; }
         .action-btn-outline:hover { background: #1e1b4b; color: white; }
         .action-btn-danger { background: transparent; color: #be123c; border-color: #be123c; }
@@ -72,6 +72,10 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
+
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: #faf7fb;">
 
 <c:if test="${not empty success}">
     <div class="alert alert-success alert-dismissible fade show m-3 rounded-3">
@@ -173,7 +177,7 @@
                 <h4 style="font-weight:700; color:#555;">No Registrations Yet</h4>
                 <p class="text-muted">You haven't registered for any events yet.</p>
                 <a href="${pageContext.request.contextPath}/women-events" class="btn rounded-pill mt-2"
-                   style="background:linear-gradient(135deg,#1e1b4b,#a855f7); color:white; font-weight:700; padding:12px 30px;">
+                   style="background:linear-gradient(135deg,#1e1b4b,#f43f5e); color:white; font-weight:700; padding:12px 30px;">
                     Discover Events
                 </a>
             </div>
@@ -181,7 +185,7 @@
     </c:choose>
 </div>
 
-<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
-<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </div>
+</div>
 </body>
 </html>

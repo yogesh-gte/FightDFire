@@ -216,7 +216,7 @@
     .icon-yellow { color: #eab308; }
     .icon-green { color: #22c55e; }
     
-    .badge-green { background: #dcfce7; color: #16a34a; }
+    .badge-green { background: #ffe4e6; color: #f43f5e; }
     .badge-red { background: #fee2e2; color: #ef4444; }
     
     /* Panels */
@@ -452,7 +452,7 @@
             <h2 class="dashboard-title">
                 General Report
                 <c:if test="${isWorker}">
-                    <span class="badge bg-success ms-2 fs-6 align-middle">
+                    <span class="badge ms-2 fs-6 align-middle" style="background-color: #f43f5e; color: white;">
                         <i class="fas fa-user-check me-1"></i> Verified Worker
                     </span>
                 </c:if>
@@ -573,7 +573,7 @@
                 <!-- Upcoming Fitness Classes -->
                 <div class="panel-new mb-4">
                     <div class="panel-header-flex">
-                        <h3 class="panel-title"><i class="bi bi-calendar-event text-success me-2"></i> Upcoming Fitness Classes</h3>
+                        <h3 class="panel-title"><i class="bi bi-calendar-event me-2" style="color: #f43f5e;"></i> Upcoming Fitness Classes</h3>
                         <a href="${pageContext.request.contextPath}/fitness" class="panel-link">Browse All</a>
                     </div>
                     
@@ -585,7 +585,7 @@
                                         <div class="border rounded-4 p-3 bg-white shadow-sm h-100 d-flex flex-column" style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                                             <div class="d-flex justify-content-between align-items-start mb-2">
                                                 <h6 class="fw-bold mb-0 text-dark">${fc.className}</h6>
-                                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size:0.7rem;">${fc.category}</span>
+                                                <span class="badge border" style="font-size:0.7rem; background-color: rgba(244, 63, 94, 0.08); color: #f43f5e; border-color: rgba(244, 63, 94, 0.2) !important;">${fc.category}</span>
                                             </div>
                                             <div class="text-muted small mb-3"><i class="bi bi-person-badge text-secondary me-1"></i> By <strong>${fc.trainer.fullName}</strong></div>
                                             
@@ -597,12 +597,12 @@
                                             </div>
                                             
                                             <div class="mt-auto d-flex justify-content-between align-items-center pt-2 border-top">
-                                                <div class="fw-bold text-success fs-5">₹${fc.price}</div>
+                                                <div class="fw-bold fs-5" style="color: #f43f5e;">₹${fc.price}</div>
                                                 <div class="d-flex gap-2">
                                                     <button type="button" class="btn btn-sm btn-outline-primary" style="border-radius: 20px; font-weight: 600; padding: 6px 12px;" onclick="openUserChat(${fc.trainer.id}, '${fc.trainer.fullName}')" title="Chat with Trainer">
                                                         <i class="bi bi-chat-dots-fill"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-sm" style="background: linear-gradient(135deg, #0f766e, #10b981); color: white; border-radius: 20px; font-weight: 600; padding: 6px 16px; border: none; box-shadow: 0 4px 10px rgba(16,185,129,0.2);" data-bs-toggle="modal" data-bs-target="#bookClassModal${fc.id}">Enroll</button>
+                                                    <button type="button" class="btn btn-sm" style="background: linear-gradient(135deg, #1e1b4b, #f43f5e); color: white; border-radius: 20px; font-weight: 600; padding: 6px 16px; border: none; box-shadow: 0 4px 10px rgba(244,63,94,0.2);" data-bs-toggle="modal" data-bs-target="#bookClassModal${fc.id}">Enroll</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -613,7 +613,7 @@
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content border-0 rounded-4 shadow-lg">
                                                 <div class="modal-header bg-light border-0 rounded-top-4">
-                                                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-calendar2-check-fill text-success me-2"></i> Book Group Class</h5>
+                                                    <h5 class="modal-title fw-bold text-dark"><i class="bi bi-calendar2-check-fill me-2" style="color: #f43f5e;"></i> Book Group Class</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                 </div>
                                                 <form action="${pageContext.request.contextPath}/fitness/class/book" method="POST">
@@ -621,7 +621,7 @@
                                                         <input type="hidden" name="classId" value="${fc.id}">
                                                         <div class="mb-4 text-center">
                                                             <h4 class="fw-bold text-dark mb-1">${fc.className}</h4>
-                                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 mb-3">${fc.category}</span>
+                                                            <span class="badge border mb-3" style="background-color: rgba(244, 63, 94, 0.08); color: #f43f5e; border-color: rgba(244, 63, 94, 0.2) !important;">${fc.category}</span>
                                                         </div>
                                                         
                                                         <div class="p-3 bg-light rounded-3 mb-4">
@@ -644,7 +644,7 @@
                                                             <hr class="my-2">
                                                             <div class="d-flex justify-content-between">
                                                                 <span class="text-muted fw-bold">Total Payable</span>
-                                                                <span class="fw-bold text-success fs-5">₹${fc.price}</span>
+                                                                <span class="fw-bold fs-5" style="color: #f43f5e;">₹${fc.price}</span>
                                                             </div>
                                                         </div>
 
@@ -654,7 +654,7 @@
                                                     </div>
                                                     <div class="modal-footer border-0 pt-0">
                                                         <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-success rounded-pill px-4">Confirm Booking</button>
+                                                        <button type="submit" class="btn rounded-pill px-4" style="background: #f43f5e; color: white; border: none;">Confirm Booking</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -676,8 +676,8 @@
                 <c:if test="${not empty activeSubscriptions}">
                     <div class="panel-new mb-4">
                         <div class="panel-header-flex">
-                            <h3 class="panel-title"><i class="bi bi-activity text-success me-2"></i> My Personal Coaching Subscriptions</h3>
-                            <span class="badge bg-success text-white">${activeSubscriptions.size()} Active</span>
+                            <h3 class="panel-title"><i class="bi bi-activity me-2" style="color: #f43f5e;"></i> My Personal Coaching Subscriptions</h3>
+                            <span class="badge text-white" style="background-color: #f43f5e;">${activeSubscriptions.size()} Active</span>
                         </div>
                         <div class="row g-3 mt-2">
                             <c:forEach var="sub" items="${activeSubscriptions}">
@@ -685,7 +685,7 @@
                                     <div class="border rounded-4 p-3 bg-white shadow-sm h-100 d-flex flex-column" style="transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <h6 class="fw-bold mb-0 text-dark">${sub.category} Coaching</h6>
-                                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" style="font-size:0.7rem;">
+                                            <span class="badge border" style="font-size:0.7rem; background-color: rgba(244, 63, 94, 0.08); color: #f43f5e; border-color: rgba(244, 63, 94, 0.2) !important;">
                                                 <c:choose>
                                                     <c:when test="${sub.duration == 'SINGLE'}">Single Session</c:when>
                                                     <c:when test="${sub.duration == 'MONTHLY'}">Monthly Package</c:when>
@@ -709,7 +709,7 @@
                                                 <span>${sub.completedSessions} / ${sub.totalSessions} Sessions</span>
                                             </div>
                                             <div class="progress" style="height: 10px; border-radius: 5px; background-color:#e9ecef;">
-                                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${pct}%; border-radius: 5px;" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: ${pct}%; border-radius: 5px; background-color: #f43f5e !important;" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -744,7 +744,7 @@
                                         <div class="text-muted small mb-3"><i class="bi bi-person-badge text-secondary me-1"></i> Trained by <strong>${cb.trainer.fullName}</strong></div>
                                         
                                         <div class="d-flex align-items-center gap-2 mb-3 small text-dark fw-medium">
-                                            <i class="bi bi-calendar-check text-success"></i> Session on ${cb.bookingDate}
+                                            <i class="bi bi-calendar-check me-1" style="color: #f43f5e;"></i> Session on ${cb.bookingDate}
                                         </div>
                                         
                                         <div class="mt-auto d-flex justify-content-end pt-2 border-top">
@@ -834,7 +834,7 @@
                                                 <h4 class="act-title">${centre.name}</h4>
                                                 <p class="act-desc">${centre.location}</p>
                                             </div>
-                                            <span class="badge bg-success rounded-pill" style="font-size:0.7rem;">Active</span>
+                                            <span class="badge rounded-pill" style="font-size:0.7rem; background-color: rgba(244, 63, 94, 0.08); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.2) !important;">Active</span>
                                         </li>
                                     </c:forEach>
                                 </ul>
@@ -849,6 +849,37 @@
             
             <!-- RIGHT COLUMN -->
             <div class="right-col">
+                 
+                 <!-- Quick Safety Tools -->
+                 <div class="panel-new">
+                     <h3 class="panel-title mb-3"><i class="bi bi-shield-fill-check text-primary me-2"></i> Safety Toolbox</h3>
+                     <div class="row g-2">
+                         <div class="col-6">
+                             <a href="${pageContext.request.contextPath}/map" class="d-flex flex-column align-items-center justify-content-center p-3 border rounded-3 bg-light text-decoration-none text-dark hover-translate" style="transition:0.2s;">
+                                 <i class="bi bi-map text-primary fs-3 mb-2"></i>
+                                 <span class="fw-bold small">Danger Map</span>
+                             </a>
+                         </div>
+                         <div class="col-6">
+                             <a href="${pageContext.request.contextPath}/reminders" class="d-flex flex-column align-items-center justify-content-center p-3 border rounded-3 bg-light text-decoration-none text-dark hover-translate" style="transition:0.2s;">
+                                 <i class="bi bi-alarm text-primary fs-3 mb-2"></i>
+                                 <span class="fw-bold small">Reminders</span>
+                             </a>
+                         </div>
+                         <div class="col-6">
+                             <a href="${pageContext.request.contextPath}/journey" class="d-flex flex-column align-items-center justify-content-center p-3 border rounded-3 bg-light text-decoration-none text-dark hover-translate" style="transition:0.2s;">
+                                 <i class="bi bi-pin-map text-primary fs-3 mb-2"></i>
+                                 <span class="fw-bold small">Safety Tracker</span>
+                             </a>
+                         </div>
+                         <div class="col-6">
+                             <a href="${pageContext.request.contextPath}/buddy" class="d-flex flex-column align-items-center justify-content-center p-3 border rounded-3 bg-light text-decoration-none text-dark hover-translate" style="transition:0.2s;">
+                                 <i class="bi bi-people text-primary fs-3 mb-2"></i>
+                                 <span class="fw-bold small">Buddy Mode</span>
+                             </a>
+                         </div>
+                     </div>
+                 </div>
                 
                 <!-- Incoming Job requests moved to a dedicated page -->
 
@@ -904,7 +935,7 @@
                                                 <div class="act-time m-0" style="font-size:0.7rem;">${inc.reportedAt}</div>
                                             </div>
                                             <p class="act-desc text-wrap mt-1 mb-2">${inc.description}</p>
-                                            <span class="badge ${inc.status == 'RESOLVED' ? 'bg-success' : 'bg-warning text-dark'}" style="font-size:10px;">${inc.status}</span>
+                                            <span class="badge" style="font-size:10px; background-color: ${inc.status == 'RESOLVED' ? '#f43f5e' : '#eab308'}; color: white;">${inc.status}</span>
                                         </div>
                                     </li>
                                 </c:forEach>

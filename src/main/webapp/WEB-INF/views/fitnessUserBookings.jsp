@@ -12,10 +12,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #10b981;
-            --dark-navy: #0f172a;
-            --gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --primary: #f43f5e;
+            --dark-navy: #1e1b4b;
+            --gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
+            --shadow: 0 10px 30px rgba(244, 63, 94, 0.05);
         }
         body {
             font-family: 'Outfit', sans-serif;
