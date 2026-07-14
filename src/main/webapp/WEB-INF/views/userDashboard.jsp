@@ -417,7 +417,18 @@
             <a href="${pageContext.request.contextPath}/marketplace" class="list-group-item">
                 <i class="bi bi-shop"></i> Women Marketplace
             </a>
+
+            
+            
+            <!-- Financial Literacy Hub -->
+            <a href="${pageContext.request.contextPath}/financial-literacy" class="list-group-item list-group-item-action">
+                <i class="bi bi-book"></i>  Financial Literacy Hub
+            </a>
+            <!-- Women Lawyers -->
+            <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="list-group-item list-group-item-action">
+
             <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="list-group-item">
+
                 <i class="bi bi-briefcase"></i> Women Lawyers
             </a>
             <a href="${pageContext.request.contextPath}/fitness" class="list-group-item">

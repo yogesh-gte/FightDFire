@@ -967,14 +967,14 @@
       <nav class="d-none d-lg-flex align-items-center">
         <a href="#hero" class="nav-link active">Home</a>
         <a href="#features" class="nav-link">Features</a>
-        <a href="${pageContext.request.contextPath}/women-events" class="nav-link">Events 🌸</a>
-        <a href="${pageContext.request.contextPath}/features.jsp" class="nav-link">Features</a>
-        <a href="${pageContext.request.contextPath}/women-events" class="nav-link">Events 🌸</a>
-        <a href="#tips" class="nav-link">Safety Tips</a>
-        <a href="#awareness" class="nav-link">Awareness</a>
-        <a href="#emergency" class="nav-link">Emergency</a>
-        <a href="#howitworks" class="nav-link">How It Works</a>
-        <a href="#contact" class="nav-link">Contact</a>
+        <a href="${pageContext.request.contextPath}/women-events" class="nav-link">Events </a>
+       
+       
+        <a href="#tips" class="nav-link"> Safety</a>
+        <a href="#resources" class="nav-link">Resources</a>
+        <a href="#emergency" class="nav-link"> Emergency</a>
+        <a href="#community" class="nav-link"> Community</a>
+        <a href="#contact" class="nav-link"> Contact</a>
       </nav>
       <button class="mobile-menu-toggle d-lg-none" onclick="openMobileNav()" aria-label="Open Menu">
         <i class="fa-solid fa-bars"></i>
@@ -994,13 +994,6 @@
           </c:when>
           <c:otherwise>
             <div class="dropdown d-none d-md-inline-block">
-              <button class="btn-outline-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/login">User</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/login">Doctor</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/login">Martial Arts</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/login">Salon</a></li>
-
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/login">Stylist</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/login">Marketplace Provider</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/login">Product Seller</a></li>
@@ -1012,13 +1005,18 @@
               </ul>
             </div>
             <div class="dropdown d-none d-md-inline-block">
-              <button class="btn-primary-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-user-plus me-1"></i> Register</button>
+              <button class="btn-primary-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-user-plus me-1"></i> Join Us</button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register">User</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register">Doctor</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre">Martial Arts</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register">Salon</a></li>
-
+<li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register"><i class="fa-regular fa-user" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Join as Member</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register"><i class="fa-solid fa-stethoscope" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Women Doctor</a></li>
+               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre"><i class="fa-solid fa-child-reaching" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Self-Defense Trainer</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register"><i class="fa-solid fa-spa" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Beauty and wellness</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register"><i class="fa-solid fa-scissors" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Hair Stylist</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register"><i class="fa-regular fa-handshake" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Service Partner</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register"><i class="fa-solid fa-bag-shopping" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Marketplace Seller</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-jobs/jobs/register"><i class="fa-solid fa-briefcase" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> women jobs</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register"><i class="fa-regular fa-lightbulb" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Entrepreneur</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register"><i class="fa-solid fa-chart-line" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Investor</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register">Stylist</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register">Marketplace Provider</a></li>
                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register">Product Seller</a></li>
@@ -1030,7 +1028,7 @@
             </div>
           </c:otherwise>
         </c:choose>
-        <a href="${pageContext.request.contextPath}/sos/dashboard" class="btn-sos"><i class="fa-solid fa-phone"></i> SOS</a>
+
       </div>
     </div>
   </header>

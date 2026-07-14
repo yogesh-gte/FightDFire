@@ -986,6 +986,19 @@
                         <a href="${pageContext.request.contextPath}/video/videoManagement" class="btn btn-purple w-100 mt-auto">View All</a>
                     </div>
                 </div>
+                
+                <div class="col-md-3 col-sm-6">
+                    <div class="admin-card">
+                        <div class="rowTop">
+                            <div>
+                                <i class="fas fa-book"></i>
+                                <h5 class="mb-1">Financial Literacy</h5>
+                                <p class="muted">Manage learning content</p>
+                            </div>
+                        </div>
+                        <a href="${pageContext.request.contextPath}/financial-literacy/admin" class="btn btn-purple w-100 mt-auto">Manage</a>
+                    </div>
+                </div>
 
  <div class="col-md-3 col-sm-6">
                     <div class="admin-card">

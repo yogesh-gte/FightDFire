@@ -326,11 +326,56 @@
 
     </a>
 
+
+    <!-- FINANCIAL LITERACY -->
+    <div class="sectionTitle">
+        Financial Literacy
+    </div>
+
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'financial-literacy/admin') && !fn:contains(pageContext.request.requestURI,'add-') && !fn:contains(pageContext.request.requestURI,'registrations') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/financial-literacy/admin">
+
+        <i class="fas fa-book"></i>
+        Home
+
+    </a>
+
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'add-video') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/financial-literacy/admin/add-video">
+
+        <i class="fas fa-plus-circle"></i>
+        Add Video
+
+    </a>
+
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'add-live-session') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/financial-literacy/admin/add-live-session">
+
+        <i class="fas fa-video"></i>
+        Add Live Session
+
+    </a>
+
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'add-workshop') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/financial-literacy/admin/add-workshop">
+
+        <i class="fas fa-calendar-check"></i>
+        Add Workshop
+
+    </a>
+
+    <a class="navlink ${fn:contains(pageContext.request.requestURI,'registrations') ? 'active' : ''}"
+       href="${pageContext.request.contextPath}/financial-literacy/admin/registrations">
+
+        <i class="fas fa-users"></i>
+        View Registrations
+
     <a class="navlink ${fn:contains(pageContext.request.requestURI,'job-applications') ? 'active' : ''}"
        href="${pageContext.request.contextPath}/admin/job-applications">
 
         <i class="fas fa-briefcase"></i>
         Job Applications
+
 
     </a>
 
@@ -385,6 +430,7 @@
     </a>
 
 </aside>
+<<<<<<< HEAD
 
 <style>
     /* ========================================================
