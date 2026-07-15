@@ -173,7 +173,6 @@
 }
 /* 📱 Mobile Responsive Fixes */
 html, body {
-    overflow-x: clip;
     width: 100%;
     position: relative;
 }
@@ -663,8 +662,6 @@ html, body {
         })();
       </script>
 		
-	<!-- 🌸 Footer -->
-  <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
   <!-- Scripts -->
 			 	<script src="${pageContext.request.contextPath}/beauty/js/jquery.min.js"></script>

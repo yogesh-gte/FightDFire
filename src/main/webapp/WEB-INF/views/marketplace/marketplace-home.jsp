@@ -302,18 +302,7 @@
             </c:if>
         </div>
 
-        <!-- Call to Action -->
-        <div class="mt-5 p-5 rounded-4 text-center" style="background: rgba(124, 45, 94, 0.03); border: 2px dashed var(--m-purple);">
-            <h4 style="font-weight: 800; color: var(--m-purple);">Are you a service provider?</h4>
-            <p class="text-muted mb-4">Join our growing community of professional women and start offering your services today.</p>
-            <div class="d-flex justify-content-center gap-3">
-                <a href="${pageContext.request.contextPath}/marketplace/provider/login" class="btn btn-outline-primary px-4 py-2" style="border-radius: 12px; font-weight: 700;">Provider Login</a>
-                <a href="${pageContext.request.contextPath}/marketplace/provider/register" class="btn btn-primary px-4 py-2" style="border-radius: 12px; font-weight: 700; background: var(--m-purple); border: none;">Register Now</a>
-            </div>
-        </div>
     </main>
-
-    <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
     <!-- Bootstrap JS -->
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

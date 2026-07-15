@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; background: #fffcfd; }
+        body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; background: #fffcfd; overflow-x: hidden; }
         .left-panel { flex: 1; background: linear-gradient(135deg, #1e1b4b 0%, #1e1b4b 40%, #f43f5e 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 40px; position: relative; overflow: hidden; }
         .left-panel::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: rgba(255,255,255,0.06); }
         .left-panel::after { content: ''; position: absolute; bottom: -150px; left: -80px; width: 500px; height: 500px; border-radius: 50%; background: rgba(255,255,255,0.04); }
@@ -87,7 +87,7 @@
     </div>
     <div class="right-panel">
         <div class="login-card">
-            <a href="${pageContext.request.contextPath}/index.html" class="back-home"><i class="bi bi-arrow-left"></i> Back to Home</a>
+            <a href="${pageContext.request.contextPath}/" class="back-home"><i class="bi bi-arrow-left"></i> Back to Home</a>
             <h2>Welcome, Doctor 👋</h2>
             <p class="subtitle">Enter your credentials to access your dashboard</p>
             <c:if test="${not empty error}">
@@ -106,7 +106,7 @@
                     <div class="input-wrapper password-field">
                         <i class="bi bi-shield-lock"></i>
                         <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required>
-                        <button type="button" class="password-toggle-btn" onclick="togglePassword()"><i class="bi bi-eye"></i></button>
+                        <button type="button" class="password-toggle-btn" data-toggle-password="password"><i class="bi bi-eye"></i></button>
                     </div>
                 </div>
                 <button type="submit" class="btn-login">Sign In <i class="bi bi-arrow-right"></i></button>

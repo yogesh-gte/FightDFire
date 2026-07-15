@@ -33,6 +33,18 @@ public class VideoController {
     @Autowired
     private FileUploadService fileService;
 
+    @Autowired
+    private org.springframework.jdbc.core.JdbcTemplate jdbcTemplate;
+
+    @jakarta.annotation.PostConstruct
+    public void fixCategoryColumn() {
+        try {
+            jdbcTemplate.execute("ALTER TABLE videos MODIFY category VARCHAR(255)");
+        } catch (Exception e) {
+            // Ignore if it fails or table doesn't exist
+        }
+    }
+
     // Show Upload Video Page
     @RequestMapping(value = "/uploadVideo", method = RequestMethod.GET)
     public String showUploadVideoPage(Model model, HttpSession session) {

@@ -207,6 +207,10 @@
         .form-check-input:checked {
             background-color: var(--hot-rose) !important;
             border-color: var(--hot-rose) !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e") !important;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .form-check-label {
             font-size: 0.88rem;
@@ -338,9 +342,7 @@
                     <div class="field-group">
                         <label class="form-label" for="gender">Gender</label>
                         <select name="gender" id="gender" class="form-control" required>
-                            <option value="MALE"   ${user.gender eq 'MALE'   ? 'selected' : ''}>Male</option>
                             <option value="FEMALE" ${user.gender eq 'FEMALE' ? 'selected' : ''}>Female</option>
-                            <option value="OTHER"  ${user.gender eq 'OTHER'  ? 'selected' : ''}>Other</option>
                         </select>
                     </div>
                 </div>

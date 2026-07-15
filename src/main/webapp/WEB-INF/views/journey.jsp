@@ -194,7 +194,7 @@
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+    <div id="page-content-wrapper" style="min-height: 100vh;">
 
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-5" style="border-bottom: 1px solid rgba(124, 45, 94, 0.2); padding-bottom: 20px;">
@@ -202,13 +202,10 @@
       <h1 class="mb-1" style="font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Journey Tracker</h1>
       <div class="muted">Set an expected arrival time. If you don’t check-in, emergency contacts can be alerted.</div>
     </div>
-    <a class="btn" style="border-radius: 50px; background: var(--gradient-primary); color: #fff; padding: 10px 25px; border: none; font-weight: 700; box-shadow: 0 4px 15px rgba(124, 45, 94, 0.3);" href="${pageContext.request.contextPath}/users/dashboard">
-      <i class="fas fa-arrow-left me-2"></i> Dashboard
-    </a>
   </div>
 
   <div class="row g-4">
-    <div class="col-lg-5">
+    <div class="col-lg-4">
       <div class="cardX">
         <h5 class="mb-3">Start a journey timer</h5>
 
@@ -247,7 +244,7 @@
 
     </div>
 
-    <div class="col-lg-7">
+    <div class="col-lg-8">
       <div class="cardX">
         <h5 class="mb-3">Active timer</h5>
         <div id="activeBox" class="muted small">Loading…</div>
@@ -257,7 +254,7 @@
 </div>
 
 
-<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+
 
 <script>
   // Purpose: JS needs contextPath for API calls in any deployment.

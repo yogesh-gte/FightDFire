@@ -22,11 +22,6 @@
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
     <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
 
-<div class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
-        Dashboard <i class="bi bi-arrow-right"></i>
-    </a>
-</div>
 
 <style>
   .collage-hero {
@@ -214,8 +209,6 @@
     </div>
   </div>
 </section>
-
-<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
 <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>

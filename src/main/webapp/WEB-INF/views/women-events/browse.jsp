@@ -148,7 +148,7 @@
 
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: #faf7fb;">
+    <div id="page-content-wrapper" style="min-height: 100vh; background: #faf7fb;">
 
 <c:if test="${not empty success}">
     <div class="flash-alert alert alert-success alert-dismissible fade show" role="alert">
@@ -438,27 +438,13 @@
             </c:otherwise>
         </c:choose>
 
-        <!-- Organizer CTA -->
-        <div class="organizer-cta mt-5">
-            <h3>🌺 Host Your Own Event</h3>
-            <p>Are you an NGO, college, company, gym, or women entrepreneur? List your event on our platform and reach thousands of women.</p>
-            <c:choose>
-                <c:when test="${not empty loggedHost}">
-                    <a href="${pageContext.request.contextPath}/women-events/organizer/dashboard" class="cta-btn">Organizer Dashboard</a>
-                </c:when>
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/women-events/host/login" class="cta-btn me-2" style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); text-decoration:none;">Host Login</a>
-                    <a href="${pageContext.request.contextPath}/women-events/host/register" class="cta-btn" style="text-decoration:none;">Register to Host</a>
-                </c:otherwise>
-            </c:choose>
-        </div>
     </div>
 </div>
 
     </div>
 </div>
 
-<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
+
 <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script>
     // Auto-dismiss flash alerts

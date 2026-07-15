@@ -81,41 +81,29 @@
     }
     
     @media (max-width: 768px) {
-        #wrapper {
-            flex-direction: column !important;
-        }
         #sidebar-wrapper {
-            min-width: 100% !important;
-            max-width: 100% !important;
-            min-height: auto !important;
-            height: auto !important;
-            border-top-right-radius: 0 !important;
-            border-bottom-left-radius: 20px !important;
-            border-bottom-right-radius: 20px !important;
-            position: relative !important;
-            top: 0 !important;
-            padding: 15px !important;
+            position: fixed !important;
+            top: 70px !important;
+            left: -100% !important;
+            width: 260px !important;
+            height: calc(100vh - 70px) !important;
+            z-index: 9999 !important;
+            transition: left 0.4s ease !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            border-radius: 0 !important;
+            padding-top: 20px !important;
+        }
+        body.mobile-nav-active #sidebar-wrapper {
+            left: 0 !important;
         }
         .list-group {
-            flex-direction: row !important;
-            flex-wrap: wrap !important;
-            gap: 8px !important;
-            margin-top: 10px !important;
+            flex-direction: column !important;
+            margin-top: 0 !important;
         }
         .sidebar-list-group-item {
-            padding: 8px 12px !important;
-            border-radius: 30px !important;
-            background: rgba(255, 255, 255, 0.05) !important;
-            font-size: 13px !important;
-            display: inline-flex !important;
-            white-space: nowrap !important;
-        }
-        .sidebar-list-group-item::before {
-            display: none !important;
-        }
-        .sidebar-list-group-item:hover, .sidebar-list-group-item.active {
-            background: #f43f5e !important;
-            color: white !important;
+            display: flex !important;
+            background: transparent !important;
         }
     }
 </style>
@@ -132,6 +120,11 @@
         <a href="${pageContext.request.contextPath}/creator-hub" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/creator-hub') ? 'active' : ''}">
             <i class="bi bi-camera-reels"></i> Creator Hub
         </a>
+        <c:if test="${isWorker}">
+            <a href="${pageContext.request.contextPath}/marketplace/worker-bookings" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/marketplace/worker-bookings') ? 'active' : ''}">
+                <i class="bi bi-briefcase-fill text-success"></i> Job Bookings
+            </a>
+        </c:if>
         <a href="${pageContext.request.contextPath}/sos/dashboard" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/sos') ? 'active' : ''}">
             <i class="bi bi-exclamation-triangle"></i> SOS Emergency
         </a>
@@ -143,6 +136,9 @@
         </a>
         <a href="${pageContext.request.contextPath}/video/allVideos" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/video/allVideos') ? 'active' : ''}">
             <i class="bi bi-play-circle"></i> View Videos
+        </a>
+        <a href="${pageContext.request.contextPath}/financial-literacy" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/financial-literacy') ? 'active' : ''}">
+            <i class="bi bi-book"></i> Financial Literacy Hub
         </a>
         <a href="${pageContext.request.contextPath}/incidents/report" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/incidents') ? 'active' : ''}">
             <i class="bi bi-file-earmark-medical"></i> Report Incident
@@ -162,6 +158,12 @@
         </a>
         <a href="${pageContext.request.contextPath}/users/wallet" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/wallet') ? 'active' : ''}">
             <i class="bi bi-wallet2"></i> My Wallet
+        </a>
+        <a href="${pageContext.request.contextPath}/user/bookings" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/user/bookings') ? 'active' : ''}">
+            <i class="bi bi-journal-bookmark"></i> My Bookings
+        </a>
+        <a href="${pageContext.request.contextPath}/marketplace/earn" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/marketplace/earn') ? 'active' : ''}">
+            <i class="bi bi-briefcase-fill"></i> Want to Earn
         </a>
         <a href="${pageContext.request.contextPath}/buddy" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/buddy') ? 'active' : ''}">
             <i class="bi bi-person-walking"></i> Buddy Mode

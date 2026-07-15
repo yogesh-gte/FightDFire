@@ -20,12 +20,9 @@
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+    <div id="page-content-wrapper" style="min-height: 100vh;">
 
     <section class="dl-hero">
-        <a href="${pageContext.request.contextPath}/users/dashboard" class="dl-back">
-            <i class="bi bi-arrow-left"></i>
-        </a>
         <h1>Find Your Doctor</h1>
         <p>Connect with trusted, verified female healthcare professionals dedicated to your well-being.</p>
         
@@ -149,7 +146,7 @@
             document.getElementById('visibleCount').textContent = count;
         }
     </script>
-    <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+
     </div>
 </div>
 </body>

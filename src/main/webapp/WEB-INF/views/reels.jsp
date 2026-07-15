@@ -624,11 +624,6 @@
 
 <main class="reels-page-main">
 
-<a href="${pageContext.request.contextPath}/users/wallet" class="coin-wallet-link">
-    <i class="bi bi-coin coin-icon-gold"></i>
-    <span class="d-none d-md-inline"><span id="user-reward-points">${user.rewardPoints != null ? user.rewardPoints : 0}</span> Coins 💰</span>
-    <span class="d-inline d-md-none ms-1 fw-bold">${user.rewardPoints != null ? user.rewardPoints : 0}</span>
-</a>
 
 <button type="button" class="create-reel-link" id="openReelStudioBtn" data-bs-toggle="modal" data-bs-target="#reelStudioModal">
     <i class="bi bi-camera-video-fill"></i> <span class="d-none d-md-inline">Create Reel</span>
@@ -1460,7 +1455,6 @@ function openReportModal(videoId) {
 
 </main>
 
-<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
 <!-- Reel Studio: camera + edit + upload -->
 <div class="modal fade" id="reelStudioModal" tabindex="-1" aria-labelledby="reelStudioModalLabel" aria-hidden="true">
@@ -1471,6 +1465,7 @@ function openReportModal(videoId) {
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <div id="reelStudioAlert" class="mb-3"></div>
         <ul class="nav nav-pills nav-fill mb-3" id="reelStudioTabs" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="tab-record" data-bs-toggle="pill" data-bs-target="#pane-record" type="button">Record</button>
@@ -1543,6 +1538,10 @@ function openReportModal(videoId) {
                   <input type="range" class="form-range flex-grow-1" id="reelTrimEnd" min="0" max="60" value="60" step="0.1">
                 </div>
                 <p class="reel-trim-hint mb-0">Start: <span id="reelTrimStartLbl">0s</span> — End: <span id="reelTrimEndLbl">60s</span></p>
+                <div class="mt-2">
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="alert('Use the filter dropdown above to Edit')"><i class="bi bi-pencil"></i> Edit</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="alert('Use the sliders above to Trim')"><i class="bi bi-scissors"></i> Trim</button>
+                </div>
               </div>
             </div>
             <div class="reel-camera-actions mt-3">
@@ -1552,7 +1551,7 @@ function openReportModal(videoId) {
             <div class="progress mt-2 d-none" id="reelUploadProgressWrap" style="height:8px;">
               <div class="progress-bar" id="reelUploadProgressBar" style="width:0%"></div>
             </div>
-            <div id="reelStudioAlert" class="mt-2"></div>
+
           </div>
         </div>
       </div>

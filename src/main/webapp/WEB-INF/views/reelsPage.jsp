@@ -239,15 +239,13 @@
 
     <!-- Header -->
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
-    <div class="dashboard-bar container-fluid container-xl d-flex justify-content-end gap-3">
-        <a href="${pageContext.request.contextPath}/video/allVideos" class="dashboard-btn">
-            Video Gallery <i class="bi bi-play-btn"></i>
-        </a>
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+
+    <div class="dashboard-bar container-fluid container-xl d-flex flex-wrap justify-content-end gap-3 mt-3">
         <a href="${pageContext.request.contextPath}/video/uploadVideo" class="dashboard-btn">
             Upload Reel <i class="bi bi-cloud-arrow-up"></i>
-        </a>
-        <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
-            Dashboard <i class="bi bi-arrow-right"></i>
         </a>
     </div>
 
@@ -314,8 +312,7 @@
         </c:if>
     </div>
 
-    <!-- Footer -->
-    <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+
 
     <!-- Scripts -->
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -381,6 +378,8 @@
             });
         });
     </script>
+    </div>
+</div>
 </body>
 </html>
 

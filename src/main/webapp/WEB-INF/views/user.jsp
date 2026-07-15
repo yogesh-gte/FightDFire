@@ -161,7 +161,7 @@
         .back-home:hover { color: var(--brand-purple); }
 
         @media (max-width: 992px) {
-            body { flex-direction: column; }
+            .auth-container { flex-direction: column; }
             .left-panel {
                 min-height: 30vh;
                 padding: 40px 20px;
@@ -283,8 +283,6 @@
                             <select name="gender" id="gender" class="fdf-input" required>
                                 <option value="">Select Gender</option>
                                 <option value="FEMALE">FEMALE</option>
-                                <option value="MALE">MALE</option>
-                                <option value="OTHER">OTHER</option>
                             </select>
                             <div class="error-feedback">Please select gender.</div>
                         </div>

@@ -23,7 +23,6 @@
       font-family: 'Poppins', sans-serif;
       background: var(--shop-bg);
       color: var(--fdf-text);
-      overflow-x: hidden;
     }
 
     /* Background blobs for premium feel */
@@ -353,7 +352,7 @@
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+    <div id="page-content-wrapper">
 
   <div class="shop-bg-layer">
     <div class="blob blob-1"></div>
@@ -387,7 +386,6 @@
       <i class="bi bi-bag-heart"></i>
       <h2>The shop is quiet right now</h2>
       <p>We're curating new amazing products for you. Please check back soon!</p>
-      <a href="${pageContext.request.contextPath}/" class="btn top-btn mt-4" style="display:inline-flex;">Back to Home</a>
     </div>
   </c:if>
 
@@ -443,7 +441,7 @@
     </c:forEach>
   </div>
 
-  <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+  </div>
 
   <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>

@@ -114,25 +114,7 @@
 
 <body>
 	
-	<header id="header" class="header d-flex align-items-center sticky-top">
-  <div class="container-fluid container-xl d-flex align-items-center">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="${pageContext.request.contextPath}/incidents/listForUser">Incidents</a></li>
-        <li><a href="${pageContext.request.contextPath}/centres/allacceptedcentres">MartialArts Centres</a></li>
-
-        <li><a href="${pageContext.request.contextPath}/video/reels">Reels</a></li>
-        <li><a href="${pageContext.request.contextPath}/index/templates">Beauty</a></li>
-        <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
-        <li><a href="${pageContext.request.contextPath}/users/profile/${user.id}">Profile</a></li>
-      </ul>
-      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-    </nav>
-    <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&amp;A</a>
-    <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-  </div>
-</header>
+	<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
     <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
@@ -317,66 +299,7 @@
 			</script>
 		
 	<!-- 🌸 Footer -->
-			  	<footer class="ftco-footer ftco-section">
-			  	    <div class="container">
-			  	        <div class="row d-flex">
-			  	            <div class="col-md">
-			  	                <div class="ftco-footer-widget mb-4">
-			  	                    <h2 class="ftco-heading-2">Fight D Fear</h2>
-			                       <p>Empowering women to stay safe, strong, and supported through awareness, self-defense, and action.</p>
-			  	                    <ul class="ftco-footer-social list-unstyled float-lft mt-3">
-			  	                        <li class="ftco-animate"><a href="${pageContext.request.contextPath}#"><span class="icon-twitter"></span></a></li>
-			  	                        <li class="ftco-animate"><a href="${pageContext.request.contextPath}#"><span class="icon-facebook"></span></a></li>
-			  	                        <li class="ftco-animate"><a href="${pageContext.request.contextPath}#"><span class="icon-instagram"></span></a></li>
-			  	                    </ul>
-			  	                </div>
-			  	            </div>
-			  	            <div class="col-md">
-			  	                <div class="ftco-footer-widget mb-4 ml-md-4">
-			  	                    <h2 class="ftco-heading-2">Awareness</h2>
-			  	                    <ul class="list-unstyled">
-			  	                        <li><a href="${pageContext.request.contextPath}#">Self-Defense Tips</a></li>
-			  	                        <li><a href="${pageContext.request.contextPath}#">Emergency Contacts</a></li>
-			  	                        <li><a href="${pageContext.request.contextPath}#">Safety Workshops</a></li>
-			  	                        <li><a href="${pageContext.request.contextPath}#">Women Helpline</a></li>
-			  	                    </ul>
-			  	                </div>
-			  	            </div>
-			  	            <div class="col-md">
-			  	                <div class="ftco-footer-widget mb-4">
-			  	                    <h2 class="ftco-heading-2">Quick Links</h2>
-			  	                    <ul class="list-unstyled">
-			  	                        <li><a href="${pageContext.request.contextPath}#">About Us</a></li>
-			  	                        <li><a href="${pageContext.request.contextPath}#">Safety Resources</a></li>
-			  	                        <li><a href="${pageContext.request.contextPath}#">Community Stories</a></li>
-			  	                        <li><a href="${pageContext.request.contextPath}#">Join as Volunteer</a></li>
-			  	                        <li><a href="${pageContext.request.contextPath}#">Contact Us</a></li>
-			  	                    </ul>
-			  	                </div>
-			  	            </div>
-			  	            <div class="col-md">
-			  	                <div class="ftco-footer-widget mb-4">
-			  	                    <h2 class="ftco-heading-2">Need Help?</h2>
-			  	                    <div class="block-23 mb-3">
-			  	                        <ul>
-			  	                            <li><span class="icon icon-map-marker"></span><span class="text">203 Safe Haven Street, Hyderabad, India</span></li>
-			  	                            <li><a href="${pageContext.request.contextPath}#"><span class="icon icon-phone"></span><span class="text">+91 98765 43210</span></a></li>
-			  	                            <li><a href="${pageContext.request.contextPath}#"><span class="icon icon-envelope"></span><span class="text">support@Fight D Fear.org</span></a></li>
-			  	                        </ul>
-			  	                    </div>
-			  	                </div>
-			  	            </div>
-			  	        </div>
-			  	        <div class="row text-center mt-3">
-			  	            <div class="col-md-12">
-			  	                <p class="mb-0">
-			  	                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-			  	                    All rights reserved by <strong>Affitech</strong> | Powered by <span class="text-danger">Fight The Fire</span>
-			  	                </p>
-			  	            </div>
-			  	        </div>
-			  	    </div>
-			  	</footer>
+
 
   <!-- Scripts -->
 			<script src="${pageContext.request.contextPath}/beauty/js/jquery.min.js"></script>

@@ -308,7 +308,7 @@
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+    <div id="page-content-wrapper" style="min-height: 100vh;">
 
 
 <div class="container py-4" style="max-width:1000px;">
@@ -317,9 +317,6 @@
       <h1 class="mb-1" style="font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Safety Reminders</h1>
       <div class="muted">Web-only: reminders appear when you’re online.</div>
     </div>
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
-      Dashboard <i class="bi bi-arrow-right"></i>
-    </a>
   </div>
 
   <c:if test="${not empty message}">
@@ -415,7 +412,7 @@
   </div>
 </div>
 
-    <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+
     </div>
 </div>
 </body>

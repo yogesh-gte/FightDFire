@@ -227,7 +227,7 @@
 
         <div class="form-panel">
             <div class="reg-card">
-                <a href="${pageContext.request.contextPath}/index.html" class="back-home"><i class="bi bi-arrow-left"></i> Back to Home</a>
+                <a href="${pageContext.request.contextPath}/" class="back-home"><i class="bi bi-arrow-left"></i> Back to Home</a>
                 <div class="dr-progress">
                     <div class="dr-step-item active" data-step="1">
                         <div class="dr-step-dot">1</div>
@@ -292,8 +292,6 @@
                                 <select id="gender" name="gender" class="fdf-input">
                                     <option value="">Select Gender</option>
                                     <option value="FEMALE">Female</option>
-                                    <option value="MALE">Male</option>
-                                    <option value="OTHER">Other</option>
                                 </select>
                                 <div class="error-msg">Please select gender.</div>
                             </div>
@@ -546,11 +544,13 @@
                     
                     const start = document.getElementById('startTime').value;
                     const end = document.getElementById('endTime').value;
-                    const timeValid = start && end && (end > start);
+                    const timeValid = (start !== "") && (end !== "") && (end > start);
                     toggleError('endTime', timeValid);
                     toggleError('startTime', start !== "");
                     
-                    isValid &= daysSelected && timeValid;
+                    if (!daysSelected || !timeValid) {
+                        isValid = false;
+                    }
                 } else if (step === 5) {
                     isValid &= checkFile('medicalLicense', ['jpg','jpeg','png','pdf'], 2) &&
                                checkFile('idProof', ['jpg','jpeg','png','pdf'], 2) &&

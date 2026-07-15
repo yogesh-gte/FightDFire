@@ -395,7 +395,7 @@
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+    <div id="page-content-wrapper" style="min-height: calc(100vh - 80px); overflow-x: hidden;">
 
 <div class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
     <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
@@ -511,8 +511,6 @@
 
 
 
- <!-- 🌸 Footer -->
-  <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
 <!-- Scripts -->
 					  	<script src="${pageContext.request.contextPath}/beauty/js/jquery.min.js"></script>

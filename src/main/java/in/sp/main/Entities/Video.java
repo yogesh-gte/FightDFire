@@ -23,6 +23,7 @@ public class Video {
     private String title;
     
     @Enumerated(EnumType.STRING)
+    @jakarta.persistence.Column(columnDefinition = "VARCHAR(255)")
     private Category category;
 
     private String filePath; 

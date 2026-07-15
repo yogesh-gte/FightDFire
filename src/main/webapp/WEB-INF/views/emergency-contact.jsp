@@ -307,7 +307,7 @@
 
     <!-- Header -->
     <div class="page-header">
-        <h1>🛡️ My Emergency Contacts</h1>
+        <h1><i class="bi bi-shield-check"></i> My Emergency Contacts</h1>
         <p>These contacts will be <strong>emailed</strong> and <strong>auto-called</strong> when you trigger an SOS alert.</p>
     </div>
 
@@ -444,9 +444,9 @@
     <!-- Info -->
     <div class="info-card">
         <strong><i class="bi bi-info-circle"></i> How contacts are used during SOS:</strong><br>
-        📧 <strong>Email alert</strong> — All contacts with email receive an emergency email with your <strong>live Google Maps location</strong><br>
-        📞 <strong>Auto-call</strong> — Your <strong>first personal contact</strong> is auto-dialed after the SOS countdown expires<br>
-        🔔 <strong>Multiple contacts</strong> — Add family, friends, neighbors for maximum safety coverage
+        <i class="bi bi-envelope"></i> <strong>Email alert</strong> — All contacts with email receive an emergency email with your <strong>live Google Maps location</strong><br>
+        <i class="bi bi-telephone"></i> <strong>Auto-call</strong> — Your <strong>first personal contact</strong> is auto-dialed after the SOS countdown expires<br>
+        <i class="bi bi-bell"></i> <strong>Multiple contacts</strong> — Add family, friends, neighbors for maximum safety coverage
     </div>
 </div>
 

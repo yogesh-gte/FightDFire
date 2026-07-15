@@ -40,7 +40,7 @@
 
         .hero-mini {
             background: linear-gradient(135deg, var(--r-dark) 0%, var(--r-purple) 100%);
-            padding: 80px 0 120px;
+            padding: 40px 0;
             color: white;
             text-align: center;
         }
@@ -62,7 +62,7 @@
             backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 50px;
-            margin-top: -80px;
+            margin-top: -20px;
             border: 1px solid rgba(30, 27, 75, 0.1);
             box-shadow: var(--r-shadow);
             z-index: 10;
@@ -95,8 +95,9 @@
         }
 
         .fdf-input:focus {
-            border-color: var(--r-pink);
-            box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.1);
+            border-color: var(--r-purple);
+            outline: none;
+            box-shadow: none;
         }
 
         #incidentMap {
@@ -394,8 +395,6 @@
         })();
     </script>
 
-    <!-- Footer -->
-    <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
