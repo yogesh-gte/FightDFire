@@ -15,15 +15,15 @@
        ORIGINAL STYLES (kept exactly as is)
        ============================================ */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
         --shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.15);
@@ -319,7 +319,7 @@
 
 <!-- Rewards Section Header -->
 <div class="container mb-5">
-    <div class="p-5 rounded-4 shadow-lg text-center" style="background: rgba(124, 45, 94, 0.1); border: 2px solid rgba(219, 39, 119, 0.3); backdrop-filter: blur(15px); position: relative; overflow: hidden;">
+    <div class="p-5 rounded-4 shadow-lg text-center" style="background: rgba(30, 27, 75, 0.1); border: 2px solid rgba(219, 39, 119, 0.3); backdrop-filter: blur(15px); position: relative; overflow: hidden;">
         <div style="position: absolute; top: -10%; right: -5%; width: 200px; height: 200px; background: radial-gradient(circle, rgba(219, 39, 119, 0.2), transparent); border-radius: 50%;"></div>
         <h1 class="mb-2" style="color: #fff; font-weight: 800; letter-spacing: 2px;">
             <i class="bi bi-gift me-3" style="color: var(--primary-coral);"></i>REDEEM REWARDS

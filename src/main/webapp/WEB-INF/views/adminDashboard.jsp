@@ -21,24 +21,24 @@
        ORIGINAL STYLES (kept exactly as is)
        ============================================ */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
         
         /* Maroon Theme Standards */
-        --maroon:        #7d2a5a;
-        --maroon-light:  #a0375e;
-        --maroon-dark:   #5a1d40;
-        --maroon-pale:   #f6f0f4;
-        --maroon-border: rgba(125,42,90,0.18);
+        --maroon:        #1e1b4b;
+        --maroon-light:  #312e81;
+        --maroon-dark:   #0b0920;
+        --maroon-pale:   #f8fafc;
+        --maroon-border: rgba(30, 27, 75, 0.12);
         --sidebar-w: 272px;
         
         --purple: var(--primary-purple);
@@ -477,6 +477,68 @@
         animation: shimmer 1.5s infinite;
         pointer-events: none;
     }
+    /* SaaS Dashboard Card Overrides */
+    div[style*="background: white"], 
+    div[style*="background:white"] {
+        background-color: #ffffff !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(30, 27, 75, 0.08) !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.02) !important;
+    }
+    
+    div[style*="display:grid"] > div, 
+    div[style*="display: grid"] > div {
+        background: #ffffff !important;
+        border: 1px solid rgba(30, 27, 75, 0.08) !important;
+        border-radius: 16px !important;
+        padding: 20px 16px !important;
+        text-align: center !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01) !important;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    }
+    
+    div[style*="display:grid"] > div:hover, 
+    div[style*="display: grid"] > div:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 0 12px 25px rgba(244, 63, 94, 0.08) !important;
+        border-color: rgba(244, 63, 94, 0.2) !important;
+    }
+    
+    div[style*="font-size:1.6rem"], 
+    div[style*="font-size:1.2rem"] {
+        font-size: 2rem !important;
+        font-weight: 800 !important;
+        color: var(--primary-purple) !important;
+        margin-bottom: 6px !important;
+    }
+    
+    div[style*="font-size:0.75rem"] {
+        font-size: 0.78rem !important;
+        color: #64748b !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    div[style*="color:#C53030"] { color: var(--primary-coral) !important; }
+    div[style*="color:#2F855A"] { color: #10b981 !important; }
+    div[style*="color:#2B6CB0"] { color: #3b82f6 !important; }
+    div[style*="color:#6B46C1"] { color: var(--primary-purple-light) !important; }
+    div[style*="color:#2D3748"] { color: var(--primary-purple) !important; }
+    div[style*="color:#E53E3E"] { color: #ef4444 !important; }
+    div[style*="color:#4A5568"] { color: #64748b !important; }
+    div[style*="color:#D97706"] { color: #f59e0b !important; }
+    div[style*="color:#276749"] { color: #10b981 !important; }
+    div[style*="color:#7C2D5E"] { color: var(--primary-coral) !important; }
+    
+    h6[style*="color: #7C2D5E"], 
+    h6[style*="color:#7C2D5E"] {
+        color: var(--primary-purple) !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 0.82rem !important;
+        letter-spacing: 1px !important;
+    }
 </style>
     
 </head>
@@ -520,7 +582,7 @@
                         
                         <!-- Row 1: Safety -->
                         <div class="mb-4">
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                                 <i class="fas fa-shield-alt"></i> Safety & Emergency
                             </h6>
                             <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
@@ -541,7 +603,7 @@
 
                         <!-- Row 2: Partners -->
                         <div class="mb-4">
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                                 <i class="fas fa-handshake"></i> Verified Partners
                             </h6>
                             <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
@@ -562,7 +624,7 @@
 
                         <!-- Row 3: Users -->
                         <div>
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                                 <i class="fas fa-users"></i> Platform Community
                             </h6>
                             <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
@@ -583,7 +645,7 @@
 
                         <!-- Row 4: Entrepreneur & Investor Platform (Community) -->
                         <div class="mt-4">
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                                 <i class="fas fa-handshake"></i> Entrepreneur & Investor Community
                             </h6>
                             <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
@@ -604,7 +666,7 @@
 
                         <!-- Row 5: Entrepreneur & Investor Platform (Financials) -->
                         <div class="mt-4">
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                                 <i class="fas fa-wallet"></i> Investment & Platform Revenue
                             </h6>
                             <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
@@ -631,17 +693,17 @@
                 <div class="col-12 mb-4">
                     <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
                         <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
                                 <i class="bi bi-calendar-heart-fill"></i> Women Events Platform
                             </h6>
                             <a href="${pageContext.request.contextPath}/women-events/admin/list"
-                               class="btn btn-sm" style="background: #7C2D5E; color: #fff; border-radius: 20px; font-weight: 600;">
+                               class="btn btn-sm" style="background: #1e1b4b; color: #fff; border-radius: 20px; font-weight: 600;">
                                 Manage Events
                             </a>
                         </div>
                         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:15px;">
                             <div style="background:#fdf5ff; border-radius:15px; padding:18px; border:1px solid #e9d8fd; text-align:center;">
-                                <div style="font-size:1.6rem; font-weight:700; color:#7C2D5E;" id="stat-totalWomenEvents">—</div>
+                                <div style="font-size:1.6rem; font-weight:700; color:#1e1b4b;" id="stat-totalWomenEvents">—</div>
                                 <div style="font-size:0.75rem; color:#6B46C1; font-weight:600;">🌸 Total Events</div>
                             </div>
                             <div style="background:#f0fdf4; border-radius:15px; padding:18px; border:1px solid #C6F6D5; text-align:center;">
@@ -672,10 +734,10 @@
                 <div class="col-12 mb-4">
                     <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
                                 <i class="fas fa-envelope"></i> Recent Contact Messages
                             </h6>
-                            <a href="${pageContext.request.contextPath}/admin/contact-messages" class="btn btn-sm" style="background: #7C2D5E; color: #fff; border-radius: 20px; font-weight: 600;">
+                            <a href="${pageContext.request.contextPath}/admin/contact-messages" class="btn btn-sm" style="background: #1e1b4b; color: #fff; border-radius: 20px; font-weight: 600;">
                                 View all
                                 <c:if test="${unreadContactMessages > 0}">
                                     <span class="badge bg-danger ms-1">${unreadContactMessages} new</span>
@@ -687,7 +749,7 @@
                                 <div class="table-responsive">
                                     <table class="table table-hover mb-0" style="font-size: 0.9rem;">
                                         <thead>
-                                            <tr style="color: #7C2D5E;">
+                                            <tr style="color: #1e1b4b;">
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Subject</th>
@@ -722,10 +784,10 @@
                 <div class="col-12 mb-4">
                     <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                            <h6 style="color: #7C2D5E; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
+                            <h6 style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin: 0;">
                                 <i class="fas fa-history"></i> Recent Entrepreneur & Investor Platform Feed
                             </h6>
-                            <a href="${pageContext.request.contextPath}/admin/pending-proposals" class="btn btn-sm" style="background: #7C2D5E; color: #fff; border-radius: 20px; font-weight: 600;">
+                            <a href="${pageContext.request.contextPath}/admin/pending-proposals" class="btn btn-sm" style="background: #1e1b4b; color: #fff; border-radius: 20px; font-weight: 600;">
                                 Audit Console
                             </a>
                         </div>
@@ -734,7 +796,7 @@
                                 <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
                                         <thead>
-                                            <tr style="color: #7C2D5E;">
+                                            <tr style="color: #1e1b4b;">
                                                 <th style="width: 50px;">Activity</th>
                                                 <th>Description</th>
                                                 <th style="width: 180px;">Time Exchanged</th>
@@ -763,7 +825,7 @@
                     <div class="admin-card">
                         <div class="rowTop">
                             <div>
-                                <i class="fas fa-envelope" style="color: #7C2D5E;"></i>
+                                <i class="fas fa-envelope" style="color: #1e1b4b;"></i>
                                 <h5 class="mb-1">Contact Messages</h5>
                                 <p class="muted">Form submissions from site</p>
                             </div>
@@ -1032,15 +1094,18 @@
                 </div>
 
                 <div class="col-md-3 col-sm-6">
-                    <div class="admin-card">
+                    <div class="admin-card" style="border-top: 4px solid #10b981;">
                         <div class="rowTop">
                             <div>
-                                <i class="fas fa-running"></i>
-                                <h5 class="mb-1">Fitness & Zumba</h5>
-                                <p class="muted">Review instructors</p>
+                                <i class="fas fa-dumbbell" style="color: #10b981;"></i>
+                                <h5 class="mb-1">Fitness &amp; Wellness</h5>
+                                <p class="muted">Verify trainer profiles</p>
                             </div>
+                            <span class="badge bg-warning text-dark badge-pill" title="Pending trainers">
+                                <span id="pendingTrainersCount">-</span>
+                            </span>
                         </div>
-                        <a href="${pageContext.request.contextPath}/admin/pending-providers?category=FITNESS_ZUMBA" class="btn btn-purple w-100 mt-auto">Review Fitness</a>
+                        <a href="${pageContext.request.contextPath}/admin/adminDashboard#fitnessOversightTabs" class="btn btn-purple w-100 mt-auto">Review Trainers</a>
                     </div>
                 </div>
 
@@ -1125,6 +1190,436 @@
                     </div>
                 </div>
 
+                <!-- ── Women Creator Hub Oversight ── -->
+                <div class="col-12 mb-4">
+                    <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
+                        <h5 class="mb-4" style="color: #1e1b4b; font-weight: 700; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px;">
+                            <i class="fas fa-shield-halved text-danger me-2"></i> Women Creator Hub Oversight
+                        </h5>
+
+                        <ul class="nav nav-tabs mb-3" id="creatorHubTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="moder-tab" data-bs-toggle="tab" data-bs-target="#moderContent" type="button" role="tab" style="color:#1e1b4b; font-weight:600;">
+                                    Moderation Queue (${moderationQueue.size()})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="reports-tab" data-bs-toggle="tab" data-bs-target="#reportsContent" type="button" role="tab" style="color:#1e1b4b; font-weight:600;">
+                                    Safety Reports (${reports.size()})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="verify-tab" data-bs-toggle="tab" data-bs-target="#verifyContent" type="button" role="tab" style="color:#1e1b4b; font-weight:600;">
+                                    Creator Badges
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="payout-tab" data-bs-toggle="tab" data-bs-target="#payoutContent" type="button" role="tab" style="color:#1e1b4b; font-weight:600;">
+                                    Cashouts (${cashoutRequests.size()})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="campaign-tab" data-bs-toggle="tab" data-bs-target="#campaignContent" type="button" role="tab" style="color:#1e1b4b; font-weight:600;">
+                                    Create Brand Campaign
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="creatorHubTabContents">
+                            <!-- MODERATION QUEUE -->
+                            <div class="tab-pane fade show active" id="moderContent" role="tabpanel">
+                                <c:if test="${empty moderationQueue}">
+                                    <p class="text-muted small">No items pending safety moderation.</p>
+                                </c:if>
+                                <c:if test="${not empty moderationQueue}">
+                                    <div class="table-responsive">
+                                        <table class="table align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Media</th>
+                                                    <th>Creator</th>
+                                                    <th>Title & Details</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="v" items="${moderationQueue}">
+                                                    <tr id="hub-moder-${v.id}">
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${v.fileType eq 'VIDEO'}">
+                                                                    <video src="${v.videoPath}" style="width:100px; max-height:70px; object-fit:cover;" controls muted></video>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <img src="${v.videoPath}" style="width:100px; max-height:70px; object-fit:cover;">
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                        <td><strong>${v.user.fullName}</strong></td>
+                                                        <td>
+                                                            <strong>${v.title}</strong>
+                                                            <p class="text-muted text-xs mb-0">${v.description}</p>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-success me-1" onclick="hubAction(${v.id}, true)">Approve</button>
+                                                            <button class="btn btn-sm btn-danger" onclick="hubAction(${v.id}, false)">Block</button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </c:if>
+                            </div>
+
+                            <!-- SAFETY REPORTS -->
+                            <div class="tab-pane fade" id="reportsContent" role="tabpanel">
+                                <c:if test="${empty reports}">
+                                    <p class="text-muted small">No user safety reports submitted.</p>
+                                </c:if>
+                                <c:if test="${not empty reports}">
+                                    <div class="table-responsive">
+                                        <table class="table align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Post</th>
+                                                    <th>Creator</th>
+                                                    <th>Reporter</th>
+                                                    <th>Reason</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="r" items="${reports}">
+                                                    <tr id="hub-report-${r.id}">
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${r.video.fileType eq 'VIDEO'}">
+                                                                    <video src="${r.video.videoPath}" style="width:80px; max-height:60px; object-fit:cover;" controls muted></video>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <img src="${r.video.videoPath}" style="width:80px; max-height:60px; object-fit:cover;">
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <small class="d-block text-muted text-center">${r.video.title}</small>
+                                                        </td>
+                                                        <td>${r.video.user.fullName}</td>
+                                                        <td>${r.reportedBy.fullName}</td>
+                                                        <td><span class="text-warning font-weight-bold text-xs">${r.reason}</span></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-success me-1" onclick="hubClearReport(${r.id})">Clear</button>
+                                                            <button class="btn btn-sm btn-danger" onclick="hubDeletePost(${r.id})">Delete Post</button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </c:if>
+                            </div>
+
+                            <!-- CREATOR BADGES -->
+                            <div class="tab-pane fade" id="verifyContent" role="tabpanel">
+                                <h6 class="text-secondary mt-2">Eligible Creators (Reward Points > 100)</h6>
+                                <div class="table-responsive mb-4">
+                                    <table class="table align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Points</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="c" items="${creatorsVerificationList}">
+                                                <tr>
+                                                    <td>${c.fullName}</td>
+                                                    <td>${c.email}</td>
+                                                    <td><strong class="text-warning">${c.rewardPoints}</strong></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-warning text-dark font-weight-bold" onclick="hubBadge(${c.id}, true)">Verify & Badge</button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            <c:if test="${empty creatorsVerificationList}">
+                                                <tr><td colspan="4" class="text-muted text-center small">No pending creators eligible.</td></tr>
+                                            </c:if>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h6 class="text-secondary">Verified Creators</h6>
+                                <div class="table-responsive">
+                                    <table class="table align-middle">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="c" items="${verifiedCreators}">
+                                                <tr>
+                                                    <td>${c.fullName} <i class="fa-solid fa-circle-check text-info"></i></td>
+                                                    <td>${c.email}</td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-danger" onclick="hubBadge(${c.id}, false)">Retract</button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- CASHOUTS -->
+                            <div class="tab-pane fade" id="payoutContent" role="tabpanel">
+                                <c:if test="${empty cashoutRequests}">
+                                    <p class="text-muted small">No pending cash-out payout requests.</p>
+                                </c:if>
+                                <c:if test="${not empty cashoutRequests}">
+                                    <div class="table-responsive">
+                                        <table class="table align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Creator</th>
+                                                    <th>Redeemed Points</th>
+                                                    <th>Payout Amount</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="c" items="${cashoutRequests}">
+                                                    <tr id="hub-cash-${c.id}">
+                                                        <td>${c.creator.fullName}</td>
+                                                        <td>${c.points}</td>
+                                                        <td><strong class="text-success">Rs. ${c.amount}</strong></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-success me-1" onclick="hubPayout(${c.id}, true)">Approve</button>
+                                                            <button class="btn btn-sm btn-outline-danger" onclick="hubPayout(${c.id}, false)">Reject</button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </c:if>
+                            </div>
+
+                            <!-- CREATE BRAND CAMPAIGN -->
+                            <div class="tab-pane fade" id="campaignContent" role="tabpanel">
+                                <form id="brandCampaignForm" action="${pageContext.request.contextPath}/creator-hub/admin/create-campaign" method="POST">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-dark small">Brand Name</label>
+                                            <input type="text" name="brandName" class="form-control" placeholder="Brand Name" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-dark small">Campaign Title</label>
+                                            <input type="text" name="campaignTitle" class="form-control" placeholder="Campaign Title" required>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label text-dark small">Brief Requirements</label>
+                                            <textarea name="description" class="form-control" rows="3" placeholder="Sponsorship description requirements..." required></textarea>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label text-dark small">Pay Rate per Post (Rs.)</label>
+                                            <input type="number" name="payRate" class="form-control" placeholder="e.g. 500" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-purple btn-sm">Create Sponsorship Listing</button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ── Fitness & Wellness Administration ── -->
+                <div class="col-12 mb-4" id="fitnessOversightTabs">
+                    <div style="background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f0f0f0;">
+                        <h5 class="mb-4" style="color: #10b981; font-weight: 700; text-transform: uppercase; font-size: 0.95rem; letter-spacing: 1px;">
+                            <i class="fas fa-dumbbell text-success me-2"></i> Fitness &amp; Wellness Administration
+                        </h5>
+
+                        <ul class="nav nav-tabs mb-3" id="fitnessAdminTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="fit-pending-tab" data-bs-toggle="tab" data-bs-target="#fitPendingContent" type="button" role="tab" style="color:#065f46; font-weight:600;">
+                                    Trainer Approvals (${pendingTrainers.size()})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="fit-active-tab" data-bs-toggle="tab" data-bs-target="#fitActiveContent" type="button" role="tab" style="color:#065f46; font-weight:600;">
+                                    Active Trainers (${activeTrainers.size()})
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="fit-stats-tab" data-bs-toggle="tab" data-bs-target="#fitStatsContent" type="button" role="tab" style="color:#065f46; font-weight:600;">
+                                    Fitness Reports &amp; Analytics
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="fitnessAdminTabContents">
+                            <!-- TRAINER APPROVALS -->
+                            <div class="tab-pane fade show active" id="fitPendingContent" role="tabpanel">
+                                <c:choose>
+                                    <c:when test="${empty pendingTrainers}">
+                                        <p class="text-muted small">No trainer verification applications pending review.</p>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="table-responsive">
+                                            <table class="table align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Coach Name</th>
+                                                        <th>Experience</th>
+                                                        <th>Fees / Hour</th>
+                                                        <th>Verification Certs</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="t" items="${pendingTrainers}">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <img src="${not empty t.profilePhotoPath ? t.profilePhotoPath : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2'}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                                                                    <div>
+                                                                        <strong>${t.fullName}</strong>
+                                                                        <small class="d-block text-muted">${t.email}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>${t.experience} Years</td>
+                                                            <td>₹${t.sessionFees}</td>
+                                                            <td>
+                                                                <c:if test="${not empty t.certificationsPath}">
+                                                                    <a href="${t.certificationsPath}" target="_blank" class="btn btn-xs btn-outline-primary" style="font-size:0.75rem; border-radius:15px;">
+                                                                        <i class="fas fa-file-pdf"></i> View Certificate
+                                                                    </a>
+                                                                </c:if>
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex gap-1">
+                                                                    <form action="${pageContext.request.contextPath}/admin/fitness/verify" method="POST">
+                                                                        <input type="hidden" name="id" value="${t.id}">
+                                                                        <input type="hidden" name="approve" value="true">
+                                                                        <button type="submit" class="btn btn-sm btn-success py-1">Approve</button>
+                                                                    </form>
+                                                                    <form action="${pageContext.request.contextPath}/admin/fitness/verify" method="POST">
+                                                                        <input type="hidden" name="id" value="${t.id}">
+                                                                        <input type="hidden" name="approve" value="false">
+                                                                        <button type="submit" class="btn btn-sm btn-outline-danger py-1">Reject</button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+
+                            <!-- ACTIVE TRAINERS ROSTER -->
+                            <div class="tab-pane fade" id="fitActiveContent" role="tabpanel">
+                                <c:choose>
+                                    <c:when test="${empty activeTrainers}">
+                                        <p class="text-muted small">No verified fitness coaches listed yet.</p>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="table-responsive">
+                                            <table class="table align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Coach Name</th>
+                                                        <th>Specialities</th>
+                                                        <th>Rating</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="t" items="${activeTrainers}">
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <img src="${not empty t.profilePhotoPath ? t.profilePhotoPath : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2'}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                                                                    <div>
+                                                                        <strong>${t.fullName}</strong>
+                                                                        <small class="d-block text-muted">${t.email}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <small class="text-success fw-bold">${t.specializations}</small>
+                                                            </td>
+                                                            <td><strong class="text-warning">★ ${t.rating}</strong></td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${t.suspended}">
+                                                                        <span class="badge bg-danger">Suspended</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="badge bg-success">Active</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td>
+                                                                <form action="${pageContext.request.contextPath}/admin/fitness/suspend" method="POST">
+                                                                    <input type="hidden" name="id" value="${t.id}">
+                                                                    <input type="hidden" name="suspend" value="${!t.suspended}">
+                                                                    <button type="submit" class="btn btn-sm ${t.suspended ? 'btn-success' : 'btn-outline-danger'} py-1" style="font-size:0.8rem; border-radius:15px;">
+                                                                        ${t.suspended ? 'Activate' : 'Suspend'}
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+
+                            <!-- FITNESS REPORTS & ANALYTICS -->
+                            <div class="tab-pane fade" id="fitStatsContent" role="tabpanel">
+                                <div class="row text-center mt-3 g-3">
+                                    <div class="col-md-3">
+                                        <div style="background:#eafaf1; padding:20px; border-radius:15px; border:1px solid #10b981;">
+                                            <h4 class="fw-bold mb-0 text-success">${activeTrainers.size()}</h4>
+                                            <small class="text-muted">Total Coaches Listed</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div style="background:#f0fdf4; padding:20px; border-radius:15px; border:1px solid #10b981;">
+                                            <h4 class="fw-bold mb-0 text-success">${fitnessBookings.size()}</h4>
+                                            <small class="text-muted">Session Bookings</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div style="background:#edfcf2; padding:20px; border-radius:15px; border:1px solid #10b981;">
+                                            <c:set var="totalRev" value="0.0" />
+                                            <c:forEach var="b" items="${fitnessBookings}">
+                                                <c:if test="${b.paymentStatus eq 'PAID'}">
+                                                    <c:set var="totalRev" value="${totalRev + b.paymentAmount}" />
+                                                </c:if>
+                                            </c:forEach>
+                                            <h4 class="fw-bold mb-0 text-success">₹${totalRev}</h4>
+                                            <small class="text-muted">Direct Session Revenue</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
                 </div>
             </div>
@@ -1157,6 +1652,7 @@
         setText("reportedVideosCardCount", data.reportedVideos);
         setText("pendingDoctorsCount", data.pendingDoctors);
         setText("pendingWomenProductsCount", data.pendingWomenProducts);
+        setText("pendingTrainersCount", data.pendingTrainers);
 
         // Safety Row
         setText("stat-activeSos", data.totalLiveSos);
@@ -1240,6 +1736,92 @@
     refresh();
     setInterval(refresh, 5000);
   })();
+
+  // AJAX for Creator Hub Oversight Actions
+  function hubAction(videoId, approve) {
+      const formData = new URLSearchParams();
+      formData.append('videoId', videoId);
+      formData.append('approve', approve);
+
+      fetch('${pageContext.request.contextPath}/creator-hub/admin/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData.toString()
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success) {
+              alert(approve ? "Approved!" : "Blocked!");
+              const row = document.getElementById('hub-moder-' + videoId);
+              if (row) row.remove();
+          }
+      });
+  }
+
+  function hubClearReport(reportId) {
+      fetch('${pageContext.request.contextPath}/creator-hub/admin/delete-reported?reportId=' + reportId, { method: 'POST' })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success) {
+              alert("Report cleared");
+              const row = document.getElementById('hub-report-' + reportId);
+              if (row) row.remove();
+          }
+      });
+  }
+
+  function hubDeletePost(reportId) {
+      if (confirm("Delete this post permanently?")) {
+          fetch('${pageContext.request.contextPath}/creator-hub/admin/delete-reported?reportId=' + reportId, { method: 'POST' })
+          .then(res => res.json())
+          .then(data => {
+              if (data.success) {
+                  alert("Post deleted");
+                  const row = document.getElementById('hub-report-' + reportId);
+                  if (row) row.remove();
+              }
+          });
+      }
+  }
+
+  function hubBadge(creatorId, verify) {
+      const formData = new URLSearchParams();
+      formData.append('creatorId', creatorId);
+      formData.append('verify', verify);
+
+      fetch('${pageContext.request.contextPath}/creator-hub/admin/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData.toString()
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success) {
+              alert("Verified Badge Status Updated");
+              window.location.reload();
+          }
+      });
+  }
+
+  function hubPayout(cashoutId, approve) {
+      const formData = new URLSearchParams();
+      formData.append('cashoutId', cashoutId);
+      formData.append('approve', approve);
+
+      fetch('${pageContext.request.contextPath}/creator-hub/admin/cashout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData.toString()
+      })
+      .then(res => res.json())
+      .then(data => {
+          if (data.success) {
+              alert(approve ? "Payout approved & credited!" : "Payout rejected & refunded!");
+              const row = document.getElementById('hub-cash-' + cashoutId);
+              if (row) row.remove();
+          }
+      });
+  }
 </script>
 
 </body>

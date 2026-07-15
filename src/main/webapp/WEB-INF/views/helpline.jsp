@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
-            --primary: #DB2777;
+            --primary: #f43f5e;
             --primary-glow: rgba(219,39,119,0.3);
-            --accent: #7C2D5E;
+            --accent: #1e1b4b;
             --success: #10B981;
             --warning: #F59E0B;
             --blue: #3B82F6;
@@ -208,7 +208,7 @@
         }
 
         .helpline-icon.red { background: rgba(239,68,68,0.12); color: #EF4444; }
-        .helpline-icon.pink { background: rgba(219,39,119,0.12); color: #DB2777; }
+        .helpline-icon.pink { background: rgba(219,39,119,0.12); color: #f43f5e; }
         .helpline-icon.blue { background: rgba(59,130,246,0.12); color: #3B82F6; }
         .helpline-icon.green { background: rgba(16,185,129,0.12); color: #10B981; }
         .helpline-icon.amber { background: rgba(245,158,11,0.12); color: #F59E0B; }

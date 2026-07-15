@@ -11,9 +11,9 @@
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Poppins',sans-serif;background:#0f0a1e;height:100vh;display:flex;flex-direction:column;color:#fff}
-    .ch-header{background:linear-gradient(135deg,#1a0a2e,#2d1450);padding:14px 20px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,0.06)}
+    .ch-header{background:linear-gradient(135deg,#1e1b4b,rgba(255, 255, 255, 0.05));padding:14px 20px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,0.06)}
     .ch-back{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:16px}
-    .ch-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7C2D5E,#a64281,#DB2777);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+    .ch-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#1e1b4b,#312e81,#f43f5e);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
     .ch-doc-info h3{font-size:14px;font-weight:700;margin:0}
     .ch-doc-info p{font-size:11px;color:rgba(255,255,255,0.5);margin:0}
     .ch-actions{margin-left:auto;display:flex;gap:8px}
@@ -23,14 +23,14 @@
     .ch-act:hover{transform:scale(1.1)}
     .ch-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:8px}
     .ch-msg{max-width:75%;padding:10px 16px;border-radius:16px;font-size:13px;line-height:1.5;animation:fadeIn 0.3s}
-    .ch-msg.sent{align-self:flex-end;background:linear-gradient(135deg,#a64281,#7C2D5E);color:#fff;border-bottom-right-radius:4px}
+    .ch-msg.sent{align-self:flex-end;background:linear-gradient(135deg,#312e81,#1e1b4b);color:#fff;border-bottom-right-radius:4px}
     .ch-msg.received{align-self:flex-start;background:rgba(255,255,255,0.08);color:#e0e0e0;border-bottom-left-radius:4px}
     .ch-msg .time{font-size:9px;opacity:0.5;margin-top:4px;display:block}
-    .ch-input-area{padding:12px 16px;background:#1a0a2e;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:10px;align-items:center}
+    .ch-input-area{padding:12px 16px;background:#1e1b4b;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:10px;align-items:center}
     .ch-input-area input{flex:1;padding:12px 18px;border:2px solid rgba(123,44,191,0.2);border-radius:999px;background:rgba(255,255,255,0.05);color:#fff;font-size:13px;font-family:'Poppins',sans-serif;outline:none}
-    .ch-input-area input:focus{border-color:#a64281}
+    .ch-input-area input:focus{border-color:#312e81}
     .ch-input-area input::placeholder{color:rgba(255,255,255,0.3)}
-    .ch-send{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,#a64281,#DB2777);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+    .ch-send{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,#312e81,#f43f5e);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
     .ch-send:hover{transform:scale(1.1);box-shadow:0 4px 16px rgba(123,44,191,0.4)}
     .ch-empty{text-align:center;margin:auto;color:rgba(255,255,255,0.3)}
     .ch-empty i{font-size:48px;display:block;margin-bottom:8px}

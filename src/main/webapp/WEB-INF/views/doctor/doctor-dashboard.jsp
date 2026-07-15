@@ -138,7 +138,7 @@
                 <tr><td><div class="dd-user-cell"><div class="user-avatar">${a.user.fullName.charAt(0)}</div><span>${a.user.fullName}</span></div></td>
                 <td>${a.appointmentTime}</td>
                 <td>${a.reason != null ? a.reason : '—'}</td>
-                <td><c:choose><c:when test="${a.consultationType=='VIDEO'}"><span style="color:#4a90d9"><i class="bi bi-camera-video"></i> Video</span></c:when><c:when test="${a.consultationType=='CLINIC'}"><span style="color:#a64281"><i class="bi bi-hospital"></i> Clinic</span></c:when><c:otherwise><span style="color:#6b7280"><i class="bi bi-chat-dots"></i> General</span></c:otherwise></c:choose></td>
+                <td><c:choose><c:when test="${a.consultationType=='VIDEO'}"><span style="color:#4a90d9"><i class="bi bi-camera-video"></i> Video</span></c:when><c:when test="${a.consultationType=='CLINIC'}"><span style="color:#312e81"><i class="bi bi-hospital"></i> Clinic</span></c:when><c:otherwise><span style="color:#6b7280"><i class="bi bi-chat-dots"></i> General</span></c:otherwise></c:choose></td>
                 <td><c:choose><c:when test="${a.status=='PENDING'}"><span class="dd-badge pending"><span class="dot"></span> Pending</span></c:when><c:when test="${a.status=='CONFIRMED'}"><span class="dd-badge confirmed"><span class="dot"></span> Confirmed</span></c:when><c:when test="${a.status=='COMPLETED'}"><span class="dd-badge completed"><span class="dot"></span> Completed</span></c:when><c:otherwise><span class="dd-badge cancelled"><span class="dot"></span> Cancelled</span></c:otherwise></c:choose></td>
                 <td>
                   <div style="display:flex;gap:8px;align-items:center;">
@@ -401,7 +401,7 @@
                   <td>
                     <c:choose>
                       <c:when test="${a.consultationType == 'VIDEO'}"><span style="color:#4a90d9"><i class="bi bi-camera-video"></i> Video</span></c:when>
-                      <c:when test="${a.consultationType == 'CLINIC'}"><span style="color:#a64281"><i class="bi bi-hospital"></i> Clinic</span></c:when>
+                      <c:when test="${a.consultationType == 'CLINIC'}"><span style="color:#312e81"><i class="bi bi-hospital"></i> Clinic</span></c:when>
                       <c:otherwise><span style="color:#6b7280"><i class="bi bi-chat-dots"></i> General</span></c:otherwise>
                     </c:choose>
                   </td>

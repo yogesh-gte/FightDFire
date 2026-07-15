@@ -14,7 +14,7 @@
             --primary: #3B82F6;
             --primary-dark: #1D4ED8;
             --primary-glow: rgba(59,130,246,0.3);
-            --accent: #7C2D5E;
+            --accent: #1e1b4b;
             --danger: #EF4444;
             --success: #10B981;
             --warning: #F59E0B;

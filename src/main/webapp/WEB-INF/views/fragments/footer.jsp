@@ -24,7 +24,7 @@
     <div class="container footer-top">
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
-          <a href="${pageContext.request.contextPath}/index.html" class="d-flex align-items-center">
+          <a href="${pageContext.request.contextPath}/" class="d-flex align-items-center">
           Fight D Fear
           </a>
              
@@ -38,7 +38,7 @@
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Useful Links</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/index.html">Home</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/">Home</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/index/about">About us</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/index/templates#services">Services</a></li>
              <li><i class="bi bi-chevron-right"></i> <a href="${pageContext.request.contextPath}/terms">Terms</a></li>

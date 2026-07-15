@@ -375,6 +375,23 @@ public class User {
         this.hostBio = hostBio;
     }
 
+    private boolean verifiedCreator = false;
+    private Double creatorSubscriptionPrice = 0.0;
+    private String creatorAffiliateCode;
+    private boolean bannedCreator = false;
+    private int adViewsClaimed = 0;
+
+    public boolean isVerifiedCreator() { return verifiedCreator; }
+    public void setVerifiedCreator(boolean verifiedCreator) { this.verifiedCreator = verifiedCreator; }
+    public Double getCreatorSubscriptionPrice() { return creatorSubscriptionPrice; }
+    public void setCreatorSubscriptionPrice(Double creatorSubscriptionPrice) { this.creatorSubscriptionPrice = creatorSubscriptionPrice; }
+    public String getCreatorAffiliateCode() { return creatorAffiliateCode; }
+    public void setCreatorAffiliateCode(String creatorAffiliateCode) { this.creatorAffiliateCode = creatorAffiliateCode; }
+    public boolean isBannedCreator() { return bannedCreator; }
+    public void setBannedCreator(boolean bannedCreator) { this.bannedCreator = bannedCreator; }
+    public int getAdViewsClaimed() { return adViewsClaimed; }
+    public void setAdViewsClaimed(int adViewsClaimed) { this.adViewsClaimed = adViewsClaimed; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

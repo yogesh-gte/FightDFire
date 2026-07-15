@@ -36,7 +36,7 @@
       border-radius: 18px;
       padding: 2rem;
       box-shadow: 0 18px 40px rgba(124, 45, 94, 0.12);
-      border: 1px solid rgba(124, 45, 94, 0.1);
+      border: 1px solid rgba(30, 27, 75, 0.1);
     }
     .reset-card h2 {
       font-weight: 800;
@@ -44,18 +44,18 @@
       margin-bottom: 0.5rem;
       font-size: 1.5rem;
     }
-    .reset-card .subtitle { color: #5E1F47; margin-bottom: 1.5rem; }
+    .reset-card .subtitle { color: #1e1b4b; margin-bottom: 1.5rem; }
     .reset-card .form-control {
       border-radius: 10px;
       border: 1px solid rgba(124, 45, 94, 0.25);
       padding: 12px 14px;
     }
     .reset-card .form-control:focus {
-      border-color: #DB2777;
+      border-color: #f43f5e;
       box-shadow: 0 0 0 0.2rem rgba(219, 39, 119, 0.15);
     }
     .btn-reset {
-      background: linear-gradient(45deg, #7C2D5E, #DB2777);
+      background: linear-gradient(45deg, #1e1b4b, #f43f5e);
       color: #fff !important;
       border: 0;
       border-radius: 999px;
@@ -82,7 +82,7 @@
       padding: 0 25px !important;
       font-size: 15px !important;
       color: white;
-      background-color: var(--primary-coral, #DB2777);
+      background-color: var(--primary-coral, #f43f5e);
       border: none;
       border-radius: 30px;
       text-decoration: none;
@@ -90,7 +90,7 @@
     }
     .role-dropdown { display: flex !important; align-items: center !important; position: relative; }
     .role-dropdown-btn {
-      background: linear-gradient(135deg, #5E1F47, #7C2D5E);
+      background: linear-gradient(135deg, #1e1b4b, #1e1b4b);
       color: #fff;
       border: none;
       padding: 0 25px;

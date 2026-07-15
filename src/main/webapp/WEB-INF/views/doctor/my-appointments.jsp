@@ -11,11 +11,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     :root{
-      --ma-purple:#7C2D5E;--ma-purple-l:#a64281;--ma-coral:#DB2777;
-      --ma-teal:#20c997;--ma-gold:#ffd700;--ma-bg:#f0edf6;--ma-card:#fff;
-      --ma-text:#1a1a2e;--ma-muted:#6b7280;--ma-border:rgba(74,14,120,0.08);
-      --ma-gradient:linear-gradient(135deg,#7C2D5E,#a64281,#DB2777);
-      --ma-shadow:0 4px 24px rgba(74,14,120,0.08);--ma-radius:16px;
+      --ma-purple:#1e1b4b;--ma-purple-l:#312e81;--ma-coral:#f43f5e;
+      --ma-teal:#20c997;--ma-gold:#ffd700;--ma-bg:#f8fafc;--ma-card:#fff;
+      --ma-text:#1a1a2e;--ma-muted:#6b7280;--ma-border:rgba(30, 27, 75, 0.08);
+      --ma-gradient:linear-gradient(135deg,#1e1b4b,#312e81,#f43f5e);
+      --ma-shadow:0 4px 24px rgba(30, 27, 75, 0.08);--ma-radius:16px;
       --sidebar-w:240px
     }
     *{box-sizing:border-box;margin:0;padding:0}
@@ -28,7 +28,7 @@
     .ma-back:hover{background:rgba(255,255,255,0.3)}
 
     /* Header Card */
-    .ma-header-card{margin:-30px 24px 0;position:relative;z-index:3;background:var(--ma-card);border-radius:var(--ma-radius);box-shadow:0 8px 40px rgba(74,14,120,0.12);padding:28px;display:flex;align-items:center;gap:20px}
+    .ma-header-card{margin:-30px 24px 0;position:relative;z-index:3;background:var(--ma-card);border-radius:var(--ma-radius);box-shadow:0 8px 40px rgba(30, 27, 75, 0.12);padding:28px;display:flex;align-items:center;gap:20px}
     .ma-header-icon{width:60px;height:60px;border-radius:16px;background:var(--ma-gradient);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;flex-shrink:0}
     .ma-header-info h1{font-size:22px;font-weight:800;margin:0}
     .ma-header-info p{font-size:13px;color:var(--ma-muted);margin:2px 0 0}
@@ -64,7 +64,7 @@
     /* Appointment Cards */
     .ma-appt-list{display:flex;flex-direction:column;gap:14px;flex:1}
     .ma-appt-card{background:var(--ma-card);border-radius:var(--ma-radius);box-shadow:var(--ma-shadow);border:1px solid var(--ma-border);padding:20px 24px;display:flex;align-items:center;gap:20px;transition:all 0.25s}
-    .ma-appt-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(74,14,120,0.12)}
+    .ma-appt-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(30, 27, 75, 0.12)}
 
     .ma-doc-avatar{width:56px;height:56px;border-radius:50%;background:var(--ma-gradient);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0}
     .ma-doc-avatar img{width:56px;height:56px;border-radius:50%;object-fit:cover}
@@ -233,7 +233,7 @@
                   data-address="<c:out value='${a.doctor.clinicAddress}'/>"
                   data-date="<c:out value='${a.appointmentTime}'/>"
                   data-patient-name="<c:out value='${a.user.fullName}'/>"><c:out value="${a.prescriptionText}" /></textarea>
-                <button type="button" class="ma-join-btn" style="background:#a64281;" onclick="viewPrescription('${a.id}')">
+                <button type="button" class="ma-join-btn" style="background:#312e81;" onclick="viewPrescription('${a.id}')">
                   <i class="bi bi-file-earmark-medical"></i> View Rx
                 </button>
               </c:if>
@@ -250,7 +250,7 @@
   <div style="background:#fff;border-radius:8px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 10px 40px rgba(0,0,0,0.3);">
     <!-- Actions -->
     <div style="position:sticky;top:0;background:#f8f9fa;padding:12px 20px;border-bottom:1px solid #ddd;display:flex;justify-content:flex-end;gap:10px;z-index:10;">
-      <button onclick="downloadPDF()" style="padding:6px 12px;border:1px solid #a64281;background:#a64281;color:#fff;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-download"></i> Download PDF</button>
+      <button onclick="downloadPDF()" style="padding:6px 12px;border:1px solid #312e81;background:#312e81;color:#fff;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-download"></i> Download PDF</button>
       <button onclick="window.print()" style="padding:6px 12px;border:1px solid #ddd;background:#fff;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-printer"></i> Print</button>
       <button onclick="document.getElementById('rxModal').style.display='none'" style="padding:6px 12px;border:none;background:var(--ma-coral);color:#fff;border-radius:4px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Close</button>
     </div>

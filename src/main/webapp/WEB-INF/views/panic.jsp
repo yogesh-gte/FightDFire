@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
-            --primary: #DB2777;
+            --primary: #f43f5e;
             --primary-dark: #9D174D;
-            --accent: #7C2D5E;
+            --accent: #1e1b4b;
             --danger-glow: rgba(219, 39, 119, 0.35);
             --bg: #0f0f1a;
             --card-bg: rgba(255,255,255,0.04);

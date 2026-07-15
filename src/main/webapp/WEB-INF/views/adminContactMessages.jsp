@@ -13,16 +13,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
         --light-bg: #fffcfd;
         --dark-bg: #0f0f1a;
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
-        --maroon: #7d2a5a;
-        --maroon-light: #a0375e;
-        --maroon-dark: #5a1d40;
-        --maroon-pale: #f6f0f4;
-        --maroon-border: rgba(125,42,90,0.18);
+        --maroon: #1e1b4b;
+        --maroon-light: #312e81;
+        --maroon-dark: #0b0920;
+        --maroon-pale: #f8fafc;
+        --maroon-border: rgba(30, 27, 75, 0.12);
         --sidebar-w: 272px;
     }
 

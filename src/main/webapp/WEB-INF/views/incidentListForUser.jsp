@@ -25,15 +25,15 @@
 	   ROOT VARIABLES (your brand colors)
 	   ============================================ */
 	:root {
-		--primary-purple: #7C2D5E;
-		--primary-purple-light: #a64281;
-		--primary-coral: #DB2777;
-		--primary-coral-dark: #5E1F47;
+		--primary-purple: #1e1b4b;
+		--primary-purple-light: #312e81;
+		--primary-coral: #f43f5e;
+		--primary-coral-dark: #1e1b4b;
 		--primary-teal: #20c997;
 		--primary-gold: #ffd700;
 		--dark-bg: #0f0f1a;
 		--light-bg: #fffcfd;
-		--gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+		--gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
 		--gradient-gold: linear-gradient(135deg, #ffd700, #ffb347);
 		--shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
 		--shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
@@ -374,12 +374,12 @@
 
         <!-- Icon -->
         <div class="icon mb-4" data-aos="zoom-in">
-          <i class="fas fa-shield-alt" style="font-size:4rem; color: #DB2777; filter: drop-shadow(0 0 15px rgba(219, 39, 119, 0.5));"></i>
+          <i class="fas fa-shield-alt" style="font-size:4rem; color: #f43f5e; filter: drop-shadow(0 0 15px rgba(219, 39, 119, 0.5));"></i>
         </div>
 
         <!-- Headings -->
         <h1 class="mb-2" style="font-family: 'Playfair Display', serif; font-weight: 900; font-size: 3.5rem; text-transform: uppercase; letter-spacing: 2px;">
-            Community <span style="color: #DB2777;">Safety</span> Updates
+            Community <span style="color: #f43f5e;">Safety</span> Updates
         </h1>
         <h2 class="mb-4" style="font-weight: 300; opacity: 0.9; letter-spacing: 1px;">Stay Informed. Stay Secure.</h2>
 

@@ -181,7 +181,7 @@
         }
 
         /* Colors */
-        .bg-glass-purple { background: rgba(124, 45, 94, 0.1); color: var(--brand-purple); }
+        .bg-glass-purple { background: rgba(30, 27, 75, 0.1); color: var(--brand-purple); }
         .bg-glass-pink { background: rgba(219, 39, 119, 0.1); color: var(--brand-pink); }
         .bg-glass-gold { background: rgba(255, 215, 0, 0.1); color: #b8860b; }
         .bg-glass-teal { background: rgba(32, 201, 151, 0.1); color: #157347; }

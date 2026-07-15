@@ -34,6 +34,9 @@ public class GlobalSidebarAdvice {
     private WomenProductSellerRepository womenProductSellerRepository;
 
     @Autowired
+    private FitnessTrainerRepository fitnessTrainerRepository;
+
+    @Autowired
     private ContactMessageRepository contactMessageRepository;
 
     @Autowired
@@ -61,6 +64,7 @@ public class GlobalSidebarAdvice {
                         in.sp.main.Entities.ProviderCategory.WOMEN_LAWYER, VerificationStatus.PENDING).size();
                 long pendingFitness = serviceProviderRepository.findByCategoryAndVerificationStatus(
                         in.sp.main.Entities.ProviderCategory.FITNESS_ZUMBA, VerificationStatus.PENDING).size();
+                long pendingTrainers = fitnessTrainerRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
                 long unreadContactMessages = contactMessageRepository.countByReadByAdminFalse();
                 
                 long pendingProposals = businessProposalRepository.findByStatus(VerificationStatus.PENDING).size();
@@ -78,6 +82,7 @@ public class GlobalSidebarAdvice {
                 model.addAttribute("side_pendingStylists", pendingStylists);
                 model.addAttribute("side_pendingLawyers", pendingLawyers);
                 model.addAttribute("side_pendingFitness", pendingFitness);
+                model.addAttribute("side_pendingTrainers", pendingTrainers);
                 model.addAttribute("side_unreadContactMessages", unreadContactMessages);
                 model.addAttribute("side_pendingProposals", sidePendingProposals);
             } catch (Exception e) {

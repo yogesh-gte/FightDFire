@@ -11,15 +11,15 @@
   /* ===============================
      BRAND COLORS — Primary identity
      =============================== */
-  --brand-purple: #7C2D5E;         /* Mulberry plum — Headlines, buttons, links */
-  --brand-purple-dark: #5E1F47;    /* Deeper plum — Hover/Active states */
+  --brand-purple: #1e1b4b;         /* Mulberry plum — Headlines, buttons, links */
+  --brand-purple-dark: #1e1b4b;    /* Deeper plum — Hover/Active states */
   --brand-purple-darker: #3F1430;  /* Dark plum — Deep accents, navigation, footer */
-  --brand-pink: #DB2777;           /* Hot rose — Women-empowerment accents */
+  --brand-pink: #f43f5e;           /* Hot rose — Women-empowerment accents */
   --brand-pink-light: #FB7185;     /* Soft rose — Highlights, gradients */
 
   /* Primary palette mappings */
   --primary-purple: var(--brand-purple);
-  --primary-purple-light: #a64281; 
+  --primary-purple-light: #312e81; 
   --primary-coral: var(--brand-pink);
   --primary-coral-dark: var(--brand-purple-dark);
   --primary-teal: #20c997;
@@ -39,7 +39,7 @@
   --fdf-card: #ffffff;
   --fdf-text: #111827;
   --fdf-muted: #6b7280;
-  --fdf-border: rgba(124, 45, 94, 0.16);
+  --fdf-border: rgba(30, 27, 75, 0.12);
   --fdf-shadow: var(--shadow-sm);
 
   /* Accent color for main.css integration */
@@ -169,7 +169,7 @@
  * =================================================================== */
 .header {
   background: rgba(255,255,255,0.97) !important;
-  border-bottom: 2px solid rgba(74, 14, 120, 0.08);
+  border-bottom: 2px solid rgba(30, 27, 75, 0.08);
   backdrop-filter: blur(8px);
 }
 .header .logo h1 {
@@ -289,7 +289,7 @@ section h2 {
 }
 
 .table {
-  border-color: rgba(74, 14, 120, 0.12);
+  border-color: rgba(30, 27, 75, 0.12);
 }
 .table thead {
   background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-purple-light) 100%);

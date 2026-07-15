@@ -7,12 +7,12 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Fight D Fear - Empowering Women</title>
   
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/img/favicon.png" rel="icon">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
 
   <style>
     :root {
@@ -152,121 +152,245 @@
       50% { box-shadow: 0 8px 40px rgba(244, 63, 94, 0.5); }
     }
 
-    /* ===== HERO CAROUSEL ===== */
-    .hero-carousel-section {
-      min-height: 90vh;
+    /* ===== HERO VIDEO SECTION ===== */
+    .hero-video-section {
+      height: 85vh;
       display: flex;
       align-items: center;
       position: relative;
       overflow: hidden;
       background: var(--navy-dark);
     }
-    .hero-carousel-section .carousel {
+    .hero-video-side {
       position: absolute;
       top: 0;
+      width: 50%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .hero-video-side.left-side {
       left: 0;
+    }
+    .hero-video-side.right-side {
+      right: 0;
+    }
+    .hero-video-bg-blurred-el {
       width: 100%;
       height: 100%;
+      object-fit: cover;
+      object-position: 10% center; /* Focuses on the golden spark side of the vertical video, hiding the woman silhouette */
+      opacity: 0.55;
+      filter: blur(2px) brightness(0.65) saturate(1.25);
     }
-    .hero-carousel-section .carousel-item {
-      height: 90vh;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-      transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+    .hero-video-side.right-side .hero-video-bg-blurred-el {
+      transform: scaleX(-1); /* Flips/mirrors the right-side video so particles glow on both side margins symmetrically! */
+      object-position: 10% center;
     }
-    .hero-carousel-section .carousel-item::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: transparent;
-    z-index: 1;
-}
-    .hero-carousel-section .carousel-item .container {
-      position: relative;
-      z-index: 2;
+    .hero-video-bg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      z-index: 2;
+      opacity: 1.0;
+      /* Soft fade on left/right borders to make the vertical video blend seamlessly with the sides (removes straight lines) */
+      -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0) 100%);
+      mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0) 100%);
+    }
+    .hero-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.3) 100%);
+      z-index: 1;
+    }
+    .hero-video-content-wrap {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      height: 85vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
     }
-    .hero-carousel-section .carousel-item .hero-content {
+    /* Mute/volume toggle button */
+    .hero-mute-btn {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      z-index: 10;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      backdrop-filter: blur(12px);
       color: white;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    .hero-carousel-section .carousel-item .hero-title {
-      font-size: 4.2rem;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      text-shadow: 0 4px 30px rgba(0,0,0,0.3);
-    }
-    .hero-carousel-section .carousel-item .text-gradient {
-      background: linear-gradient(135deg, #fb7185, #f43f5e, #e11d48);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-carousel-section .carousel-item .hero-desc {
-      font-size: 1.15rem;
-      color: rgba(255,255,255,0.9);
-      margin-bottom: 30px;
-      line-height: 1.8;
-      text-shadow: 0 2px 15px rgba(0,0,0,0.2);
-    }
-    .hero-carousel-section .carousel-item .hero-badge {
-      display: inline-block;
-      background: rgba(244, 63, 94, 0.2);
-      backdrop-filter: blur(10px);
-      padding: 8px 28px;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      color: #fb7185;
-      font-weight: 600;
-      margin-bottom: 20px;
-      border: 1px solid rgba(244, 63, 94, 0.2);
-      letter-spacing: 1px;
-    }
-    .hero-carousel-section .carousel-control-prev,
-    .hero-carousel-section .carousel-control-next {
-      width: 55px;
-      height: 55px;
-      background: rgba(255,255,255,0.1);
       border-radius: 50%;
-      top: 50%;
-      transform: translateY(-50%);
-      opacity: 0.7;
-      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.15);
-    }
-    .hero-carousel-section .carousel-control-prev:hover,
-    .hero-carousel-section .carousel-control-next:hover {
-      background: var(--primary);
-      opacity: 1;
-      transform: translateY(-50%) scale(1.1);
-      box-shadow: 0 10px 30px rgba(244, 63, 94, 0.3);
-    }
-    .hero-carousel-section .carousel-indicators {
-      bottom: 40px;
-    }
-    .hero-carousel-section .carousel-indicators button {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.5);
-      background: transparent;
-      margin: 0 10px;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
       transition: all 0.3s ease;
+      font-size: 1.1rem;
     }
-    .hero-carousel-section .carousel-indicators button.active {
+    .hero-mute-btn:hover {
       background: var(--primary);
       border-color: var(--primary);
-      transform: scale(1.3);
-      box-shadow: 0 0 25px rgba(244, 63, 94, 0.4);
+      transform: scale(1.1);
+    }
+    /* Scroll-down indicator */
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      animation: bounce 2s infinite;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }
+    .hero-scroll-indicator i { font-size: 1.2rem; }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ===== RESPONSIVE HERO VIDEO ===== */
+    @media (max-width: 768px) {
+      .hero-video-section { height: 65vh; }
+      .hero-video-content-wrap { height: 65vh; }
+      .hero-video-side {
+        display: none !important;
+      }
+      .hero-video-bg {
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+      }
+    }
+    @media (max-width: 575px) {
+      .hero-video-section { height: 55vh; }
+      .hero-video-content-wrap { height: 55vh; }
+    }
+
+    /* ===== PLATFORM WELCOME & SOS SECTION ===== */
+    .welcome-emergency-section {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      padding: 60px 0;
+    }
+    .welcome-badge {
+      background: rgba(244, 63, 94, 0.08);
+      color: var(--primary);
+      padding: 6px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 50px;
+      letter-spacing: 1px;
+    }
+    .welcome-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--navy-dark);
+      line-height: 1.2;
+    }
+    .text-primary-rose {
+      color: var(--primary);
+    }
+    .welcome-text {
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .btn-outline-rose {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+    .btn-outline-rose:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-light-rose {
+      background: rgba(244, 63, 94, 0.05);
+      color: var(--primary);
+      border: 1px solid rgba(244, 63, 94, 0.1);
+      transition: all 0.3s ease;
+    }
+    .btn-light-rose:hover {
+      background: rgba(244, 63, 94, 0.1);
+      color: var(--primary-hover);
+    }
+    .sos-interactive-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .sos-interactive-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(244, 63, 94, 0.08) !important;
+    }
+    .sos-circle-trigger {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(145deg, var(--primary), var(--primary-hover));
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6);
+      animation: pulse-sos 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
+      transition: all 0.3s ease;
+    }
+    .sos-circle-trigger:hover {
+      transform: scale(1.05);
+    }
+    .sos-circle-trigger h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    .sos-circle-trigger span {
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+    @keyframes pulse-sos {
+      0% {
+        box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.6);
+      }
+      70% {
+        box-shadow: 0 0 0 20px rgba(244, 63, 94, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(244, 63, 94, 0);
+      }
+    }
+
+    @media (max-width: 991px) {
+      .welcome-title { font-size: 2.2rem; }
+    }
+    @media (max-width: 575px) {
+      .welcome-title { font-size: 1.8rem; }
+      .welcome-text { font-size: 0.95rem; }
     }
 
     .sos-circle-center {
@@ -953,6 +1077,118 @@
       .section-title { font-size: 1.4rem; }
       .how-it-works-section .section-title-custom { font-size: 1.5rem; }
     }
+
+    /* ===== FLOATING QUICK ACTIONS ===== */
+    .hero-quick-actions-container {
+      position: relative;
+      margin-top: -65px;
+      z-index: 100;
+      padding-bottom: 20px;
+    }
+    .quick-action-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 20px 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+      text-decoration: none !important;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+    .quick-action-card i {
+      font-size: 24px;
+      color: var(--primary);
+      width: 52px;
+      height: 52px;
+      background: rgba(244, 63, 94, 0.08);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s ease;
+    }
+    .quick-action-card h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin: 0 0 2px 0;
+    }
+    .quick-action-card p {
+      font-size: 0.78rem;
+      color: var(--text-gray);
+      margin: 0;
+    }
+    .quick-action-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px rgba(244, 63, 94, 0.18);
+      background: white;
+      border-color: rgba(244, 63, 94, 0.3);
+    }
+    .quick-action-card:hover i {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1);
+    }
+    .quick-action-card.active-emergency {
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      border: none;
+    }
+    .quick-action-card.active-emergency h5 {
+      color: white;
+    }
+    .quick-action-card.active-emergency p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .quick-action-card.active-emergency i {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    .quick-action-card.active-emergency:hover {
+      box-shadow: 0 30px 60px rgba(244, 63, 94, 0.35);
+    }
+    @media (max-width: 768px) {
+      .hero-quick-actions-container {
+        margin-top: 20px;
+      }
+      .quick-action-card {
+        padding: 16px;
+      }
+    }
+
+    /* ===== LOOK WISE UPGRADES ===== */
+    .features-section {
+      background: radial-gradient(circle at 10% 20%, rgba(244,63,94,0.03) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(49,46,129,0.03) 0%, transparent 50%);
+    }
+    .testimonial-card {
+      background: rgba(255, 255, 255, 0.8) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.3) !important;
+    }
+    .cta-section {
+      background: linear-gradient(135deg, var(--navy-dark) 0%, #0f172a 100%) !important;
+      color: white !important;
+      border-radius: 30px;
+      padding: 80px 50px;
+      margin: 100px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section h3 {
+      color: white !important;
+    }
+    .cta-section p {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
   </style>
 </head>
 <body>
@@ -994,22 +1230,38 @@
           </c:when>
           <c:otherwise>
             <div class="dropdown d-none d-md-inline-block">
-
-           
-            <div class="dropdown d-none d-md-inline-block">
+              <button class="btn-outline-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-right-to-bracket me-1"></i> Login</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/login">User Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/login">Women Doctor Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/loginCentre">Self-Defense Center Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/login">Beauty Salon Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/login">Hair Stylist Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/login">Service Partner Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/login">Marketplace Seller Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/login">Entrepreneur Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/login">Investor Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-events/host/login">Event Host Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/fitness/trainer/login">Fitness Trainer Login</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/admin/loginAdmin">Admin Login</a></li>
+              </ul>
+            </div>
+            <div class="dropdown d-none d-md-inline-block ms-2">
               <button class="btn-primary-custom dropdown-toggle" type="button" data-bs-toggle="dropdown"><i class="fa-solid fa-user-plus me-1"></i> Join Us</button>
               <ul class="dropdown-menu">
-<li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register"><i class="fa-regular fa-user" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Join as Member</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register"><i class="fa-solid fa-stethoscope" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Women Doctor</a></li>
-               <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre"><i class="fa-solid fa-child-reaching" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Self-Defense Trainer</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register"><i class="fa-solid fa-spa" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Beauty and wellness</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register"><i class="fa-solid fa-scissors" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Hair Stylist</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register"><i class="fa-regular fa-handshake" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Service Partner</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register"><i class="fa-solid fa-bag-shopping" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Marketplace Seller</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-jobs/jobs/register"><i class="fa-solid fa-briefcase" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> women jobs</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register"><i class="fa-regular fa-lightbulb" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Entrepreneur</a></li>
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register"><i class="fa-solid fa-chart-line" style="color: var(--primary); width: 22px; text-align: center; margin-right: 8px; font-size: 1.1em;"></i> Investor</a></li>
-
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/users/register">Join as Member</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/doctors/register">Women Doctor</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/centres/registerCentre">Self-Defense Trainer</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/salons/register">Beauty and wellness</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/stylists/register">Hair Stylist</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/marketplace/provider/register">Service Partner</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-products/seller/register">Marketplace Seller</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-jobs/jobs/register">women jobs</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/entrepreneur/register">Entrepreneur</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/investor/register">Investor</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/women-events/host/register">Event Host</a></li>
+                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/fitness/trainer/register">Fitness Trainer</a></li>
+              </ul>
             </div>
           </c:otherwise>
         </c:choose>
@@ -1048,86 +1300,140 @@
     </div>
   </div>
 
-  <!-- ===== HERO CAROUSEL ===== -->
-  <section id="hero" class="hero-carousel-section">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-indicators">
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+  <!-- ===== HERO VIDEO SECTION =====
+       VIDEO SETUP INSTRUCTIONS:
+       1. Download your video from: https://pin.it/70xzSfUyH
+          (Right-click on the Pinterest video > Save video as... or use a tool like SnapInsta)
+       2. Place the downloaded file at:
+          src/main/webapp/assets/video/hero-video.mp4
+       3. The video will auto-play muted in the background.
+       ===== -->
+  <section id="hero" class="hero-video-section">
+    <!-- Blurred Background Video - Left Side -->
+    <div class="hero-video-side left-side">
+      <video id="heroVideoBgLeft" class="hero-video-bg-blurred-el" autoplay muted loop playsinline preload="auto">
+        <source src="${pageContext.request.contextPath}/assets/video/hero-video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Blurred Background Video - Right Side (Mirrored) -->
+    <div class="hero-video-side right-side">
+      <video id="heroVideoBgRight" class="hero-video-bg-blurred-el" autoplay muted loop playsinline preload="auto">
+        <source src="${pageContext.request.contextPath}/assets/video/hero-video.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Sharp Foreground Video (shows full portrait figure without crop) -->
+    <video id="heroVideo" class="hero-video-bg" autoplay muted loop playsinline preload="auto"
+      onerror="this.style.display='none'; if(document.getElementById('heroVideoBgLeft')) document.getElementById('heroVideoBgLeft').style.display='none'; if(document.getElementById('heroVideoBgRight')) document.getElementById('heroVideoBgRight').style.display='none'; document.getElementById('heroVideoFallback').style.display='block';">
+      <source src="${pageContext.request.contextPath}/assets/video/hero-video.mp4" type="video/mp4">
+    </video>
+    <!-- Fallback image if video missing -->
+    <div id="heroVideoFallback" style="display:none; position:absolute; inset:0; background: url('${pageContext.request.contextPath}/assets/images/img6.jpg') center/cover no-repeat; z-index:0;"></div>
+
+    <!-- Dark overlay -->
+    <div class="hero-video-overlay"></div>
+
+
+
+    <!-- Mute / Unmute Toggle -->
+    <button class="hero-mute-btn" id="heroMuteBtn" title="Toggle Audio" onclick="toggleHeroMute()">
+      <i class="fa-solid fa-volume-xmark" id="heroMuteIcon"></i>
+    </button>
+
+    <!-- Scroll down indicator -->
+    <div class="hero-scroll-indicator">
+      <span>SCROLL</span>
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </section>
+
+
+  <!-- ===== FLOATING QUICK ACTIONS BAR ===== -->
+  <div class="container hero-quick-actions-container">
+    <div class="row g-3 justify-content-center hero-quick-actions-row">
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="100">
+        <a href="${pageContext.request.contextPath}/sos/dashboard" class="quick-action-card active-emergency">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <h5>SOS Emergency</h5>
+            <p>One-Tap Danger Alert</p>
+          </div>
+        </a>
       </div>
-      
-      <div class="carousel-inner">
-        <div class="carousel-item active" style="background-image: url('${pageContext.request.contextPath}/assets/images/img6.jpg');">
-          <div class="container">
-            <div class="hero-content" data-aos="fade-up">
-              <span class="hero-badge"><i class="fa-solid fa-shield-halved me-2"></i> WOMEN'S SAFETY</span>
-              <h1 class="hero-title">Your Safety is <span class="text-gradient">Our Priority</span></h1>
-              <p class="hero-desc">Empowering women with instant emergency response systems. One tap SOS alert with live location sharing to police and your trusted contacts.</p>
-              <div class="d-flex gap-3 flex-wrap justify-content-center">
-                <a href="${pageContext.request.contextPath}/sos/dashboard" class="btn-primary-custom" style="padding: 12px 32px;"><i class="fa-solid fa-bell"></i> Activate SOS</a>
-                
-              </div>
-              <div class="sos-circle-center" onclick="window.location.href='${pageContext.request.contextPath}/sos/dashboard'">
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="200">
+        <a href="${pageContext.request.contextPath}/map" class="quick-action-card">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <div>
+            <h5>Danger Map</h5>
+            <p>Avoid Unsafe Zones</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="300">
+        <a href="${pageContext.request.contextPath}/women-events" class="quick-action-card">
+          <i class="fa-solid fa-calendar-days"></i>
+          <div>
+            <h5>Women Events</h5>
+            <p>Empowerment Meetups</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3 col-sm-6" data-aos="fade-up" data-aos-delay="400">
+        <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="quick-action-card">
+          <i class="fa-solid fa-hand-fist"></i>
+          <div>
+            <h5>Self-Defense</h5>
+            <p>Verified Academies</p>
+          </div>
+        </a>
+  </div>
+
+  <!-- ===== PLATFORM WELCOME & SOS EMERGENCY HUB ===== -->
+  <section class="welcome-emergency-section">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <!-- Left Column: Welcome & Info -->
+        <div class="col-lg-7" data-aos="fade-right">
+          <span class="welcome-badge mb-3 d-inline-block"><i class="fa-solid fa-shield-halved me-2"></i> FIGHT D FEAR &mdash; WOMEN SAFETY</span>
+          <h2 class="welcome-title fw-black mb-3">Your Safety is <span class="text-primary-rose">Our Priority</span></h2>
+          <p class="welcome-text text-muted mb-4">
+            Empowering women with instant emergency response, self-defense training, community support and professional wellness resources &mdash; all in one platform.
+          </p>
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn btn-outline-rose px-4 py-2.5 rounded-pill fw-bold text-decoration-none">
+              <i class="fa-solid fa-shield me-2"></i> Find self-defense centres
+            </a>
+            <a href="${pageContext.request.contextPath}/stories" class="btn btn-light-rose px-4 py-2.5 rounded-pill fw-bold text-decoration-none">
+              <i class="fa-solid fa-users me-2"></i> Read community stories
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive SOS Card -->
+        <div class="col-lg-5" data-aos="fade-left">
+          <div class="sos-interactive-card text-center p-4 rounded-4 shadow-sm border border-danger border-opacity-10 bg-white">
+            <div class="d-flex align-items-center justify-content-center mb-3">
+              <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-1.5 rounded-pill fs-7 fw-bold">
+                <span class="spinner-grow spinner-grow-sm text-danger me-1 align-middle" role="status" style="width: 10px; height: 10px; border-width: 2px;"></span> Emergency Panic Trigger
+              </span>
+            </div>
+            <h4 class="fw-bold mb-2">Need Immediate Help?</h4>
+            <p class="text-muted small mb-4">Click the button below to activate the SOS alert. This will instantly send your live location to contacts.</p>
+            
+            <div class="d-flex justify-content-center mb-4">
+              <div class="sos-circle-trigger" onclick="window.location.href='${pageContext.request.contextPath}/sos/dashboard'">
                 <h3>SOS</h3>
-                <span>Need Help?</span>
+                <span>Press to Trigger</span>
               </div>
             </div>
-          </div>
-        </div>
-        
-        <div class="carousel-item" style="background-image: url('${pageContext.request.contextPath}/assets/images/img7.jpg');">
-          <div class="container">
-            <div class="hero-content" data-aos="fade-up">
-              <span class="hero-badge"><i class="fa-solid fa-fist-raised me-2"></i> SELF DEFENSE</span>
-              <h1 class="hero-title">Empower Through <span class="text-gradient">Self-Defense</span></h1>
-              <p class="hero-desc">Every women deserves to feel strong and capable. Learn practical self-defense techniques from verified martial arts centres.</p>
-              <div class="d-flex gap-3 flex-wrap justify-content-center">
-                <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="btn-primary-custom" style="padding: 12px 32px;"><i class="fa-solid fa-shield"></i> Find Training</a>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="carousel-item" style="background-image: url('${pageContext.request.contextPath}/assets/images/img3.jpg');">
-          <div class="container">
-            <div class="hero-content" data-aos="fade-up">
-              <span class="hero-badge"><i class="fa-solid fa-users me-2"></i> COMMUNITY</span>
-              <h1 class="hero-title">Stronger <span class="text-gradient">Together</span></h1>
-              <p class="hero-desc">Join a powerful community of women supporting women. Share stories, safety tips, and resources.</p>
-              <div class="d-flex gap-3 flex-wrap justify-content-center">
-                <a href="${pageContext.request.contextPath}/stories" class="btn-primary-custom" style="padding: 12px 32px;"><i class="fa-solid fa-users"></i> Join Community</a>
-                
-              </div>
-            </div>
-          </div>
-        </div>
-        
-         <div class="carousel-item" style="background-image: url('${pageContext.request.contextPath}/assets/images/img8.jpg');">
-          <div class="container">
-            <div class="hero-content" data-aos="fade-up">
-              <span class="hero-badge"><i class="fa-solid fa-robot me-2"></i> DIGITAL SAFETY</span>
-              <h1 class="hero-title">AI-Powered <span class="text-gradient">Safety Shield</span></h1>
-              <p class="hero-desc">Real-time unsafe area alerts, AI safety assistant, and smart tracking to keep you protected wherever you go.</p>
-              <div class="d-flex gap-3 flex-wrap justify-content-center">
-                <a href="${pageContext.request.contextPath}/map" class="btn-primary-custom" style="padding: 12px 32px;"><i class="fa-solid fa-map"></i> View Safety Map</a>
-                
-              </div>
-            </div>
+            
+            <a href="${pageContext.request.contextPath}/sos/dashboard" class="btn btn-danger w-100 py-2.5 rounded-pill fw-bold text-decoration-none">
+              <i class="fa-solid fa-bell me-2"></i> Go to SOS Dashboard
+            </a>
           </div>
         </div>
       </div>
-      
-      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
   </section>
 
@@ -1291,7 +1597,7 @@
 
       <div class="row align-items-center awareness-block">
         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-          <img src="assets/img/awareness_solidarity_1779965397029.png" alt="Women Solidarity" class="awareness-img">
+          <img src="${pageContext.request.contextPath}/assets/img/awareness_solidarity_1779965397029.png" alt="Women Solidarity" class="awareness-img">
         </div>
         <div class="col-lg-6" data-aos="fade-left">
           <div class="awareness-text">
@@ -1305,7 +1611,7 @@
 
       <div class="row align-items-center awareness-block flex-lg-row-reverse">
         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-left">
-          <img src="assets/img/awareness_tech_shield_1779965413589.png" alt="Tech Shield" class="awareness-img">
+          <img src="${pageContext.request.contextPath}/assets/img/awareness_tech_shield_1779965413589.png" alt="Tech Shield" class="awareness-img">
         </div>
         <div class="col-lg-6" data-aos="fade-right">
           <div class="awareness-text">
@@ -1319,7 +1625,7 @@
 
       <div class="row align-items-center awareness-block">
         <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-          <img src="assets/img/awareness_self_defense_1779965432813.png" alt="Self Defense Training" class="awareness-img">
+          <img src="${pageContext.request.contextPath}/assets/img/awareness_self_defense_1779965432813.png" alt="Self Defense Training" class="awareness-img">
         </div>
         <div class="col-lg-6" data-aos="fade-left">
           <div class="awareness-text">
@@ -1451,13 +1757,13 @@
       <h2 class="section-title" data-aos="fade-up">What Users Say</h2>
       <div class="row g-4 mt-4">
         <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-          <div class="testimonial-card"><div class="user-info"><img src="assets/img/chat-user-1.png" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Sneha Patil</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The SOS feature helped me alert my family instantly. I feel so much safer now!</p></div>
+          <div class="testimonial-card"><div class="user-info"><img src="${pageContext.request.contextPath}/assets/img/chat-user-1.png" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Sneha Patil</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The SOS feature helped me alert my family instantly. I feel so much safer now!</p></div>
         </div>
         <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-          <div class="testimonial-card"><div class="user-info"><img src="assets/img/chat-user-2.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Anjali Sharma</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">Live tracking and audio recording features are amazing. A must-have app for every woman.</p></div>
+          <div class="testimonial-card"><div class="user-info"><img src="${pageContext.request.contextPath}/assets/img/chat-user-2.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Anjali Sharma</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">Live tracking and audio recording features are amazing. A must-have app for every woman.</p></div>
         </div>
         <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-          <div class="testimonial-card"><div class="user-info"><img src="assets/img/chat-user-3.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Riya Singh</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The unsafe area alerts are very helpful. Thank you for creating such a wonderful app!</p></div>
+          <div class="testimonial-card"><div class="user-info"><img src="${pageContext.request.contextPath}/assets/img/chat-user-3.jpg" onerror="this.src='https://via.placeholder.com/50'" alt="User"><div><h6 style="margin:0; font-weight:700; color:var(--navy-dark);">Riya Singh</h6><div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><p style="color:var(--text-gray); font-size:14px; margin:0;">The unsafe area alerts are very helpful. Thank you for creating such a wonderful app!</p></div>
         </div>
       </div>
     </div>
@@ -1468,7 +1774,7 @@
     <div class="cta-section" data-aos="fade-up">
       <div class="row align-items-center w-100">
         <div class="col-lg-4 d-flex justify-content-center mb-4 mb-lg-0">
-          <img src="assets/img/about-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 200px;" alt="App Interface">
+          <img src="${pageContext.request.contextPath}/assets/img/about-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 200px;" alt="App Interface">
         </div>
         <div class="col-lg-4 text-center">
           <h3 style="color: var(--navy-dark); font-weight: 800; margin-bottom: 15px;">Download Our App</h3>
@@ -1479,7 +1785,7 @@
           </div>
         </div>
         <div class="col-lg-4 d-flex justify-content-center mt-4 mt-lg-0">
-           <img src="assets/img/hero-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 250px;" alt="Phone Mockup">
+           <img src="${pageContext.request.contextPath}/assets/img/hero-img.svg" onerror="this.src='https://via.placeholder.com/200'" style="height: 250px;" alt="Phone Mockup">
         </div>
       </div>
     </div>
@@ -1525,8 +1831,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
   <script>
     AOS.init({
       duration: 800,
@@ -1535,18 +1841,65 @@
       mirror: false
     });
 
+    // ===== HERO VIDEO CONTROLS =====
     document.addEventListener('DOMContentLoaded', function() {
-      var carouselElement = document.getElementById('heroCarousel');
-      if (carouselElement) {
-        var carousel = new bootstrap.Carousel(carouselElement, {
-          interval: 5000,
-          ride: 'carousel',
-          pause: false,
-          wrap: true
+      var heroVideo = document.getElementById('heroVideo');
+      var heroVideoBgLeft = document.getElementById('heroVideoBgLeft');
+      var heroVideoBgRight = document.getElementById('heroVideoBgRight');
+      
+      function initVideo(vid) {
+        if (!vid) return;
+        vid.play().catch(function() {
+          vid.style.display = 'none';
+          var fb = document.getElementById('heroVideoFallback');
+          if (fb) fb.style.display = 'block';
         });
-        carousel.cycle();
+        vid.playbackRate = 0.5;
+        vid.addEventListener('play', function() {
+          vid.playbackRate = 0.5; // Ensure it stays slow after any browser reset
+        });
+      }
+
+      initVideo(heroVideo);
+      initVideo(heroVideoBgLeft);
+      initVideo(heroVideoBgRight);
+
+      // Trim the last ~1.5 seconds (the text/credits portion at the end)
+      // Adjust CUT_FROM_END to set how many seconds to trim from the end
+      var CUT_FROM_END = 1.5;
+      if (heroVideo) {
+        heroVideo.addEventListener('timeupdate', function() {
+          if (heroVideo.duration && !isNaN(heroVideo.duration)) {
+            var cutAt = heroVideo.duration - CUT_FROM_END;
+            if (cutAt > 0 && heroVideo.currentTime >= cutAt) {
+              if (heroVideoBgLeft) heroVideoBgLeft.currentTime = 0; // Reset left background video
+              if (heroVideoBgRight) heroVideoBgRight.currentTime = 0; // Reset right background video
+              heroVideo.currentTime = 0; // Loop main video back to start
+            }
+          }
+        });
       }
     });
+
+    // Mute / Unmute toggle
+    function toggleHeroMute() {
+      var vid = document.getElementById('heroVideo');
+      var vidBgLeft = document.getElementById('heroVideoBgLeft');
+      var vidBgRight = document.getElementById('heroVideoBgRight');
+      var icon = document.getElementById('heroMuteIcon');
+      if (!vid) return;
+      
+      var targetMute = !vid.muted;
+      vid.muted = targetMute;
+      if (vidBgLeft) vidBgLeft.muted = targetMute;
+      if (vidBgRight) vidBgRight.muted = targetMute;
+      
+      if (targetMute) {
+        icon.className = 'fa-solid fa-volume-xmark';
+      } else {
+        icon.className = 'fa-solid fa-volume-high';
+      }
+    }
 
     // Mobile Navigation
     function openMobileNav() {

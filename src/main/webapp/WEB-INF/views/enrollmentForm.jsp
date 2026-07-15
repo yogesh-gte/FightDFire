@@ -20,9 +20,9 @@
 
     <style>
         :root {
-            --primary-red: #DB2777; /* Matching Fight D Fear vibrant theme */
+            --primary-red: #f43f5e; /* Matching Fight D Fear vibrant theme */
             --primary-dark: #0f172a;
-            --accent-purple: #7C2D5E;
+            --accent-purple: #1e1b4b;
             --soft-bg: #f8fafc;
             --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
             --card-radius: 16px;
@@ -838,7 +838,7 @@
                         email: document.getElementById('email').value,
                         contact: document.getElementById('phone').value
                     },
-                    theme: { color: '#DB2777' }
+                    theme: { color: '#f43f5e' }
                 };
 
                 const rzp = new Razorpay(options);

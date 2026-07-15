@@ -45,7 +45,7 @@
 		    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>FightDFire</h1></a>
 		    <nav id="navmenu" class="navmenu">
 		      <ul>
-				<li class="nav-item"><a href="${pageContext.request.contextPath}/users/dashboard" class="nav-link">Home</a></li>
+				<li class="nav-item"><a href="${pageContext.request.contextPath}/" class="nav-link">Home</a></li>
 				           <li class="nav-item"><a href="${pageContext.request.contextPath}/user/salons" class="nav-link">Explore Salons</a></li>
 				          <li class="nav-item active"><a href="${pageContext.request.contextPath}/salon/treatments/viewtreatments" class="nav-link">SkinCare Treatments</a></li>
 				          <li class="nav-item"><a href="${pageContext.request.contextPath}/user/stylists" class="nav-link">Stylists</a></li>
@@ -327,7 +327,7 @@
        =============================== */
     :root {
         --fdf-mulberry: #6a0dad;
-        --fdf-plum: #a64281;
+        --fdf-plum: #312e81;
         --fdf-rose: #d63384;
     }
 
@@ -442,7 +442,7 @@
 
     /* 📱 Mobile Responsive Fixes */
     html, body {
-        overflow-x: hidden;
+        overflow-x: clip;
         width: 100%;
     }
     @media (max-width: 768px) {

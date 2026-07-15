@@ -5,18 +5,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --dr-purple: #4a0e78;
-  --dr-purple-light: #7b2cbf;
-  --dr-coral: #ff6b6b;
+  --dr-purple: #1e1b4b;
+  --dr-purple-light: #312e81;
+  --dr-coral: #f43f5e;
   --dr-teal: #20c997;
   --dr-gold: #ffd700;
-  --dr-bg: #f4f0fa;
+  --dr-bg: #f8fafc;
   --dr-card: #ffffff;
   --dr-text: #1a1a2e;
   --dr-muted: #6b7280;
-  --dr-border: rgba(74,14,120,0.12);
-  --dr-gradient: linear-gradient(135deg, #4a0e78 0%, #7b2cbf 50%, #ff6b6b 100%);
-  --dr-shadow: 0 20px 60px rgba(74,14,120,0.12);
+  --dr-border: rgba(30, 27, 75, 0.12);
+  --dr-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
+  --dr-shadow: 0 20px 60px rgba(30, 27, 75, 0.12);
   --dr-radius: 16px;
 }
 

@@ -19,10 +19,10 @@
 
     <style>
         :root {
-            --m-purple: #7C2D5E;
-            --m-pink: #DB2777;
+            --m-purple: #1e1b4b;
+            --m-pink: #f43f5e;
             --m-bg: #fffcfd;
-            --m-shadow: 0 15px 35px rgba(124, 45, 94, 0.1);
+            --m-shadow: 0 15px 35px rgba(30, 27, 75, 0.1);
         }
         body {
             font-family: 'Poppins', sans-serif;
@@ -37,7 +37,7 @@
             box-shadow: var(--m-shadow);
             margin-top: 50px;
             margin-bottom: 50px;
-            border: 1px solid rgba(124, 45, 94, 0.1);
+            border: 1px solid rgba(30, 27, 75, 0.1);
         }
         .form-header {
             text-align: center;

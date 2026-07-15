@@ -12,7 +12,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; background: #fffcfd; }
-        .left-panel { flex: 1; background: linear-gradient(135deg, #5E1F47 0%, #7C2D5E 40%, #DB2777 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 40px; position: relative; overflow: hidden; }
+        .left-panel { flex: 1; background: linear-gradient(135deg, #1e1b4b 0%, #1e1b4b 40%, #f43f5e 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 40px; position: relative; overflow: hidden; }
         .left-panel::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: rgba(255,255,255,0.06); }
         .left-panel::after { content: ''; position: absolute; bottom: -150px; left: -80px; width: 500px; height: 500px; border-radius: 50%; background: rgba(255,255,255,0.04); }
         .left-panel .brand { position: relative; z-index: 2; text-align: center; color: white; }
@@ -28,12 +28,12 @@
         .input-wrapper { position: relative; }
         .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 1rem; }
         .form-input { width: 100%; padding: 14px 16px 14px 46px; border: 2px solid #f3e8ef; border-radius: 12px; font-size: 0.95rem; transition: all 0.3s ease; }
-        .form-input:focus { outline: none; border-color: #7C2D5E; box-shadow: 0 0 0 4px rgba(124, 45, 94, 0.1); }
-        .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, #5E1F47, #7C2D5E); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(124, 45, 94, 0.3); }
+        .form-input:focus { outline: none; border-color: #1e1b4b; box-shadow: 0 0 0 4px rgba(30, 27, 75, 0.1); }
+        .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, #1e1b4b, #1e1b4b); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(124, 45, 94, 0.3); }
         .btn-login:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(124, 45, 94, 0.4); }
         .register-link { text-align: center; margin-top: 24px; font-size: 0.9rem; color: #6b7280; }
-        .register-link a { color: #7C2D5E; text-decoration: none; font-weight: 700; }
-        .error-alert { background: #fff1f8; border: 1px solid #ffc2df; color: #7C2D5E; padding: 12px 16px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .register-link a { color: #1e1b4b; text-decoration: none; font-weight: 700; }
+        .error-alert { background: #fff1f8; border: 1px solid #ffc2df; color: #1e1b4b; padding: 12px 16px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .back-home { display: inline-flex; align-items: center; gap: 6px; color: #6b7280; text-decoration: none; font-size: 0.85rem; font-weight: 500; margin-bottom: 28px; }
         .feature-list { list-style: none; display: flex; flex-direction: column; gap: 16px; text-align: left; margin-top: 20px; }
         .feature-list li { display: flex; align-items: center; gap: 14px; color: rgba(255,255,255,0.9); font-size: 0.95rem; font-weight: 400; }

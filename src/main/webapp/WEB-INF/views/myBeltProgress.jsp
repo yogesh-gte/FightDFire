@@ -16,7 +16,7 @@
     <style>
         :root {
             --sidebar-width: 260px;
-            --primary-purple: #7C2D5E;
+            --primary-purple: #1e1b4b;
             --bg-light: #F8FAFC;
         }
 
@@ -138,7 +138,7 @@
             return (
                 <div>
                     <div style={{ marginBottom: 40 }}>
-                        <Typography.Title level={2} style={{ color: '#7C2D5E', fontWeight: 800 }}>Belt Graduation Journey</Typography.Title>
+                        <Typography.Title level={2} style={{ color: '#1e1b4b', fontWeight: 800 }}>Belt Graduation Journey</Typography.Title>
                         <Typography.Paragraph style={{ color: '#64748B', fontSize: '1.1rem' }}>
                             Your path from beginner to expert. Complete technical requirements to unlock your next rank.
                         </Typography.Paragraph>
@@ -175,7 +175,7 @@
                                                 <Typography.Paragraph style={{ marginBottom: 16 }}>{belt.requirement}</Typography.Paragraph>
                                                 <Progress 
                                                     percent={belt.progress} 
-                                                    strokeColor={belt.completed ? '#22C55E' : '#7C2D5E'} 
+                                                    strokeColor={belt.completed ? '#22C55E' : '#1e1b4b'} 
                                                     status={belt.completed ? 'success' : 'active'}
                                                 />
                                             </Col>

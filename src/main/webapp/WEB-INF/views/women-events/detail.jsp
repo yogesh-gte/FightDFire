@@ -17,7 +17,7 @@
         /* Hero banner */
         .event-hero {
             width: 100%; min-height: 420px; position: relative;
-            background: linear-gradient(135deg, #7C2D5E 0%, #a855f7 60%, #ec4899 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
             display: flex; align-items: flex-end;
         }
         .event-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -37,18 +37,18 @@
         /* Card blocks */
         .card-block { background: white; border-radius: 20px; padding: 28px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px; }
-        .block-title { font-size: 1.1rem; font-weight: 700; color: #7C2D5E; margin-bottom: 16px;
+        .block-title { font-size: 1.1rem; font-weight: 700; color: #1e1b4b; margin-bottom: 16px;
             display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0e8f5; padding-bottom: 12px; }
 
         /* Register card (sticky) */
         .register-card { background: white; border-radius: 20px; padding: 28px;
             box-shadow: 0 8px 40px rgba(124,45,94,0.12); position: sticky; top: 24px; border: 2px solid #f0e8f5; }
-        .price-display { font-size: 2rem; font-weight: 800; color: #7C2D5E; margin-bottom: 4px; }
+        .price-display { font-size: 2rem; font-weight: 800; color: #1e1b4b; margin-bottom: 4px; }
         .price-sub { font-size: 0.85rem; color: #888; margin-bottom: 20px; }
-        .reg-btn { width: 100%; background: linear-gradient(135deg, #7C2D5E, #a855f7); color: white;
+        .reg-btn { width: 100%; background: linear-gradient(135deg, #1e1b4b, #f43f5e); color: white;
             border: none; border-radius: 14px; padding: 16px; font-family: 'Outfit', sans-serif;
             font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-        .reg-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,45,94,0.35); }
+        .reg-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(244,63,94,0.35); }
         .reg-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .reg-info { display: flex; justify-content: space-between; padding: 10px 0;
             border-bottom: 1px solid #f5f0f8; font-size: 0.88rem; }
@@ -99,6 +99,10 @@
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
 
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: #faf7fb;">
+
 <c:if test="${not empty success}">
     <div class="flash-alert alert alert-success alert-dismissible fade show" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i>${success}
@@ -134,8 +138,8 @@
 <div class="container mt-3" style="max-width:1200px;">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb" style="font-size:0.85rem;">
-            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/women-events" style="color:#7C2D5E;">Events</a></li>
-            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/women-events?category=${event.category}" style="color:#7C2D5E;">${event.category.displayName}</a></li>
+            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/women-events" style="color:#1e1b4b;">Events</a></li>
+            <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/women-events?category=${event.category}" style="color:#1e1b4b;">${event.category.displayName}</a></li>
             <li class="breadcrumb-item active">${event.name}</li>
         </ol>
     </nav>
@@ -173,7 +177,7 @@
                         src="https://maps.google.com/maps?q=${event.mapsLocation}&output=embed"
                         allowfullscreen loading="lazy"></iframe>
                 <a href="https://maps.google.com/maps?q=${event.mapsLocation}" target="_blank"
-                   style="color:#7C2D5E; font-weight:600; font-size:0.9rem; display:inline-block; margin-top:10px;">
+                   style="color:#1e1b4b; font-weight:600; font-size:0.9rem; display:inline-block; margin-top:10px;">
                     <i class="bi bi-box-arrow-up-right"></i> Open in Google Maps
                 </a>
             </div>
@@ -298,7 +302,7 @@
                             <i class="bi bi-check-circle-fill" style="color:#15803d; font-size:1.5rem;"></i>
                             <div style="font-weight:700; color:#15803d; margin-top:4px;">You're Registered!</div>
                             <a href="${pageContext.request.contextPath}/women-events/my-registrations"
-                               style="color:#7C2D5E; font-weight:600; font-size:0.9rem; display:inline-block; margin-top:8px; text-decoration:none;">
+                               style="color:#1e1b4b; font-weight:600; font-size:0.9rem; display:inline-block; margin-top:8px; text-decoration:none;">
                                 <i class="bi bi-ticket-perforated-fill"></i> View My Ticket
                             </a>
                         </div>
@@ -366,7 +370,7 @@
             <!-- Modal Header -->
             <div class="modal-header border-0 pb-0" style="padding: 24px 24px 0;">
                 <div class="d-flex align-items-center">
-                    <div style="background: #fdf2f8; color: #db2777; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                    <div style="background: #fdf2f8; color: #f43f5e; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
                         <i class="bi bi-wallet2"></i>
                     </div>
                     <div class="ms-3">
@@ -415,7 +419,7 @@
             <!-- Modal Footer -->
             <div class="modal-footer border-0 pt-0" style="padding: 0 24px 24px;">
                 <button type="button" class="btn btn-outline-secondary w-100 mb-2 rounded-pill small" data-bs-dismiss="modal">Cancel Payout</button>
-                <button type="button" class="btn btn-primary w-100 rounded-pill fw-semibold py-2" id="eventPayBtn" onclick="processEventBookingPayment()" style="background: linear-gradient(135deg, #7C2D5E, #a855f7); border: none;">
+                <button type="button" class="btn-primary w-100 rounded-pill fw-semibold py-2" id="eventPayBtn" onclick="processEventBookingPayment()" style="background: linear-gradient(135deg, #1e1b4b, #f43f5e); border: none;">
                     Pay ₹${event.entryFee} Securely
                 </button>
             </div>
@@ -454,5 +458,7 @@
         }
     }
 </script>
+    </div>
+</div>
 </body>
 </html>

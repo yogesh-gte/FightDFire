@@ -4,21 +4,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --dd-purple: #4a0e78;
-  --dd-purple-light: #7b2cbf;
-  --dd-coral: #ff6b6b;
+  --dd-purple: #1e1b4b;
+  --dd-purple-light: #312e81;
+  --dd-coral: #f43f5e;
   --dd-teal: #20c997;
   --dd-gold: #ffd700;
   --dd-blue: #4a90d9;
-  --dd-bg: #f0edf6;
-  --dd-sidebar: #1a0a2e;
-  --dd-sidebar-hover: #2d1450;
+  --dd-bg: #f8fafc;
+  --dd-sidebar: #1e1b4b;
+  --dd-sidebar-hover: rgba(255, 255, 255, 0.05);
   --dd-card: #ffffff;
   --dd-text: #1a1a2e;
   --dd-muted: #6b7280;
-  --dd-border: rgba(74,14,120,0.08);
-  --dd-gradient: linear-gradient(135deg, #4a0e78 0%, #7b2cbf 50%, #ff6b6b 100%);
-  --dd-shadow: 0 4px 24px rgba(74,14,120,0.08);
+  --dd-border: rgba(30, 27, 75, 0.08);
+  --dd-gradient: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
+  --dd-shadow: 0 4px 24px rgba(30, 27, 75, 0.08);
   --dd-radius: 16px;
   --sidebar-w: 260px;
 }
@@ -283,7 +283,7 @@ body.dd-page {
 }
 .dd-stat-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 32px rgba(74,14,120,0.12);
+  box-shadow: 0 8px 32px rgba(30, 27, 75, 0.12);
 }
 .dd-stat-icon {
   width: 48px; height: 48px;

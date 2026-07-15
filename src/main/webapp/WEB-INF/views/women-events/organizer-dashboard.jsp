@@ -12,7 +12,7 @@
     <style>
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background: #faf7fb; color: #1a1a2e; }
-        .page-header { background: linear-gradient(135deg, #1a1a2e 0%, #7C2D5E 100%); padding: 50px 20px; color: white; }
+        .page-header { background: linear-gradient(135deg, #1a1a2e 0%, #1e1b4b 100%); padding: 50px 20px; color: white; }
         .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
         .container-main { max-width: 1100px; margin: 0 auto; padding: 36px 20px 60px; }
 
@@ -28,8 +28,8 @@
         /* Events table */
         .events-table { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .table-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f5f0f8; flex-wrap: wrap; gap: 12px; }
-        .table-title { font-size: 1.1rem; font-weight: 700; color: #7C2D5E; display: flex; align-items: center; gap: 8px; }
-        .create-btn { background: linear-gradient(135deg, #7C2D5E, #a855f7); color: white; border: none;
+        .table-title { font-size: 1.1rem; font-weight: 700; color: #1e1b4b; display: flex; align-items: center; gap: 8px; }
+        .create-btn { background: linear-gradient(135deg, #1e1b4b, #a855f7); color: white; border: none;
             border-radius: 20px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-weight: 600;
             text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; }
         .create-btn:hover { color: white; transform: scale(1.03); box-shadow: 0 6px 20px rgba(124,45,94,0.3); }
@@ -72,8 +72,8 @@
     <div class="row g-3 mb-4">
         <div class="col-md-3 col-6">
             <div class="stat-card">
-                <div class="stat-icon" style="background:#f0e8ff;"><i class="bi bi-calendar-fill" style="color:#7C2D5E;"></i></div>
-                <div class="stat-num" style="color:#7C2D5E;">${myEvents.size()}</div>
+                <div class="stat-icon" style="background:#f0e8ff;"><i class="bi bi-calendar-fill" style="color:#1e1b4b;"></i></div>
+                <div class="stat-num" style="color:#1e1b4b;">${myEvents.size()}</div>
                 <div class="stat-label">Total Events</div>
             </div>
         </div>
@@ -131,7 +131,7 @@
                                         <div style="font-weight:700;">${ev.name}</div>
                                         <div style="font-size:0.78rem; color:#888;">${ev.organizerType}</div>
                                     </td>
-                                    <td><span style="font-size:0.8rem; color:#7C2D5E; font-weight:600;">${ev.category.displayName}</span></td>
+                                    <td><span style="font-size:0.8rem; color:#1e1b4b; font-weight:600;">${ev.category.displayName}</span></td>
                                     <td style="white-space:nowrap; font-size:0.85rem;">${ev.eventDate}</td>
                                     <td>${ev.city}</td>
                                     <td>

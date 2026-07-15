@@ -20,15 +20,15 @@
        ORIGINAL STYLES (kept exactly as is)
        ============================================ */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
     }
@@ -42,7 +42,7 @@
         margin: 0;
         font-family: 'Poppins', sans-serif;
         color: #fff;
-        overflow-x: hidden;
+        overflow-x: clip;
     }
     h2, h5 { color: #fff; }
     .muted, .text-muted { color: rgba(255, 255, 255, 0.7) !important; }
@@ -236,13 +236,13 @@
 
         <div class="mb-3">
           <label class="form-label fw-600">Where are you going?</label>
-          <input id="buddyDestination" type="text" class="form-control" maxlength="80" placeholder="Example: MG Road / Hitech City" style="border: 2px solid var(--primary-purple); box-shadow: 0 2px 8px rgba(124, 45, 94, 0.1);">
+          <input id="buddyDestination" type="text" class="form-control" maxlength="80" placeholder="Example: MG Road / Hitech City" style="border: 2px solid var(--primary-purple); box-shadow: 0 2px 8px rgba(30, 27, 75, 0.1);">
         </div>
 
         <div class="row g-2 mb-3">
           <div class="col-md-6">
             <label class="form-label">Time window</label>
-            <select id="buddyWindow" class="form-select" style="border: 2px solid var(--primary-purple); box-shadow: 0 2px 8px rgba(124, 45, 94, 0.1);">
+            <select id="buddyWindow" class="form-select" style="border: 2px solid var(--primary-purple); box-shadow: 0 2px 8px rgba(30, 27, 75, 0.1);">
               <option value="10">10 min</option>
               <option value="20">20 min</option>
               <option value="30" selected>30 min</option>
@@ -252,7 +252,7 @@
           </div>
           <div class="col-md-6">
             <label class="form-label">Radius</label>
-            <select id="buddyRadius" class="form-select" style="border: 2px solid var(--primary-purple); box-shadow: 0 2px 8px rgba(124, 45, 94, 0.1);">
+            <select id="buddyRadius" class="form-select" style="border: 2px solid var(--primary-purple); box-shadow: 0 2px 8px rgba(30, 27, 75, 0.1);">
               <option value="2">2 km</option>
               <option value="3" selected>3 km</option>
               <option value="5">5 km</option>

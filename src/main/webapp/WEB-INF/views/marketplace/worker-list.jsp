@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     <style>
         :root {
-            --m-purple: #7C2D5E;
-            --m-pink: #DB2777;
+            --m-purple: #1e1b4b;
+            --m-pink: #f43f5e;
             --m-bg: #fffcfd;
-            --m-shadow: 0 15px 35px rgba(124, 45, 94, 0.1);
+            --m-shadow: 0 15px 35px rgba(30, 27, 75, 0.1);
         }
         body { font-family: 'Poppins', sans-serif; background: var(--m-bg); }
         .hero-section {

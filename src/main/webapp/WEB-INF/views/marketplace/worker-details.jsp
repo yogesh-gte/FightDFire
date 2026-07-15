@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
     <style>
         :root {
-            --m-purple: #7C2D5E;
-            --m-pink: #DB2777;
+            --m-purple: #1e1b4b;
+            --m-pink: #f43f5e;
             --m-bg: #f8f9fa;
         }
         body { font-family: 'Poppins', sans-serif; background: var(--m-bg); }

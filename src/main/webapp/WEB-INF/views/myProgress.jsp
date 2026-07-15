@@ -18,7 +18,7 @@
         :root {
             --sidebar-width: 260px;
             --primary-red: #E11D48;
-            --primary-purple: #7C2D5E;
+            --primary-purple: #1e1b4b;
             --primary-dark: #0F172A;
             --bg-light: #F8FAFC;
             --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -224,7 +224,7 @@
                 <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
                         <div>
-                            <h1 style={{ color: '#7C2D5E', fontWeight: 800, margin: 0 }}>My Training Progress</h1>
+                            <h1 style={{ color: '#1e1b4b', fontWeight: 800, margin: 0 }}>My Training Progress</h1>
                             <p style={{ color: '#64748B' }}>Analyze your skills, achievements, and belt progression.</p>
                         </div>
                         <Button onClick={() => window.location.href='${pageContext.request.contextPath}/users/training-journey'}>Back to Journey</Button>
@@ -240,7 +240,7 @@
                                     percent={overallProgress} 
                                     size={180} 
                                     strokeWidth={8}
-                                    strokeColor={{ '0%': '#7C2D5E', '100%': '#E11D48' }}
+                                    strokeColor={{ '0%': '#1e1b4b', '100%': '#E11D48' }}
                                     format={percent => (
                                         <div>
                                             <div style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1E293B' }}>{percent}%</div>
@@ -259,11 +259,11 @@
                         <Col lg={12} md={24}>
                             <Card title={<span><FireOutlined /> Progress to Next Belt</span>} style={{ height: '100%' }}>
                                 <div style={{ textAlign: 'center', padding: '20px 0' }}>
-                                    <h2 style={{ color: '#7C2D5E' }}>{data.currentBelt}</h2>
+                                    <h2 style={{ color: '#1e1b4b' }}>{data.currentBelt}</h2>
                                     <Progress 
                                         percent={data.beltProgress} 
                                         status="active" 
-                                        strokeColor={{ from: '#7C2D5E', to: '#E11D48' }}
+                                        strokeColor={{ from: '#1e1b4b', to: '#E11D48' }}
                                     />
                                     <p style={{ marginTop: 16, color: '#64748B' }}>You are {data.beltProgress}% of the way to your Green Belt!</p>
                                     
@@ -274,7 +274,7 @@
                                         </div>
                                         <div style={{ width: 1, background: '#E2E8F0' }}></div>
                                         <div style={{ textAlign: 'center' }}>
-                                            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#7C2D5E' }}>{data.recentAchievements.length}</div>
+                                            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1e1b4b' }}>{data.recentAchievements.length}</div>
                                             <div style={{ fontSize: '0.75rem', color: '#64748B' }}>Badges</div>
                                         </div>
                                     </div>

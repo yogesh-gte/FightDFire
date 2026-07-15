@@ -146,10 +146,40 @@
             font-weight: bold;
         }
 
-        .badge-featured {
-            background: linear-gradient(135deg, #f43f5e, #be123c);
-            color: white;
-            font-weight: bold;
+        @media (max-width: 768px) {
+            #wrapper {
+                flex-direction: column !important;
+            }
+            #sidebar-wrapper {
+                min-width: 100% !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                border-top-right-radius: 0 !important;
+                border-bottom-left-radius: 20px !important;
+                border-bottom-right-radius: 20px !important;
+                padding: 20px 15px !important;
+            }
+            #sidebar-wrapper .mt-3 {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 10px !important;
+                margin-top: 10px !important;
+            }
+            .sidebar-link {
+                padding: 10px 15px !important;
+                border-radius: 30px !important;
+                border-left: none !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                display: inline-flex !important;
+                white-space: nowrap !important;
+            }
+            .sidebar-link:hover, .sidebar-link.active {
+                border-left-color: transparent !important;
+                background: var(--primary) !important;
+            }
+            #page-content-wrapper {
+                padding: 20px 10px !important;
+            }
         }
     </style>
 </head>

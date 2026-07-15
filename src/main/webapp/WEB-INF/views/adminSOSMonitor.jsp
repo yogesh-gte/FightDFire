@@ -17,13 +17,13 @@
 <style>
     :root {
         --sos-red: #ff3b3b;
-        --purple: #7C2D5E;
+        --purple: #1e1b4b;
         --bg: #f0f2f5;
-        --maroon:        #7d2a5a;
-        --maroon-light:  #a0375e;
-        --maroon-dark:   #5a1d40;
-        --maroon-pale:   #f6f0f4;
-        --maroon-border: rgba(125,42,90,0.18);
+        --maroon:        #1e1b4b;
+        --maroon-light:  #312e81;
+        --maroon-dark:   #0b0920;
+        --maroon-pale:   #f8fafc;
+        --maroon-border: rgba(30, 27, 75, 0.12);
         --shadow-sm: 0 6px 20px rgba(125,42,90,0.10);
         --sidebar-w: 272px;
     }
@@ -494,7 +494,7 @@
                 var m = L.marker([lat, lng], { icon: icon }).addTo(map);
                 m.bindPopup(
                     '<div style="min-width: 180px;">'
-                    + '<b style="color: #7C2D5E; font-size: 14px;">' + userName + '</b><br>'
+                    + '<b style="color: #1e1b4b; font-size: 14px;">' + userName + '</b><br>'
                     + '<span style="color: #555;">' + (s.userPhone || 'N/A') + '</span><br>'
                     + '<span class="status-badge ' + (isActive ? 'active' : 'resolved') + '" style="display:inline-block;margin:4px 0;padding:2px 8px;border-radius:10px;font-size:11px;">' + s.status + '</span><br>'
                     + '<a href="https://www.google.com/maps?q=' + lat + ',' + lng + '" target="_blank" style="font-size:12px;">Open in Google Maps →</a>'

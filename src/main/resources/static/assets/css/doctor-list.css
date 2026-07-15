@@ -3,14 +3,14 @@
 :root {
     --dl-purple: #2D0B2E;
     --dl-purple-mid: #4A1E38;
-    --dl-crimson: #DB2777;
+    --dl-crimson: #f43f5e;
     --dl-crimson-light: #F472B6;
     --dl-bg: #fffcfd;
     --dl-text: #2D0B2E;
     --dl-muted: #6B7280;
     --dl-glass: rgba(255, 255, 255, 0.7);
-    --dl-glass-border: rgba(124, 45, 94, 0.1);
-    --dl-gradient: linear-gradient(135deg, #2D0B2E 0%, #4A1E38 50%, #DB2777 100%);
+    --dl-glass-border: rgba(30, 27, 75, 0.1);
+    --dl-gradient: linear-gradient(135deg, #2D0B2E 0%, #4A1E38 50%, #f43f5e 100%);
     --dl-shadow: 0 20px 40px rgba(45, 11, 46, 0.08);
     --dl-radius: 24px;
 }

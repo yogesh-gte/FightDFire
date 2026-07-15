@@ -124,6 +124,51 @@
         transition: 0.5s;
         margin-left: 10px;
     }
+
+    /* Mobile Navigation Drawer styles */
+    @media (max-width: 1199px) {
+        .mobile-nav-toggle {
+            display: block !important;
+        }
+        .navmenu ul {
+            display: none;
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            bottom: 15px;
+            left: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(30, 27, 75, 0.95); /* Deep Navy backdrop */
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            list-style: none;
+            overflow-y: auto;
+            z-index: 9999;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        .navmenu ul li {
+            margin-bottom: 10px;
+        }
+        .navmenu ul li a {
+            display: block;
+            padding: 12px 20px !important;
+            font-size: 16px !important;
+            color: rgba(255, 255, 255, 0.9) !important;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .navmenu ul li a:hover, .navmenu ul li a.active {
+            background: rgba(244, 63, 94, 0.15) !important;
+            color: #f43f5e !important;
+        }
+        .mobile-nav-active {
+            overflow: hidden;
+        }
+        .mobile-nav-active .navmenu ul {
+            display: block !important;
+        }
+    }
 </style>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -134,7 +179,10 @@
     <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto" style="text-decoration: none;"><h1>Fight D Fear</h1></a>
     <nav id="navmenu" class="navmenu">
       <ul>
+
         <li><a href="${pageContext.request.contextPath}/users/dashboard">Home</a></li>
+        <li><a href="${pageContext.request.contextPath}/">Home</a></li>
+
         <li><a href="${pageContext.request.contextPath}/women-events">Events 🌸</a></li>
         <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
         <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
@@ -222,6 +270,7 @@
             window.__APP_CTX__ = "${pageContext.request.contextPath}";
             const ctx = window.__APP_CTX__;
             const userId = "${sessionScope.user.id}";
+            const isVerified = "${sessionScope.user.verificationStatus == 'VERIFIED'}";
             
             let globalStompClient = null;
             let currentGlobalCallInfo = null;
@@ -348,3 +397,17 @@
         })();
     </script>
 </c:if>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const toggleBtn = document.querySelector('.mobile-nav-toggle');
+      if (toggleBtn) {
+          toggleBtn.addEventListener('click', function() {
+              const body = document.querySelector('body');
+              body.classList.toggle('mobile-nav-active');
+              toggleBtn.classList.toggle('bi-list');
+              toggleBtn.classList.toggle('bi-x');
+          });
+      }
+  });
+</script>

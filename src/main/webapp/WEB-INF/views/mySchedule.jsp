@@ -20,7 +20,7 @@
         :root {
             --sidebar-width: 260px;
             --primary-red: #E11D48;
-            --primary-purple: #7C2D5E;
+            --primary-purple: #1e1b4b;
             --primary-dark: #0F172A;
             --bg-light: #F8FAFC;
             --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -367,7 +367,7 @@
                     {/* Header */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
                         <div>
-                            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#7C2D5E', margin: 0 }}>
+                            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1e1b4b', margin: 0 }}>
                                 <CalendarOutlined style={{ marginRight: 12 }} />
                                 My Schedule
                             </h1>
@@ -457,7 +457,7 @@
                                         <p className="empty-state-desc">You don't have any classes scheduled yet.</p>
                                         <Button 
                                             type="primary" 
-                                            style={{ backgroundColor: '#7C2D5E' }}
+                                            style={{ backgroundColor: '#1e1b4b' }}
                                         >
                                             No Classes Scheduled
                                         </Button>

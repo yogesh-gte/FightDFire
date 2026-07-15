@@ -13,9 +13,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-purple: #7C2D5E;
-            --primary-purple-light: #a64281;
-            --accent-coral: #DB2777;
+            --primary-purple: #1e1b4b;
+            --primary-purple-light: #312e81;
+            --accent-coral: #f43f5e;
             --bg-light: #f8f9fa;
         }
 

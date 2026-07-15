@@ -18,6 +18,111 @@
             --fdf-text: #1e293b;
             --fdf-muted: #64748b;
             --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #DB2777 100%);
+
+                <style>
+    /* ============================================
+       ORIGINAL STYLES (kept exactly as is)
+       ============================================ */
+    :root {
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
+        --primary-teal: #20c997;
+        --primary-gold: #ffd700;
+        --dark-bg: #0f0f1a;
+        --light-bg: #fffcfd;
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
+        --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    body {
+        background: linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background: white;
+        border-radius: 28px;
+        box-shadow: var(--shadow-md);
+        padding: 35px 30px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: none;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-md);
+    }
+
+    h3 {
+        color: var(--primary-purple);
+        font-weight: 800;
+        border-radius: 12px;
+        padding: 12px 15px;
+        transition: all 0.2s;
+    }
+    .form-control:focus {
+        border-color: var(--primary-purple-light);
+        box-shadow: 0 0 0 3px rgba(123, 44, 191, 0.2);
+        outline: none;
+    }
+
+    .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        border-radius: 40px;
+        padding: 12px 20px;
+        font-weight: 700;
+        font-size: 1rem;
+        width: 100%;
+        transition: all 0.2s;
+    }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+        filter: brightness(1.02);
+    }
+
+    a {
+        color: var(--primary-purple-light);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+    }
+    a:hover {
+        color: var(--primary-purple);
+        text-decoration: underline;
+    }
+
+    .mt-3 {
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    /* ============================================
+       🚀 ADDITIONAL ENHANCEMENTS (no existing rules changed)
+       ============================================ */
+
+    /* 1. Smooth fade-in animation for the card */
+    .card {
+        animation: fadeSlideUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+    }
+    @keyframes fadeSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }

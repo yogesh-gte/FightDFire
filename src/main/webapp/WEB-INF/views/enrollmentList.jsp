@@ -38,7 +38,7 @@
     
     h2 {
         text-align: center;
-        color: var(--primary-purple, #7C2D5E);
+        color: var(--primary-purple, #1e1b4b);
         margin-bottom: 20px;
         font-weight: bold;
     }
@@ -51,7 +51,7 @@
     }
     
     .table thead {
-        background: linear-gradient(135deg, var(--primary-purple, #7C2D5E), var(--primary-purple-light, #a64281));
+        background: linear-gradient(135deg, var(--primary-purple, #1e1b4b), var(--primary-purple-light, #312e81));
         color: white;
     }
     
@@ -61,13 +61,13 @@
     
     /* Buttons */
     .btn-primary {
-        background: var(--primary-purple-light, #a64281) !important;
+        background: var(--primary-purple-light, #312e81) !important;
         border: none;
         transition: 0.3s;
     }
 
     .btn-primary:hover {
-        background: var(--primary-purple, #7C2D5E) !important;
+        background: var(--primary-purple, #1e1b4b) !important;
     }
 
     .text-muted {
@@ -85,15 +85,15 @@
 
     /* 1. Root variables (already defined, but ensure they exist) */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
     }

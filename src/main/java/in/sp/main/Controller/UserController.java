@@ -108,6 +108,15 @@ public class UserController {
     @Autowired
     private in.sp.main.Repository.WorkerBookingRepository workerBookingRepo;
 
+    @Autowired
+    private in.sp.main.Repository.FitnessClassRepository fitnessClassRepository;
+
+    @Autowired
+    private in.sp.main.Repository.FitnessBookingRepository fitnessBookingRepository;
+
+    @Autowired
+    private in.sp.main.Repository.FitnessReviewRepository fitnessReviewRepository;
+
     @GetMapping("/training-journey")
     public String showTrainingJourney(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
@@ -539,6 +548,31 @@ public class UserController {
             List<in.sp.main.Entities.WorkerBooking> incomingBookings = workerBookingRepo.findByJobApplication_User_Id(loggedInUser.getId());
             model.addAttribute("incomingBookings", incomingBookings);
         }
+
+        // Fetch upcoming active fitness classes
+        List<in.sp.main.Entities.FitnessClass> upcomingClasses = fitnessClassRepository
+                .findByClassDateGreaterThanEqualAndStatusOrderByClassDateAsc(LocalDate.now(), "ACTIVE")
+                .stream()
+                .filter(c -> c.getCurrentEnrollment() < c.getMaxCapacity())
+                .limit(5)
+                .collect(java.util.stream.Collectors.toList());
+        model.addAttribute("upcomingFitnessClasses", upcomingClasses);
+
+        // Fetch completed fitness bookings that haven't been reviewed yet
+        List<in.sp.main.Entities.FitnessBooking> myBookings = fitnessBookingRepository.findByUser_Id(loggedInUser.getId());
+        List<in.sp.main.Entities.FitnessBooking> completedBookings = myBookings.stream()
+                .filter(b -> b.getFitnessClass() != null)
+                .filter(b -> b.getFitnessClass().getClassDate().isBefore(LocalDate.now()) || "COMPLETED".equals(b.getStatus()))
+                .filter(b -> !fitnessReviewRepository.existsByBooking_Id(b.getId()))
+                .collect(java.util.stream.Collectors.toList());
+        model.addAttribute("completedFitnessBookings", completedBookings);
+
+        // Fetch active personal coaching subscriptions
+        List<in.sp.main.Entities.FitnessBooking> activeSubs = myBookings.stream()
+                .filter(b -> b.getFitnessClass() == null)
+                .filter(b -> "APPROVED".equals(b.getStatus()))
+                .collect(java.util.stream.Collectors.toList());
+        model.addAttribute("activeSubscriptions", activeSubs);
 
         return "userDashboard";
     }

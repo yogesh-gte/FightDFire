@@ -8,12 +8,12 @@
         <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
       </c:when>
       <c:otherwise>
-        <a href="${pageContext.request.contextPath}/index.html" class="logo me-auto"><h1>Fight D Fear</h1></a>
+        <a href="${pageContext.request.contextPath}/" class="logo me-auto"><h1>Fight D Fear</h1></a>
       </c:otherwise>
     </c:choose>
     <nav id="navmenu" class="navmenu">
       <ul>
-        <li><a href="${pageContext.request.contextPath}/index.html">Home</a></li>
+        <li><a href="${pageContext.request.contextPath}/">Home</a></li>
         <li><a href="${pageContext.request.contextPath}/index/templates">Beauty</a></li>
         <li><a href="${pageContext.request.contextPath}/user/salons">Salons</a></li>
         <li><a href="${pageContext.request.contextPath}/user/stylists">Stylists</a></li>

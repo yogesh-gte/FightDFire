@@ -23,7 +23,7 @@
         :root {
             --p-purple-dark: #2D0B2E;
             --p-purple-mid: #4A1E38;
-            --p-crimson: #DB2777;
+            --p-crimson: #f43f5e;
             --p-crimson-light: #F472B6;
             --p-glass: rgba(255, 255, 255, 0.03);
             --p-glass-border: rgba(255, 255, 255, 0.1);
@@ -37,7 +37,7 @@
             background-color: var(--p-purple-dark);
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(219, 39, 119, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(124, 45, 94, 0.1) 0%, transparent 40%);
+                radial-gradient(circle at 90% 80%, rgba(30, 27, 75, 0.1) 0%, transparent 40%);
             color: var(--p-text-main);
             min-height: 100vh;
             overflow-x: hidden;

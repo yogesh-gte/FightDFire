@@ -32,7 +32,7 @@
 
     h1 {
         text-align: center;
-        color: #a64281;
+        color: #312e81;
         font-weight: bold;
         margin-bottom: 30px;
         font-family: 'Playfair Display', serif;
@@ -43,7 +43,7 @@
     }
 
     h1 i {
-        color: #a64281;
+        color: #312e81;
     }
 
     .message {
@@ -59,7 +59,7 @@
     }
 
     .table thead th {
-        background-color: #a64281;
+        background-color: #312e81;
         color: #fff;
         text-align: center;
         vertical-align: middle;
@@ -112,7 +112,7 @@
     }
 
     .btn-add {
-        background-color: #a64281;
+        background-color: #312e81;
         color: white;
         font-weight: 600;
         padding: 10px 20px;
@@ -142,15 +142,15 @@
 
     /* 1. Root variables (your brand colors) */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
     }

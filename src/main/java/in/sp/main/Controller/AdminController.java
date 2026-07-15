@@ -45,10 +45,20 @@ public class AdminController {
     @Autowired
     private VideoReportRepository videoReportRepository;
     @Autowired
+    private CreatorCashoutRepository creatorCashoutRepository;
+    @Autowired
+    private BrandCollaborationRepository brandCollaborationRepository;
+    @Autowired
     private IncidentService incidentService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FitnessTrainerRepository fitnessTrainerRepository;
+
+    @Autowired
+    private FitnessBookingRepository fitnessBookingRepository;
 
     @Autowired
     private DoctorRepository doctorRepository;
@@ -321,6 +331,46 @@ public class AdminController {
         List<Map<String, Object>> recentActivities = activities.stream().limit(10).collect(java.util.stream.Collectors.toList());
         model.addAttribute("recentPlatformActivities", recentActivities);
 
+        // Moderation Queue (videos/reels pending moderation check)
+        List<Videoupload> moderationQueue = videouploadRepository.findAll().stream()
+                .filter(v -> "PENDING_MODERATION".equals(v.getStatus()))
+                .collect(java.util.stream.Collectors.toList());
+
+        // Reported Content list
+        List<VideoReport> reports = videoReportRepository.findAll();
+
+        // Creator Verification Requests
+        List<User> creatorsVerificationList = userRepository.findAll().stream()
+                .filter(u -> !u.isVerifiedCreator() && u.getRewardPoints() != null && u.getRewardPoints() > 100)
+                .collect(java.util.stream.Collectors.toList());
+
+        // Approved creators (to allow un-badge)
+        List<User> verifiedCreators = userRepository.findAll().stream()
+                .filter(User::isVerifiedCreator)
+                .collect(java.util.stream.Collectors.toList());
+
+        // Cash-out redemption requests
+        List<CreatorCashout> cashoutRequests = creatorCashoutRepository.findByStatus("PENDING");
+
+        // All Brand Collaborations
+        List<BrandCollaboration> campaigns = brandCollaborationRepository.findAll();
+
+        model.addAttribute("moderationQueue", moderationQueue);
+        model.addAttribute("reports", reports);
+        model.addAttribute("creatorsVerificationList", creatorsVerificationList);
+        model.addAttribute("verifiedCreators", verifiedCreators);
+        model.addAttribute("cashoutRequests", cashoutRequests);
+        model.addAttribute("campaigns", campaigns);
+
+        // Fitness & Wellness Module
+        List<FitnessTrainer> pendingTrainers = fitnessTrainerRepository.findByVerificationStatus(VerificationStatus.PENDING);
+        List<FitnessTrainer> activeTrainers = fitnessTrainerRepository.findByVerificationStatus(VerificationStatus.VERIFIED);
+        List<FitnessBooking> fitnessBookings = fitnessBookingRepository.findAll();
+
+        model.addAttribute("pendingTrainers", pendingTrainers);
+        model.addAttribute("activeTrainers", activeTrainers);
+        model.addAttribute("fitnessBookings", fitnessBookings);
+
         return "adminDashboard";
     }
 
@@ -373,9 +423,10 @@ public class AdminController {
         long verifiedStylists = stylistRepository.findByApproved(true).size();
         long bannedUsers = userRepository.findByBanned(true).size();
         long pendingUsers = userRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
+        long pendingTrainers = fitnessTrainerRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
 
         // Simple signature: reload/update when any count changes
-        String signature = pendingCentres + "|" + incidentsTotal + "|" + totalLiveSos + "|" + totalUsers + "|" + verifiedSalons;
+        String signature = pendingCentres + "|" + incidentsTotal + "|" + totalLiveSos + "|" + totalUsers + "|" + verifiedSalons + "|" + pendingTrainers;
 
         List<Entrepreneur> allEntrepreneurs = entrepreneurRepository.findAll();
         List<Investor> allInvestors = investorRepository.findAll();
@@ -435,6 +486,7 @@ public class AdminController {
         res.put("totalUsers", totalUsers);
         res.put("bannedUsers", bannedUsers);
         res.put("pendingUsers", pendingUsers);
+        res.put("pendingTrainers", pendingTrainers);
         
         res.put("totalVideos", totalVideos);
         
@@ -1872,6 +1924,46 @@ public class AdminController {
             ra.addFlashAttribute("error", "Investment not found.");
         }
         return "redirect:/admin/pending-proposals";
+    }
+
+    // VERIFY TRAINER CERTIFICATIONS
+    @PostMapping("/fitness/verify")
+    @Transactional
+    public String verifyFitnessTrainer(
+            @RequestParam Long id,
+            @RequestParam boolean approve,
+            HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+
+        FitnessTrainer trainer = fitnessTrainerRepository.findById(id).orElse(null);
+        if (trainer != null) {
+            trainer.setVerificationStatus(approve ? VerificationStatus.VERIFIED : VerificationStatus.REJECTED);
+            fitnessTrainerRepository.save(trainer);
+            ra.addFlashAttribute("message", "Trainer verification status updated to " + trainer.getVerificationStatus());
+        } else {
+            ra.addFlashAttribute("error", "Trainer not found.");
+        }
+        return "redirect:/admin/adminDashboard#fitnessOversightTabs";
+    }
+
+    // SUSPEND/ACTIVATE TRAINER PROFILE
+    @PostMapping("/fitness/suspend")
+    @Transactional
+    public String suspendFitnessTrainer(
+            @RequestParam Long id,
+            @RequestParam boolean suspend,
+            HttpSession session, RedirectAttributes ra) {
+        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
+
+        FitnessTrainer trainer = fitnessTrainerRepository.findById(id).orElse(null);
+        if (trainer != null) {
+            trainer.setSuspended(suspend);
+            fitnessTrainerRepository.save(trainer);
+            ra.addFlashAttribute("message", suspend ? "Trainer account suspended." : "Trainer account activated.");
+        } else {
+            ra.addFlashAttribute("error", "Trainer not found.");
+        }
+        return "redirect:/admin/adminDashboard#fitnessOversightTabs";
     }
 }
 

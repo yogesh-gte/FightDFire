@@ -13,7 +13,7 @@
         *, *::before, *::after { box-sizing: border-box; }
         body { font-family: 'Outfit', sans-serif; background: #faf7fb; color: #1a1a2e; }
 
-        .page-header { background: linear-gradient(135deg, #7C2D5E 0%, #a855f7 100%);
+        .page-header { background: linear-gradient(135deg, #1e1b4b 0%, #f43f5e 100%);
             padding: 50px 20px; color: white; text-align: center; }
         .page-header h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 8px; }
 
@@ -21,9 +21,9 @@
 
         /* Ticket card */
         .ticket { background: white; border-radius: 24px; overflow: hidden; margin-bottom: 24px;
-            box-shadow: 0 8px 40px rgba(124,45,94,0.08); transition: transform 0.3s; }
+            box-shadow: 0 8px 40px rgba(244,63,94,0.08); transition: transform 0.3s; }
         .ticket:hover { transform: translateY(-4px); }
-        .ticket-header { background: linear-gradient(135deg, #7C2D5E, #a855f7); color: white;
+        .ticket-header { background: linear-gradient(135deg, #1e1b4b, #f43f5e); color: white;
             padding: 20px 28px; display: flex; justify-content: space-between; align-items: flex-start; }
         .ticket-name { font-size: 1.25rem; font-weight: 800; }
         .ticket-cat { font-size: 0.78rem; opacity: 0.85; margin-top: 4px; }
@@ -37,31 +37,31 @@
 
         .ticket-details { display: flex; flex-direction: column; gap: 10px; }
         .detail-row { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
-        .detail-row .icon { color: #7C2D5E; width: 20px; text-align: center; }
+        .detail-row .icon { color: #1e1b4b; width: 20px; text-align: center; }
         .detail-label { color: #888; min-width: 100px; }
         .detail-value { font-weight: 600; color: #1a1a2e; }
 
         /* QR / Ticket code */
         .qr-section { text-align: center; background: #faf7fb; border-radius: 16px; padding: 20px;
             min-width: 160px; display: flex; flex-direction: column; align-items: center; gap: 10px; border: 2px dashed #d8b4fe; }
-        .qr-code-box { width: 120px; height: 120px; background: white; border: 2px solid #7C2D5E;
+        .qr-code-box { width: 120px; height: 120px; background: white; border: 2px solid #1e1b4b;
             border-radius: 12px; display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden; }
         .qr-pattern { width: 100%; height: 100%; background:
-            repeating-linear-gradient(0deg, #7C2D5E11 0px, #7C2D5E11 4px, transparent 4px, transparent 8px),
-            repeating-linear-gradient(90deg, #7C2D5E11 0px, #7C2D5E11 4px, transparent 4px, transparent 8px); }
-        .ticket-code { font-family: monospace; font-size: 1rem; font-weight: 800; color: #7C2D5E;
-            letter-spacing: 2px; background: white; border: 2px solid #7C2D5E; border-radius: 8px;
+            repeating-linear-gradient(0deg, #1e1b4b11 0px, #1e1b4b11 4px, transparent 4px, transparent 8px),
+            repeating-linear-gradient(90deg, #1e1b4b11 0px, #1e1b4b11 4px, transparent 4px, transparent 8px); }
+        .ticket-code { font-family: monospace; font-size: 1rem; font-weight: 800; color: #1e1b4b;
+            letter-spacing: 2px; background: white; border: 2px solid #1e1b4b; border-radius: 8px;
             padding: 6px 14px; display: inline-block; }
         .qr-label { font-size: 0.72rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .ticket-actions { padding: 0 28px 20px; display: flex; gap: 10px; flex-wrap: wrap; }
         .action-btn { border-radius: 20px; padding: 8px 18px; font-size: 0.85rem; font-weight: 600;
             text-decoration: none; border: 1.5px solid; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
-        .action-btn-primary { background: #7C2D5E; color: white; border-color: #7C2D5E; }
-        .action-btn-primary:hover { background: #6b2450; color: white; }
-        .action-btn-outline { background: transparent; color: #7C2D5E; border-color: #7C2D5E; }
-        .action-btn-outline:hover { background: #7C2D5E; color: white; }
+        .action-btn-primary { background: #1e1b4b; color: white; border-color: #1e1b4b; }
+        .action-btn-primary:hover { background: #f43f5e; color: white; }
+        .action-btn-outline { background: transparent; color: #1e1b4b; border-color: #1e1b4b; }
+        .action-btn-outline:hover { background: #1e1b4b; color: white; }
         .action-btn-danger { background: transparent; color: #be123c; border-color: #be123c; }
         .action-btn-danger:hover { background: #be123c; color: white; }
 
@@ -72,6 +72,10 @@
 <body>
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp"/>
+
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: #faf7fb;">
 
 <c:if test="${not empty success}">
     <div class="alert alert-success alert-dismissible fade show m-3 rounded-3">
@@ -89,7 +93,7 @@
 <div class="container-main">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div style="font-weight:600; color:#555;">${registrations.size()} registration${registrations.size() != 1 ? 's' : ''}</div>
-        <a href="${pageContext.request.contextPath}/women-events" class="btn btn-sm rounded-pill" style="background:linear-gradient(135deg,#7C2D5E,#a855f7); color:white; font-weight:600;">
+        <a href="${pageContext.request.contextPath}/women-events" class="btn btn-sm rounded-pill" style="background:linear-gradient(135deg,#1e1b4b,#a855f7); color:white; font-weight:600;">
             <i class="bi bi-search me-1"></i> Browse More Events
         </a>
     </div>
@@ -173,7 +177,7 @@
                 <h4 style="font-weight:700; color:#555;">No Registrations Yet</h4>
                 <p class="text-muted">You haven't registered for any events yet.</p>
                 <a href="${pageContext.request.contextPath}/women-events" class="btn rounded-pill mt-2"
-                   style="background:linear-gradient(135deg,#7C2D5E,#a855f7); color:white; font-weight:700; padding:12px 30px;">
+                   style="background:linear-gradient(135deg,#1e1b4b,#f43f5e); color:white; font-weight:700; padding:12px 30px;">
                     Discover Events
                 </a>
             </div>
@@ -181,7 +185,7 @@
     </c:choose>
 </div>
 
-<jsp:include page="/WEB-INF/views/fragments/footer.jsp"/>
-<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </div>
+</div>
 </body>
 </html>

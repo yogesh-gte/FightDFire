@@ -3,15 +3,15 @@
 :root {
   --dv-purple: #2D0B2E;
   --dv-purple-mid: #4A1E38;
-  --dv-crimson: #DB2777;
+  --dv-crimson: #f43f5e;
   --dv-crimson-light: #F472B6;
   --dv-bg: #fffcfd;
   --dv-card: #ffffff;
   --dv-text: #2D0B2E;
   --dv-muted: #6B7280;
   --dv-glass: rgba(255, 255, 255, 0.85);
-  --dv-glass-border: rgba(124, 45, 94, 0.1);
-  --dv-gradient: linear-gradient(135deg, #2D0B2E 0%, #4A1E38 50%, #DB2777 100%);
+  --dv-glass-border: rgba(30, 27, 75, 0.1);
+  --dv-gradient: linear-gradient(135deg, #2D0B2E 0%, #4A1E38 50%, #f43f5e 100%);
   --dv-shadow: 0 20px 50px rgba(45, 11, 46, 0.1);
   --dv-radius: 28px;
   --sidebar-w: 260px;

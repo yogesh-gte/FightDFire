@@ -63,6 +63,14 @@ public class Videoupload {
     private String category;
     private String thumbnailPath;
     private boolean isPrivate = false;
+    private boolean isDraft = false;
+    private String location;
+    private String hashtags;
+    private boolean isPaidContent = false;
+    private Double price = 0.0;
+    private boolean isSubscriberOnly = false;
+    private String affiliateLink;
+    private String status = "APPROVED"; // APPROVED, PENDING_MODERATION, BLOCKED
     private boolean isBlocked = false;
 
     public boolean isBlocked() {
@@ -174,4 +182,20 @@ public class Videoupload {
     public int getShareCount() { return shareCount; }
     public void setShareCount(int shareCount) { this.shareCount = shareCount; }
 
+    public boolean isDraft() { return isDraft; }
+    public void setDraft(boolean draft) { isDraft = draft; }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+    public String getHashtags() { return hashtags; }
+    public void setHashtags(String hashtags) { this.hashtags = hashtags; }
+    public boolean isPaidContent() { return isPaidContent; }
+    public void setPaidContent(boolean paidContent) { isPaidContent = paidContent; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
+    public boolean isSubscriberOnly() { return isSubscriberOnly; }
+    public void setSubscriberOnly(boolean subscriberOnly) { isSubscriberOnly = subscriberOnly; }
+    public String getAffiliateLink() { return affiliateLink; }
+    public void setAffiliateLink(String affiliateLink) { this.affiliateLink = affiliateLink; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
     }

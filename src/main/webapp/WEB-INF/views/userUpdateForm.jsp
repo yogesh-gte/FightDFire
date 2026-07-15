@@ -12,16 +12,16 @@
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.bundle.min.js"></script>
     <style>
         :root {
-            --mulberry:      #7C2D5E;
-            --mulberry-light:#a64281;
-            --hot-rose:      #DB2777;
-            --hot-rose-dark: #5E1F47;
+            --mulberry:      #1e1b4b;
+            --mulberry-light:#312e81;
+            --hot-rose:      #f43f5e;
+            --hot-rose-dark: #1e1b4b;
             --teal:          #20c997;
             --gold:          #ffd700;
             --dark-bg:       #0d0d1a;
             --card-bg:       rgba(255,255,255,0.04);
             --glass-border:  rgba(219,39,119,0.35);
-            --gradient:      linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+            --gradient:      linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
             --glow:          0 0 22px rgba(219,39,119,0.45);
             --shadow-md:     0 20px 50px rgba(0,0,0,0.45);
         }

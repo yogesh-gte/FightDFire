@@ -76,7 +76,7 @@
     }
 
     .btn-verify {
-        background: #a64281;
+        background: #312e81;
         color: white;
     }
 
@@ -181,7 +181,7 @@
         border-radius: 10px;
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: #a64281;
+        background: #312e81;
     }
 
     /* 7. Responsive improvements for mobile */

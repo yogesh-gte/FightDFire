@@ -16,15 +16,15 @@
        ROOT VARIABLES (your brand colors)
        ============================================ */
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --primary-teal: #20c997;
         --primary-gold: #ffd700;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --gradient-primary: linear-gradient(135deg, #7C2D5E 0%, #a64281 50%, #DB2777 100%);
+        --gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
         --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
         --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
         
@@ -54,7 +54,7 @@
         background-image:
             radial-gradient(circle at 20% 50%, rgba(124, 45, 94, 0.25) 0%, transparent 50%),
             radial-gradient(circle at 80% 20%, rgba(219, 39, 119, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 50% 80%, rgba(124, 45, 94, 0.1) 0%, transparent 50%);
+            radial-gradient(circle at 50% 80%, rgba(30, 27, 75, 0.1) 0%, transparent 50%);
         background-size: cover;
         z-index: 0;
     }

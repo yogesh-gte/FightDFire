@@ -38,7 +38,7 @@
         .booking-card {
             background: white;
             border-radius: 24px;
-            border: 1px solid rgba(124, 45, 94, 0.1);
+            border: 1px solid rgba(30, 27, 75, 0.1);
             padding: 30px;
             margin-bottom: 30px;
             transition: all 0.3s ease;
@@ -49,7 +49,7 @@
 
         .booking-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(124, 45, 94, 0.1);
+            box-shadow: 0 15px 40px rgba(30, 27, 75, 0.1);
             border-color: var(--brand-pink-light);
         }
 

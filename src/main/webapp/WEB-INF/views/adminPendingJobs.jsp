@@ -17,16 +17,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <style>
     :root {
-        --primary-purple: #7C2D5E;
-        --primary-purple-light: #a64281;
-        --primary-coral: #DB2777;
-        --primary-coral-dark: #5E1F47;
+        --primary-purple: #1e1b4b;
+        --primary-purple-light: #312e81;
+        --primary-coral: #f43f5e;
+        --primary-coral-dark: #1e1b4b;
         --dark-bg: #0f0f1a;
         --light-bg: #fffcfd;
-        --maroon: #7d2a5a;
-        --maroon-light: #a0375e;
-        --maroon-pale: #f6f0f4;
-        --maroon-border: rgba(125,42,90,0.18);
+        --maroon: #1e1b4b;
+        --maroon-light: #312e81;
+        --maroon-pale: #f8fafc;
+        --maroon-border: rgba(30, 27, 75, 0.12);
         --sidebar-w: 272px;
     }
 
