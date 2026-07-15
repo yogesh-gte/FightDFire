@@ -138,6 +138,65 @@
             transform: translateY(-2px);
             color: white;
         }
+
+        /* Mobile Toggle Button */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
+            transition: transform 0.2s;
+        }
+        .mobile-toggle:hover { transform: scale(1.1); }
+
+        /* Mobile Sidebar Styles */
+        @media (max-width: 992px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                bottom: 0;
+                z-index: 2000;
+                width: 280px;
+                height: 100vh;
+                transition: left 0.3s ease;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+                background: #fff;
+                padding: 20px;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1500;
+                backdrop-filter: blur(2px);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
@@ -146,7 +205,10 @@
     <div class="topbar">
         <div class="container">
             <div class="wrap">
-                <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center">
+                    <button class="mobile-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
                     <a href="${pageContext.request.contextPath}/financial-literacy/admin" class="text-decoration-none text-white" style="font-weight: 700;">
                         <i class="fas fa-arrow-left me-2"></i> Back
                     </a>
@@ -156,10 +218,19 @@
         </div>
     </div>
 
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Layout -->
     <div class="layout">
         <!-- Sidebar -->
         <div class="sidebar">
+            <!-- Mobile Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 d-lg-none">
+                <div class="brand mb-0" style="font-weight:700; color: var(--primary-purple);">Admin Menu</div>
+                <button type="button" class="btn-close" id="closeSidebar" aria-label="Close"></button>
+            </div>
+            
             <div class="mb-4">
                 <a href="${pageContext.request.contextPath}/financial-literacy/admin" class="navlink">
                     <i class="fas fa-home"></i> Home
@@ -233,6 +304,35 @@
             </div>
         </main>
     </div>
+
+<script>
+    // Sidebar Toggle Logic
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const closeBtn = document.getElementById('closeSidebar');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if(toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+        });
+    }
+
+    if(closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    }
+
+    if(overlay) {
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+    }
+</script>
 
 </body>
 </html>

@@ -107,6 +107,30 @@
         }
         .fdf-input:focus { border-color: var(--brand-pink); background: #fff; box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.05); }
 
+        .password-toggle-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--brand-purple);
+            opacity: 0.5;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        .password-toggle-btn:hover {
+            opacity: 1;
+            color: var(--brand-pink);
+        }
+
+        .input-wrapper.password-field .fdf-input {
+            padding-right: 46px;
+        }
+
         .btn-fdf-login { 
             width: 100%; padding: 18px; background: var(--gradient-primary); color: #fff; 
             border: none; border-radius: 18px; font-size: 1.1rem; font-weight: 800; 
@@ -200,9 +224,12 @@
                     </div>
                     <div class="fdf-form-group">
                         <label>Password</label>
-                        <div class="input-wrapper">
+                        <div class="input-wrapper password-field">
                             <i class="bi bi-lock"></i>
-                            <input type="password" name="password" class="fdf-input" placeholder="••••••••" required>
+                            <input type="password" id="password" name="password" class="fdf-input" placeholder="••••••••" required autocomplete="current-password">
+                            <button type="button" class="password-toggle-btn" id="passwordToggleBtn" aria-label="Show password">
+                                <i class="bi bi-eye"></i>
+                            </button>
                         </div>
                     </div>
 
@@ -217,6 +244,26 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const toggleBtn = document.getElementById('passwordToggleBtn');
+        const toggleIcon = toggleBtn.querySelector('i');
+
+        toggleBtn.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+                toggleBtn.setAttribute('aria-label', 'Hide password');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+                toggleBtn.setAttribute('aria-label', 'Show password');
+            }
+        });
+    </script>
 </body>
 </html>
 
