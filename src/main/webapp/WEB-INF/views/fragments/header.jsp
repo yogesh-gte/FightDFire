@@ -180,7 +180,7 @@
     <nav id="navmenu" class="navmenu">
       <ul>
 
-        <li><a href="${pageContext.request.contextPath}/users/dashboard">Home</a></li>
+        
         <li><a href="${pageContext.request.contextPath}/">Home</a></li>
 
         <li><a href="${pageContext.request.contextPath}/women-events">Events 🌸</a></li>
