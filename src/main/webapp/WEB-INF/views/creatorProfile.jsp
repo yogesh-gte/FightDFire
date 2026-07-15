@@ -214,7 +214,7 @@
                         <i class="fa-solid fa-ban text-danger mb-4" style="font-size: 60px;"></i>
                         <h4 class="text-white">Profile Unavailable</h4>
                         <p class="text-muted">You are blocked or have blocked this user. Cannot view their profile details.</p>
-                        <a href="/creator-hub" class="btn btn-danger rounded-pill px-4 py-2 mt-3">Back to Hub</a>
+                        <a href="${pageContext.request.contextPath}/creator-hub" class="btn btn-danger rounded-pill px-4 py-2 mt-3">Back to Hub</a>
                     </div>
                 </div>
             </c:when>
@@ -290,7 +290,7 @@
                                     </button>
                                 </c:if>
                                 <c:if test="${creator.id == currentUser.id}">
-                                    <a href="/creator-hub/dashboard" class="btn btn-danger rounded-pill px-4 py-2">
+                                    <a href="${pageContext.request.contextPath}/creator-hub/dashboard" class="btn btn-danger rounded-pill px-4 py-2">
                                         <i class="fa-solid fa-sliders me-2"></i> Manage Creator Studio
                                     </a>
                                 </c:if>
@@ -326,14 +326,16 @@
                                     <div class="grid-thumbnail">
                                         
                                         <!-- Locks checks -->
+                                        <c:set var="subLockKey" value="subLocked_${video.id}" />
+                                        <c:set var="paidLockKey" value="paidLocked_${video.id}" />
                                         <c:choose>
-                                            <c:when test="${subLocked_video_id}">
+                                            <c:when test="${requestScope[subLockKey]}">
                                                 <div class="locker-overlay">
                                                     <i class="fa-solid fa-lock text-danger mb-2" style="font-size: 24px;"></i>
                                                     <span class="text-white text-xs px-2">Subscribers Only</span>
                                                 </div>
                                             </c:when>
-                                            <c:when test="${paidLocked_video_id}">
+                                            <c:when test="${requestScope[paidLockKey]}">
                                                 <div class="locker-overlay">
                                                     <i class="fa-solid fa-graduation-cap text-warning mb-2" style="font-size: 24px;"></i>
                                                     <span class="text-white text-xs px-2">Premium Unlock (Rs. ${video.price})</span>
@@ -375,7 +377,8 @@
                                     <c:set var="hasPaid" value="true" />
                                     <div class="grid-card">
                                         <div class="grid-thumbnail">
-                                            <c:if test="${paidLocked_video_id}">
+                                            <c:set var="paidLockKey" value="paidLocked_${video.id}" />
+                                            <c:if test="${requestScope[paidLockKey]}">
                                                 <div class="locker-overlay">
                                                     <i class="fa-solid fa-lock text-warning mb-2" style="font-size: 24px;"></i>
                                                     <span class="text-white text-xs mb-2">Unlocked for Rs. ${video.price}</span>
@@ -466,7 +469,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function followCreator(creatorId) {
-            fetch('/creator-hub/creator/follow/' + creatorId, { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/creator/follow/' + creatorId, { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 if (data.error === 'LOGIN_REQUIRED') {
@@ -502,7 +505,7 @@
             formData.append('amount', amount);
             formData.append('message', message);
 
-            fetch('/creator-hub/creator/tip', {
+            fetch('${pageContext.request.contextPath}/creator-hub/creator/tip', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -523,7 +526,7 @@
 
         function subscribeCreator(creatorId) {
             if (confirm("Subscribe to this creator to support and view exclusive subscriber-only content? It will charge your wallet.")) {
-                fetch('/creator-hub/creator/subscribe?creatorId=' + creatorId, { method: 'POST' })
+                fetch('${pageContext.request.contextPath}/creator-hub/creator/subscribe?creatorId=' + creatorId, { method: 'POST' })
                 .then(res => res.json())
                 .then(data => {
                     if (data.error === 'INSUFFICIENT_FUNDS') {
@@ -540,7 +543,7 @@
 
         function unlockCourse(videoId, price) {
             if (confirm("Unlock this course for Rs. " + price + "? It will charge your wallet.")) {
-                fetch('/creator-hub/creator/unlock?videoId=' + videoId, { method: 'POST' })
+                fetch('${pageContext.request.contextPath}/creator-hub/creator/unlock?videoId=' + videoId, { method: 'POST' })
                 .then(res => res.json())
                 .then(data => {
                     if (data.error === 'INSUFFICIENT_FUNDS') {
@@ -559,7 +562,7 @@
             if (confirm("Block this user? You will not see their uploads, and they cannot interact with your feed.")) {
                 const formData = new URLSearchParams();
                 formData.append('blockedUserId', creatorId);
-                fetch('/creator-hub/creator/block', {
+                fetch('${pageContext.request.contextPath}/creator-hub/creator/block', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: formData.toString()
@@ -568,7 +571,7 @@
                 .then(data => {
                     if (data.success) {
                         alert("User blocked successfully.");
-                        window.location.href = '/creator-hub';
+                        window.location.href = '${pageContext.request.contextPath}/creator-hub';
                     }
                 });
             }

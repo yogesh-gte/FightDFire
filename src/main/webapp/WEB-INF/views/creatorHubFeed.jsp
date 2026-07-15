@@ -482,9 +482,9 @@
 
                 <!-- Category selector scroll -->
                 <div class="category-scroll">
-                    <a href="/creator-hub" class="category-pill ${empty selectedCategory ? 'active' : ''}">All Feeds</a>
+                    <a href="${pageContext.request.contextPath}/creator-hub" class="category-pill ${empty selectedCategory ? 'active' : ''}">All Feeds</a>
                     <c:forEach var="cat" items="${categories}">
-                        <a href="/creator-hub?category=${cat}" class="category-pill ${selectedCategory eq cat ? 'active' : ''}">${cat}</a>
+                        <a href="${pageContext.request.contextPath}/creator-hub?category=${cat}" class="category-pill ${selectedCategory eq cat ? 'active' : ''}">${cat}</a>
                     </c:forEach>
                 </div>
 
@@ -502,7 +502,7 @@
                         
                         <!-- Post Header -->
                         <div class="post-header">
-                            <a href="/creator-hub/creator/${post.user.id}" class="uploader-info">
+                            <a href="${pageContext.request.contextPath}/creator-hub/creator/${post.user.id}" class="uploader-info">
                                 <c:choose>
                                     <c:when test="${not empty post.user.profilePhoto}">
                                         <img src="${post.user.profilePhoto}" class="uploader-avatar" alt="avatar">
@@ -534,8 +534,10 @@
                             <span class="badge-type">${post.reel ? 'REEL' : (post.fileType eq 'VIDEO' ? 'VIDEO' : 'IMAGE')}</span>
                             
                             <!-- Check Monetization Locks -->
+                            <c:set var="subLockKey" value="subLocked_${post.id}" />
+                            <c:set var="paidLockKey" value="paidLocked_${post.id}" />
                             <c:choose>
-                                <c:when test="${subLocked_post_id}">
+                                <c:when test="${requestScope[subLockKey]}">
                                     <div class="post-lock-overlay">
                                         <i class="fa-solid fa-lock lock-icon"></i>
                                         <h5 class="text-white">Subscriber Only Content</h5>
@@ -545,7 +547,7 @@
                                         </button>
                                     </div>
                                 </c:when>
-                                <c:when test="${paidLocked_post_id}">
+                                <c:when test="${requestScope[paidLockKey]}">
                                     <div class="post-lock-overlay">
                                         <i class="fa-solid fa-graduation-cap lock-icon"></i>
                                         <h5 class="text-white">Premium Educational Course</h5>
@@ -622,10 +624,10 @@
                 <div class="sidebar-card text-center">
                     <h5 class="text-white mb-3">Creator Dashboard</h5>
                     <div class="d-grid gap-2">
-                        <a href="/creator-hub/dashboard" class="btn btn-outline-danger py-2 rounded-pill">
+                        <a href="${pageContext.request.contextPath}/creator-hub/dashboard" class="btn btn-outline-danger py-2 rounded-pill">
                             <i class="fa-solid fa-clapperboard me-2"></i> Open Creator Studio
                         </a>
-                        <a href="/creator-hub/notifications" class="btn btn-outline-light py-2 rounded-pill position-relative">
+                        <a href="${pageContext.request.contextPath}/creator-hub/notifications" class="btn btn-outline-light py-2 rounded-pill position-relative">
                             <i class="fa-regular fa-bell me-2"></i> Creator Notifications
                             <c:if test="${unreadNotifCount > 0}">
                                 <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
@@ -635,7 +637,7 @@
                         </a>
                         
                         <!-- Show admin panel if admin/event host -->
-                        <a href="/creator-hub/admin" class="btn btn-danger py-2 rounded-pill mt-2">
+                        <a href="${pageContext.request.contextPath}/creator-hub/admin" class="btn btn-danger py-2 rounded-pill mt-2">
                             <i class="fa-solid fa-shield-halved me-2"></i> Safety & Admin Board
                         </a>
                     </div>
@@ -644,7 +646,7 @@
                 <!-- Search videos -->
                 <div class="sidebar-card">
                     <h5 class="sidebar-title"><i class="fa-solid fa-magnifying-glass"></i> Search Hub</h5>
-                    <form action="/creator-hub" method="GET">
+                    <form action="${pageContext.request.contextPath}/creator-hub" method="GET">
                         <div class="input-group">
                             <input type="text" name="search" class="form-control bg-dark border-secondary text-white rounded-start-pill" placeholder="Search topics, hashtags..." value="${searchQuery}">
                             <button class="btn btn-danger rounded-end-pill px-3" type="submit">
@@ -673,7 +675,7 @@
                     <h5 class="sidebar-title"><i class="fa-solid fa-award text-info"></i> Verified Creators</h5>
                     <c:forEach var="rec" items="${recommendedCreators}">
                         <div class="d-flex align-items-center justify-content-between mb-3">
-                            <a href="/creator-hub/creator/${rec.id}" class="uploader-info" style="gap: 10px;">
+                            <a href="${pageContext.request.contextPath}/creator-hub/creator/${rec.id}" class="uploader-info" style="gap: 10px;">
                                 <c:choose>
                                     <c:when test="${not empty rec.profilePhoto}">
                                         <img src="${rec.profilePhoto}" style="width: 38px; height: 38px;" class="uploader-avatar" alt="avatar">
@@ -703,7 +705,7 @@
     </div>
 
     <!-- Floating Create Action Button -->
-    <a href="/creator-hub/upload" class="fab-btn" title="Create / Upload Content">
+    <a href="${pageContext.request.contextPath}/creator-hub/upload" class="fab-btn" title="Create / Upload Content">
         <i class="fa-solid fa-plus"></i>
     </a>
 
@@ -865,7 +867,7 @@
             if (viewedVideos.has(videoId)) return;
             viewedVideos.add(videoId);
 
-            fetch('/creator-hub/video/view-inc?videoId=' + videoId, { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/video/view-inc?videoId=' + videoId, { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 console.log("View count incremented");
@@ -896,7 +898,7 @@
 
         // BOOKMARK LOGIC
         function toggleBookmark(videoId, btn) {
-            fetch('/creator-hub/video/bookmark?videoId=' + videoId, { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/video/bookmark?videoId=' + videoId, { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 if (data.error === 'LOGIN_REQUIRED') {
@@ -915,7 +917,7 @@
 
         // FOLLOW ACTIONS
         function followCreator(creatorId, btn) {
-            fetch('/creator-hub/creator/follow/' + creatorId, { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/creator/follow/' + creatorId, { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 if (data.error === 'LOGIN_REQUIRED') {
@@ -938,7 +940,7 @@
         // MONETIZATION TRIGGERS
         function subscribeCreator(creatorId) {
             if (confirm("Subscribe to this creator to unlock all subscriber-only posts? Subscription tier charges wallet balance monthly.")) {
-                fetch('/creator-hub/creator/subscribe?creatorId=' + creatorId, { method: 'POST' })
+                fetch('${pageContext.request.contextPath}/creator-hub/creator/subscribe?creatorId=' + creatorId, { method: 'POST' })
                 .then(res => res.json())
                 .then(data => {
                     if (data.error === 'INSUFFICIENT_FUNDS') {
@@ -955,7 +957,7 @@
 
         function unlockCourse(videoId, price) {
             if (confirm("Unlock this premium educational content for Rs. " + price + "? It will charge your wallet balance.")) {
-                fetch('/creator-hub/creator/unlock?videoId=' + videoId, { method: 'POST' })
+                fetch('${pageContext.request.contextPath}/creator-hub/creator/unlock?videoId=' + videoId, { method: 'POST' })
                 .then(res => res.json())
                 .then(data => {
                     if (data.error === 'INSUFFICIENT_FUNDS') {
@@ -986,7 +988,7 @@
             const listEl = document.getElementById('commentList');
             listEl.innerHTML = '<div class="text-white text-center py-4"><i class="fa-solid fa-spinner fa-spin me-2"></i>Loading comments...</div>';
 
-            fetch('/video/comments/' + videoId)
+            fetch('${pageContext.request.contextPath}/video/comments/' + videoId)
             .then(res => res.text())
             .then(html => {
                 // Parse and strip comments or load clean JSON
@@ -1013,7 +1015,7 @@
                 // Let's first mock some beautiful comments or extract them.
                 // Let's fetch from `/video/comments/` JSON list or write a simple parser.
                 // Actually, let's write a simple JSON endpoint in the controller:
-                fetch('/creator-hub/comments-api?videoId=' + videoId)
+                fetch('${pageContext.request.contextPath}/creator-hub/comments-api?videoId=' + videoId)
                 .then(res => res.json())
                 .then(comments => {
                     if (comments.length === 0) {
@@ -1042,7 +1044,7 @@
             formData.append('videoId', activeCommentVideoId);
             formData.append('commentText', text);
 
-            fetch('/video/comment', {
+            fetch('${pageContext.request.contextPath}/video/comment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -1060,7 +1062,7 @@
 
         // SHARE POST
         function sharePost(videoId, title) {
-            const shareUrl = window.location.origin + '/creator-hub/creator/' + videoId; // link to profile
+            const shareUrl = window.location.origin + '${pageContext.request.contextPath}/creator-hub/creator/' + videoId; // link to profile
             navigator.clipboard.writeText(shareUrl).then(() => {
                 alert("Link copied to clipboard: " + shareUrl);
             });

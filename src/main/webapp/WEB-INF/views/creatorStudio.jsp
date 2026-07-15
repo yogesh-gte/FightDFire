@@ -136,7 +136,7 @@
                 <h2 class="text-white m-0">Creator Studio</h2>
                 <p class="text-muted mb-0">Manage uploads, monetization campaigns, safety controls, and settings.</p>
             </div>
-            <a href="/creator-hub" class="btn btn-outline-danger rounded-pill px-4">
+            <a href="${pageContext.request.contextPath}/creator-hub" class="btn btn-outline-danger rounded-pill px-4">
                 <i class="fa-solid fa-house me-2"></i> Go to Creator Hub
             </a>
         </div>
@@ -252,7 +252,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        <form action="/creator-hub/dashboard/deleteUpload" method="POST" onsubmit="return confirm('Delete this post permanently?')">
+                                                        <form action="${pageContext.request.contextPath}/creator-hub/dashboard/deleteUpload" method="POST" onsubmit="return confirm('Delete this post permanently?')">
                                                             <input type="hidden" name="videoId" value="${post.id}">
                                                             <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill"><i class="fa-regular fa-trash-can"></i> Delete</button>
                                                         </form>
@@ -308,11 +308,11 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex gap-2">
-                                                            <form action="/creator-hub/dashboard/publishDraft" method="POST">
+                                                            <form action="${pageContext.request.contextPath}/creator-hub/dashboard/publishDraft" method="POST">
                                                                 <input type="hidden" name="videoId" value="${draft.id}">
                                                                 <button type="submit" class="btn btn-sm btn-success rounded-pill px-3"><i class="fa-solid fa-paper-plane me-1"></i> Publish</button>
                                                             </form>
-                                                            <form action="/creator-hub/dashboard/deleteUpload" method="POST">
+                                                            <form action="${pageContext.request.contextPath}/creator-hub/dashboard/deleteUpload" method="POST">
                                                                 <input type="hidden" name="videoId" value="${draft.id}">
                                                                 <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill"><i class="fa-regular fa-trash-can"></i> Delete</button>
                                                             </form>
@@ -563,7 +563,7 @@
     <script>
         // CLAIM AD REVENUE
         function claimAdRevenue() {
-            fetch('/creator-hub/dashboard/claim-ad-revenue', { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/dashboard/claim-ad-revenue', { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
@@ -586,7 +586,7 @@
             const formData = new URLSearchParams();
             formData.append('points', points);
 
-            fetch('/creator-hub/dashboard/cashout', {
+            fetch('${pageContext.request.contextPath}/creator-hub/dashboard/cashout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -608,7 +608,7 @@
             const formData = new URLSearchParams();
             formData.append('price', price);
 
-            fetch('/creator-hub/dashboard/subscription-price', {
+            fetch('${pageContext.request.contextPath}/creator-hub/dashboard/subscription-price', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -626,7 +626,7 @@
             const formData = new URLSearchParams();
             formData.append('code', code);
 
-            fetch('/creator-hub/dashboard/affiliate-code', {
+            fetch('${pageContext.request.contextPath}/creator-hub/dashboard/affiliate-code', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -641,7 +641,7 @@
 
         // PRIVACY SWITCH
         function toggleProfilePrivacy() {
-            fetch('/creator-hub/dashboard/toggle-privacy', { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/dashboard/toggle-privacy', { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -654,7 +654,7 @@
         function unblockUser(userId) {
             const formData = new URLSearchParams();
             formData.append('blockedUserId', userId);
-            fetch('/creator-hub/dashboard/unblock', {
+            fetch('${pageContext.request.contextPath}/creator-hub/dashboard/unblock', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -688,7 +688,7 @@
             formData.append('campaignId', id);
             formData.append('pitch', pitch);
 
-            fetch('/creator-hub/collab/apply', {
+            fetch('${pageContext.request.contextPath}/creator-hub/collab/apply', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()

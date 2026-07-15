@@ -147,7 +147,7 @@
                 <div class="glass-card">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h3 class="text-white m-0"><i class="fa-solid fa-cloud-arrow-up text-danger me-2"></i>Create New Post</h3>
-                        <a href="/creator-hub" class="btn btn-outline-light rounded-pill px-3 py-1 btn-sm">
+                        <a href="${pageContext.request.contextPath}/creator-hub" class="btn btn-outline-light rounded-pill px-3 py-1 btn-sm">
                             <i class="fa-solid fa-chevron-left me-1"></i> Back to Feed
                         </a>
                     </div>
@@ -156,7 +156,7 @@
                         <div class="alert alert-danger rounded-4">${error}</div>
                     </c:if>
 
-                    <form action="/creator-hub/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+                    <form action="${pageContext.request.contextPath}/creator-hub/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
                         
                         <!-- Upload Type Selector -->
                         <div class="mb-4">

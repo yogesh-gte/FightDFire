@@ -106,7 +106,7 @@
                 <h2 class="text-white m-0"><i class="fa-solid fa-shield-halved text-danger me-2"></i>Safety & Admin Board</h2>
                 <p class="text-muted mb-0">Moderation center, cash-out processing, verification badges, and sponsorship triggers.</p>
             </div>
-            <a href="/creator-hub" class="btn btn-outline-light rounded-pill px-4">
+            <a href="${pageContext.request.contextPath}/creator-hub" class="btn btn-outline-light rounded-pill px-4">
                 <i class="fa-solid fa-chevron-left me-1"></i> Back to feed
             </a>
         </div>
@@ -367,7 +367,7 @@
             <div class="tab-pane fade" id="tabCollabCreate">
                 <div class="glass-card">
                     <h4 class="text-white mb-4"><i class="fa-solid fa-bullhorn text-danger me-2"></i>Launch Brand Sponsorship Campaign</h4>
-                    <form action="/creator-hub/admin/create-campaign" method="POST">
+                    <form action="${pageContext.request.contextPath}/creator-hub/admin/create-campaign" method="POST">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label text-white">Brand / Sponsor Name</label>
@@ -406,7 +406,7 @@
             formData.append('videoId', videoId);
             formData.append('approve', approve);
 
-            fetch('/creator-hub/admin/approve', {
+            fetch('${pageContext.request.contextPath}/creator-hub/admin/approve', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -424,7 +424,7 @@
         function keepReported(reportId) {
             // Keep reported clears report
             // E.g. call standard delete of report row
-            fetch('/creator-hub/admin/delete-reported?reportId=' + reportId, { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/admin/delete-reported?reportId=' + reportId, { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
@@ -436,7 +436,7 @@
 
         function deleteReported(reportId) {
             if (confirm("Delete this reported post permanently?")) {
-                fetch('/creator-hub/admin/delete-reported?reportId=' + reportId, { method: 'POST' })
+                fetch('${pageContext.request.contextPath}/creator-hub/admin/delete-reported?reportId=' + reportId, { method: 'POST' })
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
@@ -453,7 +453,7 @@
             formData.append('creatorId', creatorId);
             formData.append('verify', verify);
 
-            fetch('/creator-hub/admin/verify', {
+            fetch('${pageContext.request.contextPath}/creator-hub/admin/verify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()
@@ -473,7 +473,7 @@
             formData.append('cashoutId', cashoutId);
             formData.append('approve', approve);
 
-            fetch('/creator-hub/admin/cashout', {
+            fetch('${pageContext.request.contextPath}/creator-hub/admin/cashout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData.toString()

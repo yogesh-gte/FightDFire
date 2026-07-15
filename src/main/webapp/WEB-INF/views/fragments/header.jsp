@@ -267,6 +267,7 @@
             window.__APP_CTX__ = "${pageContext.request.contextPath}";
             const ctx = window.__APP_CTX__;
             const userId = "${sessionScope.user.id}";
+            const isVerified = "${sessionScope.user.verificationStatus == 'VERIFIED'}";
             
             let globalStompClient = null;
             let currentGlobalCallInfo = null;

@@ -89,7 +89,7 @@
             
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h3 class="text-white m-0"><i class="fa-regular fa-bell text-danger me-2"></i>Notifications</h3>
-                <a href="/creator-hub" class="btn btn-outline-light rounded-pill btn-sm px-3 py-1">
+                <a href="${pageContext.request.contextPath}/creator-hub" class="btn btn-outline-light rounded-pill btn-sm px-3 py-1">
                     <i class="fa-solid fa-chevron-left me-1"></i> Back to Hub
                 </a>
             </div>
