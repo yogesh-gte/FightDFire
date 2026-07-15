@@ -555,12 +555,6 @@
                     <p class="title mb-0">Fight D Fear Admin Dashboard</p>
                 </div>
                 <div class="meta">
-                    <span class="badge bg-light text-dark badge-pill">
-                        Incidents: <span id="incidentsTotal">-</span>
-                    </span>
-                    <span class="badge bg-light text-dark badge-pill">
-                        Reported Videos: <span id="reportedVideos">-</span>
-                    </span>
                     <a href="${pageContext.request.contextPath}/admin/logout" class="btn btn-sm btn-light">Logout</a>
                 </div>
             </div>
