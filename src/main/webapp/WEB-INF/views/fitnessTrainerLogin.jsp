@@ -255,10 +255,10 @@
         }
 
         @media (max-width: 992px) {
-            body { flex-direction: column; }
-            .left-panel { padding: 50px 30px; min-height: 35vh; }
+            body { flex-direction: column; min-height: 100vh; overflow-y: auto; }
+            .left-panel { flex: none; padding: 50px 30px; min-height: 35vh; }
             .feature-list { display: none; }
-            .right-panel { padding: 40px 20px; background: #fff; margin-top: -30px; border-radius: 30px 30px 0 0; }
+            .right-panel { flex: none; padding: 40px 20px; background: #fff; margin-top: -30px; border-radius: 30px 30px 0 0; display: flex; justify-content: center; align-items: center; }
         }
     </style>
 </head>
@@ -325,7 +325,8 @@
                     <label>Password</label>
                     <div class="input-wrapper">
                         <i class="bi bi-lock"></i>
-                        <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                        <input type="password" name="password" id="passwordInput" class="form-input" placeholder="••••••••" style="padding-right: 46px;" required>
+                        <i class="bi bi-eye-slash" id="togglePassword" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #94a3b8; font-size: 1.1rem; z-index: 10;"></i>
                     </div>
                 </div>
 
@@ -341,5 +342,17 @@
         </div>
     </div>
 
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#passwordInput');
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.classList.toggle('bi-eye');
+                this.classList.toggle('bi-eye-slash');
+            });
+        }
+    </script>
 </body>
 </html>

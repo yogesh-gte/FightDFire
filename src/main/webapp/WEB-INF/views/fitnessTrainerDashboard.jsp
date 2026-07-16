@@ -203,6 +203,11 @@
             padding: 18px;
             margin-bottom: 16px;
             transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
         .list-item-box:hover { border-color: #d1d5db; }
         .btn-action { font-size: 0.85rem; font-weight: 600; border-radius: 20px; padding: 6px 20px; }
@@ -211,6 +216,71 @@
         .form-control:focus, .form-select:focus { border-color: var(--primary-teal); box-shadow: 0 0 0 3px rgba(32,201,151,0.15); }
         .btn-submit { background: linear-gradient(135deg, var(--primary-teal), #10b981); color: white; border: none; border-radius: 12px; font-weight: 700; padding: 12px; transition: all 0.2s; }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.3); color: white; }
+        
+        @media (max-width: 1200px) {
+            #wrapper {
+                flex-direction: column;
+            }
+            #sidebar-wrapper {
+                min-width: 100%;
+                max-width: 100%;
+                height: auto;
+                min-height: auto;
+                position: relative;
+                top: 0;
+                border-top-right-radius: 0;
+                border-bottom-left-radius: 30px;
+                border-bottom-right-radius: 30px;
+                padding-bottom: 20px;
+            }
+            #studioTab {
+                flex-direction: row !important;
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px 15px;
+            }
+            #studioTab .list-group-item {
+                width: auto !important;
+                padding: 8px 16px;
+                border-radius: 20px;
+                background: rgba(255,255,255,0.05);
+                white-space: nowrap;
+                display: inline-flex;
+            }
+            #studioTab .list-group-item::before {
+                display: none !important;
+            }
+            #studioTab .list-group-item.active {
+                background: var(--primary-coral);
+                color: white;
+            }
+            #page-content-wrapper {
+                padding: 20px 15px;
+            }
+            .dashboard-header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .header-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+        @media (max-width: 768px) {
+            .tab-pane#messagesContent .row {
+                height: 800px !important;
+                flex-direction: column;
+            }
+            .tab-pane#messagesContent .col-md-4 {
+                height: 250px !important;
+                border-bottom: 1px solid #dee2e6;
+                border-right: none !important;
+            }
+            .tab-pane#messagesContent .col-md-8 {
+                height: 550px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -459,10 +529,33 @@
                                             <span class="badge bg-light border text-dark"><i class="bi bi-clock me-1"></i> ${fc.durationMinutes} mins</span>
                                             <span class="badge ${fc.currentEnrollment >= fc.maxCapacity ? 'bg-danger' : 'bg-success'} text-white px-2 rounded-pill small">${fc.currentEnrollment} / ${fc.maxCapacity} Enrolled</span>
                                         </div>
-                                        <span class="text-muted small fw-medium"><i class="bi bi-calendar-check text-primary me-1"></i> ${fc.classDate} @ ${fc.classTime}</span>
+                                        <span class="text-muted small fw-medium"><i class="bi bi-calendar-check text-primary me-1"></i> ${fc.classDate} @ ${fc.formattedClassTime}</span>
                                     </div>
                                     <div class="fw-bold text-success fs-5 d-flex flex-column align-items-end gap-2">
-                                        ₹${fc.price}
+                                        <div>₹${fc.price}</div>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-sm btn-outline-primary edit-class-btn"
+                                                    data-id="${fc.id}"
+                                                    data-name="${fc.className}"
+                                                    data-category="${fc.category}"
+                                                    data-description="${fc.description}"
+                                                    data-date="${fc.classDate}"
+                                                    data-time="${fc.classTime}"
+                                                    data-duration="${fc.durationMinutes}"
+                                                    data-type="${fc.sessionType}"
+                                                    data-capacity="${fc.maxCapacity}"
+                                                    data-price="${fc.price}"
+                                                    data-location="${fc.meetingLinkOrLocation}"
+                                                    style="border-radius: 20px; font-size: 0.8rem; font-weight:600; padding:4px 12px;">
+                                                <i class="bi bi-pencil-fill"></i> Edit
+                                            </button>
+                                            <form action="${pageContext.request.contextPath}/fitness/trainer/class/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this class? This will refund all enrolled students.');" class="m-0">
+                                                <input type="hidden" name="classId" value="${fc.id}">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" style="border-radius: 20px; font-size: 0.8rem; font-weight:600; padding:4px 12px;">
+                                                    <i class="bi bi-trash-fill"></i> Delete
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -655,7 +748,7 @@
         <h5 class="modal-title fw-bold text-dark"><i class="bi bi-plus-circle-fill text-primary me-2"></i> Create New Class</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-      <form action="${pageContext.request.contextPath}/fitness/trainer/class/create" method="POST">
+      <form id="createClassForm" action="${pageContext.request.contextPath}/fitness/trainer/class/create" method="POST" onsubmit="return validateCreateClassForm()">
           <div class="modal-body p-4">
             <div class="row g-3">
                 <div class="col-md-6">
@@ -665,6 +758,7 @@
                 <div class="col-md-6">
                     <label class="form-label">Category</label>
                     <select name="category" class="form-select" required>
+                        <option value="" disabled selected>Select Category</option>
                         <c:forEach var="cat" items="${categories}">
                             <option value="${cat}">${cat}</option>
                         </c:forEach>
@@ -672,7 +766,7 @@
                 </div>
                 <div class="col-md-12">
                     <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control" rows="2" required placeholder="What will attendees learn?"></textarea>
+                    <textarea name="description" class="form-control" rows="2" required placeholder="What will attendees learn?" maxlength="2000"></textarea>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Date</label>
@@ -695,11 +789,11 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Max Capacity</label>
-                    <input type="number" name="maxCapacity" class="form-control" required value="10">
+                    <input type="number" name="maxCapacity" class="form-control" required value="10" min="1" max="9999">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Price (₹)</label>
-                    <input type="number" name="price" class="form-control" required value="500">
+                    <input type="number" name="price" class="form-control" required value="500" min="0.01" max="999999" step="0.01">
                 </div>
                 <div class="col-md-12">
                     <label class="form-label">Location Address / Zoom Link</label>
@@ -717,6 +811,76 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Edit Class Modal -->
+<div class="modal fade" id="editClassModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 rounded-4 shadow">
+      <div class="modal-header bg-light border-0 rounded-top-4">
+        <h5 class="modal-title fw-bold text-dark"><i class="bi bi-pencil-square text-primary me-2"></i> Edit Class</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="editClassForm" action="${pageContext.request.contextPath}/fitness/trainer/class/edit" method="POST" onsubmit="return validateEditClassForm()">
+          <div class="modal-body p-4">
+            <input type="hidden" name="classId" id="editClassId">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Class Name</label>
+                    <input type="text" name="className" id="editClassName" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Category</label>
+                    <select name="category" id="editClassCategory" class="form-select" required>
+                        <c:forEach var="cat" items="${categories}">
+                            <option value="${cat}">${cat}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" id="editClassDescription" class="form-control" rows="2" required maxlength="2000"></textarea>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="classDate" id="editClassDate" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Time</label>
+                    <input type="time" name="classTime" id="editClassTime" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Duration (Mins)</label>
+                    <input type="number" name="durationMinutes" id="editClassDuration" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Format</label>
+                    <select name="sessionType" id="editClassType" class="form-select" required>
+                        <option value="ONLINE">Online</option>
+                        <option value="OFFLINE">In-Person</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Max Capacity</label>
+                    <input type="number" name="maxCapacity" id="editClassCapacity" class="form-control" required min="1" max="9999">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Price (₹)</label>
+                    <input type="number" name="price" id="editClassPrice" class="form-control" required min="0.01" max="999999" step="0.01">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Location Address / Zoom Link</label>
+                    <input type="text" name="meetingLinkOrLocation" id="editClassLocation" class="form-control" required>
+                </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-submit rounded-pill px-4">Update Class</button>
+          </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!-- Chat Script for Trainer -->
@@ -810,6 +974,72 @@
                 fetchChatMessages(userId, trainerId, true);
             }
         });
+    }
+    function validateCreateClassForm() {
+        const maxCapacityInput = document.querySelector('#createClassModal input[name="maxCapacity"]');
+        const priceInput = document.querySelector('#createClassModal input[name="price"]');
+        
+        if (maxCapacityInput) {
+            const val = parseInt(maxCapacityInput.value, 10);
+            if (isNaN(val) || val < 1 || val > 9999) {
+                alert("Please enter a logical Maximum Capacity between 1 and 9,999.");
+                maxCapacityInput.focus();
+                return false;
+            }
+        }
+        
+        if (priceInput) {
+            const val = parseFloat(priceInput.value);
+            if (isNaN(val) || val < 0.01 || val > 999999) {
+                alert("Please enter a logical Price between ₹0.01 and ₹999,999.");
+                priceInput.focus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    document.querySelectorAll('.edit-class-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            document.getElementById('editClassId').value = this.dataset.id;
+            document.getElementById('editClassName').value = this.dataset.name;
+            document.getElementById('editClassCategory').value = this.dataset.category;
+            document.getElementById('editClassDescription').value = this.dataset.description;
+            document.getElementById('editClassDate').value = this.dataset.date;
+            document.getElementById('editClassTime').value = this.dataset.time;
+            document.getElementById('editClassDuration').value = this.dataset.duration;
+            document.getElementById('editClassType').value = this.dataset.type;
+            document.getElementById('editClassCapacity').value = this.dataset.capacity;
+            document.getElementById('editClassPrice').value = this.dataset.price;
+            document.getElementById('editClassLocation').value = this.dataset.location;
+            
+            const editModal = new bootstrap.Modal(document.getElementById('editClassModal'));
+            editModal.show();
+        });
+    });
+
+    function validateEditClassForm() {
+        const maxCapacityInput = document.querySelector('#editClassModal input[name="maxCapacity"]');
+        const priceInput = document.querySelector('#editClassModal input[name="price"]');
+        
+        if (maxCapacityInput) {
+            const val = parseInt(maxCapacityInput.value, 10);
+            if (isNaN(val) || val < 1 || val > 9999) {
+                alert("Please enter a logical Maximum Capacity between 1 and 9,999.");
+                maxCapacityInput.focus();
+                return false;
+            }
+        }
+        
+        if (priceInput) {
+            const val = parseFloat(priceInput.value);
+            if (isNaN(val) || val < 0.01 || val > 999999) {
+                alert("Please enter a logical Price between ₹0.01 and ₹999,999.");
+                priceInput.focus();
+                return false;
+            }
+        }
+        return true;
     }
 </script>
 

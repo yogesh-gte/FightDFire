@@ -190,7 +190,10 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label text-muted small fw-bold">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                    <div style="position: relative;">
+                        <input type="password" name="password" id="passwordInput" class="form-control" placeholder="••••••••" style="padding-right: 46px;" required>
+                        <i class="bi bi-eye-slash" id="togglePassword" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #94a3b8; font-size: 1.1rem; z-index: 10;"></i>
+                    </div>
                 </div>
             </div>
 
@@ -249,5 +252,17 @@
     </div>
 </div>
 
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const passwordInput = document.querySelector('#passwordInput');
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.classList.toggle('bi-eye');
+                this.classList.toggle('bi-eye-slash');
+            });
+        }
+    </script>
 </body>
 </html>

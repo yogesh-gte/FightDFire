@@ -38,13 +38,7 @@
 
     </a>
 
-    <a class="navlink ${fn:contains(pageContext.request.requestURI,'heatmap') ? 'active' : ''}"
-       href="${pageContext.request.contextPath}/admin/heatmap">
 
-        <i class="fas fa-map-marked-alt"></i>
-        Incident Heatmap
-
-    </a>
 
     <a class="navlink ${fn:contains(pageContext.request.requestURI,'buddy-management') ? 'active' : ''}"
        href="${pageContext.request.contextPath}/admin/buddy-management">
@@ -131,13 +125,7 @@
 
     </a>
 
-    <a class="navlink ${fn:contains(pageContext.request.requestURI,'incidents') ? 'active' : ''}"
-       href="${pageContext.request.contextPath}/incidents/list">
 
-        <i class="fas fa-bell"></i>
-        Incidents
-
-    </a>
 
     <a class="navlink ${fn:contains(pageContext.request.requestURI,'reported-videos') ? 'active' : ''}"
        href="${pageContext.request.contextPath}/admin/reported-videos">

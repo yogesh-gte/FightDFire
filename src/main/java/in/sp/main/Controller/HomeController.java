@@ -13,7 +13,7 @@ public class HomeController {
 	 * 
 	 * }
 	 */
-	@RequestMapping({"/"})
+	@RequestMapping({"/", "/index.html"})
 	public String homepage1(Model model)
 	{
 		return "index";

@@ -179,8 +179,11 @@
                         </div>
                         <div class="fdf-group">
                             <label>Password</label>
-                            <input type="password" name="password" id="password" class="fdf-input" placeholder="••••••••" required>
-                            <div class="error-msg">Min 6 chars with number & uppercase.</div>
+                            <div style="position: relative;">
+                                <input type="password" name="password" id="password" class="fdf-input" placeholder="••••••••" required style="padding-right: 45px;">
+                                <i class="bi bi-eye-slash" id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--fdf-muted); font-size: 1.2rem; z-index: 10;"></i>
+                            </div>
+                            <div class="error-msg">Min 6 chars with number, uppercase & special char.</div>
                         </div>
                         
                         <button type="button" class="btn-dr btn-dr-next" onclick="nextStep(1)">Continue to Verification</button>
@@ -254,7 +257,7 @@
             if (isValid && el.id === 'fullName') isValid = val.length >= 3;
             if (isValid && el.id === 'phone') isValid = /^[6-9]\d{9}$/.test(val);
             if (isValid && el.id === 'email') isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-            if (isValid && el.id === 'password') isValid = val.length >= 6 && /[A-Z]/.test(val) && /\d/.test(val);
+            if (isValid && el.id === 'password') isValid = val.length >= 6 && /[A-Z]/.test(val) && /\d/.test(val) && /[!@#$%^&*(),.?":{}|<>]/.test(val);
             if (isValid && el.id === 'address') isValid = val.length >= 10;
 
             if (isValid) {
@@ -278,6 +281,16 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
+            const togglePassword = document.getElementById('togglePassword');
+            if (togglePassword) {
+                togglePassword.addEventListener('click', function() {
+                    const password = document.getElementById('password');
+                    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                    password.setAttribute('type', type);
+                    this.classList.toggle('bi-eye');
+                    this.classList.toggle('bi-eye-slash');
+                });
+            }
             document.getElementById('profilePhoto').addEventListener('change', function() {
                 if (this.files[0]) document.getElementById('profileText').innerText = this.files[0].name;
             });

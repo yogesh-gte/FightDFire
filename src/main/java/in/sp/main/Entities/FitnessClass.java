@@ -18,6 +18,7 @@ public class FitnessClass {
 
     private String className;
     private String category;
+    @Column(length = 2000)
     private String description;
     
     private LocalDate classDate;
@@ -53,6 +54,12 @@ public class FitnessClass {
 
     public LocalTime getClassTime() { return classTime; }
     public void setClassTime(LocalTime classTime) { this.classTime = classTime; }
+
+    public String getFormattedClassTime() {
+        if (classTime == null) return "";
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("hh:mm a");
+        return classTime.format(formatter);
+    }
 
     public Integer getDurationMinutes() { return durationMinutes; }
     public void setDurationMinutes(Integer durationMinutes) { this.durationMinutes = durationMinutes; }

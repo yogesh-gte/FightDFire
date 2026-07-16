@@ -68,6 +68,20 @@
           height: 100vh;
           box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
           z-index: 1000;
+          overflow-y: auto;
+        }
+        .fdf-sidebar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .fdf-sidebar::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.1);
+        }
+        .fdf-sidebar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 3px;
+        }
+        .fdf-sidebar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.4);
         }
 
         .sidebar-header {
@@ -549,7 +563,7 @@
             <i class="bi bi-eye"></i> Preview Shop
           </a>
           <a href="${pageContext.request.contextPath}/logout" class="nav-link" style="color: #ef4444; opacity: 1;">
-            <i class="bi bi-box-arrow-left"></i> Sign Out
+            <i class="bi bi-box-arrow-left"></i> Logout
           </a>
         </div>
       </div>
@@ -561,12 +575,24 @@
             <i class="bi bi-check-circle-fill"></i> ${message}
           </div>
         </c:if>
+        <c:if test="${not empty error}">
+          <div
+            style="background: #fef2f2; color: #b91c1c; padding: 16px 24px; border-radius: 18px; font-weight: 700; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(185, 28, 28, 0.1); border: 1px solid #fee2e2;">
+            <i class="bi bi-x-circle-fill"></i> ${error}
+          </div>
+        </c:if>
 
         <%-- ══════ OVERVIEW ══════ --%>
           <c:if test="${section == 'overview'}">
             <div class="header-info">
-              <h1>Overview</h1>
-              <div style="font-weight: 600; color: var(--fdf-muted);">Welcome back, ${seller.fullName}!</div>
+              <div>
+                <h1>Overview</h1>
+                <div style="font-weight: 600; color: var(--fdf-muted); margin-top: 5px;">Welcome back, ${seller.fullName}!</div>
+              </div>
+              <div style="display:flex; gap:12px; align-items:center;">
+                <a href="${pageContext.request.contextPath}/index.html" class="btn-fdf-action" style="padding: 10px 18px; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;"><i class="bi bi-house-door-fill"></i> Back to Home</a>
+                <a href="${pageContext.request.contextPath}/logout" class="btn-fdf-action" style="padding: 10px 18px; font-size: 0.9rem; background: #ef4444; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;"><i class="bi bi-box-arrow-left"></i> Logout</a>
+              </div>
             </div>
 
             <div class="stats-grid">
@@ -708,43 +734,32 @@
                                 > 0 && p.active ? 'Operational' : 'Depleted'}</span></td>
                             <td>
                               <div style="display:flex; gap:8px;">
-                                <button type="button" onclick="openEditModal({
-                                  id: '${p.id}',
-                                  name: `<c:out value=" ${p.name}" />`,
-                                brand: `
-                                <c:out value="${p.brand}" />`,
-                                description: `
-                                <c:out value="${p.description}" />`,
-                                fullDescription: `
-                                <c:out value="${p.fullDescription}" />`,
-                                price: '${p.price}',
-                                originalPrice: '${p.originalPrice}',
-                                offerBadge: `
-                                <c:out value="${p.offerBadge}" />`,
-                                stock: '${p.stock}',
-                                lowStockAlertLevel: '${p.lowStockAlertLevel}',
-                                sku: `
-                                <c:out value="${p.sku}" />`,
-                                category: '${p.category}',
-                                weightSize: `
-                                <c:out value="${p.weightSize}" />`,
-                                manufacturer: `
-                                <c:out value="${p.manufacturer}" />`,
-                                ingredients: `
-                                <c:out value="${p.ingredients}" />`,
-                                benefits: `
-                                <c:out value="${p.benefits}" />`,
-                                usageInstructions: `
-                                <c:out value="${p.usageInstructions}" />`,
-                                tags: `
-                                <c:out value="${p.tags}" />`,
-                                active: ${p.active},
-                                featured: ${p.featured},
-                                trackInventory: ${p.trackInventory}
-                                })"
-                                style="background: #dbeafe; color: #1e40af; border: none; width: 36px; height: 36px;
-                                border-radius: 10px; cursor: pointer;">
-                                <i class="bi bi-pencil-square"></i>
+                                <button type="button" 
+                                        class="edit-product-btn"
+                                        data-id="${p.id}"
+                                        data-name="<c:out value='${p.name}' />"
+                                        data-brand="<c:out value='${p.brand}' />"
+                                        data-description="<c:out value='${p.description}' />"
+                                        data-fullDescription="<c:out value='${p.fullDescription}' />"
+                                        data-price="${p.price}"
+                                        data-originalPrice="${p.originalPrice}"
+                                        data-offerBadge="<c:out value='${p.offerBadge}' />"
+                                        data-stock="${p.stock}"
+                                        data-lowStockAlertLevel="${p.lowStockAlertLevel}"
+                                        data-sku="<c:out value='${p.sku}' />"
+                                        data-category="${p.category}"
+                                        data-weightSize="<c:out value='${p.weightSize}' />"
+                                        data-manufacturer="<c:out value='${p.manufacturer}' />"
+                                        data-ingredients="<c:out value='${p.ingredients}' />"
+                                        data-benefits="<c:out value='${p.benefits}' />"
+                                        data-usageInstructions="<c:out value='${p.usageInstructions}' />"
+                                        data-tags="<c:out value='${p.tags}' />"
+                                        data-active="${p.active}"
+                                        data-featured="${p.featured}"
+                                        data-trackInventory="${p.trackInventory}"
+                                        style="background: #dbeafe; color: #1e40af; border: none; width: 36px; height: 36px;
+                                        border-radius: 10px; cursor: pointer;">
+                                  <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <form
                                   action="${pageContext.request.contextPath}/women-products/seller/products/${p.id}/delete"
@@ -799,8 +814,8 @@
                         </select>
                       </div>
                       <div><label
-                          style="font-weight:700; font-size:0.85rem; text-transform:uppercase;">Brand</label><input
-                          type="text" name="brand" class="form-ctrl" placeholder="Brand name"></div>
+                          style="font-weight:700; font-size:0.85rem; text-transform:uppercase;">Brand *</label><input
+                          type="text" name="brand" class="form-ctrl" placeholder="Brand name" required></div>
                     </div>
                     <div class="fdf-form-group" style="margin-bottom: 15px;"><label
                         style="font-weight:700; font-size:0.85rem; text-transform:uppercase;">Short
@@ -816,10 +831,10 @@
                       <i class="bi bi-tags-fill"></i> Pricing</h4>
                     <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-bottom:30px;">
                       <div><label style="font-size:0.85rem; font-weight:700; text-transform:uppercase;">Selling Price
-                          (&#8377;) *</label><input type="number" name="price" step="0.01" class="form-ctrl" required
+                          (&#8377;) *</label><input type="number" name="price" step="0.01" min="0.01" class="form-ctrl" required
                           placeholder="0.00"></div>
                       <div><label style="font-size:0.85rem; font-weight:700; text-transform:uppercase;">MRP
-                          (&#8377;)</label><input type="number" name="originalPrice" step="0.01" class="form-ctrl"
+                          (&#8377;)</label><input type="number" name="originalPrice" step="0.01" min="0.01" class="form-ctrl"
                           placeholder="0.00"></div>
                       <div><label style="font-size:0.85rem; font-weight:700; text-transform:uppercase;">Offer
                           Badge</label><input type="text" name="offerBadge" class="form-ctrl"
@@ -1512,6 +1527,7 @@
               form.querySelector('[name="active"]').checked = true;
               form.querySelector('[name="trackInventory"]').checked = true;
               form.querySelector('[name="featured"]').checked = false;
+              form.querySelector('[name="images"]').setAttribute('required', 'required');
 
               modal.style.display = 'flex';
             }
@@ -1523,6 +1539,7 @@
 
               title.innerHTML = '<i class="bi bi-pencil-square" style="color:var(--brand-pink)"></i> Update Product Trace';
               form.action = `${pageContext.request.contextPath}/women-products/seller/products/${p.id}/edit`;
+              form.querySelector('[name="images"]').removeAttribute('required');
 
               // Fill fields
               form.querySelector('[name="name"]').value = p.name || '';
@@ -1570,6 +1587,41 @@
               document.querySelector('.fdf-sidebar').classList.toggle('show');
               document.querySelector('.sidebar-overlay').classList.toggle('show');
             }
+
+            document.addEventListener("DOMContentLoaded", function() {
+              document.querySelectorAll('.edit-product-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                  const p = {
+                    id: this.getAttribute('data-id'),
+                    name: this.getAttribute('data-name'),
+                    brand: this.getAttribute('data-brand'),
+                    description: this.getAttribute('data-description'),
+                    fullDescription: this.getAttribute('data-fullDescription'),
+                    price: this.getAttribute('data-price'),
+                    originalPrice: this.getAttribute('data-originalPrice'),
+                    offerBadge: this.getAttribute('data-offer-badge'),
+                    stock: this.getAttribute('data-stock'),
+                    lowStockAlertLevel: this.getAttribute('data-lowStockAlertLevel'),
+                    sku: this.getAttribute('data-sku'),
+                    category: this.getAttribute('data-category'),
+                    weightSize: this.getAttribute('data-weightSize'),
+                    manufacturer: this.getAttribute('data-manufacturer'),
+                    ingredients: this.getAttribute('data-ingredients'),
+                    benefits: this.getAttribute('data-benefits'),
+                    usageInstructions: this.getAttribute('data-usageInstructions'),
+                    tags: this.getAttribute('data-tags'),
+                    active: this.getAttribute('data-active') === 'true',
+                    featured: this.getAttribute('data-featured') === 'true',
+                    trackInventory: this.getAttribute('data-trackInventory') === 'true'
+                  };
+                  if (!p.id) {
+                    alert("Error: Product ID is missing.");
+                    return;
+                  }
+                  openEditModal(p);
+                });
+              });
+            });
           </script>
     </body>
 

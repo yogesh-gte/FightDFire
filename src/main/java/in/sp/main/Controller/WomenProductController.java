@@ -128,7 +128,7 @@ public class WomenProductController {
         if (s == null) return "redirect:/women-products/seller/login";
         s = sellerRepo.findById(s.getId()).orElse(s);
 
-        List<WomenProduct> products = productRepo.findBySellerOrderByCreatedAtDesc(s);
+        List<WomenProduct> products = productRepo.findBySellerAndDeletedFalseOrderByCreatedAtDesc(s);
         List<WomenProductOrder> orders = orderRepo.findBySellerOrderByOrderTimeDesc(s);
 
         double totalEarnings = orders.stream()
@@ -208,6 +208,23 @@ public class WomenProductController {
                              HttpSession session, RedirectAttributes ra) {
         WomenProductSeller s = (WomenProductSeller) session.getAttribute("loggedSeller");
         if (s == null) return "redirect:/women-products/seller/login";
+        if (brand == null || brand.trim().isEmpty()) {
+            ra.addFlashAttribute("error", "Brand name is required.");
+            return "redirect:/women-products/seller/dashboard?section=products";
+        }
+        if (price == null || price <= 0) {
+            ra.addFlashAttribute("error", "Selling price must be positive.");
+            return "redirect:/women-products/seller/dashboard?section=products";
+        }
+        if (originalPrice != null && originalPrice <= 0) {
+            ra.addFlashAttribute("error", "MRP must be positive.");
+            return "redirect:/women-products/seller/dashboard?section=products";
+        }
+        if (images == null || images.length == 0 || images[0].isEmpty()) {
+            ra.addFlashAttribute("error", "Product image is required.");
+            return "redirect:/women-products/seller/dashboard?section=products";
+        }
+
         try {
             WomenProduct p = new WomenProduct();
             p.setName(name);
@@ -286,7 +303,19 @@ public class WomenProductController {
         if (s == null) return "redirect:/women-products/seller/login";
         WomenProduct p = productRepo.findById(id).orElse(null);
         if (p == null || !p.getSeller().getId().equals(s.getId())) return "redirect:/women-products/seller/dashboard";
-        
+        if (brand == null || brand.trim().isEmpty()) {
+            ra.addFlashAttribute("error", "Brand name is required.");
+            return "redirect:/women-products/seller/dashboard?section=products";
+        }
+        if (price == null || price <= 0) {
+            ra.addFlashAttribute("error", "Selling price must be positive.");
+            return "redirect:/women-products/seller/dashboard?section=products";
+        }
+        if (originalPrice != null && originalPrice <= 0) {
+            ra.addFlashAttribute("error", "MRP must be positive.");
+            return "redirect:/women-products/seller/dashboard?section=products";
+        }
+
         p.setName(name);
         p.setBrand(brand);
         p.setDescription(description);
@@ -332,15 +361,34 @@ public class WomenProductController {
         return "redirect:/women-products/seller/dashboard?section=products";
     }
 
+    @GetMapping({"/seller/products/{id}/edit", "/seller/products//edit"})
+    public String editProductGet() {
+        return "redirect:/women-products/seller/dashboard?section=products";
+    }
+
+    @PostMapping("/seller/products//edit")
+    public String editProductEmptyId(RedirectAttributes ra) {
+        ra.addFlashAttribute("error", "Invalid product ID.");
+        return "redirect:/women-products/seller/dashboard?section=products";
+    }
+
     @PostMapping("/seller/products/{id}/delete")
     public String deleteProduct(@PathVariable Long id, HttpSession session, RedirectAttributes ra) {
         WomenProductSeller s = (WomenProductSeller) session.getAttribute("loggedSeller");
         if (s == null) return "redirect:/women-products/seller/login";
         WomenProduct p = productRepo.findById(id).orElse(null);
         if (p != null && p.getSeller().getId().equals(s.getId())) {
-            p.setActive(false);
-            productRepo.save(p);
-            ra.addFlashAttribute("message", "Product removed.");
+            cartRepo.deleteByProduct_Id(id);
+            wishlistRepo.deleteByProduct_Id(id);
+            boolean hasOrders = orderRepo.findByProduct_IdOrderByOrderTimeDesc(id).size() > 0;
+            if (hasOrders) {
+                p.setActive(false);
+                p.setDeleted(true);
+                productRepo.save(p);
+            } else {
+                productRepo.delete(p);
+            }
+            ra.addFlashAttribute("message", "Product deleted successfully!");
         }
         return "redirect:/women-products/seller/dashboard?section=products";
     }
@@ -361,6 +409,7 @@ public class WomenProductController {
 
     @PostMapping("/seller/returns/{id}/status")
     public String updateReturnStatus(@PathVariable Long id, @RequestParam String status,
+                                     @RequestParam(required = false, defaultValue = "returns") String section,
                                      HttpSession session, RedirectAttributes ra) {
         WomenProductSeller s = (WomenProductSeller) session.getAttribute("loggedSeller");
         if (s == null) return "redirect:/women-products/seller/login";
@@ -370,7 +419,7 @@ public class WomenProductController {
             returnRepo.save(r);
             ra.addFlashAttribute("message", "Return/Exchange status updated.");
         }
-        return "redirect:/women-products/seller/dashboard?section=returns";
+        return "redirect:/women-products/seller/dashboard?section=" + section;
     }
 
     // ══════════════════════════════════════
@@ -379,9 +428,9 @@ public class WomenProductController {
     @GetMapping
     public String shopHome(Model model, @RequestParam(required = false) String category) {
         if (category != null && !category.isEmpty()) {
-            model.addAttribute("products", productRepo.findByCategoryAndActiveTrueOrderByCreatedAtDesc(category));
+            model.addAttribute("products", productRepo.findByCategoryAndActiveTrueAndDeletedFalseOrderByCreatedAtDesc(category));
         } else {
-            model.addAttribute("products", productRepo.findByActiveTrueOrderByCreatedAtDesc());
+            model.addAttribute("products", productRepo.findByActiveTrueAndDeletedFalseOrderByCreatedAtDesc());
         }
         model.addAttribute("selectedCategory", category);
         return "women-products/shop";
@@ -390,7 +439,7 @@ public class WomenProductController {
     @GetMapping("/view/{id}")
     public String viewProduct(@PathVariable Long id, Model model, HttpSession session) {
         WomenProduct p = productRepo.findById(id).orElse(null);
-        if (p == null || !p.getActive()) return "redirect:/women-products";
+        if (p == null || !p.getActive() || p.getDeleted()) return "redirect:/women-products";
         
         List<WomenProductOrder> reviews = orderRepo.findByProduct_IdOrderByOrderTimeDesc(id);
         List<WomenProductOrder> ratedReviews = reviews.stream()
@@ -426,11 +475,7 @@ public class WomenProductController {
         if (p == null) return "redirect:/women-products";
 
         Optional<WomenCartItem> existing = cartRepo.findByUserAndProduct_Id(u, productId);
-        if (existing.isPresent()) {
-            WomenCartItem c = existing.get();
-            c.setQuantity(c.getQuantity() + 1);
-            cartRepo.save(c);
-        } else {
+        if (!existing.isPresent()) {
             WomenCartItem c = new WomenCartItem();
             c.setUser(u);
             c.setProduct(p);

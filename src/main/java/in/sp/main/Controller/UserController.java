@@ -99,8 +99,7 @@ public class UserController {
     @Autowired
     private MartialArtsCenterService martialArtsCenterService;
 
-    @Autowired
-    private in.sp.main.Repository.IncidentRepository incidentRepository;
+
 
     @Autowired
     private in.sp.main.Repository.JobApplicationRepository jobApplicationRepository;
@@ -537,8 +536,7 @@ public class UserController {
         model.addAttribute("approvedCentres", approvedCentres);
         model.addAttribute("approvedCentreCount", approvedCentres.size());
 
-        List<in.sp.main.Entities.Incident> myIncidents = incidentRepository.findByUser(loggedInUser);
-        model.addAttribute("myIncidents", myIncidents);
+
 
         boolean isWorker = jobApplicationRepository.findByStatus(in.sp.main.Entities.VerificationStatus.VERIFIED)
                 .stream().anyMatch(app -> app.getUser().getId().equals(loggedInUser.getId()));

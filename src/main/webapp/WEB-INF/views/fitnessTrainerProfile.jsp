@@ -82,11 +82,9 @@
 
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
-<div class="container-fluid">
-    <div class="row">
-        <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-
-        <div class="col-md-9 col-lg-10 p-0">
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden; padding: 0;">
             <!-- Profile header banner -->
             <div class="profile-header text-center text-md-start">
                 <div class="container px-5">
@@ -150,7 +148,7 @@
                                                 </div>
                                                 
                                                 <div class="d-flex align-items-center gap-2 mb-2 small text-dark fw-medium">
-                                                    <i class="bi bi-calendar2-check text-primary"></i> ${fc.classDate} @ ${fc.classTime}
+                                                    <i class="bi bi-calendar2-check text-primary"></i> ${fc.classDate} @ ${fc.formattedClassTime}
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2 mb-3 small text-dark fw-medium">
                                                     <i class="bi bi-people-fill text-info"></i> ${fc.maxCapacity - fc.currentEnrollment} Seats Left
@@ -182,7 +180,7 @@
                                                             <div class="p-3 bg-light rounded-3 mb-4">
                                                                 <div class="d-flex justify-content-between mb-2">
                                                                     <span class="text-muted small">Date & Time</span>
-                                                                    <span class="fw-bold text-dark small">${fc.classDate} @ ${fc.classTime}</span>
+                                                                    <span class="fw-bold text-dark small">${fc.classDate} @ ${fc.formattedClassTime}</span>
                                                                 </div>
                                                                 <div class="d-flex justify-content-between mb-2">
                                                                     <span class="text-muted small">Duration</span>
@@ -384,7 +382,6 @@
             </div>
         </div>
     </div>
-</div>
 
 </body>
 </html>

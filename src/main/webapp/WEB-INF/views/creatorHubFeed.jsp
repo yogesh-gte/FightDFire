@@ -12,37 +12,66 @@
     
     <style>
         :root {
-            --dark-bg: #09090e;
-            --card-bg: rgba(20, 20, 35, 0.6);
-            --border-color: rgba(255, 255, 255, 0.08);
+            --dark-bg: #fffcfd;
+            --card-bg: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.08);
             --primary-accent: #f43f5e;
             --secondary-accent: #8b5cf6;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --neon-glow: 0 0 20px rgba(244, 63, 94, 0.4);
-            --neon-purple: 0 0 20px rgba(139, 92, 246, 0.4);
+            --text-main: #333333;
+            --text-muted: #666666;
+            --neon-glow: 0 4px 12px rgba(244, 63, 94, 0.15);
+            --neon-purple: 0 4px 12px rgba(139, 92, 246, 0.15);
+            --brand-purple: #7c3aed;
+            --fdf-border: rgba(0,0,0,0.05);
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             background-color: var(--dark-bg);
-            background-image: radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(244, 63, 94, 0.1) 0%, transparent 40%);
             color: var(--text-main);
             font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            margin: 0;
             padding-bottom: 80px;
         }
 
         /* Glassmorphic Navbar Overlay override */
         .hub-navbar {
             backdrop-filter: blur(15px);
-            background: rgba(9, 9, 14, 0.8) !important;
+            background: rgba(255, 252, 253, 0.8) !important;
             border-bottom: 1px solid var(--border-color);
         }
 
         .hub-container {
-            margin-top: 110px;
+            margin-top: 40px;
+        }
+
+        /* Floating background blobs */
+        .glow-bg-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .blob {
+            position: absolute;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: floatBlob 20s infinite alternate;
+        }
+        .blob-1 { top: -100px; right: -100px; background: var(--secondary-accent); }
+        .blob-2 { bottom: -150px; left: -150px; background: var(--primary-accent); animation-delay: -5s; }
+        
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 30px) scale(1.15); }
         }
 
         /* ── STORIES BAR ── */
@@ -51,13 +80,12 @@
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 15px;
-            backdrop-filter: blur(10px);
             display: flex;
             gap: 15px;
             overflow-x: auto;
             scrollbar-width: none;
             margin-bottom: 25px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
         .stories-container::-webkit-scrollbar {
             display: none;
@@ -84,7 +112,7 @@
             box-shadow: var(--neon-glow);
         }
         .story-ring.watched {
-            background: #4b5563;
+            background: #e5e7eb;
             box-shadow: none;
         }
         .story-avatar {
@@ -92,7 +120,7 @@
             height: 60px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #09090e;
+            border: 3px solid #ffffff;
         }
         .story-username {
             font-size: 11px;
@@ -103,6 +131,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             text-align: center;
+            font-weight: 600;
         }
 
         /* ── CATEGORY PILLS ── */
@@ -110,25 +139,28 @@
             display: flex;
             gap: 10px;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             margin-bottom: 25px;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
+            width: 100%;
         }
         .category-scroll::-webkit-scrollbar {
             display: none;
         }
         .category-pill {
-            background: rgba(255, 255, 255, 0.05);
+            background: #fff;
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             border-radius: 30px;
             padding: 8px 20px;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             white-space: nowrap;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .category-pill:hover, .category-pill.active {
             background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
@@ -143,14 +175,13 @@
             border: 1px solid var(--border-color);
             border-radius: 24px;
             margin-bottom: 30px;
-            backdrop-filter: blur(10px);
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
         .post-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
         .post-header {
             padding: 16px 20px;
@@ -173,14 +204,15 @@
             border: 2px solid var(--primary-accent);
         }
         .uploader-name {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 15px;
             display: flex;
             align-items: center;
             gap: 5px;
+            color: var(--brand-purple);
         }
         .verified-badge {
-            color: #38bdf8;
+            color: #0ea5e9;
             font-size: 13px;
         }
         .post-location {
@@ -196,7 +228,7 @@
         /* ── MEDIA PLAYER CONTAINER ── */
         .post-media-container {
             position: relative;
-            background: #000;
+            background: #f3f4f6;
             width: 100%;
             max-height: 520px;
             display: flex;
@@ -213,14 +245,14 @@
             position: absolute;
             top: 15px;
             left: 15px;
-            background: rgba(9, 9, 14, 0.7);
-            backdrop-filter: blur(5px);
-            color: #fff;
+            background: rgba(255, 255, 255, 0.85);
+            color: #333;
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         /* Lock Overlay styles */
@@ -230,7 +262,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(9, 9, 14, 0.95);
+            background: rgba(255, 252, 253, 0.98);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -279,7 +311,7 @@
         }
         .action-btn span {
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-muted);
         }
         .action-btn:hover {
@@ -299,10 +331,11 @@
             font-size: 15px;
             line-height: 1.6;
             margin-bottom: 10px;
+            color: #333;
         }
         .post-hashtags {
-            color: #38bdf8;
-            font-weight: 500;
+            color: #0284c7;
+            font-weight: 600;
             font-size: 14px;
         }
 
@@ -311,28 +344,32 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 24px;
-            padding: 20px;
+            padding: 24px;
             margin-bottom: 25px;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .sidebar-card .btn {
+            font-weight: 700;
         }
         .sidebar-title {
             font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 15px;
+            font-weight: 800;
+            margin-bottom: 18px;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #fff;
+            color: var(--brand-purple);
         }
         .trending-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px 0;
+            border-bottom: 1px solid var(--fdf-border);
             text-decoration: none;
             color: var(--text-main);
             transition: padding-left 0.2s;
+            font-weight: 500;
         }
         .trending-item:hover {
             padding-left: 5px;
@@ -356,7 +393,7 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            box-shadow: var(--neon-glow);
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.3);
             transition: transform 0.3s, rotate 0.3s;
             z-index: 100;
             text-decoration: none;
@@ -392,23 +429,27 @@
             transition: width 0.1s linear;
         }
 
-        /* Comments drawer */
+        /* Comment drawer style changes */
         .comment-drawer {
             position: fixed;
             top: 0;
             right: -420px;
             width: 420px;
             height: 100vh;
-            background: #09090e;
+            height: 100dvh;
+            background: #ffffff;
             border-left: 1px solid var(--border-color);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.05);
             z-index: 1050;
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
+            visibility: hidden;
+            color: #333;
         }
         .comment-drawer.open {
             right: 0;
+            visibility: visible;
         }
         .comment-header {
             padding: 20px;
@@ -417,6 +458,10 @@
             align-items: center;
             justify-content: space-between;
         }
+        .comment-header h5 {
+            font-weight: 800;
+            color: var(--brand-purple);
+        }
         .comment-list {
             flex-grow: 1;
             overflow-y: auto;
@@ -424,33 +469,99 @@
         }
         .comment-item {
             margin-bottom: 18px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
             padding-bottom: 10px;
         }
         .comment-user {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
             color: var(--primary-accent);
             margin-bottom: 4px;
         }
         .comment-text {
             font-size: 14px;
-            color: var(--text-main);
+            color: #444;
         }
         .comment-input-area {
             padding: 15px 20px;
             border-top: 1px solid var(--border-color);
-            background: rgba(255,255,255,0.02);
+            background: #f9fafb;
+        }
+        .comment-input-area input {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 992px) {
+            .hub-container {
+                max-width: 100% !important;
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+                margin-top: 40px !important;
+            }
+        }
+        @media (max-width: 576px) {
+            .hub-container {
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+                margin-top: 20px !important;
+            }
+            .post-card {
+                border-radius: 16px !important;
+                margin-bottom: 20px !important;
+            }
+            .post-header {
+                padding: 12px 15px !important;
+            }
+            .post-footer {
+                padding: 15px !important;
+            }
+            .stories-container {
+                padding: 10px !important;
+                border-radius: 16px !important;
+                gap: 10px !important;
+                margin-bottom: 15px !important;
+            }
+            .story-ring {
+                width: 56px !important;
+                height: 56px !important;
+            }
+            .story-avatar {
+                width: 48px !important;
+                height: 48px !important;
+            }
+            .comment-drawer {
+                width: 100% !important;
+                right: -100%;
+                visibility: hidden;
+            }
+            .comment-drawer.open {
+                right: 0;
+                visibility: visible;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Blobs overlay -->
+    <div class="glow-bg-layer">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
     <!-- Include universal header -->
     <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
-    <div class="container hub-container">
-        <div class="row">
+    <div id="wrapper">
+        <!-- Include general sidebar -->
+        <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+        
+        <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
+            <div class="container hub-container">
+                <div class="row">
             
             <!-- LEFT & CENTER FEED -->
             <div class="col-lg-8">
@@ -481,11 +592,19 @@
                 </div>
 
                 <!-- Category selector scroll -->
-                <div class="category-scroll">
-                    <a href="${pageContext.request.contextPath}/creator-hub" class="category-pill ${empty selectedCategory ? 'active' : ''}">All Feeds</a>
-                    <c:forEach var="cat" items="${categories}">
-                        <a href="${pageContext.request.contextPath}/creator-hub?category=${cat}" class="category-pill ${selectedCategory eq cat ? 'active' : ''}">${cat}</a>
-                    </c:forEach>
+                <div class="d-flex align-items-center mb-4">
+                    <button class="btn btn-sm btn-outline-secondary rounded-circle me-2" onclick="scrollCatLeft(this)">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <div class="category-scroll flex-grow-1" style="margin-bottom: 0 !important; overflow-x: auto; scroll-behavior: smooth;">
+                        <a href="${pageContext.request.contextPath}/creator-hub" class="category-pill ${empty selectedCategory ? 'active' : ''}">All Feeds</a>
+                        <c:forEach var="cat" items="${categories}">
+                            <a href="${pageContext.request.contextPath}/creator-hub?category=${cat}" class="category-pill ${selectedCategory eq cat ? 'active' : ''}">${cat}</a>
+                        </c:forEach>
+                    </div>
+                    <button class="btn btn-sm btn-outline-secondary rounded-circle ms-2" onclick="scrollCatRight(this)">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
                 </div>
 
                 <!-- Feed Items -->
@@ -622,12 +741,12 @@
                 
                 <!-- Quick Navigation Studio Buttons -->
                 <div class="sidebar-card text-center">
-                    <h5 class="text-white mb-3">Creator Dashboard</h5>
+                    <h5 class="sidebar-title justify-content-center mb-3">Creator Dashboard</h5>
                     <div class="d-grid gap-2">
                         <a href="${pageContext.request.contextPath}/creator-hub/dashboard" class="btn btn-outline-danger py-2 rounded-pill">
                             <i class="fa-solid fa-clapperboard me-2"></i> Open Creator Studio
                         </a>
-                        <a href="${pageContext.request.contextPath}/creator-hub/notifications" class="btn btn-outline-light py-2 rounded-pill position-relative">
+                        <a href="${pageContext.request.contextPath}/creator-hub/notifications" class="btn btn-outline-primary py-2 rounded-pill position-relative">
                             <i class="fa-regular fa-bell me-2"></i> Creator Notifications
                             <c:if test="${unreadNotifCount > 0}">
                                 <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
@@ -635,11 +754,20 @@
                                 </span>
                             </c:if>
                         </a>
-                        
-                        <!-- Show admin panel if admin/event host -->
-                        <a href="${pageContext.request.contextPath}/creator-hub/admin" class="btn btn-danger py-2 rounded-pill mt-2">
-                            <i class="fa-solid fa-shield-halved me-2"></i> Safety & Admin Board
+                        <a href="${pageContext.request.contextPath}/users/search?tab=requests" class="btn btn-outline-info py-2 rounded-pill position-relative">
+                            <i class="fa-solid fa-user-plus me-2"></i> Let's Connect
+                            <span id="pendingRequestsBadge" class="badge bg-danger ms-auto" style="display:none;">0</span>
                         </a>
+                        <a href="${pageContext.request.contextPath}/chat/users" class="btn btn-outline-primary py-2 rounded-pill">
+                            <i class="fa-solid fa-message me-2"></i> Chat / DMs
+                        </a>
+                        
+                        <!-- Show admin panel if admin is logged in -->
+                        <c:if test="${not empty admin}">
+                            <a href="${pageContext.request.contextPath}/creator-hub/admin" class="btn btn-danger py-2 rounded-pill mt-2">
+                                <i class="fa-solid fa-shield-halved me-2"></i> Safety & Admin Board
+                            </a>
+                        </c:if>
                     </div>
                 </div>
 
@@ -647,10 +775,10 @@
                 <div class="sidebar-card">
                     <h5 class="sidebar-title"><i class="fa-solid fa-magnifying-glass"></i> Search Hub</h5>
                     <form action="${pageContext.request.contextPath}/creator-hub" method="GET">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control bg-dark border-secondary text-white rounded-start-pill" placeholder="Search topics, hashtags..." value="${searchQuery}">
-                            <button class="btn btn-danger rounded-end-pill px-3" type="submit">
-                                <i class="fa-solid fa-chevron-right"></i>
+                        <div class="d-flex gap-2">
+                            <input type="text" name="search" class="form-control bg-dark border-secondary text-white rounded-pill" placeholder="Search topics, hashtags..." value="${searchQuery}" style="flex: 1;">
+                            <button class="btn btn-danger rounded-pill px-3" type="submit">
+                                <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
                         </div>
                     </form>
@@ -1067,6 +1195,17 @@
                 alert("Link copied to clipboard: " + shareUrl);
             });
         }
+
+        function scrollCatLeft(btn) {
+            const container = btn.nextElementSibling;
+            container.scrollBy({ left: -200, behavior: 'smooth' });
+        }
+        function scrollCatRight(btn) {
+            const container = btn.previousElementSibling;
+            container.scrollBy({ left: 200, behavior: 'smooth' });
+        }
     </script>
+        </div><!-- /#page-content-wrapper -->
+    </div><!-- /#wrapper -->
 </body>
 </html>

@@ -5,260 +5,273 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Financial Literacy Hub</title>
+    <title>Financial Literacy Hub — Fight D Fear</title>
     
-    <!-- Fonts -->
+    <!-- Icons & Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     
-    <!-- CSS -->
+    <!-- Theme files -->
     <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
-
+    <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/main.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css" rel="stylesheet">
+    
     <style>
         :root {
-            --fl-purple: #1e1b4b;
-            --fl-pink: #f43f5e;
-            --fl-gold: #ffd700;
-            --fl-bg: #f8fafc;
-            --fl-shadow: 0 15px 35px rgba(30, 27, 75, 0.1);
+            --glow-bg: #fffcfd;
+            --card-bg: #ffffff;
         }
-
+        
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--fl-bg);
-            color: #333;
-            min-height: 100vh;
+            background: var(--glow-bg);
+            color: var(--fdf-text);
+            overflow-x: hidden;
         }
 
-        /* Hero Header */
-        .fl-hero {
-            background: linear-gradient(135deg, var(--fl-purple) 0%, var(--fl-pink) 100%);
-            padding: 80px 0 100px;
-            color: white;
-            text-align: center;
-            border-bottom-left-radius: 50% 20px;
-            border-bottom-right-radius: 50% 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .fl-hero::before {
-            content: '';
-            position: absolute;
+        /* Floating background blobs */
+        .glow-bg-layer {
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/cubes.png');
-            opacity: 0.1;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .blob {
+            position: absolute;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: floatBlob 20s infinite alternate;
+        }
+        .blob-1 { top: -100px; right: -100px; background: var(--brand-purple); }
+        .blob-2 { bottom: -150px; left: -150px; background: var(--brand-pink); animation-delay: -5s; }
+        
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 30px) scale(1.15); }
         }
 
-        .fl-hero h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-        }
-
-        .fl-hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Section Cards */
-        .section-card {
+        /* Clean Minimal Header */
+        .glow-header {
+            padding: 60px 20px 40px;
+            text-align: center;
             background: white;
+            border-bottom: 1px solid var(--fdf-border);
+            position: relative;
+        }
+        .glow-header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 38px;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .glow-header p {
+            color: var(--fdf-muted);
+            font-size: 15px;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Top Bar navigation */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 30px;
+            position: absolute;
+            top: 0; right: 0;
+            width: 100%;
+        }
+        .top-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid var(--fdf-border);
+            color: var(--brand-purple);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        .top-btn:hover {
+            background: var(--brand-purple);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Section layout */
+        .fl-container {
+            max-width: 1000px;
+            margin: 40px auto 60px;
+            padding: 0 15px;
+        }
+        .section-card {
+            background: var(--card-bg);
+            border: 1px solid var(--fdf-border);
             border-radius: 24px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: var(--fl-shadow);
-            border: 1px solid rgba(30, 27, 75, 0.05);
-            transition: all 0.3s;
+            box-shadow: var(--shadow-sm);
         }
-
-        .section-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(30, 27, 75, 0.15);
-        }
-
         .section-header {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
-
         .section-header h2 {
-            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
             font-weight: 800;
-            font-size: 1.8rem;
-            color: var(--fl-purple);
+            color: var(--brand-purple);
             margin: 0;
         }
-
         .section-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--fl-purple), var(--fl-pink));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.8rem;
+            font-size: 20px;
+            color: var(--brand-pink);
         }
 
-        /* Item Card */
+        /* Category pills scroll */
+        .category-pills {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            margin-bottom: 25px;
+            padding-bottom: 8px;
+            width: 100%;
+        }
+        .category-pills::-webkit-scrollbar {
+            display: none;
+        }
+        .category-pill {
+            background: #fff;
+            color: var(--fdf-muted);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid var(--fdf-border);
+            transition: all 0.3s;
+        }
+        .category-pill:hover, .category-pill.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 10px rgba(244,63,94,0.15);
+        }
+
+        /* Item layout */
         .item-card {
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 25px;
+            background: #fafafb;
+            border: 1px solid var(--fdf-border);
+            border-radius: 16px;
+            padding: 20px;
             margin-bottom: 15px;
             display: flex;
             gap: 20px;
             align-items: flex-start;
-            transition: all 0.3s;
+            transition: all 0.2s;
             cursor: pointer;
             text-decoration: none !important;
             color: inherit;
         }
-
         .item-card:hover {
-            background: #f1f5f9;
-            transform: translateX(5px);
+            background: #fff;
+            transform: translateX(4px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--brand-pink-light);
         }
-
         .item-thumbnail {
-            width: 180px;
-            height: 120px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+            width: 140px;
+            height: 95px;
+            border-radius: 12px;
+            background: #fff5f7;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: var(--fl-purple);
+            font-size: 2rem;
+            color: var(--brand-pink);
             flex-shrink: 0;
             overflow: hidden;
+            border: 1px solid var(--fdf-border);
         }
-
         .item-thumbnail img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .item-content {
             flex: 1;
         }
-
         .item-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--fl-purple);
-            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--brand-purple);
+            margin-bottom: 6px;
         }
-
         .item-description {
-            color: #64748b;
-            font-size: 0.95rem;
-            margin-bottom: 12px;
+            color: var(--fdf-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 10px;
         }
-
         .item-meta {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .meta-tag {
-            background: rgba(30, 27, 75, 0.1);
-            color: var(--fl-purple);
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        /* Category Pills */
-        .category-pills {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-bottom: 25px;
         }
-
-        .category-pill {
-            background: white;
-            color: var(--fl-purple);
-            padding: 8px 18px;
-            border-radius: 50px;
+        .meta-tag {
+            background: #f3f4f6;
+            color: #4b5563;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: 600;
-            cursor: pointer;
-            border: 2px solid rgba(30, 27, 75, 0.1);
-            transition: all 0.3s;
-        }
-
-        .category-pill:hover, .category-pill.active {
-            background: var(--fl-purple);
-            color: white;
-            border-color: var(--fl-purple);
-        }
-
-        /* Back Button */
-        .back-btn {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.8;
-            transition: 0.3s;
-            z-index: 100;
-        }
-
-        .back-btn:hover {
-            opacity: 1;
-            transform: translateX(-5px);
         }
 
         @media (max-width: 768px) {
-            .fl-hero h1 { font-size: 2.2rem; }
-            .fl-hero { 
-                padding: 60px 15px 80px; 
-                border-bottom-left-radius: 0;
-                border-bottom-right-radius: 0;
+            .glow-header { padding-top: 30px; padding-bottom: 20px; }
+            .top-bar {
+                position: relative;
+                justify-content: center;
+                padding: 10px;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 15px;
             }
+            .top-btn {
+                padding: 8px 14px;
+                font-size: 12px;
+                margin-right: 0 !important;
+            }
+            .glow-header h1 { font-size: 28px; }
             .item-card {
                 flex-direction: column;
             }
             .item-thumbnail {
                 width: 100%;
-                height: 180px;
+                height: 160px;
             }
-        }
-
-        /* 📱 Global Mobile Fixes */
-        html, body {
-            overflow-x: hidden;
-            width: 100%;
-            position: relative;
-        }
-        .container {
-            padding-left: 20px !important;
-            padding-right: 20px !important;
         }
     </style>
 </head>
 <body>
+
+<!-- Header -->
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
@@ -266,112 +279,116 @@
     <header class="fl-hero">
         <div class="container">
             <h1>Financial Literacy Hub</h1>
-            <p>Learn, grow, and master your finances with our curated content, live sessions, and workshops.</p>
+            <p>Master your personal finances, investments, savings, and banking programs. Learn through expert videos, interactive virtual classes, or localized workshops.</p>
         </div>
-    </header>
 
-    <main class="container mt-5 mb-5">
-        <c:if test="${param.registrationSuccess}">
-            <div class="alert alert-success" role="alert">
-                <i class="fas fa-check-circle"></i> Registration submitted successfully! Waiting for admin approval.
-            </div>
-        </c:if>
-        <!-- Recorded Videos Section -->
-        <div class="section-card">
-            <div class="section-header">
-                <div class="section-icon">
-                    <i class="fas fa-video"></i>
+        <div class="fl-container">
+            <c:if test="${param.registrationSuccess}">
+                <div class="alert alert-success rounded-4 border-0 shadow-sm mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> Registration submitted successfully! Waiting for admin approval.
                 </div>
-                <h2>Recorded Videos</h2>
-            </div>
+            </c:if>
 
-            <div class="category-pills" id="videoCategories">
-                <span class="category-pill active" data-category="all">All</span>
-                <span class="category-pill" data-category="saving">Saving</span>
-                <span class="category-pill" data-category="investing">Investing</span>
-                <span class="category-pill" data-category="loans">Loans</span>
-                <span class="category-pill" data-category="banking">Banking</span>
-                <span class="category-pill" data-category="insurance">Insurance</span>
-                <span class="category-pill" data-category="government">Government Schemes</span>
-            </div>
-
-            <div id="videosContainer">
-            <c:forEach var="video" items="${videos}">
-                <a href="${pageContext.request.contextPath}/financial-literacy/video/${video.id}" class="item-card" data-category="${video.category}">
-                    <div class="item-thumbnail">
-                        <i class="fas fa-play-circle"></i>
-                    </div>
-                    <div class="item-content">
-                        <h3 class="item-title">${video.title}</h3>
-                        <p class="item-description">${video.description}</p>
-                        <div class="item-meta">
-                            <span class="meta-tag"><i class="fas fa-tag me-1"></i> ${video.category}</span>
-                            <span class="meta-tag"><i class="fas fa-clock me-1"></i> ${video.duration}</span>
-                            <span class="meta-tag"><i class="fas fa-eye me-1"></i> ${video.level}</span>
-                        </div>
-                    </div>
-                </a>
-            </c:forEach>
-        </div>
-        </div>
-
-        <!-- Live Virtual Sessions Section -->
-        <div class="section-card">
-            <div class="section-header">
-                <div class="section-icon">
-                    <i class="fas fa-laptop-code"></i>
+            <!-- Recorded Videos Section -->
+            <div class="section-card" data-aos="fade-up">
+                <div class="section-header">
+                    <i class="bi bi-play-btn-fill section-icon"></i>
+                    <h2>Recorded Videos</h2>
                 </div>
-                <h2>Live Virtual Sessions</h2>
-            </div>
 
-            <div id="liveSessionsContainer">
-            <c:forEach var="session" items="${liveSessions}">
-                <a href="${pageContext.request.contextPath}/financial-literacy/live-session/${session.id}" class="item-card">
-                    <div class="item-thumbnail">
-                        <i class="fas fa-calendar-check"></i>
+                <div class="d-flex align-items-center mb-4">
+                    <button class="btn btn-sm btn-outline-secondary rounded-circle me-2" onclick="scrollCatLeft(this)">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <div class="category-pills flex-grow-1" id="videoCategories" style="margin-bottom: 0 !important; overflow-x: auto; scroll-behavior: smooth;">
+                        <span class="category-pill active" data-category="all">All</span>
+                        <span class="category-pill" data-category="saving">Saving</span>
+                        <span class="category-pill" data-category="investing">Investing</span>
+                        <span class="category-pill" data-category="loans">Loans</span>
+                        <span class="category-pill" data-category="banking">Banking</span>
+                        <span class="category-pill" data-category="insurance">Insurance</span>
+                        <span class="category-pill" data-category="government">Government Schemes</span>
                     </div>
-                    <div class="item-content">
-                        <h3 class="item-title">${session.title}</h3>
-                        <p class="item-description">${session.description}</p>
-                        <div class="item-meta">
-                            <span class="meta-tag"><i class="fas fa-user me-1"></i> Speaker: ${session.speaker}</span>
-                            <span class="meta-tag"><i class="fas fa-calendar me-1"></i> ${session.date}</span>
-                            <span class="meta-tag"><i class="fas fa-clock me-1"></i> ${session.time}</span>
-                            <span class="meta-tag"><i class="fas fa-users me-1"></i> ${session.seats} Seats</span>
-                        </div>
-                    </div>
-                </a>
-            </c:forEach>
-        </div>
-        </div>
-
-        <!-- Offline Workshops Section -->
-        <div class="section-card">
-            <div class="section-header">
-                <div class="section-icon">
-                    <i class="fas fa-map-marker-alt"></i>
+                    <button class="btn btn-sm btn-outline-secondary rounded-circle ms-2" onclick="scrollCatRight(this)">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
                 </div>
-                <h2>Offline Workshops</h2>
+
+                <div id="videosContainer">
+                    <c:forEach var="video" items="${videos}">
+                        <a href="${pageContext.request.contextPath}/financial-literacy/video/${video.id}" class="item-card" data-category="${video.category}">
+                            <div class="item-thumbnail">
+                                <i class="bi bi-play-circle-fill"></i>
+                            </div>
+                            <div class="item-content">
+                                <h3 class="item-title">${video.title}</h3>
+                                <p class="item-description">${video.description}</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag"><i class="bi bi-tag"></i> ${video.category}</span>
+                                    <span class="meta-tag"><i class="bi bi-clock"></i> ${video.duration}</span>
+                                    <span class="meta-tag"><i class="bi bi-award"></i> ${video.level}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </c:forEach>
+                </div>
             </div>
 
-            <div id="workshopsContainer">
-            <c:forEach var="workshop" items="${workshops}">
-                <a href="${pageContext.request.contextPath}/financial-literacy/workshop/${workshop.id}" class="item-card">
-                    <div class="item-thumbnail">
-                        <i class="fas fa-school"></i>
-                    </div>
-                    <div class="item-content">
-                        <h3 class="item-title">${workshop.title}</h3>
-                        <p class="item-description">${workshop.description}</p>
-                        <div class="item-meta">
-                            <span class="meta-tag"><i class="fas fa-map-marker-alt me-1"></i> ${workshop.city}</span>
-                            <span class="meta-tag"><i class="fas fa-calendar me-1"></i> ${workshop.date}</span>
-                            <span class="meta-tag"><i class="fas fa-clock me-1"></i> ${workshop.time}</span>
-                            <span class="meta-tag"><i class="fas fa-users me-1"></i> ${workshop.seats} Seats</span>
-                        </div>
-                    </div>
-                </a>
-            </c:forEach>
+            <!-- Live Virtual Sessions Section -->
+            <div class="section-card" data-aos="fade-up">
+                <div class="section-header">
+                    <i class="bi bi-laptop section-icon"></i>
+                    <h2>Live Virtual Sessions</h2>
+                </div>
+
+                <div id="liveSessionsContainer">
+                    <c:forEach var="session" items="${liveSessions}">
+                        <a href="${pageContext.request.contextPath}/financial-literacy/live-session/${session.id}" class="item-card">
+                            <div class="item-thumbnail">
+                                <i class="bi bi-calendar-event-fill"></i>
+                            </div>
+                            <div class="item-content">
+                                <h3 class="item-title">${session.title}</h3>
+                                <p class="item-description">${session.description}</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag"><i class="bi bi-person-badge"></i> Speaker: ${session.speaker}</span>
+                                    <span class="meta-tag"><i class="bi bi-calendar3"></i> ${session.date}</span>
+                                    <span class="meta-tag"><i class="bi bi-clock"></i> ${session.time}</span>
+                                    <span class="meta-tag"><i class="bi bi-people"></i> ${session.seats} Seats</span>
+                                </div>
+                            </div>
+                        </a>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <!-- Offline Workshops Section -->
+            <div class="section-card" data-aos="fade-up">
+                <div class="section-header">
+                    <i class="bi bi-geo-alt-fill section-icon"></i>
+                    <h2>Offline Workshops</h2>
+                </div>
+
+                <div id="workshopsContainer">
+                    <c:forEach var="workshop" items="${workshops}">
+                        <a href="${pageContext.request.contextPath}/financial-literacy/workshop/${workshop.id}" class="item-card">
+                            <div class="item-thumbnail">
+                                <i class="bi bi-building-fill"></i>
+                            </div>
+                            <div class="item-content">
+                                <h3 class="item-title">${workshop.title}</h3>
+                                <p class="item-description">${workshop.description}</p>
+                                <div class="item-meta">
+                                    <span class="meta-tag"><i class="bi bi-geo-alt"></i> ${workshop.city}</span>
+                                    <span class="meta-tag"><i class="bi bi-calendar3"></i> ${workshop.date}</span>
+                                    <span class="meta-tag"><i class="bi bi-clock"></i> ${workshop.time}</span>
+                                    <span class="meta-tag"><i class="bi bi-people"></i> ${workshop.seats} Seats</span>
+                                </div>
+                            </div>
+                        </a>
+                    </c:forEach>
+                </div>
+            </div>
         </div>
         </div>
     </main>
@@ -385,25 +402,52 @@
             const categoryPills = document.querySelectorAll('#videoCategories .category-pill');
             const videoCards = document.querySelectorAll('#videosContainer .item-card');
 
-            categoryPills.forEach(pill => {
-                pill.addEventListener('click', function() {
-                    // Update active pill
-                    categoryPills.forEach(p => p.classList.remove('active'));
-                    this.classList.add('active');
+<!-- Scripts -->
+<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
 
-                    // Filter videos
-                    const category = this.getAttribute('data-category');
-                    videoCards.forEach(card => {
-                        const cardCategory = card.getAttribute('data-category');
-                        if (category === 'all' || cardCategory === category) {
-                            card.style.display = 'flex';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
+<script>
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Video category filtering
+        const categoryPills = document.querySelectorAll('#videoCategories .category-pill');
+        const videoCards = document.querySelectorAll('#videosContainer .item-card');
+
+        categoryPills.forEach(pill => {
+            pill.addEventListener('click', function() {
+                // Update active pill
+                categoryPills.forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+
+                // Filter videos
+                const category = this.getAttribute('data-category');
+                videoCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (category === 'all' || cardCategory === category) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
                 });
             });
         });
-    </script>
+    });
+
+    function scrollCatLeft(btn) {
+        const container = btn.nextElementSibling;
+        container.scrollBy({ left: -200, behavior: 'smooth' });
+    }
+    function scrollCatRight(btn) {
+        const container = btn.previousElementSibling;
+        container.scrollBy({ left: 200, behavior: 'smooth' });
+    }
+</script>
+
 </body>
 </html>

@@ -577,13 +577,37 @@ public class FitnessController {
             @RequestParam String classTime,
             @RequestParam Integer durationMinutes,
             @RequestParam String sessionType,
-            @RequestParam Integer maxCapacity,
-            @RequestParam Double price,
+            @RequestParam String maxCapacity,
+            @RequestParam String price,
             @RequestParam(required = false) String meetingLinkOrLocation,
             HttpSession session, RedirectAttributes redirectAttributes) {
 
         FitnessTrainer trainer = getSessionTrainer(session);
         if (trainer == null) return "redirect:/fitness/trainer/login";
+
+        int maxCapVal;
+        double priceVal;
+        try {
+            maxCapVal = Integer.parseInt(maxCapacity);
+            if (maxCapVal < 1 || maxCapVal > 9999) {
+                redirectAttributes.addFlashAttribute("error", "Maximum capacity must be between 1 and 9,999.");
+                return "redirect:/fitness/trainer/dashboard";
+            }
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("error", "Please enter a valid numeric Maximum Capacity.");
+            return "redirect:/fitness/trainer/dashboard";
+        }
+
+        try {
+            priceVal = Double.parseDouble(price);
+            if (priceVal < 0.01 || priceVal > 999999) {
+                redirectAttributes.addFlashAttribute("error", "Price must be between ₹0.01 and ₹999,999.");
+                return "redirect:/fitness/trainer/dashboard";
+            }
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("error", "Please enter a valid numeric Price.");
+            return "redirect:/fitness/trainer/dashboard";
+        }
 
         FitnessClass fc = new FitnessClass();
         fc.setTrainer(trainer);
@@ -594,14 +618,116 @@ public class FitnessController {
         fc.setClassTime(java.time.LocalTime.parse(classTime));
         fc.setDurationMinutes(durationMinutes);
         fc.setSessionType(sessionType);
-        fc.setMaxCapacity(maxCapacity);
-        fc.setPrice(price);
+        fc.setMaxCapacity(maxCapVal);
+        fc.setPrice(priceVal);
         fc.setMeetingLinkOrLocation(meetingLinkOrLocation);
         fc.setStatus("ACTIVE");
         
         fitnessClassRepository.save(fc);
 
         redirectAttributes.addFlashAttribute("success", "Group class created successfully!");
+        return "redirect:/fitness/trainer/dashboard";
+    }
+
+    // TRAINER: EDIT SCHEDULED CLASS
+    @PostMapping("/trainer/class/edit")
+    @Transactional
+    public String editClass(
+            @RequestParam Long classId,
+            @RequestParam String className,
+            @RequestParam String category,
+            @RequestParam String description,
+            @RequestParam String classDate,
+            @RequestParam String classTime,
+            @RequestParam Integer durationMinutes,
+            @RequestParam String sessionType,
+            @RequestParam String maxCapacity,
+            @RequestParam String price,
+            @RequestParam(required = false) String meetingLinkOrLocation,
+            HttpSession session, RedirectAttributes redirectAttributes) {
+
+        FitnessTrainer trainer = getSessionTrainer(session);
+        if (trainer == null) return "redirect:/fitness/trainer/login";
+
+        FitnessClass fc = fitnessClassRepository.findById(classId).orElse(null);
+        if (fc == null || !fc.getTrainer().getId().equals(trainer.getId())) {
+            redirectAttributes.addFlashAttribute("error", "Class not found or unauthorized access.");
+            return "redirect:/fitness/trainer/dashboard";
+        }
+
+        int maxCapVal;
+        double priceVal;
+        try {
+            maxCapVal = Integer.parseInt(maxCapacity);
+            if (maxCapVal < 1 || maxCapVal > 9999) {
+                redirectAttributes.addFlashAttribute("error", "Maximum capacity must be between 1 and 9,999.");
+                return "redirect:/fitness/trainer/dashboard";
+            }
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("error", "Please enter a valid numeric Maximum Capacity.");
+            return "redirect:/fitness/trainer/dashboard";
+        }
+
+        try {
+            priceVal = Double.parseDouble(price);
+            if (priceVal < 0.01 || priceVal > 999999) {
+                redirectAttributes.addFlashAttribute("error", "Price must be between ₹0.01 and ₹999,999.");
+                return "redirect:/fitness/trainer/dashboard";
+            }
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("error", "Please enter a valid numeric Price.");
+            return "redirect:/fitness/trainer/dashboard";
+        }
+
+        fc.setClassName(className);
+        fc.setCategory(category);
+        fc.setDescription(description);
+        fc.setClassDate(LocalDate.parse(classDate));
+        fc.setClassTime(java.time.LocalTime.parse(classTime));
+        fc.setDurationMinutes(durationMinutes);
+        fc.setSessionType(sessionType);
+        fc.setMaxCapacity(maxCapVal);
+        fc.setPrice(priceVal);
+        fc.setMeetingLinkOrLocation(meetingLinkOrLocation);
+
+        fitnessClassRepository.save(fc);
+
+        redirectAttributes.addFlashAttribute("success", "Group class updated successfully!");
+        return "redirect:/fitness/trainer/dashboard";
+    }
+
+    // TRAINER: DELETE SCHEDULED CLASS
+    @PostMapping("/trainer/class/delete")
+    @Transactional
+    public String deleteClass(
+            @RequestParam Long classId,
+            HttpSession session, RedirectAttributes redirectAttributes) {
+
+        FitnessTrainer trainer = getSessionTrainer(session);
+        if (trainer == null) return "redirect:/fitness/trainer/login";
+
+        FitnessClass fc = fitnessClassRepository.findById(classId).orElse(null);
+        if (fc == null || !fc.getTrainer().getId().equals(trainer.getId())) {
+            redirectAttributes.addFlashAttribute("error", "Class not found or unauthorized access.");
+            return "redirect:/fitness/trainer/dashboard";
+        }
+
+        // Refund registered users and delete bookings
+        List<FitnessBooking> classBookings = fitnessBookingRepository.findByFitnessClass_Id(classId);
+        for (FitnessBooking booking : classBookings) {
+            if ("PAID".equals(booking.getPaymentStatus())) {
+                User user = booking.getUser();
+                if (user != null) {
+                    double refundAmount = booking.getPaymentAmount() != null ? booking.getPaymentAmount() : 0.0;
+                    user.setWalletBalance((user.getWalletBalance() != null ? user.getWalletBalance() : 0.0) + refundAmount);
+                    userRepository.save(user);
+                }
+            }
+        }
+        fitnessBookingRepository.deleteAll(classBookings);
+        fitnessClassRepository.delete(fc);
+
+        redirectAttributes.addFlashAttribute("success", "Group class deleted successfully!");
         return "redirect:/fitness/trainer/dashboard";
     }
 

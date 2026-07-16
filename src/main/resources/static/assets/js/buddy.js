@@ -262,8 +262,20 @@
       setStatus((data && data.message) || "Accepted.");
       await refreshRequests();
 
-      if (data && data.chatUrl) {
-        window.location.href = ctx + data.chatUrl;
+      if (data && data.buddyId) {
+        const btnChat = $("btnModalChat");
+        const btnVoice = $("btnModalVoiceCall");
+        const btnVideo = $("btnModalVideoCall");
+        
+        if (btnChat) btnChat.href = ctx + "/chat/window/" + data.buddyId;
+        if (btnVoice) btnVoice.href = ctx + "/chat/call/" + data.buddyId + "?notify=true";
+        if (btnVideo) btnVideo.href = ctx + "/chat/video-call/" + data.buddyId + "?notify=true";
+        
+        const modalEl = $("buddyConnectionModal");
+        if (modalEl && window.bootstrap) {
+          const modal = new window.bootstrap.Modal(modalEl);
+          modal.show();
+        }
       }
     } catch (e) {
       setStatus(e.message || "Failed to accept.");

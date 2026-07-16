@@ -8,19 +8,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Orders — Fight D Fear</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       background: #fffcfd;
       color: var(--fdf-text);
       min-height: 100vh;
-      padding: 40px 20px;
     }
     .orders-container {
       max-width: 900px;
       margin: 0 auto;
+      padding: 40px 20px;
     }
     .back-link {
       display: inline-flex;
@@ -388,6 +392,10 @@
   </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
   <div class="orders-container">
     <a href="${pageContext.request.contextPath}/women-products" class="back-link">
       <i class="bi bi-arrow-left"></i> Explore More Products
@@ -580,13 +588,13 @@
           </div>
           <div class="fdf-form-group" style="margin-bottom:0;">
             <label>Account Number</label>
-            <input type="text" name="accountNumber" class="fdf-input" placeholder="Enter number" required>
+            <input type="text" name="accountNumber" class="fdf-input" placeholder="Enter number" required maxlength="18" minlength="9" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
           </div>
         </div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
           <div class="fdf-form-group" style="margin-bottom:0;">
             <label>IFSC Code</label>
-            <input type="text" name="ifsc" class="fdf-input" placeholder="e.g. SBIN0001234" required>
+            <input type="text" name="ifsc" class="fdf-input" placeholder="e.g. SBIN0001234" required maxlength="11" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
           </div>
           <div class="fdf-form-group" style="margin-bottom:0;">
             <label>Branch Name</label>
@@ -714,6 +722,25 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+      const refundForm = document.getElementById('refundForm');
+      if (refundForm) {
+        refundForm.addEventListener('submit', function(e) {
+          const accNum = this.querySelector('[name="accountNumber"]').value.trim();
+          const ifsc = this.querySelector('[name="ifsc"]').value.trim();
+          
+          if (!/^\d{9,18}$/.test(accNum)) {
+            alert("Account number must be between 9 and 18 numeric digits.");
+            e.preventDefault();
+            return false;
+          }
+          if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) {
+            alert("Please enter a valid 11-character Indian IFSC code (e.g. SBIN0001234).");
+            e.preventDefault();
+            return false;
+          }
+        });
+      }
+
       const deliveryElements = document.querySelectorAll('.dynamic-delivery');
       
       deliveryElements.forEach(el => {
@@ -761,6 +788,12 @@
       });
     });
   </script>
+  <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+  <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    </div>
+</div>
 </body>
 </html>
 

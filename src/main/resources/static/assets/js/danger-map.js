@@ -59,10 +59,7 @@
   }
 
   async function fetchIncidents() {
-    const res = await fetch(`${ctx}/incidents/heatmap.json`, { headers: { Accept: "application/json" } });
-    if (!res.ok) throw new Error(`Failed to load incidents (${res.status})`);
-    const data = await res.json();
-    incidents = Array.isArray(data) ? data : [];
+    incidents = [];
   }
 
   function renderHeatmap() {
@@ -460,7 +457,7 @@
       await fetchIncidents();
       renderHeatmap();
       renderMarkers();
-      setText(routeStatus, "Community Map loaded with incidents.");
+      setText(routeStatus, "Community Map loaded.");
     } catch (err) {
       setText(routeStatus, err.message || "Failed to load map data.");
     }

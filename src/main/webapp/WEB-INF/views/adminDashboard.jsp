@@ -590,10 +590,7 @@
                                     <div style="font-size:1.6rem; font-weight:700; color:#C53030;" id="stat-activeSos">—</div>
                                     <div style="font-size:0.75rem; color:#9B2C2C; font-weight:600;">🚨 Active SOS Alerts</div>
                                 </div>
-                                <div style="background:#F0FFF4; border-radius:15px; padding:18px; border:1px solid #C6F6D5; text-align:center;">
-                                    <div style="font-size:1.6rem; font-weight:700; color:#2F855A;" id="stat-incidents">—</div>
-                                    <div style="font-size:0.75rem; color:#276749; font-weight:600;">🛡️ Total Incidents</div>
-                                </div>
+
                                 <div style="background:#EBF8FF; border-radius:15px; padding:18px; border:1px solid #BEE3F8; text-align:center;">
                                     <div style="font-size:1.6rem; font-weight:700; color:#2B6CB0;" id="stat-safeRoutes">—</div>
                                     <div style="font-size:0.75rem; color:#2C5282; font-weight:600;">📍 Verified Routes</div>
@@ -837,18 +834,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 col-sm-6">
-                    <div class="admin-card">
-                        <div class="rowTop">
-                            <div>
-                                <i class="fas fa-map-marked-alt"></i>
-                                <h5 class="mb-1">Incident Heatmap</h5>
-                                <p class="muted">Safety hotspot map</p>
-                            </div>
-                        </div>
-                        <a href="${pageContext.request.contextPath}/admin/heatmap" class="btn btn-purple w-100 mt-auto">View Map</a>
-                    </div>
-                </div>
+
 
                 <div class="col-md-3 col-sm-6">
                     <div class="admin-card">
@@ -877,21 +863,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-3 col-sm-6">
-                    <div class="admin-card">
-                        <div class="rowTop">
-                            <div>
-                                <i class="fas fa-bell"></i>
-                                <h5 class="mb-1">Incidents</h5>
-                                <p class="muted">Review community incidents</p>
-                            </div>
-                            <span class="badge bg-danger badge-pill" title="Total incidents">
-                                <span id="incidentsCardCount">-</span>
-                            </span>
-                        </div>
-                        <a href="${pageContext.request.contextPath}/incidents/list" class="btn btn-purple w-100 mt-auto">View</a>
-                    </div>
-                </div>
+
 
                 <div class="col-md-3 col-sm-6">
                     <div class="admin-card">
@@ -1646,8 +1618,6 @@
 
         setText("pendingCentres", data.pendingCentres);
         setText("pendingSuggestions", data.pendingSuggestions);
-        setText("incidentsTotal", data.incidentsTotal);
-        setText("incidentsCardCount", data.incidentsTotal);
         setText("reportedVideos", data.reportedVideos);
         setText("reportedVideosCardCount", data.reportedVideos);
         setText("pendingDoctorsCount", data.pendingDoctors);
@@ -1656,7 +1626,6 @@
 
         // Safety Row
         setText("stat-activeSos", data.totalLiveSos);
-        setText("stat-incidents", data.incidentsTotal);
         setText("stat-safeRoutes", data.verifiedRoutes);
 
         // Partner Row

@@ -134,7 +134,10 @@ public class BuddyController {
             // Purpose: handoff to existing in-app chat window after acceptance.
             Long otherId = (r.getFromUser() != null) ? r.getFromUser().getId() : null;
             Map<String, Object> out = res(true, "Accepted.");
-            if (otherId != null) out.put("chatUrl", "/chat/window/" + otherId);
+            if (otherId != null) {
+                out.put("chatUrl", "/chat/window/" + otherId);
+                out.put("buddyId", otherId);
+            }
             return ResponseEntity.ok(out);
         } catch (IllegalStateException e) {
             return ResponseEntity.status(mapCode(e.getMessage())).body(res(false, msgFor(e.getMessage())));

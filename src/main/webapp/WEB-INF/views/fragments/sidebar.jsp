@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <style>
     /* === Sidebar Layout CSS === */
@@ -7,6 +8,7 @@
         display: flex;
         width: 100%;
         align-items: stretch;
+        margin-top: 80px;
     }
     
     /* Curved sidebar */
@@ -74,6 +76,7 @@
 
     #page-content-wrapper {
         flex: 1;
+        margin-left: 260px;
         min-width: 0;
         margin-left: 260px; /* offset for fixed sidebar */
         display: flex;
@@ -183,13 +186,7 @@
         <a href="${pageContext.request.contextPath}/index/templates" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/templates') ? 'active' : ''}">
             <i class="bi bi-stars"></i> Glow Space
         </a>
-        <a href="${pageContext.request.contextPath}/users/search?tab=requests" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/users/search') ? 'active' : ''}">
-            <i class="bi bi-people"></i> Let's Connect
-            <span id="pendingRequestsBadge" class="badge bg-danger ms-auto" style="display:none;">0</span>
-        </a>
-        <a href="${pageContext.request.contextPath}/chat/users" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/chat') ? 'active' : ''}">
-            <i class="bi bi-chat-dots"></i> Chat
-        </a>
+
         <a href="${pageContext.request.contextPath}/video/reels" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/reels') ? 'active' : ''}">
             <i class="bi bi-camera-video"></i> Reels
         </a>
@@ -211,7 +208,7 @@
         <a href="${pageContext.request.contextPath}/doctors/list" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/doctors') ? 'active' : ''}">
             <i class="bi bi-heart-pulse"></i> Women Doctors
         </a>
-        <a href="${pageContext.request.contextPath}/marketplace" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/marketplace') && !requestScope['javax.servlet.forward.query_string'].contains('category=') ? 'active' : ''}">
+        <a href="${pageContext.request.contextPath}/marketplace" class="sidebar-list-group-item ${fn:contains(requestScope['javax.servlet.forward.request_uri'], '/marketplace') && (empty requestScope['javax.servlet.forward.query_string'] || !fn:contains(requestScope['javax.servlet.forward.query_string'], 'category=')) ? 'active' : ''}">
             <i class="bi bi-shop"></i> Women Marketplace
         </a>
         <c:if test="${not empty loggedEntrepreneur}">
@@ -224,7 +221,7 @@
                 <i class="bi bi-wallet2"></i> Investor Portal
             </a>
         </c:if>
-        <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.query_string'].contains('WOMEN_LAWYER') ? 'active' : ''}">
+        <a href="${pageContext.request.contextPath}/marketplace/list?category=WOMEN_LAWYER" class="sidebar-list-group-item ${not empty requestScope['javax.servlet.forward.query_string'] && fn:contains(requestScope['javax.servlet.forward.query_string'], 'WOMEN_LAWYER') ? 'active' : ''}">
             <i class="bi bi-briefcase"></i> Women Lawyers
         </a>
         <a href="${pageContext.request.contextPath}/fitness" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/fitness') ? 'active' : ''}">

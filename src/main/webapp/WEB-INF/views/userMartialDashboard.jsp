@@ -37,75 +37,86 @@
             color: #333;
         }
 
-        /* Cinematic Hero Collage */
-        .collage-hero {
-            display: flex;
-            width: 100%;
-            height: 600px;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
+        /* Floating background blobs */
+        .glow-bg-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
             overflow: hidden;
-            margin-bottom: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            position: relative;
-            background: #000;
-        }
-        .collage-panel {
-            flex: 1;
-            height: 100%;
-            border-right: 4px solid #111;
-            overflow: hidden;
-            position: relative;
-            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            cursor: pointer;
-        }
-        .collage-panel:last-child {
-            border-right: none;
-        }
-        .collage-panel img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top center;
-            filter: brightness(0.7) contrast(1.1);
-            transition: transform 0.8s ease, filter 0.6s ease;
-        }
-        .collage-panel:hover {
-            flex: 1.5;
-        }
-        .collage-panel:hover img {
-            filter: brightness(1) contrast(1.15);
-            transform: scale(1.08);
-        }
-        .collage-overlay {
-            position: absolute;
-            inset: 0;
             pointer-events: none;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent 60%);
         }
-        .hub-hero-text {
+        .blob {
             position: absolute;
-            bottom: 50px;
-            left: 0;
-            right: 0;
+            width: 500px; height: 500px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            animation: floatBlob 20s infinite alternate;
+        }
+        .blob-1 { top: -100px; right: -100px; background: var(--primary-purple); }
+        .blob-2 { bottom: -150px; left: -150px; background: var(--primary-coral); animation-delay: -5s; }
+        
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 30px) scale(1.15); }
+        }
+
+        /* Clean Minimal Header */
+        .glow-header {
+            padding: 60px 20px 40px;
             text-align: center;
-            color: #fff;
-            z-index: 10;
-            pointer-events: none;
+            background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            position: relative;
+            margin-bottom: 40px;
         }
-        .hub-hero-text h1 {
+        .glow-header h1 {
             font-family: 'Montserrat', sans-serif;
+            font-size: 38px;
             font-weight: 900;
-            font-size: 3.5rem;
-            text-shadow: 0 4px 25px rgba(0,0,0,1);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            letter-spacing: 1px;
         }
-        .hub-hero-text p {
-            font-size: 1.3rem;
-            font-weight: 500;
-            text-shadow: 0 2px 15px rgba(0,0,0,1);
-            color: rgba(255,255,255,0.9);
+        .glow-header p {
+            color: #666;
+            font-size: 15px;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Top navigation */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 16px 30px;
+            position: absolute;
+            top: 0; right: 0;
+            width: 100%;
+        }
+        .top-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            color: var(--primary-purple);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .top-btn:hover {
+            background: var(--primary-purple);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
 
         /* Custom Tabs */
@@ -238,23 +249,20 @@
     <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: var(--light-bg); padding-bottom: 50px;">
 
 
-    <!-- Hub Hero Collage -->
-    <section class="collage-hero">
-        <div class="collage-panel" onclick="window.location.href='${pageContext.request.contextPath}/centres/allacceptedcentres'">
-            <img src="${pageContext.request.contextPath}/assets/img/ma-hero-1.jpg" alt="Martial Arts 1">
+        <!-- Dashboard Header -->
+        <div class="glow-header">
+            <div class="top-bar">
+                <a href="${pageContext.request.contextPath}/users/dashboard" class="top-btn" style="margin-right: auto;">
+                    <i class="bi bi-house-door"></i> Home
+                </a>
+                <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="top-btn">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </a>
+            </div>
+            
+            <h1>Martial Arts Hub</h1>
+            <p>Welcome back, ${user.fullName}. Elevate your self-defense prowess and mastery. Discover verified martial arts centres, browse interactive training courses, or track your custom belt progression.</p>
         </div>
-        <div class="collage-panel" onclick="window.location.href='${pageContext.request.contextPath}/centres/allacceptedcentres'">
-            <img src="${pageContext.request.contextPath}/assets/img/ma-hero-2.jpg" alt="Martial Arts 2">
-        </div>
-        <div class="collage-panel" onclick="window.location.href='${pageContext.request.contextPath}/centres/allacceptedcentres'">
-            <img src="${pageContext.request.contextPath}/assets/img/ma-hero-3.jpg" alt="Martial Arts 3">
-        </div>
-        <div class="collage-overlay"></div>
-        <div class="hub-hero-text">
-            <h1 data-aos="fade-down" data-aos-duration="1000">Empowerment Martial Arts Hub</h1>
-            <p class="lead" data-aos="fade-up" data-aos-delay="400">Welcome back, ${user.fullName}. Elevate your defensive prowess and self-mastery.</p>
-        </div>
-    </section>
 
     <div class="container mb-5">
         <!-- Dashboard Navigation -->

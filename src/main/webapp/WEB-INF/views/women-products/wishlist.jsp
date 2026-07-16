@@ -7,19 +7,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Wishlist — Fight D Fear</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="${pageContext.request.contextPath}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="${pageContext.request.contextPath}/assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       background: #fffcfd;
       color: var(--fdf-text);
       min-height: 100vh;
-      padding: 40px 20px;
     }
     .wish-container {
       max-width: 1000px;
       margin: 0 auto;
+      padding: 40px 20px;
     }
     .back-link {
       display: inline-flex;
@@ -186,6 +190,10 @@
   </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
   <div class="wish-container">
     <a href="${pageContext.request.contextPath}/women-products" class="back-link">
       <i class="bi bi-arrow-left"></i> Back to Shop
@@ -238,6 +246,12 @@
       </c:forEach>
     </div>
   </div>
+  <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+  <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+    </div>
+</div>
 </body>
 </html>
 

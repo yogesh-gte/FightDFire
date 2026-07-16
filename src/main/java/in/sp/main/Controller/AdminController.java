@@ -48,8 +48,7 @@ public class AdminController {
     private CreatorCashoutRepository creatorCashoutRepository;
     @Autowired
     private BrandCollaborationRepository brandCollaborationRepository;
-    @Autowired
-    private IncidentService incidentService;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -69,8 +68,7 @@ public class AdminController {
     @Autowired
     private SOSRequestRepository sosRequestRepository;
 
-    @Autowired
-    private IncidentRepository incidentRepository;
+
 
     @Autowired
     private SosActivationRepository sosActivationRepository;
@@ -387,7 +385,7 @@ public class AdminController {
         int pendingCentres = centreService.getCentresByApprovalStatus(false).size();
         int approvedCentres = centreService.getCentresByApprovalStatus(true).size();
 
-        int incidentsTotal = incidentService.getAllIncidents().size();
+
         int reportedVideos = videoReportRepository.findAllByOrderByReportedAtDesc().size();
         int pendingDoctors = doctorRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
         int pendingWomenProducts = serviceProviderRepository.findByCategoryAndVerificationStatus(ProviderCategory.WOMEN_PRODUCTS, VerificationStatus.PENDING).size();
@@ -426,7 +424,7 @@ public class AdminController {
         long pendingTrainers = fitnessTrainerRepository.findByVerificationStatus(VerificationStatus.PENDING).size();
 
         // Simple signature: reload/update when any count changes
-        String signature = pendingCentres + "|" + incidentsTotal + "|" + totalLiveSos + "|" + totalUsers + "|" + verifiedSalons + "|" + pendingTrainers;
+        String signature = pendingCentres + "|" + totalLiveSos + "|" + totalUsers + "|" + verifiedSalons + "|" + pendingTrainers;
 
         List<Entrepreneur> allEntrepreneurs = entrepreneurRepository.findAll();
         List<Investor> allInvestors = investorRepository.findAll();
@@ -475,7 +473,7 @@ public class AdminController {
         double totalPlatformRevenue = verificationFees + subscriptionFees + premiumListingFees + featuredListingFees + platformCommissions;
 
         res.put("pendingCentres", pendingCentres);
-        res.put("incidentsTotal", incidentsTotal);
+
         res.put("totalLiveSos", totalLiveSos);
         res.put("verifiedRoutes", verifiedRoutes);
         
@@ -539,28 +537,11 @@ public class AdminController {
     }
 
     // Purpose: provide incident data for the admin heatmap.
-    // Returns ALL incidents — those with stored GPS coordinates are plotted directly;
-    // those with only a text location are geocoded on the frontend via Nominatim.
     @GetMapping(value = "/heatmap.json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<Map<String, Object>> heatmapData(HttpSession session) {
         List<Map<String, Object>> result = new java.util.ArrayList<>();
         if (session.getAttribute("admin") == null) return result;
-
-        for (Incident incident : incidentService.getAllIncidents()) {
-            Map<String, Object> point = new HashMap<>();
-            point.put("id",          incident.getId());
-            point.put("lat",         incident.getLatitude());
-            point.put("lng",         incident.getLongitude());
-            point.put("hasGps",      incident.getLatitude() != null && incident.getLongitude() != null);
-            point.put("type",        incident.getType());
-            point.put("location",    incident.getLocation());
-            point.put("description", incident.getDescription());
-            point.put("status",      incident.getStatus() != null ? incident.getStatus().name() : "PENDING");
-            point.put("reportedAt",  incident.getReportedAt() != null ? incident.getReportedAt().toString() : "");
-            point.put("source",      "INCIDENT");
-            result.add(point);
-        }
 
         // Include Verified Danger Points
         for (DangerPoint dp : dangerPointRepository.findByVerified(true)) {
@@ -578,46 +559,6 @@ public class AdminController {
             result.add(point);
         }
         return result;
-    }
-
-    // Purpose: serve the admin heatmap page.
-    @GetMapping("/heatmap")
-    public String heatmapPage(HttpSession session) {
-        if (session.getAttribute("admin") == null) return "redirect:/admin/loginAdmin";
-        return "adminHeatmap";
-    }
-
-    // Purpose: admin manually pins a location for an incident that has no GPS data.
-    // Called via AJAX from the heatmap page when admin clicks on the map for an incident.
-    @PostMapping(value = "/incidents/{id}/location", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Map<String, Object> setIncidentLocation(
-            @PathVariable Long id,
-            @RequestParam Double latitude,
-            @RequestParam Double longitude,
-            @RequestParam(required = false) String location,
-            HttpSession session) {
-        Map<String, Object> res = new HashMap<>();
-        if (session.getAttribute("admin") == null) {
-            res.put("error", "LOGIN_REQUIRED");
-            return res;
-        }
-        in.sp.main.Entities.Incident incident = incidentService.getIncidentById(id).orElse(null);
-        if (incident == null) {
-            res.put("error", "INCIDENT_NOT_FOUND");
-            return res;
-        }
-        incident.setLatitude(latitude);
-        incident.setLongitude(longitude);
-        if (location != null && !location.isBlank()) {
-            incident.setLocation(location);
-        }
-        // Purpose: use IncidentService to persist lat/lng assigned by admin.
-        incidentService.updateIncident(id, incident, null);
-        res.put("ok", true);
-        res.put("lat", latitude);
-        res.put("lng", longitude);
-        return res;
     }
 
    
@@ -1413,27 +1354,7 @@ public class AdminController {
         response.getWriter().write(csv.toString());
     }
 
-    @GetMapping("/reports/export-incidents")
-    public void exportIncidents(HttpServletResponse response, HttpSession session) throws IOException {
-        if (session.getAttribute("admin") == null) return;
 
-        response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=\"incidents_report_" + LocalDateTime.now() + ".csv\"");
-
-        List<Incident> incidents = incidentRepository.findAll();
-        StringBuilder csv = new StringBuilder("ID,Type,Location,Description,Status,Reported At,Lat,Long\n");
-        for (Incident i : incidents) {
-            csv.append(i.getId()).append(",")
-               .append(i.getType()).append(",")
-               .append("\"").append(i.getLocation() != null ? i.getLocation() : "").append("\",")
-               .append("\"").append(i.getDescription() != null ? i.getDescription().replace("\n", " ").replace("\"", "'") : "").append("\",")
-               .append(i.getStatus()).append(",")
-               .append(i.getReportedAt()).append(",")
-               .append(i.getLatitude()).append(",")
-               .append(i.getLongitude()).append("\n");
-        }
-        response.getWriter().write(csv.toString());
-    }
 
     @GetMapping("/reports/export-sos")
     public void exportSOS(HttpServletResponse response, HttpSession session) throws IOException {

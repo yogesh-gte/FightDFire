@@ -309,6 +309,7 @@
   // Purpose: requests loaded via /buddy/requests (single source, no duplicate render).
   window.__BUDDY_BOOT__ = { incoming: [], outgoing: [] };
 </script>
+<script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/buddy.js"></script>
 
     </div>

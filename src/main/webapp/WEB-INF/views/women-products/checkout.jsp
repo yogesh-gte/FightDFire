@@ -8,8 +8,11 @@
   <title>Complete Purchase — Fight D Fear</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
   <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: #fffcfd;
@@ -412,7 +415,7 @@
         </div>
         <div class="fdf-form-group">
           <label>Pincode</label>
-          <input type="text" id="addrPin" class="fdf-input" placeholder="e.g. 560001">
+          <input type="text" id="addrPin" class="fdf-input" placeholder="e.g. 560001" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
         </div>
       </div>
       <div class="fdf-form-group">
@@ -514,6 +517,12 @@
       
       if (!flat || !pin || !landmark || !full) {
         alert("Please fill in Flat No, Full Address, Pincode, and Landmark.");
+        return;
+      }
+      
+      const fakePincodes = ['111111', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321'];
+      if (!/^[1-8]\d{5}$/.test(pin) || fakePincodes.includes(pin)) {
+        alert("Please enter a valid 6-digit pincode.");
         return;
       }
       

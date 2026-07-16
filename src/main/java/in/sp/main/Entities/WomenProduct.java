@@ -50,6 +50,7 @@ public class WomenProduct {
     private Boolean active = true;
     private Boolean featured = false;
     private Boolean trackInventory = true;
+    private Boolean deleted = false;
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
@@ -111,4 +112,6 @@ public class WomenProduct {
     public void setSeller(WomenProductSeller seller) { this.seller = seller; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public Boolean getDeleted() { return deleted != null && deleted; }
+    public void setDeleted(Boolean deleted) { this.deleted = deleted; }
 }

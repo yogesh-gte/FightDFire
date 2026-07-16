@@ -9,7 +9,7 @@
   <title>${product.name} — Fight D Fear Shop</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/Fight D Fear-theme.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fightdfire-theme.css">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -562,7 +562,7 @@
         <div class="delivery-box">
           <h4><i class="bi bi-truck"></i> Delivery</h4>
           <div class="pincode-input-group">
-            <input type="text" id="pincodeInput" class="pincode-input" placeholder="Enter pincode" maxlength="6">
+            <input type="text" id="pincodeInput" class="pincode-input" placeholder="Enter pincode" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
             <button class="pincode-btn" onclick="checkDelivery()">Check</button>
           </div>
           <div id="deliveryMsg" class="delivery-msg"></div>
@@ -604,10 +604,10 @@
     <!-- Tabs Section -->
     <div class="tabs-section">
       <div class="tabs-header">
-        <c:if test="${not empty product.fullDescription}"><button class="tab-btn active" onclick="openTab('desc')">Product Description</button></c:if>
-        <c:if test="${not empty product.ingredients}"><button class="tab-btn ${empty product.fullDescription ? 'active' : ''}" onclick="openTab('ing')">Ingredients</button></c:if>
-        <c:if test="${not empty product.benefits}"><button class="tab-btn ${empty product.fullDescription && empty product.ingredients ? 'active' : ''}" onclick="openTab('ben')">Benefits</button></c:if>
-        <c:if test="${not empty product.usageInstructions}"><button class="tab-btn ${empty product.fullDescription && empty product.ingredients && empty product.benefits ? 'active' : ''}" onclick="openTab('use')">How to Use</button></c:if>
+        <c:if test="${not empty product.fullDescription}"><button class="tab-btn active" onclick="openTab(event, 'desc')">Product Description</button></c:if>
+        <c:if test="${not empty product.ingredients}"><button class="tab-btn ${empty product.fullDescription ? 'active' : ''}" onclick="openTab(event, 'ing')">Ingredients</button></c:if>
+        <c:if test="${not empty product.benefits}"><button class="tab-btn ${empty product.fullDescription && empty product.ingredients ? 'active' : ''}" onclick="openTab(event, 'ben')">Benefits</button></c:if>
+        <c:if test="${not empty product.usageInstructions}"><button class="tab-btn ${empty product.fullDescription && empty product.ingredients && empty product.benefits ? 'active' : ''}" onclick="openTab(event, 'use')">How to Use</button></c:if>
       </div>
       
       <c:if test="${not empty product.fullDescription}">
@@ -705,19 +705,24 @@
       element.classList.add('active');
     }
 
-    function openTab(tabId) {
+    function openTab(evt, tabId) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
       
       document.getElementById(tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+      } else if (window.event && window.event.srcElement) {
+        window.event.srcElement.classList.add('active');
+      }
     }
 
     function checkDelivery() {
       const input = document.getElementById('pincodeInput').value.trim();
       const msgBox = document.getElementById('deliveryMsg');
       
-      if (/^\d{6}$/.test(input)) {
+      const fakePincodes = ['111111', '222222', '333333', '444444', '555555', '666666', '777777', '888888', '999999', '123456', '654321'];
+      if (/^[1-8]\d{5}$/.test(input) && !fakePincodes.includes(input)) {
         // Deterministic pseudo-random days based on pincode
         let sum = 0;
         for (let i = 0; i < input.length; i++) {

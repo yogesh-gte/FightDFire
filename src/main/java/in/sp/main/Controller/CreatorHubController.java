@@ -818,7 +818,11 @@ public class CreatorHubController {
 
         // Update User
         currentUser.setAdViewsClaimed(totalViews);
-        currentUser.setWalletBalance(currentUser.getWalletBalance() + claimAmount);
+        Double currentBalance = currentUser.getWalletBalance();
+        if (currentBalance == null) {
+            currentBalance = 0.0;
+        }
+        currentUser.setWalletBalance(currentBalance + claimAmount);
         userRepository.save(currentUser);
 
         // System notification
@@ -1100,14 +1104,10 @@ public class CreatorHubController {
     // ADMIN PANEL INSIDE CREATOR HUB
     @GetMapping("/admin")
     public String showHubAdmin(HttpSession session, Model model) {
-        // Simple security: Check if admin is in session OR current user has eventHost / verified status
+        // Simple security: Check if admin is in session
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            // Also allow regular uploader dashboard to click into admin if uploader is admin or bypass for demo
-            User currentUser = getSessionUser(session);
-            if (currentUser == null) {
-                return "redirect:/login"; // Must be admin
-            }
+            return "redirect:/login"; // Must be admin
         }
 
         // Moderation Queue (videos/reels pending moderation check)

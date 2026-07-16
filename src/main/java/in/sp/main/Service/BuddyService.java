@@ -92,9 +92,8 @@ public class BuddyService {
                     a.getStartLatRounded(), a.getStartLngRounded());
             if (distMeters > rMeters) continue;
 
-            // Purpose: v1 destination similarity check (simple keyword overlap).
+            // Purpose: check destination similarity. We no longer filter out matches going to other nearby destinations.
             double destScore = destinationSimilarity(normDest, a.getDestinationText());
-            if (destScore < 0.15) continue;
 
             Map<String, Object> m = new HashMap<>();
             m.put("availabilityId", a.getId());

@@ -77,17 +77,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Badge> badges;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Incident> incidents;
 
-    public List<Incident> getIncidents() {
-        return incidents;
-    }
-
-    public void setIncidents(List<Incident> incidents) {
-        this.incidents = incidents;
-    }
-       
 	public Integer getRewardPoints() {
 		return rewardPoints;
 	}

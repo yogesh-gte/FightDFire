@@ -12,5 +12,7 @@ public interface WomenCartItemRepository extends JpaRepository<WomenCartItem, Lo
     Optional<WomenCartItem> findByUserAndProduct_Id(User user, Long productId);
     @Transactional
     void deleteByUser(User user);
+    @Transactional
+    void deleteByProduct_Id(Long productId);
     long countByUser(User user);
 }

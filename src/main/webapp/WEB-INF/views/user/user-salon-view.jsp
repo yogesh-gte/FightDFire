@@ -215,8 +215,8 @@
 			            </div>
 			          </div>
 			           <p>
-			           	<a href="${pageContext.request.contextPath}#" class="btn btn-primary p-3 px-5 py-4 mr-md-2">Get in Touch</a>
-			           	<a href="${pageContext.request.contextPath}#" class="btn btn-outline-primary p-3 px-5 py-4 ml-md-2">Contact</a>
+			           	<a href="${pageContext.request.contextPath}/contact" class="btn btn-primary p-3 px-5 py-4 mr-md-2">Get in Touch</a>
+			           	<a href="${pageContext.request.contextPath}/contact" class="btn btn-outline-primary p-3 px-5 py-4 ml-md-2">Contact</a>
 			           </p>
 			         </div>
 			       </div>

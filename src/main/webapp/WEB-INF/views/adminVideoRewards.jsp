@@ -214,11 +214,9 @@
     <div class="brand-label">Admin Menu</div>
     <div class="sec-title">Dashboard</div>
     <a class="nl" href="${pageContext.request.contextPath}/admin/adminDashboard"><i class="fas fa-home"></i> Home</a>
-    <a class="nl" href="${pageContext.request.contextPath}/admin/heatmap"><i class="fas fa-map-marked-alt"></i> Incident Heatmap</a>
 
     <div class="sec-title">Moderation</div>
     <a class="nl" href="${pageContext.request.contextPath}/admin/sos"><i class="fas fa-broadcast-tower"></i> SOS Monitoring</a>
-    <a class="nl" href="${pageContext.request.contextPath}/incidents/list"><i class="fas fa-bell"></i> Incidents</a>
     <a class="nl" href="${pageContext.request.contextPath}/admin/reported-videos"><i class="fas fa-flag"></i> Reported Videos</a>
     <a class="nl" href="${pageContext.request.contextPath}/qna/admin/questions"><i class="fas fa-question-circle"></i> Q&amp;A Panel</a>
 

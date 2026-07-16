@@ -379,26 +379,14 @@
                 
                 <!-- 4 Stats Cards -->
                 <div class="stat-cards-grid">
-                    <div class="stat-card-new">
-                        <span class="stat-badge badge-green">33% <i class="bi bi-arrow-up-short"></i></span>
-                        <div class="stat-icon-box" style="background:#e0f2fe; color:#3b82f6;"><i class="bi bi-file-earmark-medical"></i></div>
-                        <div class="stat-value-text">${myIncidents.size()}</div>
-                        <p class="stat-label-text">My Incidents</p>
-                    </div>
-                    
+
                     <div class="stat-card-new">
                         <span class="stat-badge badge-red">2% <i class="bi bi-arrow-down-short"></i></span>
                         <div class="stat-icon-box" style="background:#ffedd5; color:#f97316;"><i class="bi bi-shield-check"></i></div>
                         <div class="stat-value-text">${approvedCentreCount}</div>
                         <p class="stat-label-text">Martial Arts Centres</p>
                     </div>
-                    
-                    <div class="stat-card-new">
-                        <span class="stat-badge badge-green">12% <i class="bi bi-arrow-up-short"></i></span>
-                        <div class="stat-icon-box" style="background:#fef3c7; color:#eab308;"><i class="bi bi-people"></i></div>
-                        <div class="stat-value-text" id="statPendingRequests">${requestCount == null ? 0 : requestCount}</div>
-                        <p class="stat-label-text">Connect Requests</p>
-                    </div>
+                     
                     
                     <div class="stat-card-new">
                         <span class="stat-badge badge-green">22% <i class="bi bi-arrow-up-short"></i></span>
@@ -421,7 +409,7 @@
                         </div>
                         <div class="d-flex gap-4 mb-4 mt-3">
                             <div>
-                                <div class="fs-4 fw-bold" style="color:var(--primary-purple);">${myIncidents.size() + 15}</div>
+                                <div class="fs-4 fw-bold" style="color:var(--primary-purple);">15</div>
                                 <div class="small text-muted fw-semibold">This Month</div>
                             </div>
                             <div>
@@ -544,7 +532,7 @@
                                             <div class="text-muted small mb-3"><i class="bi bi-person-badge text-secondary me-1"></i> By <strong>${fc.trainer.fullName}</strong></div>
                                             
                                             <div class="d-flex align-items-center gap-2 mb-2 small text-dark fw-medium">
-                                                <i class="bi bi-calendar2-check text-primary"></i> ${fc.classDate} @ ${fc.classTime}
+                                                <i class="bi bi-calendar2-check text-primary"></i> ${fc.classDate} @ ${fc.formattedClassTime}
                                             </div>
                                             <div class="d-flex align-items-center gap-2 mb-3 small text-dark fw-medium">
                                                 <i class="bi bi-people-fill text-info"></i> ${fc.maxCapacity - fc.currentEnrollment} Seats Left
@@ -585,7 +573,7 @@
                                                             </div>
                                                             <div class="d-flex justify-content-between mb-2">
                                                                 <span class="text-muted small">Date & Time</span>
-                                                                <span class="fw-bold text-dark small">${fc.classDate} @ ${fc.classTime}</span>
+                                                                <span class="fw-bold text-dark small">${fc.classDate} @ ${fc.formattedClassTime}</span>
                                                             </div>
                                                             <div class="d-flex justify-content-between mb-2">
                                                                 <span class="text-muted small">Duration</span>

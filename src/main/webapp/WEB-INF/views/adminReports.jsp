@@ -183,17 +183,7 @@
               </div>
           </div>
 
-          <!-- Incidents Export -->
-          <div class="col-md-4">
-              <div class="export-card">
-                  <div class="export-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                  <div class="export-title">Safety Incidents Log</div>
-                  <div class="export-desc">Export all reported safety incidents (harassment, unsafe zones, etc.) to share with local law enforcement or NGOs.</div>
-                  <a href="${pageContext.request.contextPath}/admin/reports/export-incidents" class="btn-export">
-                      <i class="fas fa-download"></i> Download CSV
-                  </a>
-              </div>
-          </div>
+
 
           <!-- SOS Export -->
           <div class="col-md-4">

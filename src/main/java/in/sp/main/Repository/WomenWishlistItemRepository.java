@@ -11,4 +11,6 @@ public interface WomenWishlistItemRepository extends JpaRepository<WomenWishlist
     boolean existsByUserAndProduct_Id(User user, Long productId);
     @Transactional
     void deleteByUserAndProduct_Id(User user, Long productId);
+    @Transactional
+    void deleteByProduct_Id(Long productId);
 }

@@ -14,12 +14,16 @@
     }
 
     .header {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
         background: var(--uh-purple) !important;
         border-bottom: 2px solid rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(8px);
         padding: 15px 0;
         transition: all 0.5s;
-        z-index: 997;
+        z-index: 1050 !important;
     }
 
     .header .logo h1 {
@@ -207,6 +211,12 @@
     @keyframes call-bounce {
         0%, 100% { transform: translateY(0); }
         50% { transform: translateY(-10px); }
+    }
+    @media (max-width: 576px) {
+        .header .logo h1 {
+            font-size: 20px !important;
+            letter-spacing: 0.5px !important;
+        }
     }
 </style>
 
