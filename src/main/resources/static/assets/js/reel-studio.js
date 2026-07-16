@@ -228,9 +228,9 @@
       var c = canvas.getContext("2d");
       video.muted = true;
       video.pause();
-      video.currentTime = start;
 
-      video.onseeked = function () {
+      var startExport = function () {
+        video.onseeked = null; // cleanup
         canvas.width = video.videoWidth || 720;
         canvas.height = video.videoHeight || 1280;
         var stream = canvas.captureStream(30);
@@ -269,6 +269,13 @@
         }
         video.play().then(frame).catch(reject);
       };
+
+      if (Math.abs(video.currentTime - start) < 0.01) {
+        setTimeout(startExport, 50);
+      } else {
+        video.onseeked = startExport;
+        video.currentTime = start;
+      }
       video.onerror = function () {
         reject(new Error("Could not process video"));
       };

@@ -397,11 +397,7 @@
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
     <div id="page-content-wrapper" style="min-height: calc(100vh - 80px); overflow-x: hidden;">
 
-<div class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
-        Dashboard <i class="bi bi-arrow-right"></i>
-    </a>
-</div>
+
 <section class="user-split-section" style="padding-top: 0 !important; margin-top: 0 !important; background: transparent;">
 					     <div class="container-fluid p-0">
 					       <div class="row no-gutters align-items-stretch">
@@ -492,7 +488,6 @@
 					             <!-- 🔘 Action Buttons -->
 					             <div class="mt-4 d-flex flex-wrap gap-3">
 					               <a href="${pageContext.request.contextPath}/users/dashboard" class="btn btn-outline-dark px-4 py-2 fw-bold text-dark border-dark">
-					                 <i class="fas fa-home me-2"></i> Back to Dashboard
 					               </a>
 					               <a href="${pageContext.request.contextPath}/users/update/${user.id}" class="btn btn-primary px-4 py-2 text-white">
 					                 <i class="fas fa-user-edit me-2"></i> Edit

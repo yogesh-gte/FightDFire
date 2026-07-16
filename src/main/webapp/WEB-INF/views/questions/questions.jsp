@@ -217,11 +217,7 @@
     <nav class="top-nav">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="brand"><i class="bi bi-chat-dots-fill" style="color: var(--primary-gold);"></i> Q&A Forum</a>
     </nav>
-    <div class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
-        <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
-            Dashboard <i class="bi bi-arrow-right"></i>
-        </a>
-    </div>
+    
 
     <div class="container">
         <h1>Community Questions</h1>

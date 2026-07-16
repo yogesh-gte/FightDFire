@@ -249,7 +249,7 @@
     /* Charts grid */
     .charts-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns: 2fr 1fr;
         gap: 20px;
         margin-bottom: 25px;
     }
@@ -459,24 +459,67 @@
                         </div>
                     </div>
                     
-                    <!-- Donut Chart -->
-                    <div class="panel-new d-flex flex-column">
-                        <div class="panel-header-flex">
-                            <h3 class="panel-title">Safety Score</h3>
-                            <a href="#" class="panel-link">Show More</a>
-                        </div>
-                        <div class="chart-container flex-grow-1 d-flex align-items-center" style="height: 180px;">
-                            <canvas id="donutChart"></canvas>
-                        </div>
-                        <div class="mt-3 w-100">
-                             <div class="d-flex justify-content-between align-items-center small text-muted mb-2">
-                                <span><i class="bi bi-circle-fill icon-blue me-2" style="font-size:10px;"></i> Secured Area</span>
-                                <span class="fw-bold text-dark">85%</span>
+                </div>
+                
+                <!-- Moved Secured Area and Recent Activities here -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6 d-flex">
+                        <!-- Donut Chart -->
+                        <div class="panel-new d-flex flex-column w-100 mb-0">
+                            <div class="panel-header-flex">
+                                <h3 class="panel-title">Safety Score</h3>
+                                <a href="#" class="panel-link">Show More</a>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center small text-muted mb-2">
-                                <span><i class="bi bi-circle-fill me-2" style="font-size:10px; color:#e2e8f0;"></i> Risk Area</span>
-                                <span class="fw-bold text-dark">15%</span>
+                            <div class="chart-container flex-grow-1 d-flex align-items-center" style="height: 180px;">
+                                <canvas id="donutChart"></canvas>
                             </div>
+                            <div class="mt-3 w-100">
+                                 <div class="d-flex justify-content-between align-items-center small text-muted mb-2">
+                                    <span><i class="bi bi-circle-fill icon-blue me-2" style="font-size:10px;"></i> Secured Area</span>
+                                    <span class="fw-bold text-dark">85%</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center small text-muted mb-2">
+                                    <span><i class="bi bi-circle-fill me-2" style="font-size:10px; color:#e2e8f0;"></i> Risk Area</span>
+                                    <span class="fw-bold text-dark">15%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 d-flex">
+                        <!-- Recent Activities (My Incidents) -->
+                        <div class="panel-new d-flex flex-column w-100 mb-0">
+                            <div class="panel-header-flex">
+                                <h3 class="panel-title">Recent Activities</h3>
+                                <a href="#" class="panel-link">Show More</a>
+                            </div>
+                            <c:choose>
+                                <c:when test="${not empty myIncidents}">
+                                    <ul class="activity-list border-start border-2 ms-3 border-light position-relative">
+                                        <c:forEach var="inc" items="${myIncidents}" end="3">
+                                            <li class="activity-item align-items-start position-relative border-0 py-3">
+                                                <!-- Timeline dot -->
+                                                <div class="position-absolute" style="left: -23px; top: 15px; width: 14px; height: 14px; background:#f97316; border: 3px solid #fff; border-radius:50%;"></div>
+                                                
+                                                <div class="act-avatar d-flex align-items-center justify-content-center mt-0 ms-2" style="background: #ffedd5; color: #f97316;">
+                                                    <i class="bi bi-shield-exclamation"></i>
+                                                </div>
+                                                <div class="act-info">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <h4 class="act-title m-0">${inc.type} Incident Reported</h4>
+                                                        <div class="act-time m-0" style="font-size:0.7rem;">${inc.reportedAt}</div>
+                                                    </div>
+                                                    <p class="act-desc text-wrap mt-1 mb-2">${inc.description}</p>
+                                                    <span class="badge" style="font-size:10px; background-color: ${inc.status == 'RESOLVED' ? '#f43f5e' : '#eab308'}; color: white;">${inc.status}</span>
+                                                </div>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </c:when>
+                                <c:otherwise>
+                                    <p class="text-muted small">No recent activities found.</p>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </div>
@@ -821,41 +864,6 @@
                     <div class="mt-4 text-center">
                         <button class="btn border w-100 rounded text-muted fw-bold bg-light">View More</button>
                     </div>
-                </div>
-                
-                <!-- Recent Activities (My Incidents) -->
-                <div class="panel-new">
-                    <div class="panel-header-flex">
-                        <h3 class="panel-title">Recent Activities</h3>
-                        <a href="#" class="panel-link">Show More</a>
-                    </div>
-                    <c:choose>
-                        <c:when test="${not empty myIncidents}">
-                            <ul class="activity-list border-start border-2 ms-3 border-light position-relative">
-                                <c:forEach var="inc" items="${myIncidents}" end="3">
-                                    <li class="activity-item align-items-start position-relative border-0 py-3">
-                                        <!-- Timeline dot -->
-                                        <div class="position-absolute" style="left: -23px; top: 15px; width: 14px; height: 14px; background:#f97316; border: 3px solid #fff; border-radius:50%;"></div>
-                                        
-                                        <div class="act-avatar d-flex align-items-center justify-content-center mt-0 ms-2" style="background: #ffedd5; color: #f97316;">
-                                            <i class="bi bi-shield-exclamation"></i>
-                                        </div>
-                                        <div class="act-info">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h4 class="act-title m-0">${inc.type} Incident Reported</h4>
-                                                <div class="act-time m-0" style="font-size:0.7rem;">${inc.reportedAt}</div>
-                                            </div>
-                                            <p class="act-desc text-wrap mt-1 mb-2">${inc.description}</p>
-                                            <span class="badge" style="font-size:10px; background-color: ${inc.status == 'RESOLVED' ? '#f43f5e' : '#eab308'}; color: white;">${inc.status}</span>
-                                        </div>
-                                    </li>
-                                </c:forEach>
-                            </ul>
-                        </c:when>
-                        <c:otherwise>
-                            <p class="text-muted small">No recent activities.</p>
-                        </c:otherwise>
-                    </c:choose>
                 </div>
 
             </div><!-- /right-col -->

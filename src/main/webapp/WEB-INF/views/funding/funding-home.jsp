@@ -319,7 +319,6 @@
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
     <header class="funding-hero">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="back-btn">
-            <i class="bi bi-arrow-left"></i> Back to Dashboard
         </a>
         <div class="container">
             <h1>Women Funding Hub</h1>

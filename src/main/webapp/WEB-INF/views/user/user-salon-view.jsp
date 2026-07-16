@@ -195,28 +195,10 @@
 
   </head>
   <body>
-	<header id="header" class="header d-flex align-items-center sticky-top">
-	  <div class="container-fluid container-xl d-flex align-items-center">
-	    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
-	    <nav id="navmenu" class="navmenu">
-	      <ul>
-	        <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
-	        <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
-	        <li><a href="${pageContext.request.contextPath}/users/wallet">Wallet 💰</a></li>
-            <li><a href="${pageContext.request.contextPath}/users/dashboard" class="btn-dashboard"><i class="fas fa-th-large"></i> Back to Dashboard</a></li>
-            <li class="nav-profile">
-                <a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="d-flex align-items-center">
-                    <img src="${pageContext.request.contextPath}${not empty user.profilePhoto ? user.profilePhoto : '/images/default-profile.png'}" 
-                         alt="Profile" class="rounded-circle" style="width: 35px; height: 35px; object-fit: cover; border: 2px solid var(--brand-pink);">
-                    <span class="ms-2 d-none d-lg-inline text-white">${user.fullName}</span>
-                </a>
-            </li>
-	      </ul>
-	      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-	    </nav>
-	    <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-	  </div>
-	</header>
+	<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper">
+        <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 		    <!-- END nav -->
 			<section class="hero-wrap js-fullheight" style="background-image: url('${pageContext.request.contextPath}/beauty/images/bg_1.jpg')" data-stellar-background-ratio="0.5">
 			     <div class="overlay"></div>
@@ -952,7 +934,10 @@
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
 
- <!-- Scripts -->
+     </div>
+</div>
+
+<!-- Scripts -->
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
  
 					  	<script src="${pageContext.request.contextPath}/beauty/js/jquery.min.js"></script>

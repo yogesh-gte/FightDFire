@@ -37,7 +37,6 @@
 <div class="container-main">
     <div class="mb-3">
         <a href="${pageContext.request.contextPath}/women-events/organizer/dashboard" class="btn btn-outline-secondary rounded-pill btn-sm">
-            <i class="bi bi-chevron-left"></i> Back to Dashboard
         </a>
     </div>
 

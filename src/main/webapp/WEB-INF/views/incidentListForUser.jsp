@@ -341,27 +341,11 @@
 <body>
 
 <!-- ======= Header ======= -->
-<header id="header" class="header d-flex align-items-center sticky-top">
-  <div class="container-fluid container-xl d-flex align-items-center">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="${pageContext.request.contextPath}/chat/users">Chat</a></li>
-        <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
-        <li><a href="${pageContext.request.contextPath}/users/wallet">Wallet 💰</a></li>
-        <li><a href="${pageContext.request.contextPath}/users/profile/${user.id}">${user.fullName}</a></li>
-      </ul>
-      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-    </nav>
-    <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&amp;A</a>
-    <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-  </div>
-</header>
-<div class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="dashboard-btn">
-        Dashboard <i class="bi bi-arrow-right"></i>
-    </a>
-</div>
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper">
+        <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+
 <!-- ======= Hero Section for Incident & Safety Updates ======= -->
 <section class="hero-wrap" 
          style="background: linear-gradient(rgba(124, 45, 94, 0.4), rgba(15, 15, 26, 0.8)), url('${pageContext.request.contextPath}/assets/img/safety1.jpg'); height: 75vh; position:relative; background-size: cover; background-position: center; display: flex; align-items: center;" 
@@ -573,6 +557,8 @@
     })();
   </script>
 
-	</body>
+	    </div>
+</div>
+</body>
 	</html>
 

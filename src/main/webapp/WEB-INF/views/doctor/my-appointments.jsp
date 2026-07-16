@@ -159,7 +159,6 @@
       </a>
     </nav>
     <div class="ma-sidebar-footer">
-      <a href="${pageContext.request.contextPath}/users/dashboard"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
     </div>
   </aside>
 

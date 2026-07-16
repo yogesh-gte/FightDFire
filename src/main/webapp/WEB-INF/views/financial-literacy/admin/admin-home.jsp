@@ -232,7 +232,6 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <a href="${pageContext.request.contextPath}/admin/adminDashboard" class="text-decoration-none text-white" style="font-weight: 700;">
-                        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
                     </a>
                 </div>
                 <h5 class="mb-0">Financial Literacy - Admin Panel</h5>

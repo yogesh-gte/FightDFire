@@ -47,7 +47,6 @@
 
 <div class="topbar">
   <div class="d-flex align-items-center gap-2">
-    <a href="${pageContext.request.contextPath}/admin/adminDashboard" class="text-white d-lg-none me-2" title="Back to Dashboard">
         <i class="fas fa-arrow-left"></i>
     </a>
     <span class="fw-bold">Fight D Fear Admin</span>

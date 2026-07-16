@@ -188,6 +188,10 @@
         overflow-y: auto;
         border: 1px solid rgba(255,255,255,0.1);
         box-shadow: var(--shadow-lg);
+        position: absolute;
+        right: 80px;
+        bottom: 80px;
+        z-index: 9000;
     }
     .comment-box.active {
         display: block;
@@ -856,11 +860,13 @@ function toggleMute(videoId, btn) {
     // Toggle the specific video
     if (video.muted) {
         video.muted = false;
+        video.volume = 1.0;
         btn.innerHTML = '<i class="bi bi-volume-up-fill"></i>';
         
         // Also unmute all other videos so as you scroll, sound stays on
         document.querySelectorAll('video').forEach(v => {
             v.muted = false;
+            v.volume = 1.0;
         });
         document.querySelectorAll('.bi-volume-mute-fill').forEach(icon => {
             icon.classList.remove('bi-volume-mute-fill');
@@ -991,7 +997,7 @@ function showReplyBox(videoId, commentId, userName) {
 		    replyDiv.className = "comment";
             replyDiv.style.background = "#333";
             replyDiv.style.marginTop = "3px";
-		    replyDiv.innerHTML = `<strong>${userName}:</strong> ${data.text}`;
+		    replyDiv.innerHTML = `<strong>\${userName}:</strong> \${data.text}`;
 
 		    repliesContainer.appendChild(replyDiv);
 		    input.value = "";
@@ -1298,18 +1304,18 @@ function postComment(e, videoId) {
     commentDiv.className = "comment";
     commentDiv.id = "comment-" + commentId;
     commentDiv.innerHTML = `
-        <strong>${userName}:</strong> ${text}
-        <div id="replies-${commentId}" style="margin-left:20px; margin-top:5px;"></div>
+        <strong>\${userName}:</strong> \${text}
+        <div id="replies-\${commentId}" style="margin-left:20px; margin-top:5px;"></div>
         <div style="margin-top:5px;">
             <button type="button" class="btn btn-sm btn-outline-light"
-                onclick="showReplyBox(${videoId}, '${commentId}', '${userName}')">
+                onclick="showReplyBox(\${videoId}, '\${commentId}', '\${userName}')">
                 Reply
             </button>
         </div>
-        <div id="reply-box-${commentId}" style="display:none; margin-top:5px;">
-            <form onsubmit="postReply(event, ${videoId}, '${commentId}')" class="d-flex">
+        <div id="reply-box-\${commentId}" style="display:none; margin-top:5px;">
+            <form onsubmit="postReply(event, \${videoId}, '\${commentId}')" class="d-flex">
                 <input type="text"
-                    id="reply-input-${commentId}"
+                    id="reply-input-\${commentId}"
                     class="form-control me-2"
                     placeholder="Reply..."
                     required>

@@ -173,33 +173,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-<!-- ======= Header ======= -->
-<header id="header" class="header d-flex align-items-center sticky-top">
-  <div class="container-fluid container-xl d-flex align-items-center">
-    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto" style="text-decoration: none;"><h1>Fight D Fear</h1></a>
-    <i class="mobile-nav-toggle d-md-none bi bi-list me-3" style="font-size: 28px; color: white; cursor: pointer;"></i>
-    <div class="d-flex align-items-center ms-auto me-3">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#broadcastModal" onclick="markBroadcastsAsRead()" style="color: white; margin-right: 20px; position: relative;">
-            <i class="fas fa-bell fs-5"></i>
-            <c:if test="${unreadBroadcastCount > 0}">
-                <span id="broadcastBadge" class="position-absolute badge rounded-pill bg-danger" style="font-size: 0.65rem; top: -5px; right: -10px; padding: 3px 6px;">${unreadBroadcastCount}</span>
-            </c:if>
-        </a>
-        <a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="d-none d-md-block" style="color: white; font-weight: 600; text-decoration: none;">${user.fullName}</a>
-    </div>
-    <a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="ms-3">
-        <c:choose>
-            <c:when test="${not empty user.profilePhoto}">
-                <img src="${pageContext.request.contextPath}${user.profilePhoto}" alt="Profile" class="header-profile-img">
-            </c:when>
-            <c:otherwise>
-                <img src="${pageContext.request.contextPath}/assets/img/default-profile.png" alt="Profile" class="header-profile-img">
-            </c:otherwise>
-        </c:choose>
-    </a>
-    <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-  </div>
-</header>
+<!-- Navbar completely removed as requested, keeping only modals and scripts below -->
 
 <!-- Global Incoming Call Modal -->
 <div class="modal fade" id="globalIncomingCallModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" style="z-index: 2000;">

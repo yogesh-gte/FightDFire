@@ -218,22 +218,10 @@
 <body>
 
     <!-- ======= Header ======= -->
-    <header id="header" class="header d-flex align-items-center sticky-top shadow-sm" style="background: white;">
-        <div class="container-fluid container-xl d-flex align-items-center">
-            <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto">
-                <h1 style="color: var(--primary-red); font-weight: 800; margin: 0;">Fight D Fear</h1>
-            </a>
-            <nav id="navmenu" class="navmenu">
-                <ul>
-                    <li><a href="${pageContext.request.contextPath}/users/dashboard">Dashboard</a></li>
-                    <li><a href="${pageContext.request.contextPath}/centres/allacceptedcentres">Centres</a></li>
-                    <li><a href="${pageContext.request.contextPath}/video/reels">Reels</a></li>
-                </ul>
-                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-            </nav>
-            <a class="btn btn-danger btn-sm rounded-pill px-4 ms-3" href="${pageContext.request.contextPath}/logout">Logout</a>
-        </div>
-    </header>
+    <div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper">
+        <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
     <div class="enrollment-header text-center">
         <div class="container">
@@ -573,7 +561,10 @@
         </div>
     </div>
 
-    <!-- Scripts -->
+        </div>
+</div>
+
+<!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>

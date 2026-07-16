@@ -143,7 +143,6 @@
         <div class="form-container">
             <div class="mb-4">
                 <a href="${pageContext.request.contextPath}/entrepreneur/dashboard" class="text-secondary text-decoration-none">
-                    <i class="bi bi-arrow-left"></i> Back to Dashboard
                 </a>
             </div>
 

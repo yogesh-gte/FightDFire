@@ -506,7 +506,6 @@
             <i class="bi bi-people-fill"></i> Trusted Contacts
         </div>
         <a href="${pageContext.request.contextPath}/users/dashboard" class="back-btn">
-            <i class="bi bi-arrow-left"></i> Back to Dashboard
         </a>
     </nav>
 

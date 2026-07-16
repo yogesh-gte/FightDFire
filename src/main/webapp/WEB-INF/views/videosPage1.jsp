@@ -61,7 +61,6 @@
 		  	  			          <p>
 		  	  			          	<a href="#" class="btn btn-watch-video btn-lg"> Watch Videos</a>  |
 		  	  			          	<a href="${pageContext.request.contextPath}/video/uploadVideo" class="btn btn-watch-video btn-lg">Upload Video</a> |
-		  	  			          	<a href="${pageContext.request.contextPath}/volunteers/dashboard" class="btn btn-watch-video btn-lg">Back to Dashboard</a>
 		  	  			          </p>
 		  	  			        </div>
 		  	  			      </div>

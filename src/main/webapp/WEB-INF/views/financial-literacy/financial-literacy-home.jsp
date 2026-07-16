@@ -260,10 +260,10 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: var(--fl-bg); padding-bottom: 50px;">
     <header class="fl-hero">
-        <a href="${pageContext.request.contextPath}/users/dashboard" class="back-btn">
-            <i class="bi bi-arrow-left"></i> Back to Dashboard
-        </a>
         <div class="container">
             <h1>Financial Literacy Hub</h1>
             <p>Learn, grow, and master your finances with our curated content, live sessions, and workshops.</p>
@@ -375,9 +375,8 @@
         </div>
         </div>
     </main>
-
-    <jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
-
+    </div>
+</div>
     <!-- Bootstrap JS -->
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>

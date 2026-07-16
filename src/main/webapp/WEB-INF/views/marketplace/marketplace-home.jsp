@@ -265,7 +265,6 @@
 
     <header class="market-hero">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="back-btn">
-            <i class="bi bi-arrow-left"></i> Back to Dashboard
         </a>
         <div class="container">
             <h1>Marketplace</h1>

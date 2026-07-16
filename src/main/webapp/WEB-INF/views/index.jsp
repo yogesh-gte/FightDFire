@@ -25,13 +25,20 @@
       --text-dark: #0f172a;
     }
     
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      width: 100%;
+    }
+    
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(-45deg, #f8fafc, #ffe4e6, #e0e7ff, #f8fafc);
       background-size: 400% 400%;
       animation: gradientBG 20s ease infinite;
       color: var(--text-dark);
-      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
     }
     
     @keyframes gradientBG {
@@ -50,10 +57,11 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
       position: sticky;
       top: 0;
+      width: 100%;
       z-index: 1000;
       transition: all 0.3s ease;
     }
-    .header-nav .container {
+    .header-nav .container-fluid {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1195,12 +1203,12 @@
 
   <!-- ===== HEADER ===== -->
   <header class="header-nav">
-    <div class="container">
+    <div class="container-fluid px-4 px-xl-5">
       <div class="d-flex align-items-center gap-2">
         <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/assets/img/fightdfear-logo.jpg" alt="Fight D Fear" class="brand-logo"></a>
       </div>
       
-      <nav class="d-none d-lg-flex align-items-center">
+      <nav class="d-none d-xl-flex align-items-center">
         <a href="#hero" class="nav-link active">Home</a>
         <a href="#features" class="nav-link">Features</a>
         <a href="${pageContext.request.contextPath}/women-events" class="nav-link">Events </a>
@@ -1212,7 +1220,7 @@
         <a href="#community" class="nav-link"> Community</a>
         <a href="#contact" class="nav-link"> Contact</a>
       </nav>
-      <button class="mobile-menu-toggle d-lg-none" onclick="openMobileNav()" aria-label="Open Menu">
+      <button class="mobile-menu-toggle d-xl-none" onclick="openMobileNav()" aria-label="Open Menu">
         <i class="fa-solid fa-bars"></i>
       </button>
 

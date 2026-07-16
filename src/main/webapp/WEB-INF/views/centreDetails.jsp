@@ -56,27 +56,10 @@
 	
 
 	<!-- ======= Header ======= -->
-	<header id="header" class="header d-flex align-items-center sticky-top">
-	  <div class="container-fluid container-xl d-flex align-items-center">
-	    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
-	    <nav id="navmenu" class="navmenu">
-	      <ul>
-	        <li><a href="${pageContext.request.contextPath}/incidents/listForUser">Incidents</a></li>
-	        <li><a href="${pageContext.request.contextPath}/centres/allacceptedcentres">MartialArts Centres</a></li>
-
-	        <li><a href="${pageContext.request.contextPath}/video/reels">Reels</a></li>
-	        <li><a href="${pageContext.request.contextPath}/index/templates">Beauty</a></li>
-	        <li><a href="${pageContext.request.contextPath}/user/bookings">My Bookings</a></li>
-	        <c:if test="${not empty user}">
-	        <li><a href="${pageContext.request.contextPath}/users/profile/${user.id}">Profile</a></li>
-	        </c:if>
-	      </ul>
-	      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-	    </nav>
-	    <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&amp;A</a>
-	    <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-	  </div>
-	</header>
+	<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper">
+        <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 	<!-- END nav -->
 			  
 			  <section class="hero-wrap js-fullheight" style="background-image: url('${pageContext.request.contextPath}/beauty/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -421,7 +404,10 @@
 									    </div>
 
 									  </footer>
-														  	<!-- Scripts -->
+														  	    </div>
+</div>
+
+<!-- Scripts -->
 														  	<script src="${pageContext.request.contextPath}/beauty/js/jquery.min.js"></script>
 														  	<script src="${pageContext.request.contextPath}/beauty/js/jquery-migrate-3.0.1.min.js"></script>
 														  	<script src="${pageContext.request.contextPath}/beauty/js/popper.min.js"></script>

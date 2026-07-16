@@ -308,7 +308,6 @@
                   <i class="fas fa-pen me-2"></i>Edit Profile
               </a>
               <a href="${pageContext.request.contextPath}/admin/adminDashboard" class="btn-back">
-                  <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
               </a>
           </div>
       </div>

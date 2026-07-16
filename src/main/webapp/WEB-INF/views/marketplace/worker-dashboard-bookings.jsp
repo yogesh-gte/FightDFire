@@ -52,7 +52,6 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold" style="color: var(--m-purple);"><i class="fas fa-briefcase"></i> My Job Bookings</h2>
         <a href="${pageContext.request.contextPath}/users/dashboard" class="btn btn-outline-secondary rounded-pill">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
         </a>
     </div>
 

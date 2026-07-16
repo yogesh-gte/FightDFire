@@ -190,8 +190,8 @@ public class VideoUploadController {
     @PostMapping(value = "/uploadAjax", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> uploadVideoAjax(@RequestParam("title") String title,
-                                                               @RequestParam("description") String description,
-                                                               @RequestParam("category") String category,
+                                                               @RequestParam(value = "description", required = false) String description,
+                                                               @RequestParam(value = "category", required = false) String category,
                                                                @RequestParam(value = "isPrivate", defaultValue = "false") boolean isPrivate,
                                                                @RequestParam("file") MultipartFile file,
                                                                @RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
@@ -242,7 +242,12 @@ public class VideoUploadController {
             res.put("videoId", video.getId());
             res.put("redirect", isReel ? "/video/reels" : "/video/myVideos"); // Corrected redirect
             return ResponseEntity.ok(res);
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                java.nio.file.Files.write(java.nio.file.Paths.get(System.getProperty("user.dir"), "upload_error.log"), 
+                    (e.toString() + "\n" + java.util.Arrays.toString(e.getStackTrace())).getBytes());
+            } catch (Exception ignored) {}
             res.put("error", "UPLOAD_FAILED");
             res.put("message", e.getMessage());
             return ResponseEntity.internalServerError().body(res);

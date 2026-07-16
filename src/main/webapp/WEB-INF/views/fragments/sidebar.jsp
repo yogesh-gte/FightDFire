@@ -16,13 +16,14 @@
         background: #1e1b4b; /* var(--primary-purple) */
         color: white;
         transition: all 0.3s ease-in-out;
-        min-height: calc(100vh - 80px); 
+        min-height: 100vh; 
         z-index: 1000;
-        position: sticky;
-        top: 80px; 
-        height: calc(100vh - 80px);
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
         overflow-y: auto;
-        border-top-right-radius: 40px;
+        border-top-right-radius: 0;
         padding-top: 20px;
         box-shadow: 10px 0 20px rgba(0,0,0,0.05);
     }
@@ -74,6 +75,7 @@
     #page-content-wrapper {
         flex: 1;
         min-width: 0;
+        margin-left: 260px; /* offset for fixed sidebar */
         display: flex;
         flex-direction: column;
         padding: 25px 30px;
@@ -94,6 +96,9 @@
             border-radius: 0 !important;
             padding-top: 20px !important;
         }
+        #page-content-wrapper {
+            margin-left: 0 !important;
+        }
         body.mobile-nav-active #sidebar-wrapper {
             left: 0 !important;
         }
@@ -111,11 +116,37 @@
 <!-- Sidebar -->
 <div id="sidebar-wrapper">
     <div class="sidebar-heading">
-        <i class="bi bi-layers-half"></i> Rubick <span style="font-weight: 400; font-size: 0.9rem;">FightDFire</span>
+        <i class="bi bi-layers-half"></i> <span style="font-weight: 700; font-size: 1.1rem;">FightDFire</span>
     </div>
-    <div class="list-group list-group-flush mt-3">
+
+    <!-- User Profile Section -->
+    <c:if test="${not empty user}">
+        <div class="d-flex align-items-center p-3" style="border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.1);">
+            <a href="${pageContext.request.contextPath}/users/profile/${user.id}">
+                <c:choose>
+                    <c:when test="${not empty user.profilePhoto}">
+                        <img src="${pageContext.request.contextPath}${user.profilePhoto}" alt="Profile" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #f43f5e; box-shadow: 0 2px 8px rgba(244,63,94,0.3);">
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/assets/img/default-profile.png" alt="Profile" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #f43f5e; box-shadow: 0 2px 8px rgba(244,63,94,0.3);">
+                    </c:otherwise>
+                </c:choose>
+            </a>
+            <div class="ms-3 overflow-hidden">
+                <div class="fw-bold text-white text-truncate" style="font-size: 0.95rem;">${user.fullName}</div>
+                <div class="text-success d-flex align-items-center" style="font-size: 0.75rem;">
+                    <span style="display:inline-block; width: 6px; height: 6px; background-color: #28a745; border-radius: 50%; margin-right: 5px;"></span> Online
+                </div>
+            </div>
+        </div>
+    </c:if>
+
+    <div class="list-group list-group-flush mt-2">
         <a href="${pageContext.request.contextPath}/users/dashboard" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/users/dashboard') ? 'active' : ''}">
-            <i class="bi bi-house-door"></i> Dashboard
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a href="${pageContext.request.contextPath}/" class="sidebar-list-group-item">
+            <i class="bi bi-house-door"></i> Back to Home
         </a>
         <a href="${pageContext.request.contextPath}/creator-hub" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/creator-hub') ? 'active' : ''}">
             <i class="bi bi-camera-reels"></i> Creator Hub
@@ -130,6 +161,12 @@
         </a>
         <a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/users/profile') ? 'active' : ''}">
             <i class="bi bi-person-badge"></i> Your Profile
+        </a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#broadcastModal" onclick="markBroadcastsAsRead()" class="sidebar-list-group-item">
+            <i class="bi bi-bell"></i> Notifications
+            <c:if test="${unreadBroadcastCount > 0}">
+                <span id="sidebarBroadcastBadge" class="badge rounded-pill bg-danger ms-auto">${unreadBroadcastCount}</span>
+            </c:if>
         </a>
         <a href="${pageContext.request.contextPath}/centres/allacceptedcentres" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/centres') ? 'active' : ''}">
             <i class="bi bi-shield-check"></i> Martial Arts Centres
@@ -164,6 +201,9 @@
         </a>
         <a href="${pageContext.request.contextPath}/marketplace/earn" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/marketplace/earn') ? 'active' : ''}">
             <i class="bi bi-briefcase-fill"></i> Want to Earn
+        </a>
+        <a href="${pageContext.request.contextPath}/qna" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/qna') ? 'active' : ''}">
+            <i class="bi bi-question-circle"></i> Q&A
         </a>
         <a href="${pageContext.request.contextPath}/buddy" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/buddy') ? 'active' : ''}">
             <i class="bi bi-person-walking"></i> Buddy Mode
@@ -208,15 +248,3 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var content = document.getElementById("page-content-wrapper");
-        if(content && !document.getElementById("global-back-btn")) {
-            var backBtn = document.createElement("div");
-            backBtn.id = "global-back-btn";
-            backBtn.style.marginBottom = "20px";
-            backBtn.innerHTML = '<a href="javascript:history.back()" class="btn btn-sm" style="background: white; border: 1px solid #ddd; color: #1e1b4b; font-weight: 600; padding: 6px 15px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);"><i class="bi bi-arrow-left"></i> Go Back</a>';
-            content.insertBefore(backBtn, content.firstChild);
-        }
-    });
-</script>

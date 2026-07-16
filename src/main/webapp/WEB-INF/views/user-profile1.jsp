@@ -33,348 +33,85 @@
 
 <!-- 🎨 Custom CSS -->
 <style>
-/* ============================================
-       ORIGINAL STYLES (kept exactly as is)
-       ============================================ */
-:root {
-	--primary-purple: #1e1b4b;
-	--primary-purple-light: #312e81;
-	--primary-coral: #f43f5e;
-	--primary-coral-dark: #1e1b4b;
-	--primary-teal: #20c997;
-	--primary-gold: #ffd700;
-	--dark-bg: #0f0f1a;
-	--light-bg: #fffcfd;
-	--gradient-primary: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #f43f5e 100%);
-	--shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.08);
-	--shadow-md: 0 20px 40px rgba(0, 0, 0, 0.12);
-	--shadow-lg: 0 30px 60px rgba(0, 0, 0, 0.15);
-}
-
-#ftco-navbar {
-	background-color: var(--primary-purple) !important;
-	box-shadow: var(--shadow-sm);
-}
-
-#ftco-navbar .navbar-brand, #ftco-navbar .navbar-brand span {
-	color: #ffffff !important;
-	font-weight: 700;
-}
-
-#ftco-navbar .nav-link {
-	color: #ffffff !important;
-	font-size: 1.2rem !important;
-	font-weight: 500;
-	letter-spacing: 0.5px;
-	padding: 10px 18px !important;
-	transition: all 0.3s ease;
-}
-
-#ftco-navbar .nav-link:hover, #ftco-navbar .nav-item.active .nav-link {
-	color: var(--primary-gold) !important;
-	background-color: rgba(255, 255, 255, 0.05);
-	border-radius: 8px;
-}
-
-#ftco-navbar .navbar-toggler {
-	border-color: #ffffff;
-}
-
-#ftco-navbar .navbar-toggler-icon, #ftco-navbar .oi-menu {
-	color: #ffffff;
-}
-
-.hero-section::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(255, 215, 0, 0.35);
-	z-index: 1;
-}
-
-.hero-section .container {
-	position: relative;
-	z-index: 2;
-	padding-top: 100px;
-}
-
-.hero-section h1 {
-	font-size: 2.8rem;
-	font-weight: 700;
-	margin-bottom: 20px;
-	font-family: 'Playfair Display', serif;
-	color: #fff;
-	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.hero-section p {
-	font-size: 1.2rem;
-	color: #f8f9fa;
-	margin-bottom: 35px;
-	max-width: 650px;
-	margin-left: auto;
-	margin-right: auto;
-	text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-.hero-section a.btn-primary {
-	background-color: var(--primary-gold);
-	border-color: var(--primary-gold);
-	color: var(--primary-purple);
-	font-weight: 600;
-	transition: all 0.3s ease;
-}
-
-.hero-section a.btn-primary:hover {
-	background-color: #e6c200;
-	border-color: #e6c200;
-	transform: translateY(-2px);
-	box-shadow: var(--shadow-sm);
-}
-
-.hero-section a.btn-outline-light:hover {
-	background-color: #fff;
-	color: var(--primary-gold) !important;
-	transform: translateY(-2px);
-}
-
-.object-fit-cover {
-	object-fit: cover;
-}
-
-.bg-gradient-dark {
-	background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-}
-
-@media ( max-width : 768px) {
-	#ftco-navbar .nav-link {
-		font-size: 1rem !important;
-		padding: 8px 12px !important;
-	}
-	.hero-section h1 {
-		font-size: 2rem;
-	}
-	.hero-section p {
-		font-size: 1rem;
-	}
-}
-
-/* ============================================
-       🚀 ADDITIONAL ENHANCEMENTS (no existing rules changed)
-       ============================================ */
-
-/* 1. Smooth fade-in animation for hero content */
-.hero-section h1 {
-	animation: fadeInUp 0.8s ease-out forwards;
-}
-
-.hero-section p {
-	animation: fadeInUp 0.8s ease-out 0.15s forwards;
-	opacity: 0;
-	animation-fill-mode: forwards;
-}
-
-.hero-section a.btn-primary, .hero-section a.btn-outline-light {
-	animation: fadeInUp 0.8s ease-out 0.3s forwards;
-	opacity: 0;
-	animation-fill-mode: forwards;
-}
-
-@
-keyframes fadeInUp {from { opacity:0;
-	transform: translateY(30px);
-}
-
-to {
-	opacity: 1;
-	transform: translateY(0);
-}
-
-}
-
-/* 2. Button ripple effect on click (micro-interaction) */
-.hero-section a.btn-primary, .hero-section a.btn-outline-light {
-	position: relative;
+/* 🌟 User Profile Split Section CSS */
+.user-split-section {
+	background-color: #f8f9fa;
+	padding: 0;
+	border-radius: 20px;
 	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+	margin-bottom: 30px;
 }
 
-.hero-section a.btn-primary::after, .hero-section a.btn-outline-light::after
-	{
-	content: '';
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	width: 0;
-	height: 0;
-	border-radius: 50%;
-	background: rgba(255, 255, 255, 0.4);
-	transform: translate(-50%, -50%);
-	transition: width 0.4s ease, height 0.4s ease;
-	pointer-events: none;
+.user-bg-left {
+	background: linear-gradient(135deg, rgba(30, 27, 75, 0.05) 0%, rgba(244, 63, 94, 0.05) 100%);
+	border-right: 1px solid rgba(0, 0, 0, 0.05);
+	min-height: 400px;
 }
 
-.hero-section a.btn-primary:active::after, .hero-section a.btn-outline-light:active::after
-	{
-	width: 200px;
-	height: 200px;
+.user-details-side {
+	background-color: #ffffff;
 }
 
-/* 3. Focus outlines for accessibility (keyboard navigation) */
-#ftco-navbar .nav-link:focus-visible, .hero-section a:focus-visible {
-	outline: 3px solid var(--primary-gold);
-	outline-offset: 3px;
-	border-radius: 8px;
+.user-details {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
 }
 
-/* 4. Custom scrollbar (matches brand purple/gold) */
-::-webkit-scrollbar {
-	width: 8px;
+.user-details h2 {
+	font-weight: 800;
+	color: #1e1b4b;
+	letter-spacing: -0.5px;
 }
 
-::-webkit-scrollbar-track {
-	background: var(--light-bg);
-	border-radius: 10px;
+.user-details ul li {
+	font-size: 1.1rem;
+	color: #4a4a4a;
+	padding: 12px 0;
+	border-bottom: 1px dashed #e9ecef;
 }
 
-::-webkit-scrollbar-thumb {
-	background: var(--primary-purple-light);
-	border-radius: 10px;
+.user-details ul li:last-child {
+	border-bottom: none;
 }
 
-::-webkit-scrollbar-thumb:hover {
-	background: var(--primary-gold);
+.user-details ul li i {
+	width: 25px;
+	text-align: center;
+	color: #f43f5e;
 }
 
-/* 5. Navbar brand hover effect – subtle text glow */
-#ftco-navbar .navbar-brand:hover {
-	text-shadow: 0 0 6px rgba(255, 215, 0, 0.5);
-	transition: text-shadow 0.2s;
+.user-details ul li strong {
+	color: #1e1b4b;
+	margin-right: 5px;
 }
 
-/* 6. Additional hover lift for hero buttons (preserves original transform) */
-.hero-section a.btn-primary:hover, .hero-section a.btn-outline-light:hover
-	{
-	transform: translateY(-3px);
-}
-
-/* 7. Responsive touch improvements for very small devices */
-@media ( max-width : 480px) {
-	.hero-section h1 {
-		font-size: 1.6rem;
+@media ( max-width : 767.98px) {
+	.user-bg-left {
+		min-height: 250px;
+		border-right: none;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 	}
-	.hero-section p {
-		font-size: 0.9rem;
-		padding: 0 15px;
+	.user-details {
+		padding: 2rem !important;
 	}
-	.hero-section a.btn-primary, .hero-section a.btn-outline-light {
-		padding: 8px 16px;
-		font-size: 0.9rem;
-	}
-}
-
-/* 8. Loading skeleton ready (optional – does nothing by default) */
-@
-keyframes shimmer { 0% {
-	background-position: -200% 0;
-}
-
-100
-%
-{
-background-position
-:
-200%
-0;
-}
-}
-.hero-section.skeleton .container {
-	background: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
-	background-size: 200% 100%;
-	animation: shimmer 1.5s infinite;
-	pointer-events: none;
-}
-/* 9. Dashboard Button Styling */
-.dashboard-bar {
-	position: relative;
-	z-index: 99;
-	margin-top: 10px;
-	padding-right: 15px;
-}
-
-.dashboard-btn {
-	background: var(--gradient-primary);
-	color: #fff !important;
-	padding: 10px 24px;
-	border-radius: 50px;
-	font-weight: 700;
-	text-decoration: none;
-	display: inline-flex;
-	align-items: center;
-	gap: 10px;
-	box-shadow: 0 4px 15px rgba(124, 45, 94, 0.3);
-	transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	font-family: 'Raleway', sans-serif;
-	font-size: 0.95rem;
-	letter-spacing: 0.5px;
-}
-
-.dashboard-btn:hover {
-	transform: translateY(-3px) scale(1.02);
-	box-shadow: 0 8px 25px rgba(124, 45, 94, 0.45);
-	color: #fff !important;
-}
-
-.dashboard-btn i {
-	font-size: 1.2rem;
-	transition: transform 0.3s ease;
-}
-
-.dashboard-btn:hover i {
-	transform: translateX(5px);
 }
 </style>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
-	<div
-		class="dashboard-bar container-fluid container-xl d-flex justify-content-end">
-		<a href="${pageContext.request.contextPath}/users/dashboard"
-			class="dashboard-btn"> Dashboard <i class="bi bi-arrow-right"></i>
-		</a>
-	</div>
+    <div id="wrapper">
+        <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+        <div id="page-content-wrapper">
+            <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
-	<!-- END nav -->
+            <div class="container-fluid p-4">
+                <div class="d-flex justify-content-end mb-4">
+                    <a href="${pageContext.request.contextPath}/marketplace/provider/register" class="btn btn-success fw-bold px-4 py-2" style="border-radius: 50px; box-shadow: 0 4px 15px rgba(32, 201, 151, 0.3);">
+                        <i class="bi bi-briefcase-fill me-2"></i> Want to earn? Register to work
+                    </a>
+                </div>
 
-	<section class="hero-wrap js-fullheight"
-		style="background-image: url('${pageContext.request.contextPath}/beauty/images/bg_1.jpg')"
-		data-stellar-background-ratio="0.5">
-		<div class="overlay"></div>
-		<div class="container">
-			<div
-				class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-				<div class="col-md-10 ftco-animate text-center">
-					<div class="icon">
-						<span class="flaticon-lotus"></span>
-					</div>
-					<h1>${user.fullName}</h1>
-					<div class="row justify-content-center">
-						<div class="col-md-7 mb-3">
-							<p>Manage and update your profile details.</p>
-						</div>
-					</div>
-					<p>
-						<a href="${pageContext.request.contextPath}#"
-							class="btn btn-primary p-3 px-5 py-4 mr-md-2">Get in Touch</a> <a
-							href="${pageContext.request.contextPath}#"
-							class="btn btn-outline-primary p-3 px-5 py-4 ml-md-2">Contact</a>
-					</p>
-				</div>
-			</div>
-		</div>
-	</section>
 	<!-- 🌟 User Profile Split Section -->
 	<section class="ftco-section user-split-section">
 		<div class="container-fluid">
@@ -556,9 +293,9 @@ background-position
 		</div>
 	</section>
 
-
-	<!-- 🌸 Footer -->
-	<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
+            </div> <!-- End container-fluid -->
+        </div> <!-- End page-content-wrapper -->
+    </div> <!-- End wrapper -->
 
 	<!-- Scripts -->
 	<script

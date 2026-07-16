@@ -81,24 +81,10 @@ html, body {
 <body>
 
 <!-- NAVBAR -->
-<header id="header" class="header d-flex align-items-center sticky-top">
-		  <div class="container-fluid container-xl d-flex align-items-center">
-		    <a href="${pageContext.request.contextPath}/users/dashboard" class="logo me-auto"><h1>Fight D Fear</h1></a>
-		    <nav id="navmenu" class="navmenu">
-		      <ul>
-				<li class="nav-item"><a href="${pageContext.request.contextPath}/users/dashboard" class="nav-link">Home</a></li>
-				           <li class="nav-item"><a href="${pageContext.request.contextPath}/user/salons" class="nav-link">Explore Salons</a></li>
-				          <li class="nav-item active"><a href="${pageContext.request.contextPath}/salon/treatments/viewtreatments" class="nav-link">SkinCare Treatments</a></li>
-				          <li class="nav-item"><a href="${pageContext.request.contextPath}/user/stylists" class="nav-link">Stylists</a></li>
-				          <li class="nav-item"><a href="${pageContext.request.contextPath}/user/bookings" class="nav-link">My Bookings</a></li>
-				          <li class="nav-item"><a href="${pageContext.request.contextPath}/users/profile/${user.id}" class="nav-link">Profile</a></li>
-		      </ul>
-		      <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-		    </nav>
-		    <a class="btn-qna" href="${pageContext.request.contextPath}/qna">Q&amp;A</a>
-		    <a class="btn-getstarted" href="${pageContext.request.contextPath}/logout">Logout</a>
-		  </div>
-		</header>
+<div id="wrapper">
+    <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
+    <div id="page-content-wrapper">
+        <jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 
 <!-- CONTENT -->
 <div class="container mt-5">
@@ -221,6 +207,8 @@ html, body {
 					  	<script src="${pageContext.request.contextPath}/beauty/js/google-map.js"></script>
 					  	<script src="${pageContext.request.contextPath}/beauty/js/main.js"></script>
 
+    </div>
+</div>
 </body>
 </html>
 

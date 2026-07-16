@@ -200,7 +200,6 @@
         </div>
     </c:forEach>
  
-    <!-- Go Back -->
     <div class="text-center mt-4">
         <a href="${pageContext.request.contextPath}/salons/dashboard" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Go Back

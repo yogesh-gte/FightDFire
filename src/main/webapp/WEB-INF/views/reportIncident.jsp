@@ -62,7 +62,7 @@
             backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 50px;
-            margin-top: -20px;
+            margin-top: 0;
             border: 1px solid rgba(30, 27, 75, 0.1);
             box-shadow: var(--r-shadow);
             z-index: 10;
@@ -95,9 +95,9 @@
         }
 
         .fdf-input:focus {
-            border-color: var(--r-purple);
+            border-color: var(--r-pink);
             outline: none;
-            box-shadow: none;
+            box-shadow: 0 0 0 0.25rem rgba(244, 63, 94, 0.25);
         }
 
         #incidentMap {
@@ -215,25 +215,12 @@
 <body>
 
     <!-- Header -->
-<jsp:include page="/WEB-INF/views/fragments/header.jsp" />
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: hidden;">
-
-
-    <!-- Hero Section -->
-    <section class="hero-mini">
-        <div class="container" data-aos="fade-down">
-            <span class="section-tag" style="color: #ffd700; font-weight: 900; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">Safety First</span>
-            <h1>Report an Incident</h1>
-            <p class="mx-auto" style="max-width: 600px; font-weight: 600; color: rgba(255,255,255,0.95); text-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-                Your report helps us build a safer community. Provide as much detail as possible to assist in quick action.
-            </p>
-        </div>
-    </section>
+    <div id="page-content-wrapper">
 
     <!-- Form Section -->
-    <div class="container mb-5">
+    <div class="container-fluid py-4 mb-5">
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="form-card" data-aos="fade-up">

@@ -235,12 +235,8 @@
 
 <div id="wrapper">
     <jsp:include page="/WEB-INF/views/fragments/sidebar.jsp" />
-    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: var(--light-bg);">
-        <div class="container-fluid pt-3 px-3">
-            <a href="${pageContext.request.contextPath}/users/dashboard" class="btn btn-outline-secondary rounded-pill px-4 btn-sm">
-                <i class="bi bi-arrow-left"></i> Back to Dashboard
-            </a>
-        </div>
+    <div id="page-content-wrapper" style="min-height: 100vh; overflow-x: clip; background: var(--light-bg); padding-bottom: 50px;">
+
 
     <!-- Hub Hero Collage -->
     <section class="collage-hero">
@@ -565,9 +561,6 @@
     <script src="${pageContext.request.contextPath}/beauty/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
-
-
-<jsp:include page="/WEB-INF/views/fragments/footer.jsp" />
 
     <script>
         AOS.init({

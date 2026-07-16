@@ -40,7 +40,6 @@
             <p class="text-white-50 small">Online Class Management</p>
         </div>
         <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="${pageContext.request.contextPath}/centres/dashboard" class="nav-link text-white opacity-75"><i class="fas fa-arrow-left me-2"></i> Back to Dashboard</a></li>
             <li class="nav-item mb-2"><a href="#" class="nav-link text-white fw-bold"><i class="fas fa-plus-circle me-2"></i> Create Live Class</a></li>
             <li class="nav-item mb-2"><a href="#" class="nav-link text-white opacity-75"><i class="fas fa-history me-2"></i> Past Sessions</a></li>
         </ul>
