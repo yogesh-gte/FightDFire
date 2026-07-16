@@ -215,7 +215,7 @@
                                         <span class="status-pill status-${b.status}">${b.status}</span>
                                     </td>
                                     <td>
-                                        <c:if test="${b.status.name() == 'CONFIRMED'}">
+                                        <c:if test="${b.status == 'CONFIRMED'}">
                                             <div class="d-flex gap-2">
                                                 <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="openChat(${b.id}, '${b.provider.fullName}')">
                                                     <i class="bi bi-chat-dots-fill"></i> Chat
@@ -225,7 +225,7 @@
                                                 </button>
                                             </div>
                                         </c:if>
-                                        <c:if test="${b.status.name() != 'CONFIRMED'}">
+                                        <c:if test="${b.status != 'CONFIRMED'}">
                                             <span class="text-muted small">Available when confirmed</span>
                                         </c:if>
                                     </td>
@@ -426,7 +426,7 @@
         // Initialize all confirmed bookings on load
         document.addEventListener('DOMContentLoaded', () => {
             <c:forEach var="b" items="${bookings}">
-                <c:if test="${b.status.name() == 'CONFIRMED'}">
+                <c:if test="${b.status == 'CONFIRMED'}">
                     initWebSocket(${b.id});
                 </c:if>
             </c:forEach>

@@ -666,15 +666,15 @@
                                                 <div class="d-flex flex-column gap-2">
                                                     <div class="d-flex gap-2 align-items-center">
                                                         <select class="form-select form-select-sm fdf-input" id="status-select-${b.id}" style="width: 120px; background-color: var(--p-purple-dark) !important; color: var(--p-text-main) !important; border: 1px solid var(--p-glass-border) !important;">
-                                                            <option value="PENDING" ${b.status.name() == 'PENDING' ? 'selected' : ''}>PENDING</option>
-                                                            <option value="CONFIRMED" ${b.status.name() == 'CONFIRMED' ? 'selected' : ''}>CONFIRM</option>
-                                                            <option value="COMPLETED" ${b.status.name() == 'COMPLETED' ? 'selected' : ''}>COMPLETE</option>
-                                                            <option value="CANCELLED" ${b.status.name() == 'CANCELLED' ? 'selected' : ''}>CANCEL</option>
+                                                            <option value="PENDING" ${b.status == 'PENDING' ? 'selected' : ''}>PENDING</option>
+                                                            <option value="CONFIRMED" ${b.status == 'CONFIRMED' ? 'selected' : ''}>CONFIRM</option>
+                                                            <option value="COMPLETED" ${b.status == 'COMPLETED' ? 'selected' : ''}>COMPLETE</option>
+                                                            <option value="CANCELLED" ${b.status == 'CANCELLED' ? 'selected' : ''}>CANCEL</option>
                                                         </select>
                                                         <button class="btn btn-sm btn-premium py-1 px-3 d-flex align-items-center justify-content-center" onclick="updateStatus(${b.id})" title="Update Status"><i class="bi bi-check-lg" style="font-size: 1rem;"></i></button>
                                                     </div>
                                                     
-                                                    <div id="comm-buttons-${b.id}" class="${b.status.name() == 'CONFIRMED' ? 'd-flex' : 'd-none'} gap-2">
+                                                    <div id="comm-buttons-${b.id}" class="${b.status == 'CONFIRMED' ? 'd-flex' : 'd-none'} gap-2">
                                                         <button class="btn btn-sm btn-info w-100 py-1 px-2 rounded-3 text-white" onclick="openChat(${b.id}, '${b.user.fullName}')">
                                                             <i class="bi bi-chat-dots-fill me-1"></i> Chat
                                                         </button>
@@ -1227,7 +1227,7 @@
 
             // Initialize WebSockets for all confirmed bookings to listen for calls
             <c:forEach var="b" items="${bookings}">
-                <c:if test="${b.status.name() == 'CONFIRMED'}">
+                <c:if test="${b.status == 'CONFIRMED'}">
                     initWebSocket(${b.id});
                 </c:if>
             </c:forEach>

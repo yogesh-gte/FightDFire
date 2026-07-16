@@ -709,10 +709,10 @@ html, body {
                             </div>
                             <h5>${req.fullName}</h5>
                             <div class="d-flex flex-column gap-2 w-100 mt-2">
-                                <form action="${pageContext.request.contextPath}/users/accept-request/${req.id}" method="post">
+                                <form action="${pageContext.request.contextPath}/users/acceptRequest/${req.id}" method="post">
                                     <button class="btn-social btn-social-primary">✓ Accept</button>
                                 </form>
-                                <form action="${pageContext.request.contextPath}/users/decline-request/${req.id}" method="post">
+                                <form action="${pageContext.request.contextPath}/users/declineRequest/${req.id}" method="post">
                                     <button class="btn-social btn-social-danger">✗ Decline</button>
                                 </form>
                             </div>

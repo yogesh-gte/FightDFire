@@ -180,9 +180,6 @@
         <a href="${pageContext.request.contextPath}/financial-literacy" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/financial-literacy') ? 'active' : ''}">
             <i class="bi bi-book"></i> Financial Literacy Hub
         </a>
-        <a href="${pageContext.request.contextPath}/incidents/report" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/incidents') ? 'active' : ''}">
-            <i class="bi bi-file-earmark-medical"></i> Report Incident
-        </a>
         <a href="${pageContext.request.contextPath}/index/templates" class="sidebar-list-group-item ${requestScope['javax.servlet.forward.request_uri'].contains('/templates') ? 'active' : ''}">
             <i class="bi bi-stars"></i> Glow Space
         </a>

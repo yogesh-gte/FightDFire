@@ -392,7 +392,7 @@
               <img src="${pageContext.request.contextPath}${chatUser.profilePhoto}"
                    onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/images/default-profile.png';"
                    alt="${chatUser.fullName}"
-                   style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--primary-purple-light);">
+                   style="width:80px; height:80px; border-radius:50%; object-fit:cover; border:3px solid var(--brand-pink-light);">
               <h4 class="mt-3 mb-1">${not empty chatUser.fullName ? chatUser.fullName : chatUser.email}</h4>
               <span class="btn btn-watch-video btn-sm mt-2">
                 <i class="bi bi-chat-fill me-1"></i> Open Chat
@@ -400,6 +400,13 @@
             </div>
           </a>
         </div>
+      </c:forEach>
+    </div>
+  </div>
+</section>
+
+    </div><!-- /#page-content-wrapper -->
+</div><!-- /#wrapper -->
 
 <script src="${pageContext.request.contextPath}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/vendor/aos/aos.js"></script>
