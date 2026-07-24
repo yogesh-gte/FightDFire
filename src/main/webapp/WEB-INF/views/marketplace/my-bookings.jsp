@@ -186,8 +186,6 @@
                     <a href="${pageContext.request.contextPath}/marketplace" class="btn btn-primary mt-3 px-4">Browse Marketplace</a>
                 </div>
             </c:if>
-
-            <c:if test="${not empty bookings}">
                 <div class="table-responsive">
                     <table class="table align-middle">
                         <thead>

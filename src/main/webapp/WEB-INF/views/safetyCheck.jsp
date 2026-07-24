@@ -287,6 +287,12 @@
     <c:if test="${not empty safety_status}">
         <h3>Your Location: ${latitude}, ${longitude}</h3>
         <h3>AI Prediction: ${safety_status}</h3>
+        <c:if test="${not empty safety_message}">
+            <p>${safety_message}</p>
+        </c:if>
+        <c:if test="${safety_status == 'Unavailable'}">
+            <p>AI safety scoring is not configured on this deployment. Nearby crime data may still be shown when available.</p>
+        </c:if>
     </c:if>
 </body>
 </html>

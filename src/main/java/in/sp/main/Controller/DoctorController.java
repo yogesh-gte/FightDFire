@@ -50,6 +50,9 @@ public class DoctorController {
     @Autowired
     private in.sp.main.Config.JwtUtil jwtUtil;
 
+    @Autowired
+    private in.sp.main.Config.PasswordAuthHelper passwordAuth;
+
     // ==============================
     // Doctor Registration + Login
     // ==============================
@@ -127,7 +130,7 @@ public class DoctorController {
             d.setFullName(fullName);
             d.setEmail(email.trim().toLowerCase());
             d.setPhone(phone);
-            d.setPassword(password);
+            d.setPassword(passwordAuth.encode(password));
             d.setGender(Gender.valueOf(gender));
             d.setProfilePhotoPath(profilePhotoPath);
 
@@ -198,9 +201,13 @@ public class DoctorController {
             return "doctor/doctor-login";
         }
         Doctor d = dOpt.get();
-        if (!d.getPassword().equals(password)) {
+        if (!passwordAuth.matches(password, d.getPassword())) {
             model.addAttribute("error", "Invalid password.");
             return "doctor/doctor-login";
+        }
+        if (passwordAuth.needsUpgrade(d.getPassword())) {
+            d.setPassword(passwordAuth.encode(password));
+            doctorRepo.save(d);
         }
 
         if (d.getVerificationStatus() == VerificationStatus.PENDING) {

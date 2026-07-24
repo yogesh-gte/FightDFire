@@ -8,10 +8,12 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import in.sp.main.Config.WsAuthHandshakeInterceptor;
 import in.sp.main.Entities.ChatMessage;
 import in.sp.main.Entities.User;
 import in.sp.main.Repository.UserRepository;
@@ -38,13 +40,30 @@ public class ChatController {
     @Autowired
     private in.sp.main.Service.UserFollowService followService;
 
-    // WebRTC Signaling
+    // WebRTC Signaling — identity from WS handshake, not payload
     @MessageMapping("/webrtc.signal")
-    public void handleWebRTCSignal(@Payload Map<String, Object> signal) {
-        Object receiverId = signal.get("receiverId");
-        if (receiverId != null) {
-            messagingTemplate.convertAndSend("/topic/calls/" + receiverId, signal);
+    public void handleWebRTCSignal(@Payload Map<String, Object> signal, SimpMessageHeaderAccessor headers) {
+        Object username = headers.getSessionAttributes() != null
+                ? headers.getSessionAttributes().get(WsAuthHandshakeInterceptor.ATTR_USERNAME)
+                : null;
+        if (username == null) return;
+
+        User sender = userRepo.findByEmail(username.toString()).orElse(null);
+        if (sender == null) return;
+
+        Object receiverIdObj = signal.get("receiverId");
+        if (receiverIdObj == null) return;
+        Long receiverId;
+        try {
+            receiverId = Long.parseLong(receiverIdObj.toString());
+        } catch (NumberFormatException e) {
+            return;
         }
+        if (followService.getFriends(sender.getId()).stream().noneMatch(u -> u.getId().equals(receiverId))) {
+            return;
+        }
+        signal.put("senderId", sender.getId());
+        messagingTemplate.convertAndSend("/topic/calls/" + receiverId, signal);
     }
 
     // Show all users to start chat

@@ -17,11 +17,15 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
-import java.util.ArrayList;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -63,33 +67,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String token = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("JWT_TOKEN".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                    break;
+        // Never let JWT/session hydration crash a request — continue as anonymous.
+        try {
+            String token = null;
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("JWT_TOKEN".equals(cookie.getName())) {
+                        token = cookie.getValue();
+                        break;
+                    }
                 }
             }
-        }
 
-        if (token != null && jwtUtil.validateToken(token)) {
-            String email = jwtUtil.extractUsername(token);
-            String role = jwtUtil.extractRole(token);
+            if (token != null && jwtUtil.validateToken(token)) {
+                String email = jwtUtil.extractUsername(token);
+                String role = jwtUtil.extractRole(token);
 
-            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // Create Spring Security Authentication
-                UserDetails userDetails = User.withUsername(email).password("").roles(role).build();
-                UsernamePasswordAuthenticationToken authToken = 
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = User.withUsername(email).password("").roles(role).build();
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                // Hydrate traditional HttpSession so legacy controllers keep working
-                HttpSession session = request.getSession(true);
-                hydrateSession(session, email, role);
+                    HttpSession session = request.getSession(true);
+                    try {
+                        hydrateSession(session, email, role);
+                    } catch (Exception hydrateEx) {
+                        log.warn("Session hydrate failed for {} / {}: {}", email, role, hydrateEx.toString());
+                    }
+                }
             }
+        } catch (Exception e) {
+            log.warn("JWT filter skipped auth for {}: {}", request.getRequestURI(), e.toString());
         }
 
         filterChain.doFilter(request, response);

@@ -45,6 +45,9 @@ public class WomenEventController {
     @Autowired
     private FileUploadService fileUploadService;
 
+    @Autowired
+    private in.sp.main.Config.PasswordAuthHelper passwordAuth;
+
     // =========================================================
     // PUBLIC ROUTES — Browse & Discovery
     // =========================================================
@@ -401,7 +404,7 @@ public class WomenEventController {
         host.setFullName(fullName);
         host.setEmail(email.trim().toLowerCase());
         host.setPhone(phone);
-        host.setPassword(password);
+        host.setPassword(passwordAuth.encode(password));
         host.setOrganizerName(organizerName);
         host.setOrganizerType(organizerType);
         host.setHostContact(hostContact);
@@ -429,9 +432,13 @@ public class WomenEventController {
             return "women-events/host-login";
         }
         EventHost host = hostOpt.get();
-        if (!host.getPassword().equals(password)) {
+        if (!passwordAuth.matches(password, host.getPassword())) {
             model.addAttribute("error", "Invalid password.");
             return "women-events/host-login";
+        }
+        if (passwordAuth.needsUpgrade(host.getPassword())) {
+            host.setPassword(passwordAuth.encode(password));
+            eventHostRepository.save(host);
         }
         if (host.getVerificationStatus() == VerificationStatus.PENDING) {
             model.addAttribute("error", "Your account is pending verification by Admin. Please check back later.");

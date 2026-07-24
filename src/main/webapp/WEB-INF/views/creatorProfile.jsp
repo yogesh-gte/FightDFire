@@ -242,7 +242,12 @@
                                     <i class="fa-solid fa-circle-check verified-badge" title="Verified Creator Badge"></i>
                                 </c:if>
                             </div>
-                            <span class="badge bg-danger mb-3 rounded-pill px-3 py-1" style="font-size: 11px;">Verified Woman Creator</span>
+                            <span class="badge bg-danger mb-3 rounded-pill px-3 py-1" style="font-size: 11px;">
+                                <c:choose>
+                                    <c:when test="${creator.verifiedCreator}">Verified Woman Creator</c:when>
+                                    <c:otherwise>Woman Creator</c:otherwise>
+                                </c:choose>
+                            </span>
                             
                             <p class="text-white opacity-85 mb-3" style="max-width: 600px;">
                                 ${not empty creator.hostBio ? creator.hostBio : 'Helping women grow, share safety practices, develop professional skills and expand creative potential!'}
@@ -279,9 +284,18 @@
 
                                     <!-- Subscribe Tier -->
                                     <c:if test="${creator.creatorSubscriptionPrice > 0}">
-                                        <button class="btn btn-warning rounded-pill px-4 py-2 text-dark font-weight-bold" onclick="subscribeCreator(${creator.id})">
-                                            <i class="fa-solid fa-star me-2"></i>${isSubscribed ? 'Subscribed' : 'Subscribe (Rs. '.concat(creator.creatorSubscriptionPrice).concat('/mo)')}
-                                        </button>
+                                        <c:choose>
+                                            <c:when test="${isSubscribed}">
+                                                <button class="btn btn-success rounded-pill px-4 py-2 font-weight-bold" disabled>
+                                                    <i class="fa-solid fa-star me-2"></i>Subscribed
+                                                </button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button class="btn btn-warning rounded-pill px-4 py-2 text-dark font-weight-bold" onclick="subscribeCreator(${creator.id})">
+                                                    <i class="fa-solid fa-star me-2"></i>Subscribe (Rs. ${creator.creatorSubscriptionPrice}/mo)
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:if>
 
                                     <!-- Block User Action -->

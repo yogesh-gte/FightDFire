@@ -239,7 +239,7 @@
                 </form>
                 
                 <div class="register-link">
-                    New Administrator? <a href="${pageContext.request.contextPath}/admin/registerAdmin">Request Access</a>
+                    Admin accounts are invite-only. Ask an existing administrator to add you.
                 </div>
             </div>
         </div>

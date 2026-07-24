@@ -84,8 +84,8 @@ public class AISafetyService {
      */
     public String predictSafety(int crimeRate, int nightTimeCrime, int policeStations) throws Exception {
         if (!modelAvailable || model == null) {
-            logger.warn("⚠️ AI model not available. Returning default prediction: Unsafe");
-            return "Unsafe"; // Default to safe side
+            logger.warn("AI model not available — returning Unavailable (not a safety verdict)");
+            return "Unavailable";
         }
         
         //  Define attributes

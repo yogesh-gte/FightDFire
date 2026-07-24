@@ -20,6 +20,7 @@ import in.sp.main.Repository.MartialArtsBatchRepository;
 import in.sp.main.Repository.MartialArtsCenterRepository;
 import in.sp.main.Repository.MartialArtsTypeRepository;
 import in.sp.main.Repository.SlotRepository;
+import in.sp.main.Config.PasswordAuthHelper;
 import jakarta.servlet.ServletContext;
 
 @Service
@@ -36,6 +37,9 @@ public class MartialArtsCenterService {
 
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private PasswordAuthHelper passwordAuth;
 
     @Autowired
     private MartialArtsBatchRepository batchRepository;
@@ -77,6 +81,9 @@ public class MartialArtsCenterService {
 
         // Needs admin approval
         center.setApproved(false);
+        if (center.getPassword() != null && !center.getPassword().isBlank()) {
+            center.setPassword(passwordAuth.encodeIfPlain(center.getPassword()));
+        }
         centerRepository.save(center);
 
         // Save martial arts types & slots
@@ -252,7 +259,9 @@ public class MartialArtsCenterService {
         existingCenter.setEmail(updatedCenter.getEmail());
         existingCenter.setPhoneNumber(updatedCenter.getPhoneNumber());
         existingCenter.setLocation(updatedCenter.getLocation());
-        existingCenter.setPassword(updatedCenter.getPassword());
+        if (updatedCenter.getPassword() != null && !updatedCenter.getPassword().isBlank()) {
+            existingCenter.setPassword(passwordAuth.encodeIfPlain(updatedCenter.getPassword()));
+        }
         existingCenter.setAbout(updatedCenter.getAbout());
         existingCenter.setHowWeTeach(updatedCenter.getHowWeTeach());
         existingCenter.setWhatWeOffer(updatedCenter.getWhatWeOffer());

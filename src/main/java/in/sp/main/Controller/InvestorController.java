@@ -4,11 +4,11 @@ import in.sp.main.Entities.*;
 import in.sp.main.Repository.*;
 import in.sp.main.Service.FileUploadService;
 import in.sp.main.Config.JwtUtil;
+import in.sp.main.Config.PasswordAuthHelper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +51,7 @@ public class InvestorController {
     private FileUploadService fileUploadService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordAuthHelper passwordAuth;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -88,7 +88,7 @@ public class InvestorController {
             inv.setFullName(fullName);
             inv.setEmail(email.toLowerCase().trim());
             inv.setPhone(phone);
-            inv.setPassword(passwordEncoder.encode(password));
+            inv.setPassword(passwordAuth.encode(password));
             inv.setCompanyName(companyName);
             inv.setInvestmentInterests(investmentInterests);
             inv.setBudgetRange(budgetRange);
@@ -130,7 +130,11 @@ public class InvestorController {
         Optional<Investor> opt = investorRepository.findByEmail(email.toLowerCase().trim());
         if (opt.isPresent()) {
             Investor inv = opt.get();
-            if (passwordEncoder.matches(password, inv.getPassword()) || inv.getPassword().equals(password)) {
+            if (passwordAuth.matches(password, inv.getPassword())) {
+                if (passwordAuth.needsUpgrade(inv.getPassword())) {
+                    inv.setPassword(passwordAuth.encode(password));
+                    investorRepository.save(inv);
+                }
                 if (inv.getVerificationStatus() == VerificationStatus.PENDING) {
                     model.addAttribute("error", "Your profile is pending admin approval and verification.");
                     return "investor/login";

@@ -201,10 +201,10 @@
 
         <div class="form-panel">
             <div class="login-card">
-                <a href="${pageContext.request.contextPath}/index.html" class="back-home"><i class="bi bi-arrow-left"></i> Return Home</a>
+                <a href="${pageContext.request.contextPath}/admin/adminDashboard" class="back-home"><i class="bi bi-arrow-left"></i> Back to dashboard</a>
                 
-                <h2>Create Account 🛡️</h2>
-                <p class="subtitle">Setup a New Administrator Profile</p>
+                <h2>Invite Administrator</h2>
+                <p class="subtitle">Only existing admins can create new admin accounts</p>
 
                 <c:if test="${not empty error}">
                     <div class="alert"><i class="bi bi-exclamation-octagon-fill"></i> ${error}</div>

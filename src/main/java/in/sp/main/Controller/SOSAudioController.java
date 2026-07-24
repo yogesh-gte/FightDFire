@@ -2,7 +2,6 @@ package in.sp.main.Controller;
 
 import in.sp.main.Entities.User;
 import in.sp.main.Entities.SOSRequest;
-import in.sp.main.Service.SosService;
 import in.sp.main.Repository.SOSRequestRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +47,11 @@ public class SOSAudioController {
             response.put("success", false);
             response.put("message", "SOS request not found");
             return ResponseEntity.status(404).body(response);
+        }
+        if (sosRequest.getUser() == null || !sosRequest.getUser().getId().equals(user.getId())) {
+            response.put("success", false);
+            response.put("message", "Not authorized for this SOS");
+            return ResponseEntity.status(403).body(response);
         }
 
         try {

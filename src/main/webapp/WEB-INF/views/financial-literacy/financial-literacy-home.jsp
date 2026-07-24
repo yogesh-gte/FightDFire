@@ -283,6 +283,16 @@
         </div>
 
         <div class="fl-container">
+            <c:if test="${demoMode}">
+                <div class="alert alert-warning rounded-4 border-0 shadow-sm mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> ${demoNotice}
+                </div>
+            </c:if>
+            <c:if test="${param.registrationDisabled}">
+                <div class="alert alert-info rounded-4 border-0 shadow-sm mb-4" role="alert">
+                    <i class="bi bi-info-circle-fill me-2"></i> Registrations are temporarily disabled (demo content is not persisted).
+                </div>
+            </c:if>
             <c:if test="${param.registrationSuccess}">
                 <div class="alert alert-success rounded-4 border-0 shadow-sm mb-4" role="alert">
                     <i class="bi bi-check-circle-fill me-2"></i> Registration submitted successfully! Waiting for admin approval.

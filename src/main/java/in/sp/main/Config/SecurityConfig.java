@@ -33,7 +33,6 @@ public class SecurityConfig {
             "/users/register",
             "/users/register/**",
             "/admin/loginAdmin",
-            "/admin/registerAdmin",
             "/centres/**",
             "/doctors/login",
             "/doctors/register",
@@ -57,8 +56,7 @@ public class SecurityConfig {
             "/uploads/**",
             "/siren.mp3",
             "/*.mp3",
-            "/ws-chat/**",
-            "/ws-sos/**",
+            "/sos/respond",
             "/entrepreneur/login",
             "/entrepreneur/register",
             "/entrepreneur/register/**",
@@ -72,7 +70,8 @@ public class SecurityConfig {
             "/fitness/trainer/login",
             "/fitness/trainer/register",
             "/fitness/trainer/register/**",
-            "/error"
+            "/error",
+            "/error/**"
     };
 
     @Bean
@@ -97,7 +96,15 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .permitAll()
             )
-            .exceptionHandling(e -> e.authenticationEntryPoint(new org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint("/login")))
+            .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> {
+                String uri = request.getRequestURI();
+                String ctx = request.getContextPath() == null ? "" : request.getContextPath();
+                if (uri != null && uri.startsWith(ctx + "/admin")) {
+                    response.sendRedirect(ctx + "/admin/loginAdmin");
+                } else {
+                    response.sendRedirect(ctx + "/login");
+                }
+            }))
             .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }

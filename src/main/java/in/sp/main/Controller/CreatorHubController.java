@@ -86,6 +86,21 @@ public class CreatorHubController {
         return userRepository.findById(u.getId()).orElse(null);
     }
 
+    private Admin requireAdmin(HttpSession session) {
+        Admin admin = (Admin) session.getAttribute("admin");
+        return admin;
+    }
+
+    private Map<String, Object> adminForbidden() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "ADMIN_REQUIRED");
+        return response;
+    }
+
+    private double walletOf(User u) {
+        return u.getWalletBalance() != null ? u.getWalletBalance() : 0.0;
+    }
+
     // AI Safety scan for auto moderation
     private String performAISafetyScan(String text) {
         if (text == null) return "APPROVED";
@@ -213,7 +228,10 @@ public class CreatorHubController {
 
     @GetMapping("/comments-api")
     @ResponseBody
-    public List<Map<String, Object>> getCommentsApi(@RequestParam Long videoId) {
+    public Object getCommentsApi(@RequestParam Long videoId, HttpSession session) {
+        if (getSessionUser(session) == null) {
+            return Map.of("error", "LOGIN_REQUIRED");
+        }
         List<VideoComment> list = videoCommentRepository.findByVideo_Id(videoId);
         List<Map<String, Object>> result = new ArrayList<>();
         for (VideoComment c : list) {
@@ -450,22 +468,27 @@ public class CreatorHubController {
             return response;
         }
 
-        if (amount <= 0) {
+        if (amount == null || amount <= 0 || amount > 100000) {
             response.put("error", "INVALID_AMOUNT");
             return response;
         }
 
-        if (currentUser.getWalletBalance() < amount) {
+        if (creatorId.equals(currentUser.getId())) {
+            response.put("error", "CANNOT_TIP_SELF");
+            return response;
+        }
+
+        if (walletOf(currentUser) < amount) {
             response.put("error", "INSUFFICIENT_FUNDS");
             return response;
         }
 
         // Deduct from sender
-        currentUser.setWalletBalance(currentUser.getWalletBalance() - amount);
+        currentUser.setWalletBalance(walletOf(currentUser) - amount);
         userRepository.save(currentUser);
 
         // Add to creator
-        creator.setWalletBalance(creator.getWalletBalance() + amount);
+        creator.setWalletBalance(walletOf(creator) + amount);
         userRepository.save(creator);
 
         // Log Tip transaction
@@ -510,13 +533,25 @@ public class CreatorHubController {
             return response;
         }
 
+        if (creator.getId().equals(currentUser.getId())) {
+            response.put("error", "CANNOT_SUBSCRIBE_SELF");
+            return response;
+        }
+
         Double price = creator.getCreatorSubscriptionPrice();
         if (price == null || price <= 0) {
             response.put("error", "SUBSCRIPTION_NOT_ENABLED");
             return response;
         }
 
-        if (currentUser.getWalletBalance() < price) {
+        if (creatorSubscriptionRepository.existsBySubscriber_IdAndCreator_IdAndEndDateAfter(
+                currentUser.getId(), creator.getId(), LocalDateTime.now())) {
+            response.put("error", "ALREADY_SUBSCRIBED");
+            response.put("success", true);
+            return response;
+        }
+
+        if (walletOf(currentUser) < price) {
             response.put("error", "INSUFFICIENT_FUNDS");
             return response;
         }
@@ -532,10 +567,10 @@ public class CreatorHubController {
         creatorSubscriptionRepository.save(sub);
 
         // Deduct/Add balances
-        currentUser.setWalletBalance(currentUser.getWalletBalance() - price);
+        currentUser.setWalletBalance(walletOf(currentUser) - price);
         userRepository.save(currentUser);
 
-        creator.setWalletBalance(creator.getWalletBalance() + price);
+        creator.setWalletBalance(walletOf(creator) + price);
         userRepository.save(creator);
 
         // Notification
@@ -577,18 +612,22 @@ public class CreatorHubController {
         }
 
         Double price = video.getPrice();
-        if (currentUser.getWalletBalance() < price) {
+        if (price == null || price <= 0) {
+            response.put("error", "NOT_PAID_CONTENT");
+            return response;
+        }
+        if (walletOf(currentUser) < price) {
             response.put("error", "INSUFFICIENT_FUNDS");
             return response;
         }
 
         // Deduct balance
-        currentUser.setWalletBalance(currentUser.getWalletBalance() - price);
+        currentUser.setWalletBalance(walletOf(currentUser) - price);
         userRepository.save(currentUser);
 
         // Add creator balance
         User creator = video.getUser();
-        creator.setWalletBalance(creator.getWalletBalance() + price);
+        creator.setWalletBalance(walletOf(creator) + price);
         userRepository.save(creator);
 
         // Save unlock record
@@ -653,25 +692,40 @@ public class CreatorHubController {
     public Map<String, Object> incrementView(@RequestParam Long videoId, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         User currentUser = getSessionUser(session);
-        
+        if (currentUser == null) {
+            response.put("error", "LOGIN_REQUIRED");
+            return response;
+        }
+
         Videoupload video = videoUploadRepository.findById(videoId).orElse(null);
         if (video == null) {
             response.put("error", "VIDEO_NOT_FOUND");
             return response;
         }
 
-        // Increment overall view count
+        // One countable view + reward per user per video (stops farm refresh abuse)
+        if (videoViewRepository.existsByVideoAndUser(video, currentUser)) {
+            response.put("success", true);
+            response.put("viewCount", video.getViewCount());
+            response.put("alreadyCounted", true);
+            return response;
+        }
+
+        VideoView vv = new VideoView();
+        vv.setVideo(video);
+        vv.setUser(currentUser);
+        vv.setViewedAt(LocalDateTime.now());
+        videoViewRepository.save(vv);
+
         video.setViewCount(video.getViewCount() + 1);
         videoUploadRepository.save(video);
 
-        // Creator rewards: give points to creator for video engagement
         User creator = video.getUser();
-        if (creator != null) {
-            int pointsEarned = 10; // 10 points per view
+        if (creator != null && !creator.getId().equals(currentUser.getId())) {
+            int pointsEarned = 10;
             creator.setRewardPoints((creator.getRewardPoints() == null ? 0 : creator.getRewardPoints()) + pointsEarned);
             userRepository.save(creator);
 
-            // Notify creator on landmark milestones (like every 100 views)
             if (video.getViewCount() % 100 == 0) {
                 CreatorNotification landmark = new CreatorNotification();
                 landmark.setUser(creator);
@@ -1107,7 +1161,7 @@ public class CreatorHubController {
         // Simple security: Check if admin is in session
         Admin admin = (Admin) session.getAttribute("admin");
         if (admin == null) {
-            return "redirect:/login"; // Must be admin
+            return "redirect:/admin/loginAdmin";
         }
 
         // Moderation Queue (videos/reels pending moderation check)
@@ -1148,7 +1202,9 @@ public class CreatorHubController {
     @PostMapping("/admin/approve")
     @ResponseBody
     @Transactional
-    public Map<String, Object> adminApproveContent(@RequestParam Long videoId, @RequestParam boolean approve) {
+    public Map<String, Object> adminApproveContent(@RequestParam Long videoId, @RequestParam boolean approve,
+                                                   HttpSession session) {
+        if (requireAdmin(session) == null) return adminForbidden();
         Map<String, Object> response = new HashMap<>();
         Videoupload video = videoUploadRepository.findById(videoId).orElse(null);
         if (video != null) {
@@ -1175,11 +1231,29 @@ public class CreatorHubController {
         return response;
     }
 
+    // ADMIN: clear report only (keep the post)
+    @PostMapping("/admin/clear-report")
+    @ResponseBody
+    @Transactional
+    public Map<String, Object> adminClearReport(@RequestParam Long reportId, HttpSession session) {
+        if (requireAdmin(session) == null) return adminForbidden();
+        Map<String, Object> response = new HashMap<>();
+        VideoReport report = videoReportRepository.findById(reportId).orElse(null);
+        if (report != null) {
+            videoReportRepository.delete(report);
+            response.put("success", true);
+        } else {
+            response.put("error", "REPORT_NOT_FOUND");
+        }
+        return response;
+    }
+
     // ADMIN DELETE REPORTED VIDEO
     @PostMapping("/admin/delete-reported")
     @ResponseBody
     @Transactional
-    public Map<String, Object> adminDeleteReported(@RequestParam Long reportId) {
+    public Map<String, Object> adminDeleteReported(@RequestParam Long reportId, HttpSession session) {
+        if (requireAdmin(session) == null) return adminForbidden();
         Map<String, Object> response = new HashMap<>();
         VideoReport report = videoReportRepository.findById(reportId).orElse(null);
         if (report != null) {
@@ -1202,7 +1276,9 @@ public class CreatorHubController {
     @PostMapping("/admin/verify")
     @ResponseBody
     @Transactional
-    public Map<String, Object> adminVerifyCreator(@RequestParam Long creatorId, @RequestParam boolean verify) {
+    public Map<String, Object> adminVerifyCreator(@RequestParam Long creatorId, @RequestParam boolean verify,
+                                                  HttpSession session) {
+        if (requireAdmin(session) == null) return adminForbidden();
         Map<String, Object> response = new HashMap<>();
         User creator = userRepository.findById(creatorId).orElse(null);
         if (creator != null) {
@@ -1227,7 +1303,9 @@ public class CreatorHubController {
     @PostMapping("/admin/cashout")
     @ResponseBody
     @Transactional
-    public Map<String, Object> adminProcessCashout(@RequestParam Long cashoutId, @RequestParam boolean approve) {
+    public Map<String, Object> adminProcessCashout(@RequestParam Long cashoutId, @RequestParam boolean approve,
+                                                   HttpSession session) {
+        if (requireAdmin(session) == null) return adminForbidden();
         Map<String, Object> response = new HashMap<>();
         CreatorCashout cashout = creatorCashoutRepository.findById(cashoutId).orElse(null);
         if (cashout != null && "PENDING".equals(cashout.getStatus())) {
@@ -1238,7 +1316,7 @@ public class CreatorHubController {
             User creator = cashout.getCreator();
             if (approve) {
                 // Add money to wallet
-                creator.setWalletBalance(creator.getWalletBalance() + cashout.getAmount());
+                creator.setWalletBalance(walletOf(creator) + cashout.getAmount());
                 userRepository.save(creator);
             } else {
                 // Refund points
@@ -1266,7 +1344,12 @@ public class CreatorHubController {
                                       @RequestParam String campaignTitle,
                                       @RequestParam String description,
                                       @RequestParam Double payRate,
+                                      HttpSession session,
                                       RedirectAttributes redirectAttributes) {
+        if (requireAdmin(session) == null) {
+            redirectAttributes.addFlashAttribute("error", "Admin login required.");
+            return "redirect:/admin/loginAdmin";
+        }
         BrandCollaboration campaign = new BrandCollaboration();
         campaign.setBrandName(brandName);
         campaign.setCampaignTitle(campaignTitle);

@@ -43,6 +43,9 @@ public class FinancialLiteracyController {
         model.addAttribute("videos", videos);
         model.addAttribute("liveSessions", liveSessions);
         model.addAttribute("workshops", workshops);
+        model.addAttribute("demoMode", true);
+        model.addAttribute("demoNotice",
+                "Financial Literacy content is stored in-memory for demo only and resets when the server restarts. Registrations are disabled until a persistent store is added.");
         return "financial-literacy/financial-literacy-home";
     }
 
@@ -153,27 +156,8 @@ public class FinancialLiteracyController {
                                    @RequestParam String mobile, @RequestParam String email,
                                    @RequestParam(required = false) String occupation,
                                    HttpServletRequest request) {
-        ServletContext servletContext = request.getServletContext();
-        
-        @SuppressWarnings("unchecked")
-        List<Map<String, Object>> registrations = (List<Map<String, Object>>) servletContext.getAttribute("flLiveSessionRegistrations");
-        if (registrations == null) {
-            registrations = new ArrayList<>();
-        }
-        
-        String id = java.util.UUID.randomUUID().toString();
-        Map<String, Object> newRegistration = new HashMap<>();
-        newRegistration.put("id", id);
-        newRegistration.put("sessionId", sessionId);
-        newRegistration.put("fullName", fullName);
-        newRegistration.put("mobile", mobile);
-        newRegistration.put("email", email);
-        newRegistration.put("occupation", occupation);
-        newRegistration.put("status", "pending"); // pending, approved, rejected
-        registrations.add(newRegistration);
-        
-        servletContext.setAttribute("flLiveSessionRegistrations", registrations);
-        return "redirect:/financial-literacy?registrationSuccess=true";
+        // In-memory demo only — do not pretend registrations are durable.
+        return "redirect:/financial-literacy?registrationDisabled=true";
     }
 
     @GetMapping("/workshop/{workshopId}")
@@ -344,28 +328,7 @@ public class FinancialLiteracyController {
                                    @RequestParam String mobile, @RequestParam String email,
                                    @RequestParam String city, @RequestParam(required = false) String occupation,
                                    HttpServletRequest request) {
-        ServletContext servletContext = request.getServletContext();
-        
-        @SuppressWarnings("unchecked")
-        List<Map<String, Object>> registrations = (List<Map<String, Object>>) servletContext.getAttribute("flWorkshopRegistrations");
-        if (registrations == null) {
-            registrations = new ArrayList<>();
-        }
-        
-        String id = java.util.UUID.randomUUID().toString();
-        Map<String, Object> newRegistration = new HashMap<>();
-        newRegistration.put("id", id);
-        newRegistration.put("workshopId", workshopId);
-        newRegistration.put("fullName", fullName);
-        newRegistration.put("mobile", mobile);
-        newRegistration.put("email", email);
-        newRegistration.put("city", city);
-        newRegistration.put("occupation", occupation);
-        newRegistration.put("status", "pending"); // pending, approved, rejected
-        registrations.add(newRegistration);
-        
-        servletContext.setAttribute("flWorkshopRegistrations", registrations);
-        return "redirect:/financial-literacy?registrationSuccess=true";
+        return "redirect:/financial-literacy?registrationDisabled=true";
     }
     
     @GetMapping("/admin/registrations")

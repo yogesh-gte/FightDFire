@@ -179,32 +179,42 @@ public class AdminController {
     }
 
    
+    /**
+     * Invite-only: only a logged-in admin may open the create-admin form.
+     * First admin is created via ADMIN_BOOTSTRAP_EMAIL / ADMIN_BOOTSTRAP_PASSWORD on startup.
+     */
     @RequestMapping(value = "/registerAdmin", method = GET)
-    public String showRegisterPage(HttpSession session) {
-        if (session.getAttribute("admin") != null) {
-            return "redirect:/admin/adminDashboard";
+    public String showRegisterPage(HttpSession session, RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("admin") == null) {
+            redirectAttributes.addFlashAttribute("error",
+                    "Admin registration is invite-only. Sign in as an existing administrator.");
+            return "redirect:/admin/loginAdmin";
         }
         return "adminRegister";
     }
 
-   
     @RequestMapping(value = "/registerAdmin", method = POST)
     public String registerAdmin(@RequestParam String name,
                                 @RequestParam String email,
                                 @RequestParam String password,
+                                HttpSession session,
                                 RedirectAttributes redirectAttributes) {
+        if (session.getAttribute("admin") == null) {
+            redirectAttributes.addFlashAttribute("error",
+                    "Admin registration is invite-only. Sign in as an existing administrator.");
+            return "redirect:/admin/loginAdmin";
+        }
         if (email == null || email.isBlank() || password == null || password.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Email and Password are required!");
             return "redirect:/admin/registerAdmin";
         }
         Admin admin = new Admin(name, email, password);
         if (adminService.registerAdmin(admin)) {
-            redirectAttributes.addFlashAttribute("success", "Admin registered successfully! Please login.");
-            return "redirect:/admin/loginAdmin";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Email already exists!");
-            return "redirect:/admin/registerAdmin";
+            redirectAttributes.addFlashAttribute("success", "Administrator created. They can sign in now.");
+            return "redirect:/admin/list";
         }
+        redirectAttributes.addFlashAttribute("error", "Email already exists!");
+        return "redirect:/admin/registerAdmin";
     }
 
     
@@ -212,12 +222,17 @@ public class AdminController {
     public String showLoginPage(Model model, @ModelAttribute("error") String error,
                                 @ModelAttribute("success") String success,
                                 HttpSession session) {
-        if (session.getAttribute("admin") != null) {
-            return "redirect:/admin/adminDashboard";
+        try {
+            if (session.getAttribute("admin") != null) {
+                return "redirect:/admin/adminDashboard";
+            }
+            model.addAttribute("error", error);
+            model.addAttribute("success", success);
+            return "adminLogin";
+        } catch (Exception e) {
+            throw new in.sp.main.exception.AppException(
+                    "Could not open the admin login page.", "ADMIN_LOGIN_PAGE", 500, e);
         }
-        model.addAttribute("error", error);
-        model.addAttribute("success", success);
-        return "adminLogin";
     }
 
     
@@ -227,27 +242,40 @@ public class AdminController {
                              HttpSession session,
                              jakarta.servlet.http.HttpServletResponse response,
                              RedirectAttributes redirectAttributes) {
-        if (email == null || email.isBlank() || password == null || password.isBlank()) {
-            redirectAttributes.addFlashAttribute("error", "Please enter both Email and Password!");
-            return "redirect:/admin/loginAdmin";
-        }
-        Admin admin = adminService.loginAdmin(email, password);
-        if (admin != null) {
-            session.setAttribute("admin", admin);
-            session.setAttribute("userRole", "ADMIN");
-            
-            // Generate JWT and add to response
-            String token = jwtUtil.generateToken(admin.getEmail(), "ADMIN");
-            jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge(365 * 24 * 60 * 60); // 1 year
-            response.addCookie(cookie);
-            
-            return "redirect:/admin/adminDashboard"; 
-        } else {
+        try {
+            if (email == null || email.isBlank() || password == null || password.isBlank()) {
+                redirectAttributes.addFlashAttribute("error", "Please enter both Email and Password!");
+                return "redirect:/admin/loginAdmin";
+            }
+            Admin admin = adminService.loginAdmin(email.trim(), password);
+            if (admin != null) {
+                session.setAttribute("admin", admin);
+                session.setAttribute("userRole", "ADMIN");
+
+                String token = jwtUtil.generateToken(admin.getEmail(), "ADMIN");
+                jakarta.servlet.http.Cookie cookie = new jakarta.servlet.http.Cookie("JWT_TOKEN", token);
+                cookie.setPath("/");
+                cookie.setHttpOnly(true);
+                cookie.setMaxAge(365 * 24 * 60 * 60);
+                response.addCookie(cookie);
+
+                return "redirect:/admin/adminDashboard";
+            }
             redirectAttributes.addFlashAttribute("error", "Invalid credentials!");
             return "redirect:/admin/loginAdmin";
+        } catch (in.sp.main.exception.AppException e) {
+            throw e;
+        } catch (Exception e) {
+            org.slf4j.LoggerFactory.getLogger(AdminController.class)
+                    .error("Admin login failed for email={}", email, e);
+            Throwable root = e;
+            while (root.getCause() != null && root.getCause() != root) {
+                root = root.getCause();
+            }
+            throw new in.sp.main.exception.AppException(
+                    "Admin sign-in failed: " + root.getClass().getSimpleName()
+                            + (root.getMessage() != null ? " — " + root.getMessage() : ""),
+                    "ADMIN_LOGIN_FAILED", 500, e);
         }
     }
 

@@ -4,11 +4,11 @@ import in.sp.main.Entities.*;
 import in.sp.main.Repository.*;
 import in.sp.main.Service.FileUploadService;
 import in.sp.main.Config.JwtUtil;
+import in.sp.main.Config.PasswordAuthHelper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +51,7 @@ public class EntrepreneurController {
     private FileUploadService fileUploadService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordAuthHelper passwordAuth;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -100,7 +100,7 @@ public class EntrepreneurController {
             e.setFullName(fullName);
             e.setEmail(email.toLowerCase().trim());
             e.setPhone(phone);
-            e.setPassword(passwordEncoder.encode(password));
+            e.setPassword(passwordAuth.encode(password));
             e.setDob(dob);
             e.setGender(Gender.valueOf(gender.toUpperCase()));
             e.setAadhaarNumber(aadhaarNumber);
@@ -187,7 +187,11 @@ public class EntrepreneurController {
         Optional<Entrepreneur> opt = entrepreneurRepository.findByEmail(email.toLowerCase().trim());
         if (opt.isPresent()) {
             Entrepreneur e = opt.get();
-            if (passwordEncoder.matches(password, e.getPassword()) || e.getPassword().equals(password)) {
+            if (passwordAuth.matches(password, e.getPassword())) {
+                if (passwordAuth.needsUpgrade(e.getPassword())) {
+                    e.setPassword(passwordAuth.encode(password));
+                    entrepreneurRepository.save(e);
+                }
                 if (e.getVerificationStatus() == VerificationStatus.PENDING) {
                     model.addAttribute("error", "Your profile is pending admin approval and verification.");
                     return "entrepreneur/login";

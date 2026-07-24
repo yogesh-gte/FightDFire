@@ -154,9 +154,13 @@
                     <textarea class="form-control" rows="5" placeholder="Describe the purpose of the loan"></textarea>
                 </div>
                 
+                <div class="alert alert-warning text-start mb-4" role="alert">
+                    <strong>Information only.</strong> Fight D Fear does not process loan applications.
+                    Apply through the official bank or government portal listed for this scheme.
+                </div>
                 <div class="text-center">
-                    <a href="${pageContext.request.contextPath}/loan/confirmation" class="btn-submit btn-lg">
-                        <i class="fas fa-paper-plane me-2"></i> Submit Application
+                    <a href="${pageContext.request.contextPath}/loan" class="btn-submit btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i> Back to loan guides
                     </a>
                 </div>
             </form>

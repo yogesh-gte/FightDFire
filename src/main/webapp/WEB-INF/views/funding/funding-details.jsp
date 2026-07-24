@@ -246,7 +246,7 @@
             <span class="scheme-tag" id="schemeTag">POPULAR</span>
             <h1 id="schemeName">PM Mudra Yojana</h1>
             <a href="${pageContext.request.contextPath}/funding/application" class="btn btn-light btn-lg mt-4 px-5 fw-bold" style="color: var(--f-purple);">
-                <i class="fas fa-paper-plane me-2"></i> Apply Now
+                <i class="fas fa-book-open me-2"></i> How to apply (official portals)
             </a>
         </div>
     </header>

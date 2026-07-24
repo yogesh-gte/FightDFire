@@ -33,6 +33,8 @@ public class WomenProductController {
     @Autowired
     private in.sp.main.Config.JwtUtil jwtUtil;
     @Autowired private WomenReturnRequestRepository returnRepo;
+    @Autowired
+    private in.sp.main.Config.PasswordAuthHelper passwordAuth;
 
     // ══════════════════════════════════════
     // SELLER: Register + Login
@@ -67,7 +69,7 @@ public class WomenProductController {
             s.setFullName(fullName);
             s.setEmail(email.trim().toLowerCase());
             s.setPhone(phone);
-            s.setPassword(password);
+            s.setPassword(passwordAuth.encode(password));
             s.setBusinessName(businessName);
             s.setDescription(description);
             s.setAddress(address);
@@ -96,7 +98,11 @@ public class WomenProductController {
         Optional<WomenProductSeller> sOpt = sellerRepo.findByEmail(email.trim().toLowerCase());
         if (sOpt.isEmpty()) { model.addAttribute("error", "Seller not found."); return "women-products/seller-login"; }
         WomenProductSeller s = sOpt.get();
-        if (!s.getPassword().equals(password)) { model.addAttribute("error", "Invalid password."); return "women-products/seller-login"; }
+        if (!passwordAuth.matches(password, s.getPassword())) { model.addAttribute("error", "Invalid password."); return "women-products/seller-login"; }
+        if (passwordAuth.needsUpgrade(s.getPassword())) {
+            s.setPassword(passwordAuth.encode(password));
+            sellerRepo.save(s);
+        }
         if (s.getVerificationStatus() == VerificationStatus.PENDING) {
             model.addAttribute("error", "Your account is pending verification by Admin. Please check back later.");
             return "women-products/seller-login";

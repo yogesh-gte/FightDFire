@@ -66,20 +66,9 @@ public class SosService {
     private String baseUrl;
 
     /**
-     * TWO-TIER SOS TRIGGER FLOW:
-     * 
-     * TIER 1 (0-30s): Notify Trusted Contacts
-     * - Send SMS with accept/reject links
-     * - Send email with location
-     * - Auto-call primary contact
-     * 
-     * TIER 2 (30-60s): Escalate if needed
-     * - If <2 contacts accepted, notify more
-     * - Auto-escalate to emergency services
-     * 
-     * REAL-TIME TRACKING:
-     * - User sees who accepted/rejected
-     * - WebSocket updates for live status
+     * Immediate notify: trusted + emergency contacts (SMS if enabled, always email when available),
+     * nearby volunteers via WebSocket, and primary phone for client-side tel: dialer.
+     * Tier-2 timed escalation is handled by {@link in.sp.main.Service.SosEscalationJob}.
      */
     public Map<String, Object> triggerSOS(Long userId, double userLat, double userLon) {
         try {
@@ -330,12 +319,15 @@ public class SosService {
         response.put("volunteersAlerted", volunteersAlerted);
         response.put("autoCallPhone", autoCallPhone);
         response.put("mapsLink", savedRequest.getGoogleMapsLink());
-        response.put("message", "SOS activated! " + totalContacts + " contacts and " + volunteersAlerted + " nearby volunteers notified.");
+        response.put("smsEnabled", smsService.isEnabled());
+        response.put("message", "SOS activated! " + totalContacts + " contacts and " + volunteersAlerted
+                + " nearby volunteers notified."
+                + (smsService.isEnabled() ? "" : " (SMS is off — email used where available; set SMS_ENABLED=true for SMS.)"));
 
-        System.out.println("🚨 SOS #" + savedRequest.getId() + " triggered by " + userName);
-        System.out.println("📱 Contacts notified: " + totalContacts);
-        System.out.println("🤝 Volunteers alerted: " + volunteersAlerted);
-        System.out.println("📞 Auto-call: " + autoCallPhone);
+        System.out.println("SOS #" + savedRequest.getId() + " triggered by " + userName);
+        System.out.println("Contacts notified: " + totalContacts);
+        System.out.println("Volunteers alerted: " + volunteersAlerted);
+        System.out.println("Auto-call: " + autoCallPhone);
 
         return response;
         } catch (Exception e) {
@@ -366,8 +358,9 @@ public class SosService {
         SOSContactResponse contactResponse = responseOpt.get();
         SOSRequest sosRequest = contactResponse.getSosRequest();
 
-        // Check if SOS is still active
-        if (sosRequest.getStatus() != SOSRequest.SOSStatus.ACTIVE) {
+        // Check if SOS is still active or escalated (Tier-2 still accepts contact responses)
+        if (sosRequest.getStatus() != SOSRequest.SOSStatus.ACTIVE
+                && sosRequest.getStatus() != SOSRequest.SOSStatus.ESCALATED) {
             Map<String, Object> error = new HashMap<>();
             error.put("success", false);
             error.put("message", "This SOS request is no longer active");
@@ -502,6 +495,93 @@ public class SosService {
         return status;
     }
 
+    /** Status only for the SOS owner (prevents leaking other users' emergencies). */
+    public Map<String, Object> getSOSStatusForUser(Long sosId, Long userId) {
+        Optional<SOSRequest> sosOpt = sosRequestRepository.findById(sosId);
+        if (sosOpt.isEmpty() || !sosOpt.get().getUser().getId().equals(userId)) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "SOS not found");
+            error.put("success", false);
+            return error;
+        }
+        return getSOSStatus(sosId);
+    }
+
+    /**
+     * Tier-2: after ~30s with fewer than 2 accepts, mark escalated, re-ping pending contacts,
+     * alert admin. Does not auto-dial emergency services — client should offer tel:100.
+     */
+    public int escalateStaleActiveSOS(int ageSeconds, int minAcceptsToSkip) {
+        LocalDateTime cutoff = LocalDateTime.now().minusSeconds(ageSeconds);
+        List<SOSRequest> stale = sosRequestRepository.findByStatusAndActivatedAtBefore(
+                SOSRequest.SOSStatus.ACTIVE, cutoff);
+        int escalated = 0;
+        for (SOSRequest sos : stale) {
+            if (sos.isEscalated()) continue;
+            if (sos.getContactsAccepted() >= minAcceptsToSkip) continue;
+
+            sos.setEscalated(true);
+            sos.setEscalatedAt(LocalDateTime.now());
+            sos.setStatus(SOSRequest.SOSStatus.ESCALATED);
+            sosRequestRepository.save(sos);
+
+            User user = sos.getUser();
+            String userName = user.getFullName() != null ? user.getFullName() : user.getEmail();
+            String mapsLink = sos.getGoogleMapsLink();
+
+            // Re-notify still-pending contacts
+            for (SOSContactResponse contact : sos.getContactResponses()) {
+                if (contact.getResponseStatus() != SOSContactResponse.ResponseStatus.PENDING) continue;
+                if (contact.getContactPhone() != null && !contact.getContactPhone().isBlank()) {
+                    smsService.sendSOSSMS(
+                            contact.getContactPhone(),
+                            userName + " [ESCALATED]",
+                            mapsLink,
+                            contact.getUniqueToken(),
+                            contact.getUniqueToken(),
+                            baseUrl
+                    );
+                }
+                if (contact.getContactEmail() != null && !contact.getContactEmail().isBlank()) {
+                    try {
+                        String acceptLink = baseUrl + "/sos/respond?token=" + contact.getUniqueToken() + "&action=accept";
+                        emailService.sendEmail(
+                                contact.getContactEmail(),
+                                "ESCALATED SOS - " + userName + " still needs help!",
+                                "This SOS was escalated because fewer than " + minAcceptsToSkip
+                                        + " contacts accepted within " + ageSeconds + " seconds.\n\n"
+                                        + "Location: " + mapsLink + "\nAccept: " + acceptLink + "\n"
+                                        + "If you cannot help, ask someone nearby to dial emergency services (100)."
+                        );
+                    } catch (Exception ignored) {
+                    }
+                }
+            }
+
+            Map<String, Object> adminPayload = new HashMap<>();
+            adminPayload.put("type", "SOS_ESCALATED");
+            adminPayload.put("id", "req_" + sos.getId());
+            adminPayload.put("sosId", sos.getId());
+            adminPayload.put("userName", userName);
+            adminPayload.put("lat", sos.getLatitude());
+            adminPayload.put("lng", sos.getLongitude());
+            adminPayload.put("mapsLink", mapsLink);
+            adminPayload.put("contactsAccepted", sos.getContactsAccepted());
+            adminPayload.put("message", "SOS escalated — fewer than " + minAcceptsToSkip + " accepts. Advise dialing 100 if needed.");
+            messagingTemplate.convertAndSend("/topic/admin-sos", adminPayload);
+
+            Map<String, Object> userPayload = new HashMap<>();
+            userPayload.put("type", "SOS_ESCALATED");
+            userPayload.put("sosId", sos.getId());
+            userPayload.put("autoCallPhone", sos.getAutoCallPhone() != null ? sos.getAutoCallPhone() : "100");
+            userPayload.put("message", "Still waiting for help — dial emergency services if you are in danger.");
+            messagingTemplate.convertAndSend("/topic/sos-updates/user-" + user.getId(), userPayload);
+
+            escalated++;
+        }
+        return escalated;
+    }
+
     /**
      * Cancel SOS request
      */
@@ -516,7 +596,9 @@ public class SosService {
                 return false;
             }
             
-            if (sos.getStatus() == SOSRequest.SOSStatus.ACTIVE || sos.getStatus() == SOSRequest.SOSStatus.ACCEPTED) {
+            if (sos.getStatus() == SOSRequest.SOSStatus.ACTIVE
+                    || sos.getStatus() == SOSRequest.SOSStatus.ACCEPTED
+                    || sos.getStatus() == SOSRequest.SOSStatus.ESCALATED) {
                 sos.setStatus(SOSRequest.SOSStatus.CANCELLED);
                 sosRequestRepository.save(sos);
 

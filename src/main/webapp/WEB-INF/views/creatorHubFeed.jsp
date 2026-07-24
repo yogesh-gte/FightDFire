@@ -611,7 +611,7 @@
                 <c:if test="${empty feedContent}">
                     <div class="text-center py-5">
                         <i class="fa-solid fa-video-slash" style="font-size: 55px; color: var(--text-muted); opacity: 0.5; margin-bottom: 20px;"></i>
-                        <h4 class="text-white">No Content Found</h4>
+                        <h4 class="text-dark">No Content Found</h4>
                         <p class="text-muted">Start following creators or choose a different category filter!</p>
                     </div>
                 </c:if>
@@ -659,9 +659,9 @@
                                 <c:when test="${requestScope[subLockKey]}">
                                     <div class="post-lock-overlay">
                                         <i class="fa-solid fa-lock lock-icon"></i>
-                                        <h5 class="text-white">Subscriber Only Content</h5>
+                                        <h5 class="text-dark">Subscriber Only Content</h5>
                                         <p class="text-muted text-sm px-4">This exclusive post is reserved for monthly subscribers. Unlock it to support the creator!</p>
-                                        <button class="btn btn-danger btn-sm px-4 py-2 mt-2 rounded-pill shadow-lg" onclick="subscribeCreator(${post.user.id})">
+                                        <button class="btn btn-danger btn-sm px-4 py-2 mt-2 rounded-pill shadow-lg" onclick="event.stopPropagation(); subscribeCreator(${post.user.id})">
                                             Subscribe to ${post.user.fullName}
                                         </button>
                                     </div>
@@ -669,9 +669,9 @@
                                 <c:when test="${requestScope[paidLockKey]}">
                                     <div class="post-lock-overlay">
                                         <i class="fa-solid fa-graduation-cap lock-icon"></i>
-                                        <h5 class="text-white">Premium Educational Course</h5>
+                                        <h5 class="text-dark">Premium Educational Course</h5>
                                         <p class="text-muted text-sm px-4">Unlock this paid educational video for Rs. ${post.price} to get lifetime access to skill-development content!</p>
-                                        <button class="btn btn-warning btn-sm px-4 py-2 mt-2 text-dark font-weight-bold rounded-pill" onclick="unlockCourse(${post.id}, ${post.price})">
+                                        <button class="btn btn-warning btn-sm px-4 py-2 mt-2 text-dark font-weight-bold rounded-pill" onclick="event.stopPropagation(); unlockCourse(${post.id}, ${post.price})">
                                             Unlock Video for Rs. ${post.price}
                                         </button>
                                     </div>
@@ -704,7 +704,7 @@
                                         <span>Comment</span>
                                     </button>
                                     
-                                    <button class="action-btn" onclick="sharePost(${post.id}, '${post.title}')">
+                                    <button class="action-btn" onclick="sharePost(${post.id}, ${post.user.id}, '${post.title}')">
                                         <i class="fa-regular fa-share-from-square"></i>
                                         <span>Share</span>
                                     </button>
@@ -716,17 +716,17 @@
                                 </button>
                             </div>
 
-                            <h6 class="text-white mb-1 font-weight-bold">${post.title}</h6>
-                            <p class="post-caption mb-2 text-white opacity-90">${post.description}</p>
+                            <h6 class="text-dark mb-1 font-weight-bold">${post.title}</h6>
+                            <p class="post-caption mb-2 text-dark opacity-90">${post.description}</p>
                             <c:if test="${not empty post.hashtags}">
                                 <div class="post-hashtags mb-2">${post.hashtags}</div>
                             </c:if>
                             
                             <!-- Affiliate link support -->
                             <c:if test="${not empty post.affiliateLink}">
-                                <div class="mt-2 p-2 rounded" style="background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.1)">
+                                <div class="mt-2 p-2 rounded" style="background: #f8f5f6; border: 1px dashed #ddd;">
                                     <span class="text-muted text-xs d-block"><i class="fa-solid fa-tags text-warning me-1"></i>Sponsored Link / Recommended Product:</span>
-                                    <a href="${post.affiliateLink}" target="_blank" class="text-info font-weight-bold" style="font-size: 14px; text-decoration: none;">
+                                    <a href="${post.affiliateLink}" target="_blank" class="text-danger font-weight-bold" style="font-size: 14px; text-decoration: none;">
                                         Buy Recommended Item <i class="fa-solid fa-arrow-up-right-from-square ms-1" style="font-size: 11px;"></i>
                                     </a>
                                 </div>
@@ -776,7 +776,7 @@
                     <h5 class="sidebar-title"><i class="fa-solid fa-magnifying-glass"></i> Search Hub</h5>
                     <form action="${pageContext.request.contextPath}/creator-hub" method="GET">
                         <div class="d-flex gap-2">
-                            <input type="text" name="search" class="form-control bg-dark border-secondary text-white rounded-pill" placeholder="Search topics, hashtags..." value="${searchQuery}" style="flex: 1;">
+                            <input type="text" name="search" class="form-control border rounded-pill" placeholder="Search topics, hashtags..." value="${searchQuery}" style="flex: 1;">
                             <button class="btn btn-danger rounded-pill px-3" type="submit">
                                 <i class="fa-solid fa-magnifying-glass"></i> Search
                             </button>
@@ -840,7 +840,7 @@
     <!-- COMMENTS SIDE-DRAWER -->
     <div class="comment-drawer" id="commentDrawer">
         <div class="comment-header">
-            <h5 class="text-white m-0"><i class="fa-regular fa-comments text-danger me-2"></i>Comments</h5>
+            <h5 class="text-dark m-0"><i class="fa-regular fa-comments text-danger me-2"></i>Comments</h5>
             <button class="btn-close btn-close-white" onclick="closeComments()"></button>
         </div>
         <div class="comment-list" id="commentList">
@@ -848,7 +848,7 @@
         </div>
         <div class="comment-input-area">
             <div class="input-group">
-                <input type="text" id="commentInput" class="form-control bg-dark border-secondary text-white rounded-start-pill" placeholder="Write a comment...">
+                <input type="text" id="commentInput" class="form-control border rounded-start-pill" placeholder="Write a comment...">
                 <button class="btn btn-danger rounded-end-pill px-3" onclick="submitComment()">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
@@ -1189,10 +1189,12 @@
         }
 
         // SHARE POST
-        function sharePost(videoId, title) {
-            const shareUrl = window.location.origin + '${pageContext.request.contextPath}/creator-hub/creator/' + videoId; // link to profile
+        function sharePost(videoId, creatorId, title) {
+            const shareUrl = window.location.origin + '${pageContext.request.contextPath}/creator-hub/creator/' + creatorId;
             navigator.clipboard.writeText(shareUrl).then(() => {
-                alert("Link copied to clipboard: " + shareUrl);
+                alert("Creator profile link copied: " + shareUrl);
+            }).catch(() => {
+                prompt("Copy this link:", shareUrl);
             });
         }
 

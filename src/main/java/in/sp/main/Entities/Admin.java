@@ -1,11 +1,11 @@
 package in.sp.main.Entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "admin")
@@ -16,11 +16,14 @@ public class Admin {
 
     private String name;
     private String email;
-    @Pattern(
-    	    regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,}$",
-    	    message = "Password must be at least 6 characters long and include a number and special character"
-    	)
+
+    /**
+     * Stored as BCrypt. Do not put jakarta @Pattern here — hashed values fail
+     * Bean Validation on flush and break admin login with TransactionSystemException.
+     */
+    @Column(length = 100)
     private String password;
+
     private String profilePhoto;
 
     public Admin() {}
@@ -31,45 +34,43 @@ public class Admin {
         this.password = password;
     }
 
-	public String getProfilePhoto() {
-		return profilePhoto;
-	}
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
 
-	public void setProfilePhoto(String profilePhoto) {
-		this.profilePhoto = profilePhoto;
-	}
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-   
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

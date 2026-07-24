@@ -91,7 +91,14 @@ public class AttendanceController {
 
     @GetMapping("/api/attendance/user/{userId}")
     @ResponseBody
-    public List<Map<String, Object>> getUserAttendance(@PathVariable Long userId) {
+    public List<Map<String, Object>> getUserAttendance(@PathVariable Long userId, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser == null || !sessionUser.getId().equals(userId)) {
+            // Centre staff may view their trainees
+            if (session.getAttribute("loggedCentre") == null && session.getAttribute("admin") == null) {
+                return List.of();
+            }
+        }
         User user = userRepository.findById(userId).orElse(null);
         if (user == null) return List.of();
         

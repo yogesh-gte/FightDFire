@@ -237,16 +237,56 @@
         </form>
     </div>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-        document.getElementById("paymentForm").addEventListener("submit", function(event) {
+        document.getElementById("paymentForm").addEventListener("submit", async function(event) {
             event.preventDefault();
-            let amount = document.getElementById("amount").value;
-            
-            fetch("/payment/pay", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount: amount })
-            }).then(res => res.text()).then(alert);
+            const amount = document.getElementById("amount").value;
+            const ctx = "${pageContext.request.contextPath}";
+
+            try {
+                const res = await fetch(ctx + "/payment/create-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount: amount, type: "DIRECT" })
+                });
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    alert(err.error || "Could not start payment. Check Razorpay configuration.");
+                    return;
+                }
+                const order = await res.json();
+                const options = {
+                    key: order.key,
+                    amount: order.amount,
+                    currency: "INR",
+                    name: "Fight D Fear",
+                    description: "Direct payment",
+                    order_id: order.orderId,
+                    handler: async function(response) {
+                        const verifyRes = await fetch(ctx + "/payment/verify", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                                type: "DIRECT",
+                                amount: amount
+                            })
+                        });
+                        if (verifyRes.ok) {
+                            alert("Payment successful!");
+                        } else {
+                            const err = await verifyRes.json().catch(() => ({}));
+                            alert(err.error || "Payment verification failed.");
+                        }
+                    }
+                };
+                new Razorpay(options).open();
+            } catch (e) {
+                alert("Payment failed: " + e.message);
+            }
         });
     </script>
 </body>

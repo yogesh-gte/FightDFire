@@ -76,6 +76,41 @@ public class PaymentController {
     @Autowired
     private in.sp.main.Repository.WorkerBookingRepository workerBookingRepo;
 
+    private boolean razorpayConfigured() {
+        return razorpayKeyId != null && !razorpayKeyId.isBlank()
+                && razorpayKeySecret != null && !razorpayKeySecret.isBlank();
+    }
+
+    /** Always verify HMAC signature — test and live keys alike. Never bypass. */
+    private boolean verifyRazorpaySignature(String orderId, String paymentId, String signature) {
+        if (orderId == null || orderId.isBlank()
+                || paymentId == null || paymentId.isBlank()
+                || signature == null || signature.isBlank()
+                || !razorpayConfigured()) {
+            return false;
+        }
+        try {
+            JSONObject options = new JSONObject();
+            options.put("razorpay_order_id", orderId);
+            options.put("razorpay_payment_id", paymentId);
+            options.put("razorpay_signature", signature);
+            return Utils.verifyPaymentSignature(options, razorpayKeySecret);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static double parseAmount(Object amtObj) {
+        if (amtObj == null) return -1;
+        try {
+            String amtStr = amtObj.toString().replaceAll("[^0-9.]", "");
+            if (amtStr.isEmpty()) return -1;
+            return Double.parseDouble(amtStr);
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
     @GetMapping("")
     public String showPaymentPage(HttpSession session) {
         if (session.getAttribute("user") == null) {
@@ -84,24 +119,16 @@ public class PaymentController {
         return "payment";
     }
 
+    /**
+     * Freeform "mark Success without gateway" endpoint removed.
+     * Clients must use /payment/create-order + Razorpay Checkout + /payment/verify.
+     */
     @PostMapping("/pay")
     @ResponseBody
-    public String processDirectPayment(@RequestBody Map<String, Object> payload, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "Please login to make a payment.";
-        }
-        try {
-            double amount = Double.parseDouble(payload.get("amount").toString());
-            Payment payment = new Payment();
-            payment.setUserId(user.getId());
-            payment.setAmount(amount);
-            payment.setStatus("Success");
-            paymentRepository.save(payment);
-            return "Payment of $" + amount + " successful!";
-        } catch (Exception e) {
-            return "Payment failed: " + e.getMessage();
-        }
+    public ResponseEntity<Map<String, Object>> processDirectPayment() {
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", "Direct success payments are disabled. Use Razorpay Checkout via /payment/create-order.");
+        return ResponseEntity.status(410).body(body);
     }
 
     @GetMapping("/users/my-payments")
@@ -125,17 +152,16 @@ public class PaymentController {
         double totalPaid = 0;
         double totalFees = 0;
 
-        // Add Enrollment payments
         for (Enrollment e : enrollments) {
             double paid = (e.getAmountPaid() != null) ? e.getAmountPaid() : 0.0;
             double fee = (e.getBatch() != null && e.getBatch().getFee() != null) ? e.getBatch().getFee() : 0.0;
-            
+
             totalFees += fee;
             totalPaid += paid;
 
             if (paid > 0) {
                 Map<String, Object> t = new HashMap<>();
-                t.put("date", "Recent"); 
+                t.put("date", "Recent");
                 t.put("amount", paid);
                 t.put("status", "Success");
                 t.put("description", "Enrollment: " + (e.getBatch() != null ? e.getBatch().getName() : "Martial Arts"));
@@ -143,7 +169,6 @@ public class PaymentController {
             }
         }
 
-        // Add direct payments
         for (Payment p : payments) {
             Map<String, Object> t = new HashMap<>();
             t.put("date", "Transaction");
@@ -164,31 +189,33 @@ public class PaymentController {
             transactions
         );
     }
+
     @PostMapping("/create-order")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> createOrder(@RequestBody Map<String, Object> data, HttpSession session) {
+        Map<String, Object> errorBody = new HashMap<>();
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
+        if (!razorpayConfigured()) {
+            errorBody.put("error", "Razorpay is not configured. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET.");
+            return ResponseEntity.status(503).body(errorBody);
+        }
 
         try {
-            String amountStr = data.get("amount").toString().replaceAll("[^0-9.]", "");
-            double amount = 0;
-            try {
-                amount = Double.parseDouble(amountStr);
-            } catch (NumberFormatException nfe) {
-                amount = 0;
+            double amount = parseAmount(data.get("amount"));
+            if (amount <= 0) {
+                errorBody.put("error", "Amount must be a positive number.");
+                return ResponseEntity.badRequest().body(errorBody);
             }
-            if (amount <= 0) amount = 1.0; // Razorpay requires positive amount
-            String type = data.get("type").toString(); // "DOCTOR" or "BEAUTY" or "MARTIAL_ARTS"
 
             RazorpayClient client = new RazorpayClient(razorpayKeyId, razorpayKeySecret);
 
             JSONObject orderRequest = new JSONObject();
-            orderRequest.put("amount", (int) (amount * 100)); // amount in paise
+            orderRequest.put("amount", (int) Math.round(amount * 100)); // paise
             orderRequest.put("currency", "INR");
-            orderRequest.put("receipt", "txn_" + System.currentTimeMillis());
+            orderRequest.put("receipt", "txn_" + user.getId() + "_" + System.currentTimeMillis());
 
             Order order = client.orders.create(orderRequest);
 
@@ -196,11 +223,11 @@ public class PaymentController {
             response.put("orderId", order.get("id"));
             response.put("amount", order.get("amount"));
             response.put("key", razorpayKeyId);
-
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).build();
+            errorBody.put("error", "Failed to create payment order.");
+            return ResponseEntity.status(500).body(errorBody);
         }
     }
 
@@ -209,41 +236,30 @@ public class PaymentController {
     public ResponseEntity<Map<String, Object>> verifyPayment(@RequestBody Map<String, Object> data, HttpSession session) {
         Map<String, Object> responseMap = new HashMap<>();
         try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                responseMap.put("error", "Session expired. Please login again.");
+                return ResponseEntity.status(401).body(responseMap);
+            }
+            if (!razorpayConfigured()) {
+                responseMap.put("error", "Razorpay is not configured.");
+                return ResponseEntity.status(503).body(responseMap);
+            }
+
             String orderId = Objects.toString(data.get("razorpay_order_id"), "");
             String paymentId = Objects.toString(data.get("razorpay_payment_id"), "");
             String signature = Objects.toString(data.get("razorpay_signature"), "");
             String type = Objects.toString(data.get("type"), "");
-            
-            System.out.println("Verifying Payment: Order=" + orderId + ", Type=" + type);
 
-            boolean isValid = false;
-            try {
-                // Bypass for test keys or development environments
-                if (razorpayKeyId != null && razorpayKeyId.startsWith("rzp_test_")) {
-                    isValid = true;
-                } else if (!orderId.isEmpty() && !paymentId.isEmpty() && !signature.isEmpty()) {
-                    JSONObject options = new JSONObject();
-                    options.put("razorpay_order_id", orderId);
-                    options.put("razorpay_payment_id", paymentId);
-                    options.put("razorpay_signature", signature);
-                    isValid = Utils.verifyPaymentSignature(options, razorpayKeySecret);
-                }
-            } catch (Exception e) {
-                System.out.println("Signature Verification Exception: " + e.getMessage());
-                if (razorpayKeyId != null && razorpayKeyId.startsWith("rzp_test_")) isValid = true;
+            if (!verifyRazorpaySignature(orderId, paymentId, signature)) {
+                responseMap.put("error", "Invalid payment signature.");
+                return ResponseEntity.status(400).body(responseMap);
             }
 
-            if (isValid) {
-                User user = (User) session.getAttribute("user");
-                if (user == null) {
-                    responseMap.put("error", "Session expired. Please login again.");
-                    return ResponseEntity.status(401).body(responseMap);
-                }
+            DateTimeFormatter formatterT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            DateTimeFormatter formatterSpace = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                DateTimeFormatter formatterT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-                DateTimeFormatter formatterSpace = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                
-                if ("DOCTOR".equals(type)) {
+            if ("DOCTOR".equals(type)) {
                     Object targetIdObj = data.get("targetId");
                     Long targetId = (targetIdObj != null) ? Long.parseLong(targetIdObj.toString()) : null;
                     Doctor d = doctorRepo.findById(targetId).orElse(null);
@@ -331,19 +347,8 @@ public class PaymentController {
                     enrollment.setRazorpayPaymentId(paymentId);
                     enrollment.setRazorpaySignature(signature);
                     
-                    // Safe amount parsing — handles NaN, null, locale-formatted strings
-                    double parsedAmount = 0.0;
-                    try {
-                        Object amtObj = data.get("amount");
-                        if (amtObj != null) {
-                            String amtStr = amtObj.toString().replaceAll("[^0-9.]", "");
-                            if (!amtStr.isEmpty()) {
-                                parsedAmount = Double.parseDouble(amtStr);
-                            }
-                        }
-                    } catch (Exception amtEx) {
-                        System.out.println("Amount parse warning: " + amtEx.getMessage());
-                    }
+                    double parsedAmount = parseAmount(data.get("amount"));
+                    if (parsedAmount < 0) parsedAmount = 0;
                     enrollment.setAmountPaid(parsedAmount);
                     enrollmentRepository.save(enrollment);
 
@@ -361,18 +366,8 @@ public class PaymentController {
                         enrollment.setRazorpayPaymentId(paymentId);
                         enrollment.setRazorpaySignature(signature);
                         
-                        double parsedAmount = 0.0;
-                        try {
-                            Object amtObj = data.get("amount");
-                            if (amtObj != null) {
-                                String amtStr = amtObj.toString().replaceAll("[^0-9.]", "");
-                                if (!amtStr.isEmpty()) {
-                                    parsedAmount = Double.parseDouble(amtStr);
-                                }
-                            }
-                        } catch (Exception amtEx) {
-                            System.out.println("Amount parse warning: " + amtEx.getMessage());
-                        }
+                        double parsedAmount = parseAmount(data.get("amount"));
+                        if (parsedAmount < 0) parsedAmount = 0;
                         enrollment.setAmountPaid(parsedAmount);
                         marketplaceEnrollmentRepo.save(enrollment);
                     }
@@ -407,14 +402,24 @@ public class PaymentController {
                             walletTransactionRepo.save(clientTx);
                         }
                     }
+                } else if ("DIRECT".equals(type)) {
+                    double amount = parseAmount(data.get("amount"));
+                    if (amount <= 0) {
+                        responseMap.put("error", "Invalid amount.");
+                        return ResponseEntity.badRequest().body(responseMap);
+                    }
+                    Payment payment = new Payment();
+                    payment.setUserId(user.getId());
+                    payment.setAmount(amount);
+                    payment.setStatus("Success");
+                    paymentRepository.save(payment);
+                } else {
+                    responseMap.put("error", "Unknown payment type.");
+                    return ResponseEntity.badRequest().body(responseMap);
                 }
 
                 responseMap.put("status", "success");
                 return ResponseEntity.ok(responseMap);
-            } else {
-                responseMap.put("error", "Invalid Payment Signature.");
-                return ResponseEntity.status(400).body(responseMap);
-            }
         } catch (Exception e) {
             e.printStackTrace();
             responseMap.put("error", "Server Error: " + e.getMessage());

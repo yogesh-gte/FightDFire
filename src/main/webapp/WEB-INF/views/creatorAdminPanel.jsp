@@ -422,14 +422,14 @@
 
         // SAFETY REPORTS
         function keepReported(reportId) {
-            // Keep reported clears report
-            // E.g. call standard delete of report row
-            fetch('${pageContext.request.contextPath}/creator-hub/admin/delete-reported?reportId=' + reportId, { method: 'POST' })
+            fetch('${pageContext.request.contextPath}/creator-hub/admin/clear-report?reportId=' + reportId, { method: 'POST' })
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
                     alert("Report cleared. Post kept active.");
                     document.getElementById('report-row-' + reportId).remove();
+                } else {
+                    alert(data.error || "Could not clear report");
                 }
             });
         }

@@ -43,6 +43,9 @@ public class FitnessController {
     @Autowired
     private in.sp.main.Config.JwtUtil jwtUtil;
 
+    @Autowired
+    private in.sp.main.Config.PasswordAuthHelper passwordAuth;
+
     private final String[] FITNESS_CATEGORIES = {
         "Gym Training", "Zumba", "Dance Fitness", "Yoga", "Aerobics", "Pilates", 
         "Strength Training", "Cardio Training", "CrossFit", "Functional Training", 
@@ -276,6 +279,10 @@ public class FitnessController {
             redirectAttributes.addFlashAttribute("error", "Booking record not found.");
             return "redirect:/fitness/bookings";
         }
+        if (booking.getUser() == null || !booking.getUser().getId().equals(currentUser.getId())) {
+            redirectAttributes.addFlashAttribute("error", "Not authorized to cancel this booking.");
+            return "redirect:/fitness/bookings";
+        }
 
         if ("PAID".equals(booking.getPaymentStatus())) {
             // Refund wallet
@@ -307,6 +314,10 @@ public class FitnessController {
         FitnessBooking booking = fitnessBookingRepository.findById(bookingId).orElse(null);
         if (booking == null || !"COMPLETED".equals(booking.getStatus())) {
             redirectAttributes.addFlashAttribute("error", "Cannot rate a non-completed session.");
+            return "redirect:/fitness/bookings";
+        }
+        if (booking.getUser() == null || !booking.getUser().getId().equals(currentUser.getId())) {
+            redirectAttributes.addFlashAttribute("error", "Not authorized to rate this booking.");
             return "redirect:/fitness/bookings";
         }
 
@@ -359,7 +370,7 @@ public class FitnessController {
             trainer.setFullName(fullName);
             trainer.setEmail(email.trim().toLowerCase());
             trainer.setPhone(phone);
-            trainer.setPassword(password); // Simple storage
+            trainer.setPassword(passwordAuth.encode(password));
             trainer.setExperience(experience);
             trainer.setAvailableTimings(availableTimings);
             trainer.setSessionFees(sessionFees);
@@ -399,8 +410,12 @@ public class FitnessController {
             HttpSession session, RedirectAttributes redirectAttributes) {
 
         Optional<FitnessTrainer> opt = fitnessTrainerRepository.findByEmail(email.trim().toLowerCase());
-        if (opt.isPresent() && opt.get().getPassword().equals(password)) {
+        if (opt.isPresent() && passwordAuth.matches(password, opt.get().getPassword())) {
             FitnessTrainer trainer = opt.get();
+            if (passwordAuth.needsUpgrade(trainer.getPassword())) {
+                trainer.setPassword(passwordAuth.encode(password));
+                fitnessTrainerRepository.save(trainer);
+            }
             if (trainer.getVerificationStatus() == VerificationStatus.PENDING) {
                 redirectAttributes.addFlashAttribute("error", "Your account is pending verification by admin.");
                 return "redirect:/fitness/trainer/login";

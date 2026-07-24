@@ -68,6 +68,9 @@ public class MarketplaceController {
     @Autowired
     private in.sp.main.Config.JwtUtil jwtUtil;
 
+    @Autowired
+    private in.sp.main.Config.PasswordAuthHelper passwordAuth;
+
     // ==============================
     // Provider registration + login
     // ==============================
@@ -103,7 +106,7 @@ public class MarketplaceController {
             p.setFullName(fullName);
             p.setEmail(email.trim().toLowerCase());
             p.setPhone(phone);
-            p.setPassword(password);
+            p.setPassword(passwordAuth.encode(password));
             
             // Robust category parsing
             try {
@@ -151,9 +154,13 @@ public class MarketplaceController {
             return "marketplace/provider-login";
         }
         ServiceProvider p = pOpt.get();
-        if (!p.getPassword().equals(password)) {
+        if (!passwordAuth.matches(password, p.getPassword())) {
             model.addAttribute("error", "Invalid password.");
             return "marketplace/provider-login";
+        }
+        if (passwordAuth.needsUpgrade(p.getPassword())) {
+            p.setPassword(passwordAuth.encode(password));
+            providerRepo.save(p);
         }
         if (p.getVerificationStatus() != VerificationStatus.VERIFIED) {
             model.addAttribute("error", "Your account is pending verification.");

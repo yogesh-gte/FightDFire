@@ -287,7 +287,7 @@
             <div class="loan-tag" id="loanTag">POPULAR</div>
             <h1 class="loan-name" id="loanName">Business Loan</h1>
             <a href="${pageContext.request.contextPath}/loan/application" class="btn btn-lg mt-4 px-5 fw-bold" style="background: linear-gradient(135deg, var(--f-purple), var(--f-pink)); color: white; border: none;">
-                <i class="fas fa-paper-plane me-2"></i> Apply Now
+                <i class="fas fa-book-open me-2"></i> How to apply (official portals)
             </a>
 
             <!-- Overview -->

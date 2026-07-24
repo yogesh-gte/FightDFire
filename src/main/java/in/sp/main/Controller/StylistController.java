@@ -39,6 +39,8 @@ public class StylistController {
     @Autowired
     private in.sp.main.Config.JwtUtil jwtUtil;
 
+    @Autowired
+    private in.sp.main.Config.PasswordAuthHelper passwordAuth;
 
     // ==============================
     // 1️⃣ Stylist Registration (self-register)
@@ -59,6 +61,7 @@ public class StylistController {
         stylist.setRating(0.0);
         stylist.setIsIndependent(true); // Self-registered stylist
         stylist.setApproved(false); // Explicitly set to false for verification
+        stylist.setPassword(passwordAuth.encode(stylist.getPassword()));
         stylistRepository.save(stylist);
         model.addAttribute("message", "Registration successful! Your account is pending admin approval.");
         return "stylist/stylist-login";
@@ -81,7 +84,11 @@ public class StylistController {
         Optional<Stylist> stylistOpt = stylistRepository.findByEmail(email);
         if (stylistOpt.isPresent()) {
             Stylist stylist = stylistOpt.get();
-            if (stylist.getPassword().equals(password)) {
+            if (passwordAuth.matches(password, stylist.getPassword())) {
+                if (passwordAuth.needsUpgrade(stylist.getPassword())) {
+                    stylist.setPassword(passwordAuth.encode(password));
+                    stylistRepository.save(stylist);
+                }
                 if (!stylist.isApproved()) {
                     model.addAttribute("error", "Your account is pending admin approval. Access denied.");
                     return "stylist/stylist-login";

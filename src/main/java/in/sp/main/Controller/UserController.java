@@ -360,7 +360,7 @@ public class UserController {
                 return "user";
             }
 
-            // Store BCrypt password for security (login supports legacy plain-text too).
+            // Store BCrypt password for security (login upgrades legacy plain-text).
             user.setEmail(user.getEmail().trim().toLowerCase());
             user.setPassword(passwordEncoder.encode(rawPassword));
 
@@ -403,8 +403,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String deleteUser(@PathVariable Long id) {
+    public String deleteUser(@PathVariable Long id, HttpSession session) {
+        // Self-delete only (admin user management has its own endpoints)
+        User current = (User) session.getAttribute("user");
+        if (current == null || !current.getId().equals(id)) {
+            return "redirect:/login";
+        }
         userService.deleteUser(id);
+        session.invalidate();
         return "redirect:/users/register";
     }
 
@@ -589,7 +595,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-    public String showUpdateForm(@PathVariable Long id, Model model) {
+    public String showUpdateForm(@PathVariable Long id, HttpSession session, Model model) {
+        User current = (User) session.getAttribute("user");
+        if (current == null || !current.getId().equals(id)) {
+            return "redirect:/login";
+        }
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "userUpdateForm";
@@ -597,6 +607,7 @@ public class UserController {
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     public String updateUser(@PathVariable Long id,
+                             HttpSession session,
                              @RequestParam("name") String name,
                              @RequestParam("email") String email,
                              @RequestParam("phone") String phone,
@@ -606,6 +617,11 @@ public class UserController {
                              @RequestParam(value = "isPrivate", defaultValue = "false") boolean isPrivate,
                              @RequestParam(value = "identityFile", required = false) MultipartFile identityFile,
                              @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+
+        User current = (User) session.getAttribute("user");
+        if (current == null || !current.getId().equals(id)) {
+            return "redirect:/login";
+        }
 
         User existingUser = userService.getUserById(id);
         if (existingUser == null) {

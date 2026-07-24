@@ -4,9 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,13 +19,36 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // Generate a secure key for HS256
-    private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final Key secretKey;
+    private final long expirationMs;
+
+    public JwtUtil(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration-ms:604800000}") long expirationMs) {
+        this.secretKey = Keys.hmacShaKeyFor(toHmacKeyBytes(secret));
+        this.expirationMs = expirationMs;
+    }
+
+    /** Ensures a stable >= 256-bit key from any configured secret string. */
+    private static byte[] toHmacKeyBytes(String secret) {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException("jwt.secret / JWT_SECRET must be configured");
+        }
+        byte[] raw = secret.getBytes(StandardCharsets.UTF_8);
+        if (raw.length >= 32) {
+            return raw;
+        }
+        try {
+            return MessageDigest.getInstance("SHA-256").digest(raw);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException("SHA-256 not available", e);
+        }
+    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-    
+
     public String extractRole(String token) {
         return extractClaim(token, claims -> claims.get("role", String.class));
     }
@@ -37,15 +64,13 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
     private Boolean isTokenExpired(String token) {
-        // Since we want the session to remain until logout, we could optionally not check expiration,
-        // but if an expiration is set, we check it.
         return extractExpiration(token).before(new Date());
     }
 
@@ -60,9 +85,8 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                // Set expiration to 10 years (essentially doesn't expire until logout)
-                .setExpiration(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 365 * 10))
-                .signWith(SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 

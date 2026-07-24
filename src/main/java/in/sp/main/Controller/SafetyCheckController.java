@@ -30,19 +30,23 @@ public class SafetyCheckController {
 
         if (crimeData.isPresent()) {
             try {
-                // Use AI to predict safety
-                String safetyStatus = aiSafetyService.predictSafety(
-                    crimeData.get().getCrimeCount(),
-                    crimeData.get().getNightTimeCrime(),
-                    crimeData.get().getPoliceStations()
-                );
-
-                // Send data to JSP
+                if (!aiSafetyService.isModelAvailable()) {
+                    model.addAttribute("safety_status", "Unavailable");
+                    model.addAttribute("safety_message",
+                            "AI safety model is not configured on this server. Add crime_data.arff / safety_model.model to enable predictions.");
+                } else {
+                    String safetyStatus = aiSafetyService.predictSafety(
+                        crimeData.get().getCrimeCount(),
+                        crimeData.get().getNightTimeCrime(),
+                        crimeData.get().getPoliceStations()
+                    );
+                    model.addAttribute("safety_status", safetyStatus);
+                }
                 model.addAttribute("latitude", latitude);
                 model.addAttribute("longitude", longitude);
-                model.addAttribute("safety_status", safetyStatus);
             } catch (Exception e) {
-                model.addAttribute("safety_status", "Error in AI Prediction");
+                model.addAttribute("safety_status", "Unavailable");
+                model.addAttribute("safety_message", "AI prediction failed: " + e.getMessage());
             }
         } else {
             model.addAttribute("safety_status", "Crime Data Not Found");

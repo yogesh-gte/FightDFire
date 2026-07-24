@@ -53,6 +53,9 @@ public class MartialArtsCenterController {
     private in.sp.main.Repository.OnlineClassEnrollmentRepository onlineClassEnrollmentRepository;
 
     @Autowired
+    private in.sp.main.Config.PasswordAuthHelper passwordAuth;
+
+    @Autowired
     private in.sp.main.Repository.OnlineClassRepository onlineClassRepository;
 
     @Autowired
@@ -318,9 +321,13 @@ public class MartialArtsCenterController {
             return "redirect:/centres/registerCentre";
         }
         MartialArtsCenter center = centerOpt.get();
-        if (center.getPassword() == null || !center.getPassword().equals(password)) {
+        if (center.getPassword() == null || !passwordAuth.matches(password, center.getPassword())) {
             redirectAttributes.addFlashAttribute("error", "Invalid email or password.");
             return "redirect:/centres/login";
+        }
+        if (passwordAuth.needsUpgrade(center.getPassword())) {
+            center.setPassword(passwordAuth.encode(password));
+            centreRepository.save(center);
         }
         if (!center.isApproved()) {
             redirectAttributes.addFlashAttribute("error",

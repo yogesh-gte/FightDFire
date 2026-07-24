@@ -1579,6 +1579,7 @@
         
         <!-- 9. Content Platform -->
         <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+          <a href="${pageContext.request.contextPath}/creator-hub" class="text-decoration-none text-reset">
           <div class="feature-module-card">
             <span class="module-number">09</span>
             <div class="feature-module-icon"><i class="fa-solid fa-video"></i></div>
@@ -1590,6 +1591,7 @@
               <span>Media</span>
             </div>
           </div>
+          </a>
         </div>
       </div>
     </div>

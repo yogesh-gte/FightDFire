@@ -148,9 +148,13 @@
                     <textarea class="form-control" rows="5" placeholder="Describe your business and purpose of loan"></textarea>
                 </div>
                 
+                <div class="alert alert-warning text-start mb-4" role="alert">
+                    <strong>Information only.</strong> Fight D Fear does not submit funding applications.
+                    Use this guide to learn about schemes, then apply on the official government or bank portal.
+                </div>
                 <div class="text-center">
-                    <a href="${pageContext.request.contextPath}/funding/confirmation" class="btn-submit btn-lg">
-                        <i class="fas fa-paper-plane me-2"></i> Submit Application
+                    <a href="${pageContext.request.contextPath}/funding" class="btn-submit btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i> Back to schemes
                     </a>
                 </div>
             </form>
